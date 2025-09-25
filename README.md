@@ -7,8 +7,8 @@ We are designing a space for students to find campus events that match their int
 - Users can save events to a personal calendar and claim tickets online.
 - Tickets will be managed via QR codes that can be scanned online.
 - Users can access their event feed and ticket by logging in / signing up to our website.
-- **(Extra feature)** students can customize their feed using tags for a personalized experience.
-- **(Extra feature)** students may select their seats for special events.
+- **(Extra feature)** Students can customize their feed using tags for a personalized experience.
+- **(Extra feature)** Students may select their seats for special events.
 
 ### Organizer Event Management
 - Event organizers can customize their event posting with a description, date/time, location, ticket capacity, ticket type (paid or otherwise).
