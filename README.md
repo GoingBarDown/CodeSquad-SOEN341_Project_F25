@@ -7,22 +7,19 @@ We are designing a space for students to find campus events that match their int
 - Users can save events to a personal calendar and claim tickets online.
 - Tickets will be managed via QR codes that can be scanned online.
 - Users can access their event feed and ticket by logging in / signing up to our website.
-- **(Extra feature)** Students can customize their feed using tags for a personalized experience.
-- **(Extra feature)** Students may select their seats for special events.
+- Students may select their seats for special events.
 
 ### Organizer Event Management
 - Event organizers can customize their event posting with a description, date/time, location, ticket capacity, ticket type (paid or otherwise).
 - Detailed event analytics including a dashboard displaying # of tickets issued, attendance rates and remaining capacity.
 - Event organizers can export their attendee list as a CSV.
 - Integrated QR code scanning for easy ticket validation.
-- **(Extra feature)** Organizers can further customize their event postings to reach the right audience using tags that define what type of event they are organizing.
-- **(Extra feature)** Organizers may view the remaining seats of an event if seats can be reserved.
-- **(Extra feature)** Organizers must complete a form before scheduling an event, notifying campus security of the event details.
+- Organizers may view the remaining seats of an event if seats can be reserved.
+- Organizers must complete a form before scheduling an event, notifying campus security of the event details.
 ### Administrator Dashboard & Moderation
 - Administrators can approve and add organizations / organizer accounts.
 - Edit / remove event listings that do not comply with policy.
 - Global dashboard for viewing total ticket sales, event participation and the number of active events.
-- **(Extra feature)** Administrators can view a list of all authorized clubs and organizations.
 ### Miscellaneous
 - All users can log in / sign up to the website. Page layout and available features will adjust dynamically to their current permission level.
 ## Programming Languages and Frameworks
@@ -31,6 +28,5 @@ We are designing a space for students to find campus events that match their int
 - CSS
 - JavaScript
 ### Backend
-- SQLite database for user logging, authentication and event tracking. (Exact implementation may change.)
-- Python REST API (potentially Node.js as an alternative.)
-This line is for my pull request
+- SQLite database for user logging, authentication and event tracking. 
+- Python 
