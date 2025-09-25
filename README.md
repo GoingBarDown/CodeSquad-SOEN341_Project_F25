@@ -33,4 +33,3 @@ We are designing a space for students to find campus events that match their int
 ### Backend
 - SQLite database for user logging, authentication and event tracking. (Exact implementation may change.)
 - Python REST API (potentially Node.js as an alternative.)
-This line is for my pull request
