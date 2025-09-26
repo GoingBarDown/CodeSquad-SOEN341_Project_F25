@@ -1,4 +1,4 @@
-Sprint Planning Breakdown
+(Tentative) Sprint Planning Breakdown
 =========================
 
 Sprint 1: Foundations & Setup (Infrastructure + Auth)
@@ -63,3 +63,4 @@ Division of work:
 - Backend squad: Admin moderation endpoints, analytics queries.
 - Frontend squad: Admin UI (approval dashboard).
 - Testing squad: Stress testing, analytics validation, integration.
+
