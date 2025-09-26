@@ -58,3 +58,8 @@ Goals:
   * Seat selection for auditorium events.
   * Automated security email.
   * List of registered clubs (CSV/Excel)
+
+Division of work:
+- Backend squad: Admin moderation endpoints, analytics queries.
+- Frontend squad: Admin UI (approval dashboard).
+- Testing squad: Stress testing, analytics validation, integration.
