@@ -1,4 +1,17 @@
 # CodeSquad - SOEN 341 Project
+
+## Team Members
+
+| Name | Student ID|
+|----------|----------|
+| Reema	Aboudraz (reemaaboudraz) |  40253549  |
+| Griffin	Bonomo-Clough (GriffinBonomo) |  40316007  | 
+| Patricia	Dsouza (something67) |  40284086  |
+| Rim	Echahbi (Rimec100) |  40227779  | 
+| Chandler	Higgins (GoingBarDown) |  40156534  | 
+| Noorjahan	Kazim (noorkaazi3) |  40311131  |
+| Sunidhi	Sharma (sunidhi-16) |  40190615  |
+
 ## Description
 We are designing a space for students to find campus events that match their interests while providing organizers with the tools to reach their audience. Students will be able to easily claim tickets and receive a scannable QR code granting them access to the event.
 ## Core Features
