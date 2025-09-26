@@ -1,5 +1,5 @@
 Sprint1 contributions:
 
 - Attended both meetings (both the first sprint meeting and Sunday meeting).
-- Helped brainstorm ideas and plan technical implementation.
-- Created a KanBan Board/Project to help with issue management and project management.
+    - Helped brainstorm ideas and plan technical implementation. (2-3 hrs)
+- Created a KanBan Board/Project to help with issue management and project management. (1 hr)
