@@ -1,0 +1,5 @@
+Sprint1 contributions:
+
+- Attended both meetings (both the first sprint meeting and shorter Sunday meeting).
+- Helped plan technical implementation.
+- Adapted notes taken from previous meetings to README.
