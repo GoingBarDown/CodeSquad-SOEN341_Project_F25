@@ -9,7 +9,7 @@
 | Patricia	Dsouza (something67) |  40284086  |
 | Rim	Echahbi (Rimec100) |  40227779  | 
 | Chandler	Higgins (GoingBarDown) |  40156534  | 
-| Noorjahan	Kazim (noorkaazi3) |  40311131  |
+| Noorjahan	Kazi (noorkaazi3) |  40311131  |
 | Sunidhi	Sharma (sunidhi-16) |  40190615  |
 
 ## Description
