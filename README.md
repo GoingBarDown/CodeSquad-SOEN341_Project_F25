@@ -1,6 +1,6 @@
 # CodeSquad - SOEN 341 Project
 
-## Team Members
+## Team Members (Lab Section: FL, TA: Krupali Dobariya)
 
 | Name | Student ID|
 |----------|----------|
