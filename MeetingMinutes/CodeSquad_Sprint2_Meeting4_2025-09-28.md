@@ -17,6 +17,6 @@ Notes:
   * users ->password, ID, events, ticktets, role, history
   * events ->title, location, description, date, time, catagory, capacity, paid/free, organizer ID, status of event, attendees, rating of event (5 Star)
   * organizers ->ID, name, role, password, event info
-  * 
-Goals for next meeting
+ 
+Goals for next meeting:
 * By next meeting we aim to have Flask set up
