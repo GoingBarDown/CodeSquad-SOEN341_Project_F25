@@ -12,4 +12,4 @@ ENV/
 .DS_Store
 
 # Dont want to load db into repo
-.db
+*.db
