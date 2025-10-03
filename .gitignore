@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Mac specific junk
+.DS_Store
+
+# Dont want to load db into repo
+*.db
