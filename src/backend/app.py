@@ -1,26 +1,20 @@
 from flask import Flask, flash, jsonify
 import sqlite3
+from routes import users_routes
+from db.db_utils import init_db, get_db_connection
 
 app = Flask(__name__)
 
 DATABASE = "app.db"
 
-def get_db_connection():
-    connection = sqlite3.connect(DATABASE)
-    connection.row_factory = sqlite3.Row
-    return connection
+users_routes.register_routes(app)
 
 @app.route('/')
 def index():
     return jsonify({"message": "Hello, this is root"})
 
-@app.route('/users')
-def get_users():
-    connection = get_db_connection()
-    rows = connection.execute("SELECT * FROM users").fetchall()
-    connection.close()
-    return jsonify([dict(row) for row in rows])
 
+### Deprecated, move these over to dedicated routes and crud 
 @app.route('/events')
 def get_events():
     conn = get_db_connection()
