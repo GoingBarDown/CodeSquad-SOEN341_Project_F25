@@ -79,20 +79,14 @@ To install the dependencies, copy over the **requirements.txt** file in the repo
 Conda and Python:
 
     pip install -r requirements.txt
-Whenever you install a new library for the backend, write:
 
-    pip freeze > requirements.txt
-and replace the current requirements file in the repo.
+Alternatively, you can run the app and it will tell you what packages you are missing, sometimes the command above has errors.
 ### Creating the Database
 The project does not include an initialized .db file as it can cause merge conflicts and corruption. For now each person will have to initialize their own.
-From an **active** environment **and** inside the repo, write:
-
-    sqlite3 app.db < schema.sql
->Note: You can re-run this to reset the database.
-
+From an **active** environment **and** inside the repo, run the setup_db.py file.
 This creates a .db file that you can use for storing all the data for testing purposes. It is purposefully excluded from any commits.
 ## Running the App
-You can start the app backend by running:
+You can start the backend by running:
 
     python app.py
 
