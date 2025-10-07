@@ -1,8 +1,6 @@
-import sqlite3
-from flask import Flask, flash, jsonify
+from flask import Flask, jsonify
 from config import Config
-from routes import users_routes
-from routes import events_routes
+from routes import users_routes, events_routes
 from db import db
 
 app = Flask(__name__)

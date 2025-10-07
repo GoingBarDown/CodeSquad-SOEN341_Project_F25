@@ -6,7 +6,7 @@ class User(db.Model):
     username = db.Column(db.String(80), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(120), nullable=False, unique=True)
-    role = db.Columm(db.String(40))
+    role = db.Column(db.String(40))
 
     @property
     def data(self):
