@@ -1,12 +1,14 @@
-from flask import Flask, flash, jsonify
 import sqlite3
+from flask import Flask, flash, jsonify
+from config import Config
 from routes import users_routes
 from routes import events_routes
-from db.db_utils import init_db, get_db_connection
+from db import db
 
 app = Flask(__name__)
+app.config.from_object(Config)
 
-DATABASE = "app.db"
+db.init_app(app)
 
 users_routes.register_routes(app)
 events_routes.register_routes(app)
@@ -16,4 +18,6 @@ def index():
     return jsonify({"message": "Hello, this is root"})
 
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
