@@ -1,14 +1,14 @@
 from flask import request, jsonify
-from db import events_crud
+from db import crud_events
 
 def register_routes(app):
     @app.route('/events', methods=['GET'])
     def get_events():
-        return jsonify(events_crud.get_all_events())
+        return jsonify(crud_events.get_all_events())
 
     @app.route('/events/<int:event_id>', methods=['GET'])
     def get_event(event_id):
-        event = events_crud.get_event_by_id(event_id)
+        event = crud_events.get_event_by_id(event_id)
         if event:
             return jsonify(event)
         return jsonify({'error': 'Event not found'}), 404
@@ -18,10 +18,21 @@ def register_routes(app):
         data = request.get_json()
         if not data:
             return jsonify({'error': 'Missing data'}), 400
-        event_id = events_crud.create_event(data['title'])
-        return jsonify({'message': 'Event created', 'id': event_id}), 201
+        event = crud_events.create_event(data)
+        return jsonify({'message': 'Event created', 'event': event}), 201
+
+
+    @app.route('/events/<int:event_id>', methods=['PUT'])
+    def update_event(event_id):
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'Missing data'}), 400
+        updated_event = crud_events.update_event(event_id, data)
+        if not updated_event:
+            return jsonify({'error': 'Event not found'}), 404
+        return jsonify({'message': 'Event updated', 'event': updated_event}), 200
 
     @app.route('/events/<int:event_id>', methods=['DELETE'])
     def remove_event(event_id):
-        events_crud.delete_event(event_id)
+        crud_events.delete_event(event_id)
         return jsonify({'message': 'Event deleted'})

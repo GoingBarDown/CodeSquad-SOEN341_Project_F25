@@ -16,3 +16,36 @@ class User(db.Model):
             "email": self.email,
             "role": self.role
         }
+
+class Event(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.Text, nullable=False)
+    description = db.Column(db.Text)
+    start_date = db.Column(db.DateTime)
+    end_date = db.Column(db.DateTime)
+    category = db.Column(db.Text)
+    capacity = db.Column(db.Integer)
+    price = db.Column(db.Float)
+    link = db.Column(db.Text)
+    organizer_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    seating = db.Column(db.Text)
+    status = db.Column(db.Text)
+    rating = db.Column(db.Float)
+
+    @property
+    def data(self):
+        return{
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'start_date': self.start_date,
+            'end_date': self.end_date,
+            'category': self.category,
+            'capacity': self.capacity,
+            'price': self.price,
+            'link': self.link,
+            'organizer_id': self.organizer_id,
+            'seating': self.seating,
+            'status': self.status,
+            'rating': self.rating
+        }
