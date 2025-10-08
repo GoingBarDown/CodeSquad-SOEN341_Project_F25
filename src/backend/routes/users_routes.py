@@ -18,7 +18,7 @@ def register_routes(app):
         data = request.get_json()
         if not data:
             return jsonify({'error': 'Missing data'}), 400
-        user_id = crud_users.create_user(data['username'], data['password'], data['email'])
+        user_id = crud_users.create_user(data)
         return jsonify({'message': 'User created', 'id': user_id}), 201
 
     @app.route('/users/<int:user_id>', methods=['DELETE'])
