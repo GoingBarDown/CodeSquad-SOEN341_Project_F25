@@ -1,36 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Organizer Login</title>
-  <link rel="stylesheet" href="organizerStyle.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Organizer Login</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg-light': '#f0f0f0',
+                        'bg-card': '#c8c8c8',
+                        'text-dark': '#2c2c2c',
+                        'text-subtle': '#6e6e6e',
+                        'border-neutral': '#000000',
+                        'primary-main': '#912338',
+                        'primary-accent': '#004085',
+                        'primary-hover': '#db0272',
+                        'secondary-success': '#508212',
+                        'secondary-warn': '#e5a712',
+                        'secondary-error': '#da3a16',
+                        'secondary-mauve': '#573996',
+                        'secondary-cyan': '#00adef',
+                        'secondary-lime': '#8cc63e',
+                    },
+                },
+            },
+        };
+    </script>
+
+    <style>
+        :root {
+            --primary-color: #912338;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f0f0;
+            color: #2c2c2c;
+            transition: all 0.3s ease-in-out;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #c8c8c8; }
+        ::-webkit-scrollbar-thumb { background: #912338; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #db0272; }
+        .view-transition {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 
-<body>
-  <header>
-    <h1>Organizer Portal</h1>
-    <button id="dot">☰</button>
-  </header>
+<body class="min-h-screen flex flex-col">
 
-  <div id="menu">
-    <nav>
-      <a href="#">Login</a>
-      <a href="#">Create Event</a>
-      <a href="#">Analytics</a>
-    </nav>
-  </div>
+    <!-- Header -->
+    <header class="flex justify-between items-center px-6 py-4 bg-primary-main text-white shadow">
+        <h1 class="text-xl font-semibold">Organizer Portal</h1>
+        <button id="dot" class="bg-primary-hover hover:bg-primary-accent text-white w-10 h-10 rounded-full text-lg flex justify-center items-center">
+            ☰
+        </button>
+    </header>
 
-  <div class="login-container">
-    <h2>Organizer Login</h2>
-    <form id="loginForm">
-      <input type="email" id="email" placeholder="Email" required>
-      <input type="password" id="password" placeholder="Password" required>
-      <button type="submit">Login</button>
-    </form>
-    <p id="message"></p>
-  </div>
+    <!-- Dropdown menu -->
+    <div id="menu" class="overflow-hidden max-h-0 transition-all duration-300 bg-bg-card">
+        <nav class="flex flex-col text-text-dark">
+            <a href="organizer-login.html" class="px-6 py-2 hover:bg-primary-hover hover:text-white">Login</a>
+            <a href="organizer-create-event.html" class="px-6 py-2 hover:bg-primary-hover hover:text-white">Create Event</a>
+            <a href="organizer-analytics.html" class="px-6 py-2 hover:bg-primary-hover hover:text-white">Analytics</a>
+        </nav>
+    </div>
 
-  <script src="organizer.js"></script>
+    <!-- Main content -->
+    <main class="flex flex-col flex-grow justify-center items-center view-transition">
+        <div class="bg-white shadow-lg rounded-lg p-8 w-80 border border-neutral">
+            <h2 class="text-xl font-semibold mb-6 text-center">Login</h2>
+
+            <form id="loginForm" class="flex flex-col space-y-4">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-text-dark mb-1">Email</label>
+                    <input type="email" id="email" name="email"
+                           class="w-full border border-border-neutral rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-main"
+                           required>
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-text-dark mb-1">Password</label>
+                    <input type="password" id="password" name="password"
+                           class="w-full border border-border-neutral rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-main"
+                           required>
+                </div>
+
+                <button type="submit"
+                        class="w-full bg-primary-main hover:bg-primary-hover text-white py-2 rounded transition duration-200">
+                    Login
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <script src="organizer.js"></script>
 </body>
 </html>
