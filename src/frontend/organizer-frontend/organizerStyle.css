@@ -25,16 +25,13 @@ body {
 ::-webkit-scrollbar {
     width: 8px;
 }
-
 ::-webkit-scrollbar-track {
     background: var(--bg-card);
 }
-
 ::-webkit-scrollbar-thumb {
     background: var(--primary-color);
     border-radius: 4px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
     background: var(--primary-hover);
 }
@@ -49,7 +46,6 @@ header {
     padding: 12px 16px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
 header h1 {
     margin: 0;
     font-size: 1.25rem;
@@ -71,7 +67,6 @@ header h1 {
     color: white;
     transition: background 0.3s;
 }
-
 #dot:hover {
     background: #004085; /* Dark blue accent */
 }
@@ -83,11 +78,9 @@ header h1 {
     max-height: 0;
     transition: max-height 0.3s ease;
 }
-
 #menu.open {
     max-height: 200px;
 }
-
 #menu nav a {
     display: block;
     padding: 12px 16px;
@@ -95,7 +88,6 @@ header h1 {
     text-decoration: none;
     transition: background 0.2s, color 0.2s;
 }
-
 #menu nav a:hover {
     background: var(--primary-hover);
     color: white;
@@ -115,69 +107,114 @@ main {
     background: white;
     border: 1px solid var(--border-neutral);
     border-radius: 8px;
-    padding: 24px;
-    width: 320px;
+    padding: 32px;
+    width: 360px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Forms */
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-label {
-    font-weight: 500;
-    margin-bottom: 4px;
-}
-
+/* Enhanced Input Styling */
 input {
-    padding: 10px;
-    border: 1px solid var(--border-neutral);
-    border-radius: 6px;
-    font-size: 0.95rem;
+    padding: 14px 12px;
+    border: 1.5px solid var(--border-neutral);
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 100%;
     transition: all 0.2s ease;
 }
-
 input:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(145, 35, 56, 0.2);
+    box-shadow: 0 0 0 3px rgba(145, 35, 56, 0.2);
 }
 
 /* Buttons */
-button {
+.btn-primary {
     background: var(--primary-color);
     color: white;
     border: none;
-    padding: 10px;
-    border-radius: 6px;
+    padding: 8px;
+    border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+    width: 100%;
 }
-
-button:hover {
+.btn-primary:hover {
     background: var(--primary-hover);
+    transform: translateY(-2px);
 }
 
-/* View Transition Animation */
+/* Google Login Button */
+.btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+.btn-google img {
+    width: 20px;
+    height: 20px;
+}
+.btn-google:hover {
+    background: #f0f0f0;
+}
+
+/* Divider */
+.divider {
+    text-align: center;
+    color: var(--text-subtle);
+    margin: 12px 0;
+    position: relative;
+}
+.divider::before,
+.divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: #ccc;
+}
+.divider::before {
+    left: 0;
+}
+.divider::after {
+    right: 0;
+}
+
+/* Sign Up Section */
+.signup-text {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--text-subtle);
+}
+.signup-link {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+}
+.signup-link:hover {
+    text-decoration: underline;
+}
+
+/* View Transition */
 .view-transition {
     opacity: 0;
     transform: translateY(10px);
     animation: fadeIn 0.4s ease-out forwards;
 }
-
 @keyframes fadeIn {
     to {
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-/* Active Tab */
-.tab-active {
-    border-bottom: 2px solid var(--primary-color);
-    color: var(--text-dark);
 }
