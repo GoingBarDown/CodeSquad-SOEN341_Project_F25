@@ -20,3 +20,20 @@ def delete_user(user_id):
     if user:
         db.session.delete(user)
         db.session.commit()
+
+def update_user(user_id, data):
+    user = User.query.get(user_id)
+    if not user:
+        return None
+    
+    if 'username' in data:
+        user.username = data['username']
+    if 'password' in data:
+        user.password = data['password']
+    if 'email' in data:
+        user.email = data['email']
+    if 'role' in data:
+        user.role = data['role']
+    
+    db.session.commit()
+    return user.data
