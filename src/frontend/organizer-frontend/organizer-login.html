@@ -5,20 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Organizer Login</title>
 
-    <!-- Tailwind (for convenience) -->
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="organizerStyle.css">
 </head>
-
 <body>
     <header>
         <h1>Organizer Portal</h1>
         <button id="dot">☰</button>
     </header>
 
-    <!-- Collapsible Menu -->
     <div id="menu">
         <nav>
             <a href="organizer-login.html">Login</a>
@@ -30,6 +28,7 @@
     <main class="view-transition">
         <div class="card">
             <h2 class="text-xl font-semibold mb-4">Login</h2>
+
             <form id="loginForm">
                 <div>
                     <label for="email">Organizer Email</label>
@@ -41,7 +40,19 @@
                     <input type="password" id="password" placeholder="Enter password" required>
                 </div>
 
-                <button type="submit">Login</button>
+                <button type="submit" class="btn-primary">Login</button>
+
+                <div class="divider">or</div>
+
+                <button type="button" class="btn-google">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo">
+                    Login with Google
+                </button>
+
+                <p class="signup-text">
+                    Don’t have an account?
+                    <a href="organizer-signup.html" class="signup-link">Sign up</a>
+                </p>
             </form>
         </div>
     </main>
