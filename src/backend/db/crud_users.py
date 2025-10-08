@@ -26,14 +26,9 @@ def update_user(user_id, data):
     if not user:
         return None
     
-    if 'username' in data:
-        user.username = data['username']
-    if 'password' in data:
-        user.password = data['password']
-    if 'email' in data:
-        user.email = data['email']
-    if 'role' in data:
-        user.role = data['role']
+    for key, value in data.items():
+        if hasattr(user, key):
+            setattr(user, key, value)
     
     db.session.commit()
     return user.data
