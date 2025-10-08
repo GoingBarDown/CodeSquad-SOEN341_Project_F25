@@ -1,55 +1,183 @@
-body {
-    margin: 0;
-    font-family: sans-serif;
+/* 🌸 Organizer Frontend Styling */
+/* --------------------------------------------- */
+/* Base Font and Colors */
+:root {
+    --primary-color: #912338; /* Burgundy */
+    --primary-hover: #db0272; /* Magenta */
+    --bg-light: #f0f0f0;      /* Light Grey */
+    --bg-card: #c8c8c8;       /* Medium Grey */
+    --text-dark: #2c2c2c;     /* Very Dark Grey */
+    --text-subtle: #6e6e6e;   /* Dark Grey */
+    --border-neutral: #000000; /* Black for borders */
 }
 
+/* General Layout */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    margin: 0;
+    padding: 0;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-card);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-hover);
+}
+
+/* Header */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: var(--primary-color);
+    color: white;
     padding: 12px 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+header h1 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+/* Menu Button */
 #dot {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: #d13333;
+    background: var(--primary-hover);
     cursor: pointer;
-    font-size: 24px;
+    font-size: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: 1;
-    border-width: 0;
+    border: none;
     color: white;
+    transition: background 0.3s;
 }
 
-#menu {
+#dot:hover {
+    background: #004085; /* Dark blue accent */
+}
 
+/* Navigation Menu */
+#menu {
+    background: var(--bg-card);
     overflow: hidden;
     max-height: 0;
-    transition: max-height .3s ease;
+    transition: max-height 0.3s ease;
 }
 
 #menu.open {
-    max-height: 220px;
+    max-height: 200px;
 }
 
 #menu nav a {
     display: block;
     padding: 12px 16px;
+    color: var(--text-dark);
     text-decoration: none;
+    transition: background 0.2s, color 0.2s;
 }
 
-#subbar span{
-    text-align:center;
+#menu nav a:hover {
+    background: var(--primary-hover);
+    color: white;
 }
 
-#subbar {
+/* Main Content */
+main {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
-    padding: 10px 16px;
-    background: #b38787;
+    flex-direction: column;
+    padding: 40px 16px;
+}
+
+/* Card Container */
+.card {
+    background: white;
+    border: 1px solid var(--border-neutral);
+    border-radius: 8px;
+    padding: 24px;
+    width: 320px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Forms */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+label {
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+input {
+    padding: 10px;
+    border: 1px solid var(--border-neutral);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(145, 35, 56, 0.2);
+}
+
+/* Buttons */
+button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+button:hover {
+    background: var(--primary-hover);
+}
+
+/* View Transition Animation */
+.view-transition {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Active Tab */
+.tab-active {
+    border-bottom: 2px solid var(--primary-color);
+    color: var(--text-dark);
 }
