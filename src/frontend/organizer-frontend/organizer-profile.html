@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organizer Profile | CampusConnect</title>
+  <link rel="stylesheet" href="organizer-profile.css">
+</head>
+<body>
+  <header>
+    <h1>PROFILE</h1>
+    <button id="dot">☰</button>
+  </header>
+
+  <!-- Dropdown Menu -->
+  <div id="menu">
+    <nav>
+      <a href="organizer-dashboard.html">Dashboard</a>
+      <a href="organizer-create-event.html">Create Event</a>
+      <a href="organizer-profile.html" class="active">Profile</a>
+      <a href="organizer-login.html">Logout</a>
+    </nav>
+  </div>
+
+  <!-- Profile Card -->
+  <main>
+    <div class="card">
+      <h2>Profile</h2>
+
+      <div class="profile-pic-section">
+        <img id="profilePic" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile">
+        <label for="fileUpload" class="upload-btn">Change Photo</label>
+        <input type="file" id="fileUpload" accept="image/*" hidden>
+      </div>
+
+      <form id="profileForm">
+        <label for="name">Organizer Name</label>
+        <input type="text" id="name" placeholder="Alex Johnson" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="alex.johnson@club.concordia.ca" required>
+
+        <label for="club">Club / Organization</label>
+        <input type="text" id="club" placeholder="Dev Society" required>
+
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" placeholder="123-456-7890" required>
+
+        <label for="bio">Short Bio</label>
+        <textarea id="bio" placeholder="Tell us about your club..."></textarea>
+
+        <button type="submit" class="btn-primary">Save Changes</button>
+      </form>
+    </div>
+  </main>
+
+  <script src="organizer-profile.js"></script>
+</body>
+</html>
