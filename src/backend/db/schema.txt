@@ -19,3 +19,12 @@ Organization Members:
     FOREIGN KEY (organization_id) REFERENCES organizations(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
 
+TODO:
+
+- create crud files for all tables
+- create routes file
+- add tables as models in models.
+- register routes in main
+
+Notes: use python 3.12 
+When installing, install flask-sqlalchemy !!!!!!!
