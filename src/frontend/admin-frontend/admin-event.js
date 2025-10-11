@@ -1,177 +1,140 @@
-const dot = document.getElementById('dot');
-const menu = document.getElementById('menu');
-const eventListElement = document.getElementById('event-list');
-const eventCountElement = document.getElementById('event-count');
-const detailsPanel = document.getElementById('event-details-panel');
-const defaultMessage = document.getElementById('default-message');
-const detailsContent = document.getElementById('event-details-content');
-const notificationArea = document.getElementById('notification-area');
-
-// Admin Approval Buttons
-const acceptBtn = document.getElementById('accept-event-btn');
-const denyBtn = document.getElementById('deny-event-btn');
-
-let currentEvents = [];
-let selectedEventId = null;
-const API_BASE = '/api/v1'; // Standard practice for REST APIs
-
-// --- 1. Mobile Menu Toggle ---
-dot.onclick = () => {
-    const isOpen = menu.classList.toggle('open');
-    dot.innerHTML = isOpen ? '—' : '✕';
-};
-
-// --- 2. Mock Data (Simulating Python/SQLite API Response) ---
-// Note: This data structure supports all admin/student statuses and details.
-const mockEvents = [
-    { id: 'e1', title: 'Cybersecurity Workshop', date: 'Oct 25, 2025', time: '4:00 PM', location: 'Tech Lab 101', price: 'Free', status: 'current', organizer: 'ACM Student Chapter', registered: 45, checkIns: 40, capacity: 60, revenue: 0 },
-    { id: 'e2', title: 'Freshman Meet & Greet', date: 'Sep 10, 2025', time: '1:00 PM', location: 'Campus Quad', price: 'Free', status: 'pending', organizer: 'Student Council', registered: 120, checkIns: 0, capacity: 200, revenue: 0 },
-    { id: 'e3', title: 'Python Code Challenge', date: 'Nov 03, 2025', time: '10:00 AM', location: 'Online', price: 'Paid ($15)', status: 'current', organizer: 'CodeSquad Devs', registered: 150, checkIns: 0, capacity: 500, revenue: 2250 },
-    { id: 'e4', title: 'Spring Semester Fair', date: 'Jan 15, 2026', time: '9:00 AM', location: 'Main Auditorium', price: 'Free', status: 'pending', organizer: 'Administration', registered: 0, checkIns: 0, capacity: 1000, revenue: 0 },
-    { id: 'e5', title: 'Data Visualization Seminar', date: 'May 01, 2025', time: '1:00 PM', location: 'Business 212', price: 'Free', status: 'past', organizer: 'Statistics Club', registered: 80, checkIns: 68, capacity: 100, revenue: 0 },
-];
-
-// --- 3. Notification Utility ---
-const displayNotification = (message, type = 'success') => {
-    notificationArea.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
-    notificationArea.style.display = 'block';
-    setTimeout(() => {
-        notificationArea.style.display = 'none';
-        notificationArea.innerHTML = '';
-    }, 5000);
-};
-
-// --- 4. Data Fetching (Simulating REST API Call & Polling) ---
-const fetchEvents = async () => {
-   
-    // For now, return mock data and update the list
-    currentEvents = mockEvents;
-    renderEventList(currentEvents);
-};
-
-// Use polling to simulate real-time updates for demonstration
-setInterval(fetchEvents, 15000); // Poll every 15 seconds
-
-// --- 5. Rendering the Event List ---
-const renderEventList = (events) => {
-    eventListElement.innerHTML = '';
-    eventCountElement.textContent = events.length;
-
-    events.forEach(event => {
-        const listItem = document.createElement('li');
-        listItem.className = 'event-list-item';
-        listItem.setAttribute('data-event-id', event.id);
-        
-        // Determine status style
-        let statusClass = '';
-        let attendeeText = '';
-
-        if (event.status === 'pending') {
-            statusClass = 'status-pending';
-            attendeeText = `Awaiting Approval`;
-        } else if (event.status === 'current') {
-            statusClass = 'status-current';
-            attendeeText = `${event.registered}/${event.capacity} Registered`;
-        } else if (event.status === 'past') {
-            statusClass = 'status-past';
-            attendeeText = `${event.checkIns} Attendees`;
-        } else { // denied/cancelled
-            statusClass = 'status-denied';
-            attendeeText = 'DENIED/CANCELLED';
-        }
-
-        listItem.innerHTML = `
-            <div class="list-item-content">
-                <h3 class="item-title">${event.title}</h3>
-                <p class="item-meta">${event.organizer} | ${event.date}</p>
-            </div>
-            <div class="item-status-block">
-                <span class="item-status-badge ${statusClass}">${event.status.toUpperCase()}</span>
-                <span class="item-attendees">${attendeeText}</span>
-            </div>
-        `;
-        
-        listItem.addEventListener('click', () => showEventDetails(event.id));
-        eventListElement.appendChild(listItem);
-    });
-
-    // Re-select the currently selected item if it exists
-    if (selectedEventId) {
-        document.querySelector(`.event-list-item[data-event-id="${selectedEventId}"]`)?.classList.add('active-selected');
-    }
-};
-
-// --- 6. Showing Event Details ---
-const showEventDetails = (eventId) => {
-    const event = currentEvents.find(e => e.id === eventId);
-    if (!event) return;
-
-    // Highlight the selected item in the list
-    document.querySelectorAll('.event-list-item').forEach(el => el.classList.remove('active-selected'));
-    document.querySelector(`.event-list-item[data-event-id="${eventId}"]`).classList.add('active-selected');
-    selectedEventId = eventId;
-
-    // Hide default message, show content
-    defaultMessage.style.display = 'none';
-    detailsContent.style.display = 'block';
-
-    // Populate static details
-    document.getElementById('detail-title').textContent = event.title;
-    document.getElementById('detail-time-location').innerHTML = `${event.time} | ${event.location}`;
-    document.getElementById('detail-registered-confirmed').textContent = event.registered;
-    document.getElementById('detail-check-ins').textContent = event.checkIns;
-    document.getElementById('detail-capacity').textContent = event.capacity;
-    document.getElementById('detail-price').textContent = event.price;
-    document.getElementById('detail-revenue').textContent = `$${event.revenue.toLocaleString()}`;
-
-    // Update Status Display
-    const statusDisplay = document.getElementById('detail-status');
-    statusDisplay.textContent = event.status.toUpperCase();
-    statusDisplay.className = `event-status-display status-${event.status}`;
-
-    // Conditional Actions (The key admin feature)
-    const standardActions = document.getElementById('standard-detail-actions');
-    const adminActions = document.getElementById('admin-approval-actions');
+// --- 1. Function to handle tab clicks ---
+function switchTab(event) {
+    // 1. Get all navigation tabs
+    const tabs = document.querySelectorAll('.nav-tab');
     
-    if (event.status === 'pending') {
-        standardActions.style.display = 'none';
-        adminActions.style.display = 'flex'; // Show Accept/Deny
-    } else {
-        standardActions.style.display = 'flex'; // Show Edit/Report
-        adminActions.style.display = 'none';
-    }
-};
-
-// --- 7. Status Update Logic (Simulating REST API PUT Request) ---
-const updateEventStatus = async (eventId, newStatus) => {
-    const event = currentEvents.find(e => e.id === eventId);
-    if (!event) return;
-
-    try {
-        event.status = newStatus;
-        
-        // Re-render the list and details to reflect the change
-        renderEventList(currentEvents);
-        showEventDetails(eventId);
-
-        displayNotification(`Event "${event.title}" successfully marked as ${newStatus.toUpperCase()}.`, 'success');
-
-    } catch (error) {
-        displayNotification(`Error updating status: ${error.message}`, 'error');
-        console.error('API Update Error:', error);
-    }
-};
-
-// --- 8. Attach Event Listeners for Approval Buttons ---
-window.addEventListener('load', () => {
-    // Initial fetch of events
-    fetchEvents();
-
-    acceptBtn.addEventListener('click', () => {
-        if (selectedEventId) updateEventStatus(selectedEventId, 'current');
+    // 2. Remove the 'active' class from all tabs
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
     });
 
-    denyBtn.addEventListener('click', () => {
-        if (selectedEventId) updateEventStatus(selectedEventId, 'denied');
+    // 3. Add the 'active' class to the tab that was clicked (event.currentTarget)
+    event.currentTarget.classList.add('active');
+
+    // 4. Determine which tab was clicked by getting its text content
+    const tabName = event.currentTarget.textContent.trim().toUpperCase();
+
+    // 5. Update the content view based on the clicked tab (Content switching logic goes here)
+    const contentView = document.querySelector('.content-view');
+    
+    // Simple placeholder to show the tab switched successfully
+    contentView.innerHTML = `
+        <div style="padding: 20px;">
+            <h2>${tabName} Dashboard View</h2>
+            <p>Content for the **${tabName}** administration area will be loaded here.</p>
+        </div>
+    `;
+
+    // In a real application, you would call a function here to fetch and display 
+    // the specific HTML/data for Events, Users, or Organizers.
+}
+
+
+// --- 2. Event Listener Setup (Runs when the page finishes loading) ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Select all elements with the class 'nav-tab'
+    const navTabs = document.querySelectorAll('.nav-tab');
+
+    // Loop through each tab and attach the click function
+    navTabs.forEach(tab => {
+        tab.addEventListener('click', switchTab);
     });
+    
+    // Optional: Log a message to the console to confirm the script is running
+    console.log("Admin Dashboard Script Loaded.");
+});
+
+// --- 3. Filtering Logic for Events Tab ---
+
+// This function will be called whenever a filter or search field changes
+function applyFilters() {
+    // Get the values from the search and filter dropdowns
+    const searchTerm = document.getElementById('main-search').value.toLowerCase();
+    const year = document.getElementById('filter-year').value;
+    const semester = document.getElementById('filter-semester').value;
+    const association = document.getElementById('filter-association').value;
+
+    // Get the currently active status filter (Active, Pending, or Past)
+    const activeStatusButton = document.querySelector('.status-filter.active-status');
+    const status = activeStatusButton ? activeStatusButton.dataset.status : 'all';
+
+    // Log the current filter values (replace with actual filtering code later)
+    console.log("--- Current Filters ---");
+    console.log(`Search: ${searchTerm}`);
+    console.log(`Year: ${year}`);
+    console.log(`Semester: ${semester}`);
+    console.log(`Association: ${association}`);
+    console.log(`Status: ${status}`);
+    console.log("-----------------------");
+
+    // In a production app, you would now use these variables to filter
+    // the list of events in the #event-list-container.
+}
+
+// --- 4. Function to handle Status button clicks (Active/Pending/Past) ---
+function handleStatusClick(event) {
+    // Remove the 'active-status' class from all buttons
+    const statusButtons = document.querySelectorAll('.status-filter');
+    statusButtons.forEach(button => {
+        button.classList.remove('active-status');
+    });
+
+    // Add the 'active-status' class to the clicked button
+    event.currentTarget.classList.add('active-status');
+    
+    // Apply the filters to update the event list
+    applyFilters();
+}
+
+
+// --- 5. Attach Event Listeners to New Filters ---
+document.addEventListener('DOMContentLoaded', () => {
+    // ... (Your existing code for tab switching is here) ...
+
+    // Attach listeners to search and dropdowns
+    document.getElementById('main-search').addEventListener('input', applyFilters);
+    document.getElementById('filter-year').addEventListener('change', applyFilters);
+    document.getElementById('filter-semester').addEventListener('change', applyFilters);
+    document.getElementById('filter-association').addEventListener('change', applyFilters);
+
+    // Attach listeners to the status buttons
+    const statusButtons = document.querySelectorAll('.status-filter');
+    statusButtons.forEach(button => {
+        button.addEventListener('click', handleStatusClick);
+    });
+    
+    // Initial call to set the console log and ensure everything is applied
+    applyFilters();
+});
+
+// --- 6. Hamburger Menu Toggle Logic ---
+
+function toggleMenu() {
+    const userMenu = document.getElementById('user-menu');
+    // Toggle the 'visible' class to show or hide the menu
+    userMenu.classList.toggle('visible'); 
+}
+
+// Add event listener inside the main DOMContentLoaded block
+document.addEventListener('DOMContentLoaded', () => {
+    // ... (Existing code for tab switching and filtering) ...
+
+    // Attach listener to the hamburger icon
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    if (hamburgerIcon) {
+        hamburgerIcon.addEventListener('click', toggleMenu);
+    }
+
+    // Optional: Close the menu when clicking anywhere else on the page
+    document.addEventListener('click', (event) => {
+        const menuContainer = document.querySelector('.menu-container');
+        const userMenu = document.getElementById('user-menu');
+
+        // Check if the click occurred outside the menu container
+        if (userMenu.classList.contains('visible') && !menuContainer.contains(event.target)) {
+            userMenu.classList.remove('visible');
+        }
+    });
+    
+    // ... (Closing curly brace for DOMContentLoaded) ...
 });
