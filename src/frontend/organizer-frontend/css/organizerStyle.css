@@ -218,3 +218,28 @@ input:focus {
         transform: translateY(0);
     }
 }
+
+.card {
+  margin-top: 60px;     /* pushes it down from the top */
+  padding: 2rem;        /* increases inner spacing */
+}
+
+/* Give form inputs and buttons more room */
+.card form input,
+.card form button {
+  margin-bottom: 15px;
+}
+
+/* Add space between elements like divider and signup text */
+.divider {
+  margin: 20px 0;
+}
+
+.signup-text {
+  margin-top: 20px;
+}
+
+/* Ensure everything stays centered nicely */
+main {
+  padding: 40px 20px;
+}
