@@ -3,173 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Events Admin</title>
-    <link rel="stylesheet" href="adminStyle.css">
-    <script src="admin-event.js" defer></script>
+    <title>Admin Events Dashboard</title>
+    <link rel="stylesheet" href="adminStyle.css"> 
 </head>
-
 <body>
-    <header>
-        <div id="logo">MyLogo</div>
-        <button id="dot">X</button>
-    </header> 
 
-    <div id="menu">
-        <nav>
-            <a href="">Home</a>
-            <a href="">Events</a>
-            <a href="">My Profile</a>
-            <a href="">Login</a>
-        </nav>
-    </div>
-
-    <div id="subbar">
-        <span>EVENTS</span>
-        <span>STUDENTS</span>
-        <span>ORGANIZERS</span>
-    </div>
-
-<main class="main-content">
-        <h1 class="dashboard-title">Events Dashboard (Admin View)</h1>
-
-        <!-- NOTIFICATION/STATUS AREA -->
-        <div id="notification-area"></div>
-
-        <!-- 3-Column Layout Container -->
-        <div class="content-layout">
+    <header class="main-header">
+        <div class="header-title">
+            CODESQUAD WEBSITE FOR EVENTS
+        </div>
+        <div class="menu-container">
+            <div class="menu-icon" id="hamburger-icon">
+                &#9776; </div>
             
-            <!-- COLUMN 1: Sidebar Filters & Search -->
-            <aside id="sidebar-filters" class="sidebar">
-                
-                <h2 class="filter-title">
-                    <span class="icon">🔍</span>
-                    Filters & Search
-                </h2>
-                
-                <div class="filter-content">
-                    <div class="filter-group">
-                        <label for="name-search">Search by Event Name</label>
-                        <input type="text" id="name-search" placeholder="E.g., Cybersecurity Workshop">
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label for="date-filter">Date Range</label>
-                        <input type="date" id="date-filter">
-                    </div>
-                    <div class="filter-group">
-                        <label for="category-filter">Category</label>
-                        <select id="category-filter">
-                            <option value="">All Categories</option>
-                            <option>Tech</option>
-                            <option>Design</option>
-                            <option>Networking</option>
-                            <option>Sport</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="org-filter">Organization</label>
-                        <select id="org-filter">
-                            <option value="">All Organizations</option>
-                            <option>Arts</option>
-                            <option>IEEE</option>
-                            <option>Student center</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="semester-filter">Semester</label>
-                        <select id="semester-filter">
-                            <option value="">All Semesters</option>
-                            <option>Fall 2025</option>
-                            <option>Spring 2026</option>
-                        </select>
-                    </div>
-                </div>
-
-                <button class="apply-filters-btn">Apply Filters</button>
-                
-                <!-- UTILITY BUTTONS: Only Create Event remains -->
-                <div class="utility-buttons sidebar-util">
-                    <button class="create-event-btn"><span class="icon">➕</span> Create Event</button>
-                </div>
-            </aside>
-
-            <!-- COLUMN 2: Event List -->
-            <div class="event-list-area">
-                <h2>Event List (<span id="event-count">0</span>)</h2>
-                <ul id="event-list"></ul>
-            </div>
-            
-            <!-- COLUMN 3: Event Details Panel -->
-            <div id="event-details-panel" class="details-panel">
-                <div id="default-message">
-                    <span class="icon" style="width: 2rem; height: 2rem;">👉</span>
-                    <h3>Select an event to view details</h3>
-                    <p>Click on an item in the list to manage its status, attendance, and details.</p>
-                </div>
-                
-                <div id="event-details-content" style="display: none;">
-                    <h2 id="detail-title" class="detail-title"></h2>
-                    <p id="detail-status" class="event-status-display"></p>
-
-                    <div class="detail-section">
-                        <h4><span class="icon">📅</span>When & Where:</h4>
-                        <p id="detail-time-location" class="detail-text"></p>
-                    </div>
-                    
-                    <div class="detail-section attendee-info">
-                        <h4><span class="icon">👥</span>Attendance Overview</h4>
-                        <ul id="detail-attendance-list">
-                            <li>Confirmed/Registered: <span id="detail-registered-confirmed"></span></li>
-                            <li>Check-ins/Attendees: <span id="detail-check-ins"></span></li>
-                            <li>Capacity: <span id="detail-capacity"></span></li>
-                        </ul>
-                    </div>
-
-                    <div class="detail-section ticket-info">
-                        <h4><span class="icon">🎟️</span>Ticket & Revenue</h4>
-                        <ul id="detail-ticket-list">
-                            <li>Price: <span id="detail-price"></span></li>
-                            <li>Revenue: <span id="detail-revenue"></span></li>
-                        </ul>
-                    </div>
-
-                    <!-- STANDARD BUTTONS (for Current/Past events) -->
-                    <div class="detail-actions" id="standard-detail-actions" style="display: none;">
-                        <button class="detail-action-btn report-btn">View Full Report</button>
-                        <button class="detail-action-btn edit-btn">
-                            <span class="icon">⚙️</span>
-                            Edit Event Details
-                        </button>
-                    </div>
-
-                    <!-- ADMIN APPROVAL BUTTONS (for Pending events) -->
-                    <div class="detail-actions admin-approval-actions" id="admin-approval-actions" style="display: none;">
-                        <button class="detail-action-btn deny-btn" id="deny-event-btn">
-                            <span class="icon">❌</span>
-                            Deny Event
-                        </button>
-                        <button class="detail-action-btn accept-btn" id="accept-event-btn">
-                            <span class="icon">✅</span>
-                            Accept Event
-                        </button>
-                    </div>
-                </div>
+            <div class="dropdown-menu" id="user-menu">
+                <ul>
+                    <li><a href="#">Logout</a></li>
+                </ul>
             </div>
         </div>
-    </main>
+    </header>
 
-    <!-- 4. Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <p>&copy; 2025 Website. All rights reserved.</p>
-            <div class="footer-links">
-                <a href="#">About Us</a>
-                <a href="#">Contact</a>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Help Center</a>
-            </div>
-        </div>
-    </footer>
+    <nav class="admin-nav">
+        <ul>
+            <li class="nav-tab active">EVENTS</li> 
+            <li class="nav-tab">USERS</li>
+            <li class="nav-tab">ORGANIZERS</li>
+        </ul>
+    </nav>
+    
+    <div class="main-container">
+        
+        <aside class="side-panel">
+    <div class="search-box">
+        <input type="text" id="main-search" placeholder="Search by name or keyword...">
+    </div>
+
+    <div class="filter-tags">
+        <h4>Filter Events</h4>
+        
+        <select id="filter-year">
+            <option value="">Year (All)</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+        </select>
+
+        <select id="filter-semester">
+            <option value="">Semester (All)</option>
+            <option value="fall">Fall</option>
+            <option value="winter">Winter</option>
+            <option value="summer">Summer</option>
+        </select>
+
+        <select id="filter-association">
+            <option value="">Student Association (All)</option>
+            <option value="sa1">SA - Tech Club</option>
+            <option value="sa2">SA - Business Guild</option>
+            <option value="sa3">SA - Arts Society</option>
+        </select>
+    </div>
+    
+    <div class="filter-buttons">
+        <button class="status-filter active-status" data-status="active">Active</button>
+        <button class="status-filter" data-status="pending">Pending</button>
+        <button class="status-filter" data-status="past">Past</button>
+    </div>
+
+    <div id="event-list-container">
+        <div class="event-list-item">Event: Tech Fair 2025</div>
+        <div class="event-list-item">Event: Spring Gala 2024</div>
+        <div class="event-list-item">Event: Winter Hackathon</div>
+        <div class="event-list-item">Event: Career Day 2023</div>
+    </div>
+</aside>
+
+        <section class="content-view">
+            <div class="event-image-placeholder">
+                            </div>
+            
+            <p class="event-details">
+                Date, attendees, ticket price, organizer, their info, location, rates, edit. Other detail STATURE, PENDING, PAST, CURRENTS
+            </p>
+        </section>
+        
+    </div> 
+    <script src="admin_events.js"></script> 
 
 </body>
 </html>
