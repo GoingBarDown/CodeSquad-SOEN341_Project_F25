@@ -1,245 +1,201 @@
-/* 🌸 Organizer Frontend Styling */
-/* --------------------------------------------- */
-/* Base Font and Colors */
-:root {
-    --primary-color: #912338; /* Burgundy */
-    --primary-hover: #db0272; /* Magenta */
-    --bg-light: #f0f0f0;      /* Light Grey */
-    --bg-card: #c8c8c8;       /* Medium Grey */
-    --text-dark: #2c2c2c;     /* Very Dark Grey */
-    --text-subtle: #6e6e6e;   /* Dark Grey */
-    --border-neutral: #000000; /* Black for borders */
+/* ===== General Reset ===== */
+* {
+  box-sizing: border-box;
 }
 
-/* General Layout */
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--bg-light);
-    color: var(--text-dark);
-    margin: 0;
-    padding: 0;
-    transition: all 0.3s ease-in-out;
+  font-family: "Poppins", sans-serif;
+  background-color: #f8f8f8;
+  color: #222;
+  margin: 0;
+  padding: 0;
 }
 
-/* Scrollbar Customization */
-::-webkit-scrollbar {
-    width: 8px;
-}
-::-webkit-scrollbar-track {
-    background: var(--bg-card);
-}
-::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
-    border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-hover);
-}
-
-/* Header */
+/* ===== Header & Menu (Dashboard/Portal) ===== */
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--primary-color);
-    color: white;
-    padding: 12px 16px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #8b1c33;
+  color: white;
+  padding: 12px 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 header h1 {
-    margin: 0;
-    font-size: 1.25rem;
-    font-weight: 600;
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
-/* Menu Button */
 #dot {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--primary-hover);
-    cursor: pointer;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    color: white;
-    transition: background 0.3s;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #a6223d;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  color: white;
+  transition: background 0.3s;
 }
+
 #dot:hover {
-    background: #004085; /* Dark blue accent */
+  background: #7e1a2d;
 }
 
-/* Navigation Menu */
 #menu {
-    background: var(--bg-card);
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.3s ease;
+  background: #e5e5e5;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease;
 }
+
 #menu.open {
-    max-height: 200px;
+  max-height: 200px;
 }
+
 #menu nav a {
-    display: block;
-    padding: 12px 16px;
-    color: var(--text-dark);
-    text-decoration: none;
-    transition: background 0.2s, color 0.2s;
+  display: block;
+  padding: 12px 16px;
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
 }
+
 #menu nav a:hover {
-    background: var(--primary-hover);
-    color: white;
+  background: #8b1c33;
+  color: white;
 }
 
-/* Main Content */
-main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 40px 16px;
+/* ===== Card Pages (Login, Signup, Forgot Password) ===== */
+main.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 60px);
+  padding: 40px 16px;
 }
 
-/* Card Container */
 .card {
-    background: white;
-    border: 1px solid var(--border-neutral);
-    border-radius: 8px;
-    padding: 32px;
-    width: 360px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  width: 380px;
+  padding: 2.5rem;
+  text-align: center;
 }
 
-/* Enhanced Input Styling */
+h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* ===== Inputs & Forms ===== */
+form {
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+  color: #333;
+}
+
 input {
-    padding: 14px 12px;
-    border: 1.5px solid var(--border-neutral);
-    border-radius: 8px;
-    font-size: 1rem;
-    width: 100%;
-    transition: all 0.2s ease;
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
 }
+
 input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(145, 35, 56, 0.2);
+  border-color: #8b1c33;
+  outline: none;
 }
 
-/* Buttons */
+/* ===== Buttons ===== */
 .btn-primary {
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 8px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 1rem;
-    width: 100%;
+  width: 100%;
+  background-color: #8b1c33;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
 }
+
 .btn-primary:hover {
-    background: var(--primary-hover);
-    transform: translateY(-2px);
+  background-color: #a6223d;
+  transform: translateY(-1px);
 }
 
-/* Google Login Button */
 .btn-google {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 12px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.5rem;
+  width: 100%;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  gap: 8px;
 }
-.btn-google img {
-    width: 20px;
-    height: 20px;
-}
+
 .btn-google:hover {
-    background: #f0f0f0;
+  background-color: #f3f3f3;
 }
 
-/* Divider */
+.btn-google img {
+  width: 20px;
+}
+
+/* ===== Divider & Links ===== */
 .divider {
-    text-align: center;
-    color: var(--text-subtle);
-    margin: 12px 0;
-    position: relative;
-}
-.divider::before,
-.divider::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    width: 40%;
-    height: 1px;
-    background: #ccc;
-}
-.divider::before {
-    left: 0;
-}
-.divider::after {
-    right: 0;
-}
-
-/* Sign Up Section */
-.signup-text {
-    margin-top: 12px;
-    text-align: center;
-    font-size: 0.95rem;
-    color: var(--text-subtle);
-}
-.signup-link {
-    color: var(--primary-color);
-    font-weight: 600;
-    text-decoration: none;
-}
-.signup-link:hover {
-    text-decoration: underline;
-}
-
-/* View Transition */
-.view-transition {
-    opacity: 0;
-    transform: translateY(10px);
-    animation: fadeIn 0.4s ease-out forwards;
-}
-@keyframes fadeIn {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.card {
-  margin-top: 60px;     /* pushes it down from the top */
-  padding: 2rem;        /* increases inner spacing */
-}
-
-/* Give form inputs and buttons more room */
-.card form input,
-.card form button {
-  margin-bottom: 15px;
-}
-
-/* Add space between elements like divider and signup text */
-.divider {
+  display: flex;
+  align-items: center;
+  color: #999;
   margin: 20px 0;
 }
 
-.signup-text {
-  margin-top: 20px;
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #ddd;
 }
 
-/* Ensure everything stays centered nicely */
-main {
-  padding: 40px 20px;
+.divider::before {
+  margin-right: 0.75em;
+}
+.divider::after {
+  margin-left: 0.75em;
+}
+
+.signup-text {
+  margin-top: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+.signup-link {
+  color: #8b1c33;
+  font-weight: 600;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
 }

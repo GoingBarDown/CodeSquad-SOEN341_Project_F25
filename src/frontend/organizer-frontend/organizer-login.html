@@ -1,66 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organizer Login</title>
-
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/organizerStyle.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organizer Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/organizerStyle.css">
 </head>
 <body>
-    <header>
-        <h1>Organizer Portal</h1>
-        <button id="dot">☰</button>
-    </header>
+  <header>
+    <h1>Organizer Portal</h1>
+    <button id="dot">☰</button>
+  </header>
 
-    <div id="menu">
-        <nav>
-            <a href="organizer-login.html">Login</a>
-            <a href="organizer-create-event.html">Create Event</a>
-            <a href="organizer-analytics.html">Analytics</a>
-        </nav>
-    </div>
+  <div id="menu">
+    <nav>
+      <a href="organizer-login.html">Login</a>
+      <a href="organizer-dashboard.html">Dashboard</a>
+      <a href="organizer-analytics.html">Analytics</a>
+    </nav>
+  </div>
 
-    <main class="view-transition">
-        <div class="card">
-            <h2 class="text-xl font-semibold mb-4">Login</h2>
+  <main class="centered">
+    <div class="card">
+      <h2><b>Organizer Login</b></h2>
+      <br>
+      <form id="loginForm">
+        <label for="email">Organizer Email</label>
+        <input type="email" id="email" placeholder="  example@club.concordia.ca" required>
+        
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="  Enter password" required>
 
-            <form id="loginForm">
-                <div>
-                    <label for="email">Organizer Email</label>
-                    <input type="email" id="email" placeholder="  example@club.concordia.ca" required>
-                </div>
-
-                <div>
-                    <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="  Enter password" required>
-                </div>
-
-                <div class="forgot-password" style="text-align: right; margin-bottom: 10px;">
-                    <a href="organizer-forgot-password.html" class="forgot-link" style="color: var(--primary-color);">Forgot password?</a>
-                </div>
-                
-                <button type="submit" class="btn-primary">Login</button>
-
-                <div class="divider">or</div>
-
-                <button type="button" class="btn-google" style="width: 100%;">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo">
-                    Login with Google
-                </button>
-
-                <p class="signup-text">
-                    Don’t have an account?
-                    <a href="organizer-signup.html" class="signup-link">Sign up</a>
-                </p>
-            </form>
+        <div style="text-align:right; margin-top:10px;margin-bottom:10px;">
+          <a href="organizer-forgot-password.html" class="signup-link">Forgot password?</a>
         </div>
-    </main>
 
-    <script src="js/organizer.js"></script>
+        <button type="submit" class="btn-primary">Login</button>
+
+        <div class="divider"><b>or</b></div>
+
+        <button type="button" class="btn-google">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="">
+          Login with Google
+        </button>
+
+        <p class="signup-text">
+          Don’t have an account?
+          <a href="organizer-signup.html" class="signup-link">Sign up</a>
+        </p>
+      </form>
+    </div>
+  </main>
+
+  <script src="js/organizer.js"></script>
 </body>
 </html>
