@@ -3,12 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Organizer Sign Up</title>
-
-  <!-- Tailwind (optional, same as login page) -->
+  <title>Organizer Sign Up</title>  
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Custom CSS -->
   <link rel="stylesheet" href="css/organizerStyle.css">
 </head>
 <body>
@@ -20,15 +16,14 @@
   <div id="menu">
     <nav>
       <a href="organizer-login.html">Login</a>
-      <a href="organizer-create-event.html">Create Event</a>
+      <a href="organizer-dashboard.html">Dashboard</a>
       <a href="organizer-analytics.html">Analytics</a>
     </nav>
   </div>
 
-  <main class="view-transition">
+  <main class="centered">
     <div class="card">
-      <h2 class="text-xl font-semibold mb-4">Create an Organizer Account</h2>
-
+      <h2><b>Create an Organizer Account</b></h2>
       <form id="signupForm">
         <div>
           <label for="name">Full Name</label>
@@ -49,6 +44,7 @@
           <label for="confirmPassword">Confirm Password</label>
           <input type="password" id="confirmPassword" placeholder="  Confirm password" required>
         </div>
+        <br>
         <button type="submit" class="btn-primary">Sign Up</button>
 
         <div class="divider">or</div>

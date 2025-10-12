@@ -101,17 +101,20 @@ form {
 
 label {
   display: block;
-  margin-bottom: 0.4rem;
+  margin-bottom: 3px;
   font-weight: 500;
   color: #333;
+  font-size: 0.95rem;
+  margin-top: 15px;
 }
+
 
 input {
   width: 100%;
   padding: 0.8rem;
   border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
+  border-radius: 4px;
+  margin-bottom: 20px;
   font-size: 0.95rem;
   transition: border-color 0.2s ease;
 }
@@ -120,6 +123,13 @@ input:focus {
   border-color: #8b1c33;
   outline: none;
 }
+
+.link-container {
+    text-align: right; 
+    margin-top: 10px;
+    margin-bottom: 10px; 
+}
+
 
 /* ===== Buttons ===== */
 .btn-primary {
