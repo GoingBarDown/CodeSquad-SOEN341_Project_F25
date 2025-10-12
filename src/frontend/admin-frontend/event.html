@@ -3,38 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Events Dashboard</title>
-    <link rel="stylesheet" href="adminStyle.css"> 
+    <title>Events Admin Dashboard</title>
+    <link rel="stylesheet" href="adminStyle.css">
+    <script src="admin.js" defer></script>
+    <script src="admin-event.js" defer></script>
 </head>
+
 <body>
+    <header>
+        <div id="logo">MyLogo</div>
+        <button id="dot">X</button>
+    </header> 
 
-    <header class="main-header">
-        <div class="header-title">
-            CODESQUAD
-        </div>
-        <div class="menu-container">
-            <div class="menu-icon" id="hamburger-icon">
-                &#9776; </div>
-            
-            <div class="dropdown-menu" id="user-menu">
-                <ul>
-                    <li><a href="#">Logout</a></li>
-                </ul>
-            </div>
-        </div>
-    </header>
+    <div id="menu">
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Events</a>
+            <a href="#">My Profile</a>
+            <a href="#">Login</a>
+        </nav>
+    </div>
 
-    <nav class="admin-nav">
-        <ul>
-            <li class="nav-tab active">EVENTS</li> 
-            <li class="nav-tab">USERS</li>
-            <li class="nav-tab">ORGANIZERS</li>
-        </ul>
-    </nav>
-    
-    <div class="main-container">
-        
-        <aside class="side-panel">
+    <div id="subbar" class="admin-nav">
+        <span class="nav-tab active">EVENTS</span>
+        <span class="nav-tab">STUDENTS</span>
+        <span class="nav-tab">ORGANIZERS</span>
+    </div>
+
+<main class="main-container">
+
+    <aside class="side-panel">
     <div class="search-box">
         <input type="text" id="main-search" placeholder="Search by name or keyword...">
     </div>
@@ -87,8 +85,9 @@
             </p>
         </section>
         
-    </div> 
-    <script src="admin_events.js"></script> 
+</main>
 
+    <script src="admin.js"></script>
+    <script src="admin-event.js" defer></script>
 </body>
 </html>
