@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Events Dashboard</title>
-    <!-- <link rel="stylesheet" href="css/dashboardStyle.css"> -->
-    <link rel="stylesheet" href="css/organizerStyle.css">
+  <meta charset="UTF-8" />
+  <title>Organizer Events Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/organizerStyle.css">
 </head>
 
 <body>
-    
-    <header>
-        <h1>Events Dashboard</h1>
-        <!-- <button id="createEventBtn">+ Create Event</button> -->
-    </header>
-      <div id="menu">
+  <header>
+    <h1>Events Dashboard</h1>
+    <button id="dot">☰</button>
+  </header>
+
+  <div id="menu">
     <nav>
       <a href="organizer-login.html">Login</a>
       <a href="organizer-dashboard.html">Dashboard</a>
@@ -21,26 +21,27 @@
     </nav>
   </div>
 
-    <section id="filters">
-        <label>
-            Filter by Date:
-            <input type="date" id="filterDate">
-        </label>
-        <label>
-            Filter by Category:
-            <select id="filterCategory">
-                <option value="">All</option>
-                <option value="Workshop">Workshop</option>
-                <option value="Lecture">Lecture</option>
-                <option value="Social">Social</option>
-            </select>
-        </label>
-    </section>
+  <section id="filters">
+    <label>
+      Filter by Date:
+      <input type="date" id="filterDate" />
+    </label>
+    <label>
+      Filter by Category:
+      <select id="filterCategory">
+        <option value="">All</option>
+        <option value="Workshop">Workshop</option>
+        <option value="Lecture">Lecture</option>
+        <option value="Social">Social</option>
+      </select>
+    </label>
+  </section>
 
-    <section id="eventsList">
-        <!-- Events will be dynamically injected here -->
-    </section>
+  <section id="eventsList">
+    <!-- Events dynamically injected here -->
+  </section>
 
-    <script src="js/events-dashboard.js"></script>
+  <script src="js/organizer.js"></script>
+  <script src="js/events-dashboard.js"></script>
 </body>
 </html>

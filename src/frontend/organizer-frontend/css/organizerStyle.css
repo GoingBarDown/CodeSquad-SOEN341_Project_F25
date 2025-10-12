@@ -26,10 +26,10 @@ header {
   font-style: normal;
 }
 
-/* header h1 {
+header h1 {
   font-size: 1.25rem;
   font-weight: 600;
-} */
+}
 
 #dot {
   width: 36px;
@@ -77,7 +77,7 @@ header {
   font-weight: 500;
 }
 
-#menu nav a:hover {
+#menu nav a.active, #menu nav a:hover {
   background: #912338;
   color: white;
 }
@@ -308,4 +308,265 @@ main {
     margin-bottom: 10px;
     border-radius: 8px;
     cursor: pointer;
+}
+
+
+.btn-google:hover {
+  background-color: #f3f3f3;
+}
+
+.btn-google img {
+  width: 20px;
+}
+
+/* ===== Divider & Links ===== */
+.divider {
+  display: flex;
+  align-items: center;
+  color: #999;
+  margin: 20px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+}
+
+.divider::before {
+  margin-right: 0.75em;
+}
+.divider::after {
+  margin-left: 0.75em;
+}
+
+.signup-text {
+  margin-top: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+.signup-link {
+  color: #8b1c33;
+  font-weight: 600;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
+}
+
+#subbar span{
+    text-align:center;
+}
+
+#subbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 16px;
+    background: #4b0303;
+    color: white;
+    font-family: "Poller One", sans-serif;
+    font-weight: 10;
+    font-size: 10px;
+    margin-bottom: 10px;
+}
+
+main {
+    padding: 16px;
+}
+
+.main-container {
+  display: flex;
+}
+
+.search-box input{
+    background-color: rgb(255, 240, 223);
+    border: 2px none;
+    padding: 2%;
+    width: 90%;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.side-panel {
+    width: 35%;
+    background-color: #d9e0cc;
+    padding: 16px;
+    box-sizing: border-box;
+    border-radius: 12px;
+    text-align: center;
+    margin: 10px;
+    height: 80vh;   
+    border: 2px none;
+}
+
+.content-view{
+    flex: 1;
+    padding: 20px;
+    background-color: rgb(180, 180, 170);
+    margin: 2%;
+    color: white;
+    border-radius: 12px;
+    border: 2px none;
+    box-sizing: border-box;
+    height: 80vh;
+}
+
+.filter-tags{
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.filter-tags select{
+    appearance: none;
+    padding: 8px;
+    border: none;
+    background-color: rgb(180, 180, 170);
+    color: white;
+    font-weight: bold;
+    font-size: 10px;
+    border-radius: 16px;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+
+/* ===== GLOBAL RESET ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+#createEventBtn {
+  background-color: #8b1c33;
+  color: #fff;
+  padding: 0.6rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid black;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+/* #createEventBtn:hover {
+  background-color: #a6223d;
+  transform: translateY(-1px);
+} */
+
+/* ===== DASHBOARD FILTERS ===== */
+#filters {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin: 16px;
+}
+
+#filters label {
+  font-weight: 500;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+#filters input,
+#filters select {
+  margin-top: 5px;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  width: 160px;
+}
+
+#filters input:focus,
+#filters select:focus {
+  border-color: #8b1c33;
+  outline: none;
+}
+
+/* ===== EVENTS GRID ===== */
+#eventsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+/* ===== EVENT CARD ===== */
+.eventCard {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  padding: 16px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.eventCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.eventCard h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+  color: #8b1c33;
+}
+
+.eventCard p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.eventCard button {
+  margin-right: 8px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.eventCard button:first-of-type {
+  background-color: #8b1c33;
+  color: white;
+}
+
+.eventCard button:last-of-type {
+  background-color: #ccc;
+  color: #222;
+}
+
+.eventCard button:hover {
+  opacity: 0.9;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  #filters {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #filters input,
+  #filters select {
+    width: 100%;
+  }
+
+  #eventsList {
+    grid-template-columns: 1fr;
+  }
 }
