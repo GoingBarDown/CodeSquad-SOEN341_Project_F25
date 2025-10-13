@@ -626,9 +626,8 @@ header h1 {
   cursor: pointer;
 }
 
-/* Sub-navigation tabs */
 .sub-header {
-  background: var(--header-bg);
+  background: #e9d3d7;
   display: flex;
   align-items: center;
   gap: 32px;
@@ -638,16 +637,16 @@ header h1 {
 
 .sub-header a {
   text-decoration: none;
-  color: var(--text-dark);
+  color: #222;
   font-weight: 500;
   padding-bottom: 6px;
   border-bottom: 3px solid transparent;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
 .sub-header a.active {
-  color: var(--primary);
-  border-bottom: 3px solid var(--primary);
+  color: #912338;
+  border-bottom: 3px solid #912338;
 }
 
 /* Page Content */
