@@ -520,6 +520,31 @@ input:focus {
   background-color: #a6223d;
 }
 
+.modal-content form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 500;
+  color: #333;
+}
+
+.modal-content form input,
+.modal-content form select,
+.modal-content form textarea {
+  width: 100%;
+  margin-top: 5px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+}
+
+.modal-content form input:focus,
+.modal-content form select:focus,
+.modal-content form textarea:focus {
+  border-color: #8b1c33;
+  outline: none;
+}
+
 .eventCard h3 {
   margin-top: 0;
   margin-bottom: 8px;

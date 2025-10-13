@@ -184,3 +184,82 @@ if (createEventBtn) {
 
 // ===== Initial Render =====
 renderEvents(events);
+
+
+// ===== EDIT EVENT (Dialog Box) =====
+function editEvent(id) {
+  const event = events.find(e => e.id === id);
+  if (!event) return;
+
+  const modal = document.createElement('div');
+  modal.classList.add('modal-overlay');
+  modal.innerHTML = `
+    <div class="modal-content">
+      <h2>Edit Event</h2>
+      <form id="editEventForm">
+        <label>Title</label>
+        <input type="text" id="editTitle" value="${event.title}" required />
+
+        <label>Date</label>
+        <input type="date" id="editDate" value="${event.date}" required />
+
+        <label>Category</label>
+        <select id="editCategory" required>
+          <option value="Workshop" ${event.category === "Workshop" ? "selected" : ""}>Workshop</option>
+          <option value="Lecture" ${event.category === "Lecture" ? "selected" : ""}>Lecture</option>
+          <option value="Social" ${event.category === "Social" ? "selected" : ""}>Social</option>
+          <option value="Competition" ${event.category === "Competition" ? "selected" : ""}>Competition</option>
+          <option value="Conference" ${event.category === "Conference" ? "selected" : ""}>Conference</option>
+        </select>
+
+        <label>Location</label>
+        <input type="text" id="editLocation" value="${event.location}" required />
+
+        <label>Description</label>
+        <textarea id="editDescription" rows="3">${event.description || ""}</textarea>
+
+        <div style="margin-top:15px; display:flex; gap:10px;">
+          <button type="submit" class="btn-primary">Save</button>
+          <button type="button" class="btn-close">Cancel</button>
+        </div>
+      </form>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  // Cancel button closes modal
+  modal.querySelector('.btn-close').addEventListener('click', () => modal.remove());
+
+  // Save edits
+  modal.querySelector('#editEventForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    event.title = document.getElementById('editTitle').value;
+    event.date = document.getElementById('editDate').value;
+    event.category = document.getElementById('editCategory').value;
+    event.location = document.getElementById('editLocation').value;
+    event.description = document.getElementById('editDescription').value;
+
+    renderEvents(events);
+    modal.remove();
+    alert("Event updated successfully!");
+  });
+}
+
+// ===== LOGOUT BUTTON =====
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    // Clear any stored session data (future proof)
+    localStorage.removeItem('organizerSession');
+    sessionStorage.removeItem('organizerSession');
+
+    // Optional confirmation
+    const confirmLogout = confirm("Are you sure you want to log out?");
+    if (!confirmLogout) return;
+
+    // Redirect to login page
+    window.location.href = "organizer-login.html";
+  });
+}
