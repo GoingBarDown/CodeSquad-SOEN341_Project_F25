@@ -8,6 +8,11 @@
   <link rel="stylesheet" href="adminStyle.css">
   <script src="admin.js" defer></script>
   <script src="admin-student.js" defer></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poller+One&display=swap" rel="stylesheet">
+</head>
 </head>
 
 <body>
@@ -28,22 +33,20 @@
   </div>
 
   <!-- === SUB NAV BAR === -->
-  <div id="subbar">
-    <span>EVENTS</span>
-    <span class="active">STUDENTS</span>
-    <span>ORGANIZERS</span>
+  <div id="subbar" class="admin-nav">
+    <span class="nav-tab"></span>
+    <span class="nav-tab active">STUDENTS</span>
+    <span class="nav-tab">ORGANIZERS</span>
   </div>
 
   <!-- === MAIN CONTENT === -->
-  <main>
+  <main class="main-container">
     <!-- Left panel: filters + list -->
     <aside class="side-panel">
-      <!-- Search box -->
       <div class="search-box">
         <input type="text" id="student-search" placeholder="Search student...">
       </div>
 
-      <!-- Filters -->
       <div class="filter-tags">
         <select id="filter-year">
           <option value="">Year</option>
@@ -66,13 +69,12 @@
         </select>
       </div>
 
-      <!-- Student list (backend will populate) -->
       <div id="student-list-container"></div>
     </aside>
 
     <!-- Right panel: student details -->
     <section class="content-view">
-      <div id="student-info" class="info-card">
+      <div id="student-info">
         <h2>Student Information</h2>
         <p>Select a student to view details.</p>
       </div>
@@ -80,4 +82,3 @@
   </main>
 </body>
 </html>
-
