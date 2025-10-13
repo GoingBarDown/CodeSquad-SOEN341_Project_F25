@@ -1,37 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Students Admin</title>
-    <link rel="stylesheet" href="adminStyle.css">
-    <script src="admin.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Students Admin</title>
+
+  <link rel="stylesheet" href="adminStyle.css">
+  <script src="admin.js" defer></script>
+  <script src="admin-student.js" defer></script>
 </head>
 
 <body>
-    <header>
-        <div id="logo">MyLogo</div>
-        <button id="dot">X</button>
-    </header> 
+  <!-- === HEADER === -->
+  <header>
+    <div id="logo">MyLogo</div>
+    <button id="dot">X</button>
+  </header> 
 
-    <div id="menu">
-        <nav>
-            <a href="">Home</a>
-            <a href="">Events</a>
-            <a href="">My Profile</a>
-            <a href="">Login</a>
-        </nav>
-    </div>
+  <!-- === SIDE MENU === -->
+  <div id="menu">
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Events</a>
+      <a href="#">My Profile</a>
+      <a href="#">Login</a>
+    </nav>
+  </div>
 
-    <div id="subbar">
-        <span>EVENTS</span>
-        <span>STUDENTS</span>
-        <span>ORGANIZERS</span>
-    </div>
+  <!-- === SUB NAV BAR === -->
+  <div id="subbar">
+    <span>EVENTS</span>
+    <span class="active">STUDENTS</span>
+    <span>ORGANIZERS</span>
+  </div>
 
-<main>
+  <!-- === MAIN CONTENT === -->
+  <main>
+    <!-- Left panel: filters + list -->
+    <aside class="side-panel">
+      <!-- Search box -->
+      <div class="search-box">
+        <input type="text" id="student-search" placeholder="Search student...">
+      </div>
 
-    //content here
-</main>
+      <!-- Filters -->
+      <div class="filter-tags">
+        <select id="filter-year">
+          <option value="">Year</option>
+          <option value="2025">2025</option>
+          <option value="2024">2024</option>
+          <option value="2023">2023</option>
+        </select>
+
+        <select id="filter-status">
+          <option value="">Status</option>
+          <option value="gold">Gold</option>
+          <option value="silver">Silver</option>
+          <option value="bronze">Bronze</option>
+        </select>
+
+        <select id="filter-events">
+          <option value="">Events Attended</option>
+          <option value=">5">More than 5</option>
+          <option value="<=5">5 or fewer</option>
+        </select>
+      </div>
+
+      <!-- Student list (backend will populate) -->
+      <div id="student-list-container"></div>
+    </aside>
+
+    <!-- Right panel: student details -->
+    <section class="content-view">
+      <div id="student-info" class="info-card">
+        <h2>Student Information</h2>
+        <p>Select a student to view details.</p>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
+
