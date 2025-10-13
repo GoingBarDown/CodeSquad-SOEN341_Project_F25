@@ -7,5 +7,9 @@ Sprint 1 contributions:
 Sprint 2 contributions:
 
 - Attended all team meetings (1.5h)
-- Created css file to be used for Organizer front-end (3h)
-- Worked on front-end code for organizers (task division in meeting minutes 7) (4h)
+- Created css file to be used for Organizer front-end (organizerStyle.css) (3h)
+- Worked on front-end code for organizers (task division in meeting minutes 7) (6h)
+    - create-event.html
+    - organizer-dashboard.html
+    - organizer-events-list.html
+    - organizer-signup.html, organizer-login.html, organizer-forgot-password.html
