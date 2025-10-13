@@ -8,6 +8,145 @@
   <link rel="stylesheet" href="adminStyle.css">
   <script src="admin.js" defer></script>
   <script src="admin-student.js" defer></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f9f9f9;
+    }
+
+    main {
+      display: flex;
+      gap: 30px;
+      padding: 20px;
+      align-items: flex-start;
+    }
+
+    /* ===== LEFT PANEL ===== */
+    .side-panel {
+      flex: 1;
+      max-width: 350px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .search-box {
+      margin-bottom: 10px;
+    }
+
+    #student-search {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .filter-section {
+      margin-bottom: 15px;
+    }
+
+    .filter-section button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 8px;
+    }
+
+    .filter-section select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    /* Student list */
+    #student-list-container {
+      flex-grow: 1;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #fff;
+      padding: 10px;
+      max-height: 500px;
+    }
+
+    .student-item {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .student-item:hover {
+      background-color: #f0f8ff;
+    }
+
+    .student-item:last-child {
+      border-bottom: none;
+    }
+
+    /* ===== RIGHT PANEL (STUDENT CARD) ===== */
+    .content-view {
+      flex: 2;
+    }
+
+    .info-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 100%;
+    }
+
+    .info-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .info-header h2 {
+      font-size: 1.5rem;
+      color: #333;
+      margin: 0;
+    }
+
+    .edit-btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .info-details {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      row-gap: 12px;
+      column-gap: 10px;
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: #444;
+    }
+
+    .info-value {
+      color: #555;
+    }
+
+    .placeholder {
+      color: #aaa;
+      font-style: italic;
+    }
+  </style>
 </head>
 
 <body>
@@ -16,16 +155,6 @@
     <div id="logo">MyLogo</div>
     <button id="dot">X</button>
   </header> 
-
-  <!-- === SIDE MENU === -->
-  <div id="menu">
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">Events</a>
-      <a href="#">My Profile</a>
-      <a href="#">Login</a>
-    </nav>
-  </div>
 
   <!-- === SUB NAV BAR === -->
   <div id="subbar">
@@ -36,45 +165,60 @@
 
   <!-- === MAIN CONTENT === -->
   <main>
-    <!-- Left panel: filters + list -->
+    <!-- LEFT PANEL -->
     <aside class="side-panel">
-      <!-- Search box -->
+      <!-- Search -->
       <div class="search-box">
         <input type="text" id="student-search" placeholder="Search student...">
       </div>
 
-      <!-- Filters -->
-      <div class="filter-tags">
-        <select id="filter-year">
-          <option value="">Year</option>
-          <option value="2025">2025</option>
-          <option value="2024">2024</option>
-          <option value="2023">2023</option>
-        </select>
-
-        <select id="filter-status">
-          <option value="">Status</option>
-          <option value="gold">Gold</option>
-          <option value="silver">Silver</option>
-          <option value="bronze">Bronze</option>
-        </select>
-
-        <select id="filter-events">
-          <option value="">Events Attended</option>
-          <option value=">5">More than 5</option>
-          <option value="<=5">5 or fewer</option>
+      <!-- Filter by -->
+      <div class="filter-section">
+        <button id="filter-btn">Filter By ▼</button>
+        <select id="filter-options">
+          <option value="az">A → Z</option>
+          <option value="za">Z → A</option>
+          <option value="program">Program</option>
+          <option value="events">Events Attended</option>
         </select>
       </div>
 
-      <!-- Student list (backend will populate) -->
-      <div id="student-list-container"></div>
+      <!-- Scrollable Student List (populated by backend) -->
+      <div id="student-list-container">
+        <!-- Student items will be dynamically inserted here -->
+      </div>
     </aside>
 
-    <!-- Right panel: student details -->
+    <!-- RIGHT PANEL -->
     <section class="content-view">
       <div id="student-info" class="info-card">
-        <h2>Student Information</h2>
-        <p>Select a student to view details.</p>
+        <div class="info-header">
+          <h2>Student Information</h2>
+          <button class="edit-btn">EDIT</button>
+        </div>
+
+        <div class="info-details">
+          <div class="info-label">First Name:</div>
+          <div class="info-value placeholder" id="info-firstname">Select a student</div>
+
+          <div class="info-label">Last Name:</div>
+          <div class="info-value placeholder" id="info-lastname">—</div>
+
+          <div class="info-label">Student ID:</div>
+          <div class="info-value placeholder" id="info-studentid">—</div>
+
+          <div class="info-label">Email:</div>
+          <div class="info-value placeholder" id="info-email">—</div>
+
+          <div class="info-label">Password:</div>
+          <div class="info-value placeholder" id="info-password">—</div>
+
+          <div class="info-label">Program:</div>
+          <div class="info-value placeholder" id="info-program">—</div>
+
+          <div class="info-label">Events Attended:</div>
+          <div class="info-value placeholder" id="info-events">—</div>
+        </div>
       </div>
     </section>
   </main>
