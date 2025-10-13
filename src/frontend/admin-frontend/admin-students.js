@@ -1,38 +1,35 @@
 document.addEventListener('DOMContentLoaded', () => {
   console.log("Admin Student Page Loaded");
 
-  // Attach filter + search listeners
-  const searchInput = document.querySelector('.student-search');
-  const yearFilter = document.querySelector('.filter-year');
-  const statusFilter = document.querySelector('.filter-status');
-  const eventsFilter = document.querySelector('.filter-events');
+  // === ELEMENT REFERENCES ===
+  const searchInput = document.getElementById('student-search');
+  const filterSelect = document.getElementById('filter-options');
 
+  // Attach listeners
   if (searchInput) searchInput.addEventListener('input', applyStudentFilters);
-  if (yearFilter) yearFilter.addEventListener('change', applyStudentFilters);
-  if (statusFilter) statusFilter.addEventListener('change', applyStudentFilters);
-  if (eventsFilter) eventsFilter.addEventListener('change', applyStudentFilters);
+  if (filterSelect) filterSelect.addEventListener('change', applyStudentFilters);
 
-  applyStudentFilters(); // initial load
+  // Initial load
+  applyStudentFilters();
 });
 
 function applyStudentFilters() {
-  const search = document.querySelector('.student-search')?.value.toLowerCase() || '';
-  const year = document.querySelector('.filter-year')?.value || '';
-  const status = document.querySelector('.filter-status')?.value || '';
-  const events = document.querySelector('.filter-events')?.value || '';
+  const search = document.getElementById('student-search')?.value.toLowerCase() || '';
+  const filter = document.getElementById('filter-options')?.value || '';
 
-  console.log("Filters applied:", { search, year, status, events });
+  console.log("Filters applied:", { search, filter });
 
-  // --- Backend dev will hook in here ---
-  // fetch(`/api/students?search=${search}&year=${year}&status=${status}`)
+  // --- Backend will hook in here ---
+  // fetch(`/api/students?search=${search}&filter=${filter}`)
   //   .then(res => res.json())
   //   .then(renderStudentList);
 
-  renderStudentList([]); // empty placeholder
+  // For now, placeholder empty list
+  renderStudentList([]);
 }
 
 function renderStudentList(students) {
-  const listContainer = document.querySelector('.student-list-container');
+  const listContainer = document.getElementById('student-list-container');
   listContainer.innerHTML = '';
 
   if (!students || students.length === 0) {
@@ -42,26 +39,24 @@ function renderStudentList(students) {
 
   students.forEach(student => {
     const div = document.createElement('div');
-    div.classList.add('student-card');
-    div.innerHTML = `
-      <h3>${student.firstName} ${student.lastName}</h3>
-      <p>${student.email}</p>
-    `;
+    div.classList.add('student-item');
+    div.textContent = `${student.firstName} ${student.lastName}`;
     div.addEventListener('click', () => showStudentDetails(student));
     listContainer.appendChild(div);
   });
 }
 
 function showStudentDetails(student) {
-  const infoView = document.querySelector('.student-info');
-  infoView.innerHTML = `
-    <div class="info-card">
-      <h2>${student.firstName} ${student.lastName}</h2>
-      <p><strong>ID:</strong> ${student.id}</p>
-      <p><strong>Email:</strong> ${student.email}</p>
-      <p><strong>Status:</strong> ${student.status}</p>
-      <p><strong>Events Attended:</strong> ${student.eventsAttended}</p>
-      <p><strong>Year:</strong> ${student.year}</p>
-    </div>
-  `;
+  // Update existing info card fields instead of replacing HTML
+  document.getElementById('info-firstname').textContent = student.firstName || '—';
+  document.getElementById('info-lastname').textContent = student.lastName || '—';
+  document.getElementById('info-studentid').textContent = student.id || '—';
+  document.getElementById('info-email').textContent = student.email || '—';
+  document.getElementById('info-password').textContent = '••••••••'; // Hide actual password
+  document.getElementById('info-program').textContent = student.program || '—';
+  document.getElementById('info-events').textContent = student.eventsAttended || '—';
+
+  // Remove placeholder style
+  document.querySelectorAll('.info-value').forEach(v => v.classList.remove('placeholder'));
 }
+
