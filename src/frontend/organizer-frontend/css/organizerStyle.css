@@ -568,3 +568,228 @@ main.profile-page {
   background: var(--primary-hover);
   transform: translateY(-2px);
 }
+
+/* =========================================================
+   10. MANAGAING EVENTS AND SHOWING ANALYTICS
+   ========================================================= */
+
+:root {
+  --primary: #912338;
+  --accent: #db0272;
+  --header-bg: #e9d3d7;
+  --gray-bg: #f6f6f6;
+  --text-dark: #222;
+  --button-purple: #5a32c9;
+  --button-green: #387c2c;
+}
+
+/* Global Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  background-color: var(--gray-bg);
+  color: var(--text-dark);
+}
+
+/* Header Bar */
+header {
+  background-color: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+#dot {
+  background: white;
+  color: var(--primary);
+  border: none;
+  font-size: 1.4rem;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Sub-navigation tabs */
+.sub-header {
+  background: var(--header-bg);
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 14px 40px;
+  border-bottom: 2px solid #d2b5b5;
+}
+
+.sub-header a {
+  text-decoration: none;
+  color: var(--text-dark);
+  font-weight: 500;
+  padding-bottom: 6px;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.sub-header a.active {
+  color: var(--primary);
+  border-bottom: 3px solid var(--primary);
+}
+
+/* Page Content */
+main {
+  padding: 40px;
+}
+
+/* Section Heading */
+main h2 {
+  font-size: 1.8rem;
+  color: var(--primary);
+  margin-bottom: 16px;
+}
+
+/* Event/Analytics Container Cards */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.card {
+  flex: 1;
+  min-width: 320px;
+  background: white;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card h3 {
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+/* Stats */
+.stat {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #111;
+}
+
+.stat small {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Inputs & Buttons */
+input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 12px;
+  font-size: 1rem;
+}
+
+button {
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* Purple and Green Buttons */
+.btn-purple {
+  background-color: var(--button-purple);
+}
+
+.btn-purple:hover {
+  background-color: #4a24b5;
+}
+
+.btn-green {
+  background-color: var(--button-green);
+}
+
+.btn-green:hover {
+  background-color: #2c6524;
+}
+
+/* Footer text */
+.status-text {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  main {
+    padding: 20px;
+  }
+
+  .card-container {
+    flex-direction: column;
+  }
+
+  .card {
+    width: 100%;
+  }
+}
+/* === NAVBAR DROPDOWN FIX (CampusConnect Style) === */
+#menu {
+  background: #f4f4f4;
+  overflow: hidden;
+  max-height: 0; /* Hidden by default */
+  transition: max-height 0.4s ease;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+#menu.open {
+  max-height: 400px; /* Expands when .open class is added */
+}
+
+#menu nav {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+}
+
+#menu nav a {
+  color: #912338;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 12px 20px;
+  border-radius: 6px;
+  margin: 2px 16px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+#menu nav a:hover,
+#menu nav a.active {
+  background: #e9d3d7;
+  color: #5a1b2b;
+}
