@@ -12,6 +12,7 @@ users_routes.register_routes(app)
 events_routes.register_routes(app)
 ticket_routes.register_routes(app)
 organization_routes.register_routes(app)
+organization_members_routes.register_routes(app)
 
 
 @app.route('/')
