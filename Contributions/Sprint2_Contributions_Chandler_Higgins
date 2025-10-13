@@ -1,0 +1,12 @@
+- Attended team meeting (1 hour)
+- Made it so computer was in alignment with tools and frameworks for backend (2 hours)
+- Added CRUD files (2 hours)
+  - CRUD file for tickets
+  - CRUD file for organizer
+  - CRUD file for organizer members
+- Added Routes files (2 hours)
+  - route file for tickets
+  - route file for organizer
+  - route file for organizer members
+- Made sure each route file was properly registered and routed in app.py file
+- Organized backend to have routes and crud folders for specific files
