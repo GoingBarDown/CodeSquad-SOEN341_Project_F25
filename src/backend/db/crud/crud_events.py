@@ -1,6 +1,6 @@
 from db.models import Event
 from db import db
-from .utils import parse_iso_datetime
+from ..utils import parse_iso_datetime
 
 def _normalize_event_dates(data):
     for field in ["start_date", "end_date"]:
