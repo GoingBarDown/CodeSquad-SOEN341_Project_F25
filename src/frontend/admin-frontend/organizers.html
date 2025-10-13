@@ -1,37 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organizers Admin</title>
-    <link rel="stylesheet" href="adminStyle.css">
-    <script src="admin.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organisers Admin</title>
+
+  <link rel="stylesheet" href="adminStyle.css">
+  <script src="admin.js" defer></script>
+  <script src="admin-organiser.js" defer></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f9f9f9;
+    }
+
+    main {
+      display: flex;
+      gap: 30px;
+      padding: 20px;
+      align-items: flex-start;
+    }
+
+    /* ===== LEFT PANEL ===== */
+    .side-panel {
+      flex: 1;
+      max-width: 350px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .search-box {
+      margin-bottom: 10px;
+    }
+
+    #organiser-search {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .filter-section {
+      margin-bottom: 15px;
+    }
+
+    .filter-section button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 8px;
+    }
+
+    .filter-section select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    /* Organiser list */
+    #organiser-list-container {
+      flex-grow: 1;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #fff;
+      padding: 10px;
+      max-height: 500px;
+    }
+
+    .organiser-item {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .organiser-item:hover {
+      background-color: #f0f8ff;
+    }
+
+    .organiser-item:last-child {
+      border-bottom: none;
+    }
+
+    /* ===== RIGHT PANEL (ORGANISER CARD) ===== */
+    .content-view {
+      flex: 2;
+    }
+
+    .info-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 100%;
+    }
+
+    .info-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .info-header h2 {
+      font-size: 1.5rem;
+      color: #333;
+      margin: 0;
+    }
+
+    .edit-btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .info-details {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      row-gap: 12px;
+      column-gap: 10px;
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: #444;
+    }
+
+    .info-value {
+      color: #555;
+    }
+
+    .placeholder {
+      color: #aaa;
+      font-style: italic;
+    }
+  </style>
 </head>
 
 <body>
-    <header>
-        <div id="logo">MyLogo</div>
-        <button id="dot">X</button>
-    </header> 
+  <!-- === HEADER === -->
+  <header>
+    <div id="logo">MyLogo</div>
+    <button id="dot">X</button>
+  </header> 
 
-    <div id="menu">
-        <nav>
-            <a href="">Home</a>
-            <a href="">Events</a>
-            <a href="">My Profile</a>
-            <a href="">Login</a>
-        </nav>
-    </div>
+  <!-- === SUB NAV BAR === -->
+  <div id="subbar">
+    <span>EVENTS</span>
+    <span>STUDENTS</span>
+    <span class="active">ORGANISERS</span>
+  </div>
 
-    <div id="subbar">
-        <span>EVENTS</span>
-        <span>STUDENTS</span>
-        <span>ORGANIZERS</span>
-    </div>
+  <!-- === MAIN CONTENT === -->
+  <main>
+    <!-- LEFT PANEL -->
+    <aside class="side-panel">
+      <!-- Search -->
+      <div class="search-box">
+        <input type="text" id="organiser-search" placeholder="Search organiser...">
+      </div>
 
-<main>
+      <!-- Filter by -->
+      <div class="filter-section">
+        <button id="filter-btn">Filter By ▼</button>
+        <select id="filter-options">
+          <option value="az">A → Z</option>
+          <option value="za">Z → A</option>
+        </select>
+      </div>
 
-    //content here
-</main>
+      <!-- Scrollable Organiser List (populated by backend) -->
+      <div id="organiser-list-container">
+        <!-- Organiser items will be dynamically inserted here -->
+      </div>
+    </aside>
+
+    <!-- RIGHT PANEL -->
+    <section class="content-view">
+      <div id="organiser-info" class="info-card">
+        <div class="info-header">
+          <h2>Organiser Information</h2>
+          <button class="edit-btn">EDIT</button>
+        </div>
+
+        <div class="info-details">
+          <div class="info-label">Organisation Name:</div>
+          <div class="info-value placeholder" id="info-orgname">Select an organiser</div>
+
+          <div class="info-label">Email:</div>
+          <div class="info-value placeholder" id="info-email">—</div>
+
+          <div class="info-label">Target Community:</div>
+          <div class="info-value placeholder" id="info-community">—</div>
+
+          <div class="info-label">Events Created:</div>
+          <div class="info-value placeholder" id="info-events">—</div>
+        </div>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
