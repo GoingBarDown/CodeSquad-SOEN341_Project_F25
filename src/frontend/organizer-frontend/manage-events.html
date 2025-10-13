@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Events | CampusConnect</title>
+  <link rel="stylesheet" href="manage-events.css">
+</head>
+<header>
+  <h1>Campus<span style="color:#db0272;">Connect</span></h1>
+  <button id="dot">☰</button>
+</header>
+
+<!-- Dropdown Menu -->
+<div id="menu">
+  <nav>
+    <a href="organizer-dashboard.html">Dashboard</a>
+    <a href="organizer-create-event.html">Create Event</a>
+    <a href="organizer-profile.html">Profile</a>
+    <a href="organizer-settings.html">Settings</a>
+    <a href="organizer-login.html">Logout</a>
+  </nav>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const dot = document.getElementById("dot");
+    const menu = document.getElementById("menu");
+
+    dot.addEventListener("click", () => {
+      menu.classList.toggle("open");
+    });
+  });
+</script>
+
+  <main>
+    <h2>Event Analytics & Tools</h2>
+    <div class="card-container">
+      <div class="card">
+        <h3>Music Night Stats</h3>
+        <p class="stat">150 / 200<br><small>Tickets Claimed (75% Capacity)</small></p>
+        <button class="btn-purple">Export CSV Data</button>
+      </div>
+
+      <div class="card">
+        <h3>Ticket Validator</h3>
+        <input type="text" placeholder="Enter QR/Ticket ID">
+        <button class="btn-green">Validate Ticket</button>
+        <p class="status-text">Ready.</p>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
