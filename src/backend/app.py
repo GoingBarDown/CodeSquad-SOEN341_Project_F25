@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from config import Config
-from routes import users_routes, events_routes
+from routes import users_routes, events_routes, ticket_routes, organization_routes, organization_members_routes
 from db import db
 
 app = Flask(__name__)
@@ -10,6 +10,9 @@ db.init_app(app)
 
 users_routes.register_routes(app)
 events_routes.register_routes(app)
+ticket_routes.register_routes(app)
+organization_routes.register_routes(app)
+
 
 @app.route('/')
 def index():
