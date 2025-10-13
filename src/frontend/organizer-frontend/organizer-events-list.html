@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Organizer Events Dashboard</title>
+  <title>Organizer Events List</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/organizerStyle.css">
 </head>
@@ -23,9 +23,14 @@
 
   <section id="filters">
     <label>
-      Filter by Date:
-      <input type="date" id="filterDate" />
+      Filter by Date, From:
+      <input type="date" id="filterStartDate" />
     </label>
+    <label>
+   Filter by Date, To:
+    <input type="date" id="filterEndDate" />
+  </label>
+
     <label>
       Filter by Category:
       <select id="filterCategory">
@@ -38,10 +43,8 @@
   </section>
 
   <section id="eventsList">
-    <!-- Events dynamically injected here -->
   </section>
 
   <script src="js/organizer.js"></script>
-  <script src="js/events-dashboard.js"></script>
 </body>
 </html>
