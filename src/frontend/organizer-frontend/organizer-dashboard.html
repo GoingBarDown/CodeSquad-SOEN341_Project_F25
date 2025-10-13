@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Organizer Events Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/organizerStyle.css">
@@ -9,37 +10,52 @@
 
 <body>
   <header>
-    <h1>My Events</h1>
+    <h1>Events Dashboard</h1>
     <button id="dot">☰</button>
   </header>
 
   <div id="menu">
     <nav>
-      <a href="organizer-login.html">Login</a>
       <a href="organizer-dashboard.html">Dashboard</a>
       <a href="organizer-analytics.html">Analytics</a>
+      <a href="organizer-create.html">Create Event</a>
+      <a href="organizer-profile.html">Profile</a>
     </nav>
   </div>
 
-  <section id="filters">
-    <label>
-      Filter by Date:
-      <input type="date" id="filterDate" />
-    </label>
-    <label>
-      Filter by Category:
-      <select id="filterCategory">
-        <option value="">All</option>
-        <option value="Workshop">Workshop</option>
-        <option value="Lecture">Lecture</option>
-        <option value="Social">Social</option>
-      </select>
-    </label>
-  </section>
+  <div id="subbar">
+    
+    <button id="createEventBtn">Create Event</button>
+  </div>
 
-  <section id="eventsList">
-    <!-- Events dynamically injected here -->
-  </section>
+<main class="main-container">
+    <aside class="side-panel">
+      <h3>Search & Filters</h3>
+      <div class="search-box">
+        <input type="text" id="search" placeholder="Search events..." />
+      </div>
+
+        <div class="filter-tags">
+                <select id="filterCategory">
+                <option value="">Category</option>
+                <option>Workshop</option>
+                <option>Conference</option>
+                <option>Competition</option>
+                </select>
+                <select id="filterDate">
+                <option value="">Date</option>
+                <option>Upcoming</option>
+                <option>Past</option>
+                </select>
+        </div>
+    </aside>
+        
+        <section class = "content-view">
+            <h2>Your Events</h2>
+                <div id="eventsList">
+                </div>
+        </section>
+</main>
 
   <script src="js/organizer.js"></script>
   <script src="js/events-dashboard.js"></script>

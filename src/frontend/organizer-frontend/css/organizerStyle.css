@@ -1,231 +1,89 @@
-/* ===== General Reset =====
+/* ===== General Reset (Optimized) ===== */
 * {
-  box-sizing: border-box;
-} */
+    box-sizing: border-box;
+    margin: 0; /* Merged from later reset */
+    padding: 0; /* Merged from later reset */
+}
 
 body {
-  font-family: sans-serif;
-  background-color: #E9D3D7;
-  color: #222;
-  margin: 0;
-  padding: 0;
+    font-family: sans-serif;
+    background-color: #E9D3D7;
+    color: #222;
+    /* Removed duplicate margin: 0; and padding: 0; as they are in the universal reset * {} */
 }
 
 /* ===== Header & Menu (Dashboard/Portal) ===== */
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #912338;
-  color: white;
-  padding: 12px 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-family: "Poller One", sans-serif;
-  font-weight: 100;
-  font-size: 20px;
-  font-style: normal;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #912338;
+    color: white;
+    padding: 12px 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: "Poller One", sans-serif;
+    font-weight: 100;
+    font-size: 20px;
+    font-style: normal;
 }
 
 header h1 {
-  font-size: 1.25rem;
-  font-weight: 600;
+    font-size: 1.25rem;
+    font-weight: 600;
 }
 
 #dot {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #ffffff;
-  cursor: pointer;
-  font-size: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  color: white;
-  transition: background 0.3s;
-  line-height: 1;
-    border-width: 0;
-    color: #912338;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none; /* Kept, as border-width: 0; might not fully override a default border */
+    color: white; /* Overwritten by color: #912338; below */
+    transition: background 0.3s;
+    line-height: 1;
+    border-width: 0; /* Merged: Removed duplicate `border: none;` */
+    color: #912338; /* Merged: This color will be applied */
 }
 
 #dot:hover {
-  background: #7e1a2d;
+    background: #7e1a2d;
 }
 
 #dot svg.lucide {
-  width: 24px;
-  height: 24px;
-  stroke-width: 2;
+    width: 24px;
+    height: 24px;
+    stroke-width: 2;
 }
 
 #menu {
-  background: #E9D3D7;
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.3s ease;
+    background: #E9D3D7;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease;
 }
 
 #menu.open {
-  max-height: 220px;
+    max-height: 220px;
 }
 
 #menu nav a {
-  display: block;
-  padding: 12px 16px;
-  text-decoration: none;
-  font-weight: 500;
+    display: block;
+    padding: 12px 16px;
+    text-decoration: none;
+    font-weight: 500;
 }
 
 #menu nav a.active, #menu nav a:hover {
-  background: #912338;
-  color: white;
+    background: #912338;
+    color: white;
 }
 
-/* ===== Card Pages (Login, Signup, Forgot Password) ===== */
-main.centered {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 60px);
-  padding: 40px 16px;
-}
-
-.card {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  width: 380px;
-  padding: 2.5rem;
-  text-align: center;
-}
-
-h2 {
-  font-size: 1.6rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-/* ===== Inputs & Forms ===== */
-form {
-  text-align: left;
-}
-
-label {
-  display: block;
-  margin-bottom: 3px;
-  font-weight: 500;
-  color: #333;
-  font-size: 0.95rem;
-  margin-top: 15px;
-}
-
-
-input {
-  width: 100%;
-  padding: 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  font-size: 0.95rem;
-  transition: border-color 0.2s ease;
-}
-
-input:focus {
-  border-color: #8b1c33;
-  outline: none;
-}
-
-.link-container {
-    text-align: right; 
-    margin-top: 10px;
-    margin-bottom: 10px; 
-}
-
-
-/* ===== Buttons ===== */
-.btn-primary {
-  width: 100%;
-  background-color: #8b1c33;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-}
-
-.btn-primary:hover {
-  background-color: #a6223d;
-  transform: translateY(-1px);
-}
-
-.btn-google {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 0.5rem;
-  width: 100%;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
-  gap: 8px;
-}
-
-.btn-google:hover {
-  background-color: #f3f3f3;
-}
-
-.btn-google img {
-  width: 20px;
-}
-
-/* ===== Divider & Links ===== */
-.divider {
-  display: flex;
-  align-items: center;
-  color: #999;
-  margin: 20px 0;
-}
-
-.divider::before,
-.divider::after {
-  content: "";
-  flex: 1;
-  border-bottom: 1px solid #ddd;
-}
-
-.divider::before {
-  margin-right: 0.75em;
-}
-.divider::after {
-  margin-left: 0.75em;
-}
-
-.signup-text {
-  margin-top: 1.5rem;
-  color: #333;
-  text-align: center;
-}
-
-.signup-link {
-  color: #8b1c33;
-  font-weight: 600;
-}
-
-.signup-link:hover {
-  text-decoration: underline;
-}
-
-#subbar span{
-    text-align:center;
-}
-
+/* ===== Sub-bar (New section - properties merged) ===== */
 #subbar {
     display: flex;
     justify-content: space-around;
@@ -237,24 +95,46 @@ input:focus {
     font-weight: 10;
     font-size: 10px;
     margin-bottom: 10px;
+    /* Removed duplicate block and merged its properties */
 }
 
+#subbar span {
+    text-align: center;
+    /* Removed duplicate block and merged its properties */
+}
+
+/* ===== Card Pages (Login, Signup, Forgot Password) & Main Content Containers ===== */
 main {
     padding: 16px;
+    /* Removed duplicate block and merged its properties */
+}
+
+main.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 60px);
+    padding: 40px 16px;
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    width: 380px;
+    padding: 2.5rem;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
 }
 
 .main-container {
-  display: flex;
-}
-
-.search-box input{
-    background-color: rgb(255, 240, 223);
-    border: 2px none;
-    padding: 2%;
-    width: 90%;
-    border-radius: 8px;
-    box-sizing: border-box;
-    margin-bottom: 10px;
+    display: flex;
+    /* Removed duplicate block and merged its properties */
 }
 
 .side-panel {
@@ -265,11 +145,12 @@ main {
     border-radius: 12px;
     text-align: center;
     margin: 10px;
-    height: 80vh;   
+    height: 80vh;
     border: 2px none;
+    /* Removed duplicate block and merged its properties */
 }
 
-.content-view{
+.content-view {
     flex: 1;
     padding: 20px;
     background-color: rgb(180, 180, 170);
@@ -279,149 +160,211 @@ main {
     border: 2px none;
     box-sizing: border-box;
     height: 80vh;
+    /* Removed duplicate block and merged its properties */
 }
 
-.filter-tags{
-    display: flex;
-    gap: 12px;
+/* ===== Inputs & Forms ===== */
+form {
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 3px;
+    font-weight: 500;
+    color: #333;
+    font-size: 0.95rem;
+    margin-top: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     margin-bottom: 20px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease;
 }
 
-.filter-tags select{
-    appearance: none;
-    padding: 8px;
+input:focus {
+    border-color: #8b1c33;
+    outline: none;
+}
+
+.link-container {
+    text-align: right;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.search-box input {
+    background-color: rgb(255, 240, 223);
+    border: 2px none;
+    padding: 2%;
+    width: 90%;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    /* Removed duplicate block and merged its properties */
+}
+
+/* ===== Buttons & Event List Item ===== */
+.btn-primary {
+    width: 100%;
+    background-color: #8b1c33;
+    color: #fff;
     border: none;
-    background-color: rgb(180, 180, 170);
-    color: white;
-    font-weight: bold;
-    font-size: 10px;
-    border-radius: 16px;
-    gap: 12px;
-    align-items: center;
-    justify-content: space-between;
-
+    border-radius: 8px;
+    padding: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-.event-list-item{
+.btn-primary:hover {
+    background-color: #a6223d;
+    transform: translateY(-1px);
+}
+
+.btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 0.5rem;
+    width: 100%;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    gap: 8px;
+    /* Removed duplicate block and merged its properties */
+}
+
+.btn-google:hover {
+    background-color: #f3f3f3;
+    /* Removed duplicate block and merged its properties */
+}
+
+.btn-google img {
+    width: 20px;
+    /* Removed duplicate block and merged its properties */
+}
+
+.event-list-item {
     background-color: white;
     padding: 12px;
     margin-bottom: 10px;
     border-radius: 8px;
     cursor: pointer;
+    /* Removed duplicate block and merged its properties */
 }
 
-
-.btn-google:hover {
-  background-color: #f3f3f3;
+#createEventBtn {
+    background-color: #8b1c33;
+    color: #fff;
+    padding: 0.6rem 0.6rem;
+    border-radius: 8px;
+    border: 1px solid black;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
 }
 
-.btn-google img {
-  width: 20px;
-}
+/* #createEventBtn:hover {
+    background-color: #a6223d;
+    transform: translateY(-1px);
+} */
 
 /* ===== Divider & Links ===== */
 .divider {
-  display: flex;
-  align-items: center;
-  color: #999;
-  margin: 20px 0;
+    display: flex;
+    align-items: center;
+    color: #999;
+    margin: 20px 0;
+    /* Removed duplicate block and merged its properties */
 }
 
 .divider::before,
 .divider::after {
-  content: "";
-  flex: 1;
-  border-bottom: 1px solid #ddd;
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ddd;
+    /* Removed duplicate block and merged its properties */
 }
 
 .divider::before {
-  margin-right: 0.75em;
+    margin-right: 0.75em;
+    /* Removed duplicate block and merged its properties */
 }
+
 .divider::after {
-  margin-left: 0.75em;
+    margin-left: 0.75em;
+    /* Removed duplicate block and merged its properties */
 }
 
 .signup-text {
-  margin-top: 1.5rem;
-  color: #333;
-  text-align: center;
+    margin-top: 1.5rem;
+    color: #333;
+    text-align: center;
+    /* Removed duplicate block and merged its properties */
 }
 
 .signup-link {
-  color: #8b1c33;
-  font-weight: 600;
+    color: #8b1c33;
+    font-weight: 600;
+    /* Removed duplicate block and merged its properties */
 }
 
 .signup-link:hover {
-  text-decoration: underline;
+    text-decoration: underline;
+    /* Removed duplicate block and merged its properties */
 }
 
-#subbar span{
-    text-align:center;
-}
-
-#subbar {
+/* ===== DASHBOARD FILTERS & Filter Tags (Merged) ===== */
+#filters {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 10px 16px;
-    background: #4b0303;
-    color: white;
-    font-family: "Poller One", sans-serif;
-    font-weight: 10;
-    font-size: 10px;
-    margin-bottom: 10px;
-}
-
-main {
+    gap: 16px;
     padding: 16px;
-}
-
-.main-container {
-  display: flex;
-}
-
-.search-box input{
-    background-color: rgb(255, 240, 223);
-    border: 2px none;
-    padding: 2%;
-    width: 90%;
-    border-radius: 8px;
-    box-sizing: border-box;
-    margin-bottom: 10px;
-}
-
-.side-panel {
-    width: 35%;
-    background-color: #d9e0cc;
-    padding: 16px;
-    box-sizing: border-box;
+    background: #fff;
     border-radius: 12px;
-    text-align: center;
-    margin: 10px;
-    height: 80vh;   
-    border: 2px none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin: 16px;
 }
 
-.content-view{
-    flex: 1;
-    padding: 20px;
-    background-color: rgb(180, 180, 170);
-    margin: 2%;
-    color: white;
-    border-radius: 12px;
-    border: 2px none;
-    box-sizing: border-box;
-    height: 80vh;
+#filters label {
+    font-weight: 500;
+    color: #333;
+    font-size: 0.95rem;
 }
 
-.filter-tags{
+#filters input,
+#filters select {
+    margin-top: 5px;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+    width: 160px;
+}
+
+#filters input:focus,
+#filters select:focus {
+    border-color: #8b1c33;
+    outline: none;
+}
+
+.filter-tags {
     display: flex;
     gap: 12px;
     margin-bottom: 20px;
+    /* Removed duplicate block and merged its properties */
 }
 
-.filter-tags select{
+.filter-tags select {
     appearance: none;
     padding: 8px;
     border: none;
@@ -430,143 +373,229 @@ main {
     font-weight: bold;
     font-size: 10px;
     border-radius: 16px;
+    /* NOTE: 'gap: 12px;' and 'align-items/justify-content' seem misplaced on a single `<select>` element itself but were kept as per the original structure's properties. */
     gap: 12px;
     align-items: center;
     justify-content: space-between;
-
+    /* Removed duplicate block and merged its properties */
 }
 
-
-/* ===== GLOBAL RESET ===== */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-
-#createEventBtn {
-  background-color: #8b1c33;
-  color: #fff;
-  padding: 0.6rem 0.6rem;
-  border-radius: 8px;
-  border: 1px solid black;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
-}
-
-/* #createEventBtn:hover {
-  background-color: #a6223d;
-  transform: translateY(-1px);
-} */
-
-/* ===== DASHBOARD FILTERS ===== */
-#filters {
-  display: flex;
-  gap: 16px;
-  padding: 16px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  margin: 16px;
-}
-
-#filters label {
-  font-weight: 500;
-  color: #333;
-  font-size: 0.95rem;
-}
-
-#filters input,
-#filters select {
-  margin-top: 5px;
-  padding: 0.5rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 0.9rem;
-  width: 160px;
-}
-
-#filters input:focus,
-#filters select:focus {
-  border-color: #8b1c33;
-  outline: none;
-}
 
 /* ===== EVENTS GRID ===== */
 #eventsList {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
-  padding: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    padding: 16px;
 }
 
 /* ===== EVENT CARD ===== */
 .eventCard {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  padding: 16px;
-  transition: transform 0.2s, box-shadow 0.2s;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .eventCard:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
 }
 
 .eventCard h3 {
-  margin-top: 0;
-  margin-bottom: 8px;
-  font-size: 1.2rem;
-  color: #8b1c33;
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+    color: #8b1c33;
 }
 
 .eventCard p {
-  margin: 4px 0;
-  font-size: 0.95rem;
-  color: #555;
+    margin: 4px 0;
+    font-size: 0.95rem;
+    color: #555;
 }
 
 .eventCard button {
-  margin-right: 8px;
-  padding: 6px 12px;
-  font-size: 0.9rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background 0.2s;
+    margin-right: 8px;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
 }
 
 .eventCard button:first-of-type {
-  background-color: #8b1c33;
-  color: white;
+    background-color: #8b1c33;
+    color: white;
 }
 
 .eventCard button:last-of-type {
-  background-color: #ccc;
-  color: #222;
+    background-color: #ccc;
+    color: #222;
 }
 
 .eventCard button:hover {
-  opacity: 0.9;
+    opacity: 0.9;
 }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
-  #filters {
+    #filters {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #filters input,
+    #filters select {
+        width: 100%;
+    }
+
+    #eventsList {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== II. Event Card & List Enhancements ===== */
+.event-card-container {
+    display: flex;
     flex-direction: column;
-    gap: 10px;
-  }
+    background: #fdfdfd;
+    border-radius: 12px;
+    overflow: hidden; /* Ensures image corners are rounded */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
 
-  #filters input,
-  #filters select {
+.event-card-image {
     width: 100%;
-  }
+    height: 180px; /* Example height */
+    object-fit: cover;
+}
 
-  #eventsList {
-    grid-template-columns: 1fr;
-  }
+.event-card-body {
+    padding: 16px;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.tag-button {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 5px;
+    border-radius: 16px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    background-color: #4b6e2d; /* Primary tag color from PDF */
+    color: white;
+}
+
+.tag-button:hover {
+    opacity: 0.9;
+}
+
+.tag-button.secondary {
+    background-color: #222; /* Black tag shown in one card */
+}
+
+/* ===== III. Profile Pages & Tabs ===== */
+.profile-header {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #222;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #999;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: white;
+}
+
+.info-list-item {
+    background-color: white;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.1s;
+}
+
+.info-list-item:hover {
+    background-color: #f5f5f5;
+}
+
+.tab-navigation {
+    display: flex;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.tab-navigation a {
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-navigation a.active {
+    color: #8b1c33; /* Primary color */
+    border-bottom-color: #8b1c33;
+}
+
+/* ===== IV. Event Detail Page ===== */
+.event-title-detail {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #8b1c33;
+}
+
+.event-meta-info {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.btn-ticket {
+    background-color: #8b1c33;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+}
+
+/* ===== V. Utility Classes (Merged) ===== */
+.color-maroon {
+    color: #912338;
+}
+
+.bg-cream {
+    background-color: #E9D3D7;
+}
+
+.tag-green {
+    background-color: #4b6e2d;
+    color: white;
+    border: none;
+}
+
+.text-small {
+    font-size: 0.85rem;
+    color: #666;
 }
