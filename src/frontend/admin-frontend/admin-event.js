@@ -1,140 +1,257 @@
+// ==========================================================
+// admin_events.js
+// Merged version — Original structure + new event.js features.
+// Ready for backend integration with mock data for front-end testing.
+// ==========================================================
+
+
+// --- 0. Global Data Store and Mock Data ---
+let allEvents = [];
+
+// --- Mock Data (Temporary until API integration) ---
+const mockEvents = [
+    {
+        id: 1,
+        title: "Annual Tech Fair 2025",
+        date: "2025-03-15",
+        semester: "spring",
+        year: "2025",
+        association: "SA - Tech Club",
+        status: "Active",
+        attendees: 550,
+        ticketPrice: 15.00,
+        organizer: "Innovate Solutions",
+        location: "Main Auditorium",
+        details: "A day dedicated to new technologies and student innovations.",
+        imageURL: "https://via.placeholder.com/600x300?text=Tech+Fair+Image"
+    },
+    {
+        id: 2,
+        title: "Winter Hackathon",
+        date: "2024-12-05",
+        semester: "fall",
+        year: "2024",
+        association: "SA - Business Guild",
+        status: "Pending",
+        attendees: 120,
+        ticketPrice: 0.00,
+        organizer: "Business Minds Co.",
+        location: "Innovation Lab",
+        details: "A 48-hour coding challenge focused on sustainable business models.",
+        imageURL: "https://via.placeholder.com/600x300?text=Hackathon+Image"
+    },
+    {
+        id: 3,
+        title: "Spring Gala",
+        date: "2023-05-20",
+        semester: "summer",
+        year: "2023",
+        association: "SA - Arts Society",
+        status: "Past",
+        attendees: 300,
+        ticketPrice: 35.00,
+        organizer: "Creative Collective",
+        location: "Grand Ballroom",
+        details: "Annual celebratory event with music and art showcases.",
+        imageURL: "https://via.placeholder.com/600x300?text=Gala+Event+Image"
+    }
+];
+
+
 // --- 1. Function to handle tab clicks ---
 function switchTab(event) {
-    // 1. Get all navigation tabs
     const tabs = document.querySelectorAll('.nav-tab');
-    
-    // 2. Remove the 'active' class from all tabs
-    tabs.forEach(tab => {
-        tab.classList.remove('active');
-    });
-
-    // 3. Add the 'active' class to the tab that was clicked (event.currentTarget)
+    tabs.forEach(tab => tab.classList.remove('active'));
     event.currentTarget.classList.add('active');
 
-    // 4. Determine which tab was clicked by getting its text content
     const tabName = event.currentTarget.textContent.trim().toUpperCase();
-
-    // 5. Update the content view based on the clicked tab (Content switching logic goes here)
     const contentView = document.querySelector('.content-view');
-    
-    // Simple placeholder to show the tab switched successfully
-    contentView.innerHTML = `
-        <div style="padding: 20px;">
-            <h2>${tabName} Dashboard View</h2>
-            <p>Content for the **${tabName}** administration area will be loaded here.</p>
-        </div>
-    `;
+    const sidePanel = document.querySelector('.side-panel');
 
-    // In a real application, you would call a function here to fetch and display 
-    // the specific HTML/data for Events, Users, or Organizers.
+    // Only show event panel when "EVENTS" tab is active
+    if (tabName === 'EVENTS') {
+        sidePanel.style.display = 'block';
+        renderEventList(allEvents);
+    } else {
+        sidePanel.style.display = 'none';
+        contentView.innerHTML = `
+            <div style="padding: 20px;">
+                <h2>${tabName} Dashboard View</h2>
+                <p>Content for the **${tabName}** administration area will be loaded here.</p>
+            </div>
+        `;
+    }
 }
 
 
-// --- 2. Event Listener Setup (Runs when the page finishes loading) ---
-document.addEventListener('DOMContentLoaded', () => {
-    // Select all elements with the class 'nav-tab'
-    const navTabs = document.querySelectorAll('.nav-tab');
+// --- 2. Event Fetching (API Integration Point) ---
+async function fetchAllEvents() {
+    try {
+        // Replace this with API call later
+        // const response = await fetch('/api/admin/events');
+        // allEvents = await response.json();
 
-    // Loop through each tab and attach the click function
+        await new Promise(resolve => setTimeout(resolve, 50));
+        allEvents = mockEvents;
+
+        renderEventList(allEvents);
+    } catch (error) {
+        console.error("Could not fetch events:", error);
+        const container = document.getElementById('event-list-container');
+        if (container) {
+            container.innerHTML = '<div style="padding: 15px; color: red;">Error loading events.</div>';
+        }
+    }
+}
+
+
+// --- 3. Rendering Events and Details ---
+function renderEventList(eventsToDisplay) {
+    const container = document.getElementById('event-list-container');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    if (eventsToDisplay.length === 0) {
+        container.innerHTML = '<div style="padding: 15px; color: #666;">No events match the current filter.</div>';
+        document.querySelector('.content-view').innerHTML = '';
+        return;
+    }
+
+    eventsToDisplay.forEach((event, index) => {
+        const item = document.createElement('div');
+        item.classList.add('event-list-item');
+        item.setAttribute('data-event-id', event.id);
+        item.innerHTML = `<strong>${event.title}</strong><br><small>Status: ${event.status} | ${event.date}</small>`;
+
+        item.addEventListener('click', loadEventDetails);
+        container.appendChild(item);
+
+        if (index === 0) {
+            item.classList.add('active');
+            loadEventDetails({ currentTarget: item });
+        }
+    });
+}
+
+
+function loadEventDetails(event) {
+    document.querySelectorAll('.event-list-item').forEach(el => el.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+
+    const eventId = parseInt(event.currentTarget.getAttribute('data-event-id'));
+    const eventData = allEvents.find(e => e.id === eventId);
+    const contentView = document.querySelector('.content-view');
+
+    if (eventData && contentView) {
+        let moderationButtons = '';
+        if (eventData.status.toLowerCase() === 'pending') {
+            moderationButtons = `
+                <button onclick="changeEventStatus(${eventData.id}, 'Active')" class="event-action-button btn-approve">✅ Approve</button>
+                <button onclick="changeEventStatus(${eventData.id}, 'Denied')" class="event-action-button btn-deny">❌ Deny</button>
+            `;
+        }
+
+        contentView.innerHTML = `
+            <h2>${eventData.title}</h2>
+            <p><strong>Organizer:</strong> ${eventData.organizer}</p>
+            <p><strong>Status:</strong> ${eventData.status}</p>
+            <p><strong>Date:</strong> ${eventData.date}</p>
+            <p><strong>Location:</strong> ${eventData.location}</p>
+            <p><strong>Attendees:</strong> ${eventData.attendees}</p>
+            <p><strong>Ticket Price:</strong> $${eventData.ticketPrice.toFixed(2)}</p>
+            <hr>
+            <h4>Description:</h4>
+            <p>${eventData.details}</p>
+            <div class="admin-actions">
+                ${moderationButtons}
+                <button class="event-action-button btn-edit">Edit Event</button>
+                <button class="event-action-button btn-delete">Delete Event</button>
+            </div>
+        `;
+    }
+}
+
+
+// --- 4. Event Status Update (Approve / Deny) ---
+async function changeEventStatus(eventId, newStatus) {
+    const eventIndex = allEvents.findIndex(e => e.id === eventId);
+    if (eventIndex > -1) {
+        allEvents[eventIndex].status = newStatus;
+        console.log(`Event ID ${eventId} updated to: ${newStatus}`);
+        alert(`Event "${allEvents[eventIndex].title}" has been ${newStatus.toLowerCase()}.`);
+
+        renderEventList(allEvents);
+        const updatedItem = document.querySelector(`[data-event-id="${eventId}"]`);
+        if (updatedItem) loadEventDetails({ currentTarget: updatedItem });
+    }
+}
+
+
+// --- 5. Filtering Logic ---
+function applyFilters() {
+    const searchTerm = document.getElementById('main-search')?.value.toLowerCase() || '';
+    const year = document.getElementById('filter-year')?.value || '';
+    const semester = document.getElementById('filter-semester')?.value || '';
+    const association = document.getElementById('filter-association')?.value || '';
+    const status = document.getElementById('filter-buttons')?.value.toLowerCase() || '';
+
+    if (allEvents.length === 0) return;
+
+    const filtered = allEvents.filter(event => {
+        const matchSearch = event.title.toLowerCase().includes(searchTerm)
+            || event.organizer.toLowerCase().includes(searchTerm)
+            || event.details.toLowerCase().includes(searchTerm);
+        const matchYear = !year || event.year === year;
+        const matchSemester = !semester || event.semester === semester;
+        const matchAssoc = !association || event.association === association;
+        const matchStatus = !status || event.status.toLowerCase() === status;
+
+        return matchSearch && matchYear && matchSemester && matchAssoc && matchStatus;
+    });
+
+    renderEventList(filtered);
+    console.log(`Filters applied: showing ${filtered.length} events.`);
+}
+
+
+// --- 6. Hamburger Menu Toggle Logic ---
+function toggleMenu() {
+    const userMenu = document.getElementById('menu');
+    userMenu.classList.toggle('open');
+}
+
+
+// --- 7. Event Listener Setup ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Load mock events
+    fetchAllEvents();
+
+    // Navigation tabs
+    const navTabs = document.querySelectorAll('.nav-tab');
     navTabs.forEach(tab => {
         tab.addEventListener('click', switchTab);
     });
-    
-    // Optional: Log a message to the console to confirm the script is running
-    console.log("Admin Dashboard Script Loaded.");
-});
 
-// --- 3. Filtering Logic for Events Tab ---
+    // Filters
+    document.getElementById('main-search')?.addEventListener('input', applyFilters);
+    document.getElementById('filter-year')?.addEventListener('change', applyFilters);
+    document.getElementById('filter-semester')?.addEventListener('change', applyFilters);
+    document.getElementById('filter-association')?.addEventListener('change', applyFilters);
+    document.getElementById('filter-buttons')?.addEventListener('change', applyFilters);
 
-// This function will be called whenever a filter or search field changes
-function applyFilters() {
-    // Get the values from the search and filter dropdowns
-    const searchTerm = document.getElementById('main-search').value.toLowerCase();
-    const year = document.getElementById('filter-year').value;
-    const semester = document.getElementById('filter-semester').value;
-    const association = document.getElementById('filter-association').value;
-
-    // Get the currently active status filter (Active, Pending, or Past)
-    const activeStatusButton = document.querySelector('.status-filter.active-status');
-    const status = activeStatusButton ? activeStatusButton.dataset.status : 'all';
-
-    // Log the current filter values (replace with actual filtering code later)
-    console.log("--- Current Filters ---");
-    console.log(`Search: ${searchTerm}`);
-    console.log(`Year: ${year}`);
-    console.log(`Semester: ${semester}`);
-    console.log(`Association: ${association}`);
-    console.log(`Status: ${status}`);
-    console.log("-----------------------");
-
-    // In a production app, you would now use these variables to filter
-    // the list of events in the #event-list-container.
-}
-
-// --- 4. Function to handle Status button clicks (Active/Pending/Past) ---
-function handleStatusClick(event) {
-    // Remove the 'active-status' class from all buttons
-    const statusButtons = document.querySelectorAll('.status-filter');
-    statusButtons.forEach(button => {
-        button.classList.remove('active-status');
-    });
-
-    // Add the 'active-status' class to the clicked button
-    event.currentTarget.classList.add('active-status');
-    
-    // Apply the filters to update the event list
-    applyFilters();
-}
-
-
-// --- 5. Attach Event Listeners to New Filters ---
-document.addEventListener('DOMContentLoaded', () => {
-    // ... (Your existing code for tab switching is here) ...
-
-    // Attach listeners to search and dropdowns
-    document.getElementById('main-search').addEventListener('input', applyFilters);
-    document.getElementById('filter-year').addEventListener('change', applyFilters);
-    document.getElementById('filter-semester').addEventListener('change', applyFilters);
-    document.getElementById('filter-association').addEventListener('change', applyFilters);
-
-    // Attach listeners to the status buttons
-    const statusButtons = document.querySelectorAll('.status-filter');
-    statusButtons.forEach(button => {
-        button.addEventListener('click', handleStatusClick);
-    });
-    
-    // Initial call to set the console log and ensure everything is applied
-    applyFilters();
-});
-
-// --- 6. Hamburger Menu Toggle Logic ---
-
-function toggleMenu() {
-    const userMenu = document.getElementById('user-menu');
-    // Toggle the 'visible' class to show or hide the menu
-    userMenu.classList.toggle('visible'); 
-}
-
-// Add event listener inside the main DOMContentLoaded block
-document.addEventListener('DOMContentLoaded', () => {
-    // ... (Existing code for tab switching and filtering) ...
-
-    // Attach listener to the hamburger icon
-    const hamburgerIcon = document.getElementById('hamburger-icon');
-    if (hamburgerIcon) {
-        hamburgerIcon.addEventListener('click', toggleMenu);
+    // Hamburger menu
+    const hamburger = document.getElementById('dot');
+    if (hamburger) {
+        hamburger.addEventListener('click', toggleMenu);
     }
 
-    // Optional: Close the menu when clicking anywhere else on the page
     document.addEventListener('click', (event) => {
-        const menuContainer = document.querySelector('.menu-container');
-        const userMenu = document.getElementById('user-menu');
-
-        // Check if the click occurred outside the menu container
-        if (userMenu.classList.contains('visible') && !menuContainer.contains(event.target)) {
-            userMenu.classList.remove('visible');
+        const menu = document.getElementById('menu');
+        if (menu && menu.classList.contains('open') && !menu.contains(event.target) && event.target.id !== 'dot') {
+            menu.classList.remove('open');
         }
     });
-    
-    // ... (Closing curly brace for DOMContentLoaded) ...
+
+    console.log("Admin Dashboard Script Loaded (Merged Version).");
 });
