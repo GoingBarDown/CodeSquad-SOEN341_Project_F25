@@ -144,3 +144,10 @@ main {
     border-radius: 8px;
     cursor: pointer;
 }
+
+.event-list-item.active {
+    /* Style to indicate which event is selected  */
+    background-color: #9fc270; 
+    border: 2px solid #5a5a5a; 
+    font-weight: bold;
+}
