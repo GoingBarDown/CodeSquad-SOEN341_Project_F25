@@ -4,4 +4,5 @@ Rim Echahbi  40227779
 - Worked on brainstorming for Sprint 2 and discussing creative ideas with my teammates (2h)
 - Worked on the editing of User Stories for Sprint 2 (1h)
 - Developed and implemented the complete Events Tab interface for the Admin Dashboard (6h)
+- Made sure all the user stories and the tasks are well structured, put them in the issues tab and assign them to teammates (2h)
 - Refactored the JavaScript code for better maintainability; conducted code reviews of teammate work to ensure consistency (2h)
