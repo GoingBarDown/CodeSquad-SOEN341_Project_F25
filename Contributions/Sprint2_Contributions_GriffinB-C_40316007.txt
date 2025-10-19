@@ -1,0 +1,8 @@
+- Attended Sunday meeting to discuss database schema. (~45 minutes)
+- Implemented database schema. (~30 minutes)
+- Wrote setup and installation guide for backend. (~45 minutes)
+- Implement basic flask backend routing (~30 minutes)
+- Add Users CRUD operations (2 hours)
+- Update documentation (~15 minutes)
+- Add Events CRUD operations (1 hour)
+- Refactor back to use SQLAlchemy (3 hours)

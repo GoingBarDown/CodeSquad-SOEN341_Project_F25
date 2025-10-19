@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Organizer Events List</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/organizerStyle.css">
+</head>
+
+<body>
+  <header>
+    <h1>My Events</h1>
+    <button id="dot">☰</button>
+  </header>
+
+  <div id="menu">
+    <nav>
+      <a href="organizer-login.html">Login</a>
+      <a href="organizer-dashboard.html">Dashboard</a>
+      <a href="organizer-analytics.html">Analytics</a>
+    </nav>
+  </div>
+
+  <section id="filters">
+    <label>
+      Filter by Date, From:
+      <input type="date" id="filterStartDate" />
+    </label>
+    <label>
+   Filter by Date, To:
+    <input type="date" id="filterEndDate" />
+  </label>
+
+    <label>
+      Filter by Category:
+      <select id="filterCategory">
+        <option value="">All</option>
+        <option value="Workshop">Workshop</option>
+        <option value="Lecture">Lecture</option>
+        <option value="Social">Social</option>
+      </select>
+    </label>
+  </section>
+
+  <section id="eventsList"></section>
+  <div id="eventModal" class="modal hidden"></div>
+
+  <script src="js/organizer.js"></script>
+</body>
+</html>

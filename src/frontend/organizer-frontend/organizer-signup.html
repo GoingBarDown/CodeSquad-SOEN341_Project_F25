@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organizer Sign Up</title>  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/organizerStyle.css">
+</head>
+<body>
+  <header>
+    <h1>Organizer Portal</h1>
+    <button id="dot">☰</button>
+  </header>
+
+  <div id="menu">
+    <nav>
+      <a href="organizer-login.html">Login</a>
+      <a href="organizer-dashboard.html">Dashboard</a>
+      <a href="organizer-analytics.html">Analytics</a>
+    </nav>
+  </div>
+
+  <main class="centered">
+    <div class="card">
+      <h2><b>Create an Organizer Account</b></h2>
+      <form id="signupForm">
+        <div>
+          <label for="name">Full Name</label>
+          <input type="text" id="name" placeholder="  Your full name" required>
+        </div>
+
+        <div>
+          <label for="email">Organizer Email</label>
+          <input type="email" id="email" placeholder="  example@club.concordia.ca" required>
+        </div>
+
+        <div>
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="  Create password" required>
+        </div>
+
+        <div>
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" placeholder="  Confirm password" required>
+        </div>
+        <br>
+        <button type="submit" class="btn-primary">Sign Up</button>
+
+        <div class="divider">or</div>
+
+        <button type="button" class="btn-google" style="width: 100%;">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo">
+          Sign up with Google
+        </button>
+
+        <p class="signup-text">
+          Already have an account?
+          <a href="organizer-login.html" class="signup-link">Login here</a>
+        </p>
+      </form>
+    </div>
+  </main>
+
+  <script src="js/organizer.js"></script>
+</body>
+</html>
