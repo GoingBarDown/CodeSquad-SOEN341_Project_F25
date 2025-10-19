@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from backend.db.crud import crud_ticket
+from db.crud import crud_ticket
 
 def register_routes(app):
     @app.route('/tickets', methods=['GET'])

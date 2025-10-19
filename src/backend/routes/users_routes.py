@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from backend.db.crud import crud_users
+from db.crud import crud_users
 
 def register_routes(app):
     @app.route('/users', methods=['GET'])
