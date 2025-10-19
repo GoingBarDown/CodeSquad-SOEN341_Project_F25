@@ -18,6 +18,7 @@ class User(db.Model):
         }
 
 class Event(db.Model):
+    __tablename__ = 'events'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text)
@@ -48,4 +49,48 @@ class Event(db.Model):
             'seating': self.seating,
             'status': self.status,
             'rating': self.rating
+        }
+
+class Ticket(db.Model):
+    __tablename__ = 'tickets'
+    id = db.Column(db.Integer, primary_key=True)
+    attendee_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    event_id = db.Column(db.Integer, db.ForeignKey('events.id'), nullable=False)
+    qr_code = db.Column(db.Text)
+
+    @property
+    def data(self):
+        return {
+            "id": self.id,
+            "attendee_id": self.attendee_id,
+            "event_id": self.event_id,
+            "qr_code": self.qr_code
+        }
+
+class Organization(db.Model):
+    __tablename__ = 'organizations'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.Text, nullable=False)
+    description = db.Column(db.Text)
+    status = db.Column(db.Text)
+
+    @property
+    def data(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "status": self.status
+        }
+
+class OrganizationMember(db.Model):
+    __tablename__ = 'organization_members'
+    organization_id = db.Column(db.Integer, db.ForeignKey('organizations.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+
+    @property
+    def data(self):
+        return {
+            "organization_id": self.organization_id,
+            "user_id": self.user_id,
         }
