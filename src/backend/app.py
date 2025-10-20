@@ -1,53 +1,25 @@
-from flask import Flask, flash, jsonify
-import sqlite3
+from flask import Flask, jsonify
+from config import Config
+from routes import users_routes, events_routes, ticket_routes, organization_routes, organization_members_routes
+from db import db
 
 app = Flask(__name__)
+app.config.from_object(Config)
 
-DATABASE = "app.db"
+db.init_app(app)
 
-def get_db_connection():
-    connection = sqlite3.connect(DATABASE)
-    connection.row_factory = sqlite3.Row
-    return connection
+users_routes.register_routes(app)
+events_routes.register_routes(app)
+ticket_routes.register_routes(app)
+organization_routes.register_routes(app)
+organization_members_routes.register_routes(app)
+
 
 @app.route('/')
 def index():
     return jsonify({"message": "Hello, this is root"})
 
-@app.route('/users')
-def get_users():
-    connection = get_db_connection()
-    rows = connection.execute("SELECT * FROM users").fetchall()
-    connection.close()
-    return jsonify([dict(row) for row in rows])
-
-@app.route('/events')
-def get_events():
-    conn = get_db_connection()
-    rows = conn.execute("SELECT * FROM events").fetchall()
-    conn.close()
-    return jsonify([dict(row) for row in rows])
-
-@app.route('/tickets')
-def get_tickets():
-    conn = get_db_connection()
-    rows = conn.execute("SELECT * FROM tickets").fetchall()
-    conn.close()
-    return jsonify([dict(row) for row in rows])
-
-@app.route('/organizations')
-def get_organizations():
-    conn = get_db_connection()
-    rows = conn.execute("SELECT * FROM organizations").fetchall()
-    conn.close()
-    return jsonify([dict(row) for row in rows])
-
-@app.route('/organization_members')
-def get_org_members():
-    conn = get_db_connection()
-    rows = conn.execute("SELECT * FROM organization_members").fetchall()
-    conn.close()
-    return jsonify([dict(row) for row in rows])
-
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
