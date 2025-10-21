@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events Admin Dashboard</title>
+    <link rel="stylesheet" href="adminStyle.css">
+
+    <script src="admin.js" defer></script>
+    <script src="admin-event.js" defer></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poller+One&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div id="logo">CODESQUAD EVENTS</div>
+        <button id="dot">&#8801</button>
+    </header> 
+
+    <div id="menu">
+        <nav>
+            <a href="#">HOME</a>
+            <a href="#">EVENTS</a>
+            <a href="#">MY PROFILE</a>
+            <a href="#">LOGIN</a>
+        </nav>
+    </div>
+
+
+    <div id="subbar" class="admin-nav">
+        <a href="events.html" class="nav-tab active">EVENTS</a>
+        <a href="students.html" class="nav-tab">STUDENTS</a>
+        <a href="organizers.html" class="nav-tab">ORGANIZERS</a>
+    </div>
+
+    <main class="main-container">
+
+        <aside class="side-panel">
+            <div class="search-box">
+                <input type="text" id="main-search" placeholder="Search by name or keyword...">
+            </div>
+
+            <div class="filter-tags">
+                
+                <select id="filter-year">
+                    <option value="">Year</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                </select>
+
+                <select id="filter-semester">
+                    <option value="">Semester</option>
+                    <option value="fall">Fall</option>
+                    <option value="winter">Winter</option>
+                    <option value="summer">Summer</option>
+                </select>
+
+                <select id="filter-association">
+                    <option value="">Student Association</option>
+                    <option value="sa1">SA - Tech Club</option>
+                    <option value="sa2">SA - Business Guild</option>
+                    <option value="sa3">SA - Arts Society</option>
+                </select>
+            
+                <select id="filter-buttons">
+                    <option value="">Status</option>
+                    <option value="active">Active</option>
+                    <option value="pending">Pending</option>
+                    <option value="past">Past</option>
+                </select>
+            </div>
+            
+            <div id="event-list-container">
+                </div>
+        </aside>
+
+        <section class="content-view">
+            </section>
+            
+    </main>
+</body>
+</html>
