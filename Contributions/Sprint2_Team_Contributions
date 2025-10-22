@@ -1,0 +1,66 @@
+Griffin B-C:
+- Attended Sunday meeting to discuss database schema. (~45 minutes)
+- Implemented database schema. (~30 minutes)
+- Wrote setup and installation guide for backend. (~45 minutes)
+- Implement basic flask backend routing (~30 minutes)
+- Add Users CRUD operations (2 hours)
+- Update documentation (~15 minutes)
+- Add Events CRUD operations (1 hour)
+- Refactor back-end to use SQLAlchemy (3 hours)
+- Test backend + merge onto main branch (1 hour)
+
+Chandler Higgins:
+- Attended team meeting (1 hour)
+- Made it so computer was in alignment with tools and frameworks for backend (2 hours)
+- Added CRUD files (2 hours)
+  - CRUD file for tickets
+  - CRUD file for organizer
+  - CRUD file for organizer members
+- Added Routes files (2 hours)
+  - route file for tickets
+  - route file for organizer
+  - route file for organizer members
+- Made sure each route file was properly registered and routed in app.py file
+- Organized backend to have routes and crud folders for specific files
+
+Noorjahan Kazi:
+- Attended all team meeting so far (2 hours)
+  - Contributed to discussions about user stories
+  - Brainstroming for admin dashboard
+- Designed a mockup admin dashboard (2 hours)
+- Took notes durning meeting and added to GitHub (30 mins)
+- Created base html files containing header and menu for all admin frontend to ensure uniformity (2 hours)
+- Reviewed and edited code to ensure CSS and html files are compatible (3 hours)
+- Created css file that will be used for admin front end (2 hours)
+
+Patricia Dsouza:
+- Attended all team meetings (1.5h)
+- Updated the organizerStyle.css (2h) for the HTML files (organizer-profile & manage-events.html)
+- Worked on front-end code for organizers (7h)
+    -manage_events.html
+	-organizer-profile.html
+	-manage-events.js
+
+Reema Aboudraz:
+- Attended all team meetings (2h)
+- Worked on brainstorming for Sprint 2 and discussing creative ideas with my teammates (2h)
+- Worked on the editing of User Stories for Sprint 2 (1h)
+- Worked on the FrontEnd code of both Admin-Students and Admin-Organizers (6h)
+- Reviewed code my teammates did to ensure requirements completion and consistency across menus (1.5h)
+
+Rim Echahbi:
+- Attended all meetings with the team (2h)
+- Worked on brainstorming for Sprint 2 and discussing creative ideas with my teammates (2h)
+- Worked on the editing of User Stories for Sprint 2 (1h)
+- Developed and implemented the complete Events Tab interface for the Admin Dashboard (6h)
+- Made sure all the user stories and the tasks are well structured, put them in the issues tab and assign them to teammates (2h)
+- Refactored the JavaScript code for better maintainability; conducted code reviews of teammate work to ensure consistency (2h)
+
+Sunidhi:
+- Attended all team meetings (1.5h)
+- Created css file to be used for Organizer front-end (organizerStyle.css) (3h)
+- Worked on front-end code for organizers (task division in meeting minutes 7) (6h)
+    - create-event.html
+    - organizer-dashboard.html
+    - organizer-events-list.html
+    - organizer-signup.html, organizer-login.html, organizer-forgot-password.html
