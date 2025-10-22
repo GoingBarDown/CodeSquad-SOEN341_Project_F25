@@ -9,162 +9,36 @@
   <script src="admin.js" defer></script>
   <script src="admin-student.js" defer></script>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background-color: #f9f9f9;
-    }
-
-    main {
-      display: flex;
-      gap: 30px;
-      padding: 20px;
-      align-items: flex-start;
-    }
-
-    /* ===== LEFT PANEL ===== */
-    .side-panel {
-      flex: 1;
-      max-width: 350px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .search-box {
-      margin-bottom: 10px;
-    }
-
-    #student-search {
-      width: 100%;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-
-    .filter-section {
-      margin-bottom: 15px;
-    }
-
-    .filter-section button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      width: 100%;
-      margin-bottom: 8px;
-    }
-
-    .filter-section select {
-      width: 100%;
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-
-    /* Student list */
-    #student-list-container {
-      flex-grow: 1;
-      overflow-y: auto;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      background-color: #fff;
-      padding: 10px;
-      max-height: 500px;
-    }
-
-    .student-item {
-      padding: 10px;
-      border-bottom: 1px solid #eee;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-
-    .student-item:hover {
-      background-color: #f0f8ff;
-    }
-
-    .student-item:last-child {
-      border-bottom: none;
-    }
-
-    /* ===== RIGHT PANEL (STUDENT CARD) ===== */
-    .content-view {
-      flex: 2;
-    }
-
-    .info-card {
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      padding: 30px;
-      width: 100%;
-    }
-
-    .info-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .info-header h2 {
-      font-size: 1.5rem;
-      color: #333;
-      margin: 0;
-    }
-
-    .edit-btn {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    .info-details {
-      display: grid;
-      grid-template-columns: 150px 1fr;
-      row-gap: 12px;
-      column-gap: 10px;
-    }
-
-    .info-label {
-      font-weight: 600;
-      color: #444;
-    }
-
-    .info-value {
-      color: #555;
-    }
-
-    .placeholder {
-      color: #aaa;
-      font-style: italic;
-    }
-  </style>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poller+One&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <!-- === HEADER === -->
   <header>
-    <div id="logo">MyLogo</div>
-    <button id="dot">X</button>
-  </header> 
+        <div id="logo">CODESQUAD EVENTS</div>
+        <button id="dot">&#8801</button>
+    </header> 
 
-  <!-- === SUB NAV BAR === -->
-  <div id="subbar">
-    <span>EVENTS</span>
-    <span class="active">STUDENTS</span>
-    <span>ORGANIZERS</span>
+    <div id="menu">
+        <nav>
+            <a href="#">HOME</a>
+            <a href="#">EVENTS</a>
+            <a href="#">MY PROFILE</a>
+            <a href="#">LOGIN</a>
+        </nav>
+    </div>
+
+  <div id="subbar" class="admin-nav">
+    <a href="events.html" class="nav-tab">EVENTS</a>
+    <a href="students.html" class="nav-tab">STUDENTS</a>
+    <a href="organizers.html" class="nav-tab">ORGANIZERS</a>
   </div>
 
+
   <!-- === MAIN CONTENT === -->
-  <main>
+  <main class="main-container">
     <!-- LEFT PANEL -->
     <aside class="side-panel">
       <!-- Search -->
@@ -224,4 +98,5 @@
   </main>
 </body>
 </html>
+
 
