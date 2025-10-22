@@ -27,7 +27,7 @@ Or with basic Python:
 > Note: Same rules as above for mac.
 
     source SOEN341/bin/activate
-
+    & .\SOEN341\Scripts\Activate.ps1
 From now on, you should **always** be activating your environment before running or installing **anything**.
 ### Dependencies
 To install the dependencies, copy over the **requirements.txt** file in the repo and **make sure your environment is activated!**
