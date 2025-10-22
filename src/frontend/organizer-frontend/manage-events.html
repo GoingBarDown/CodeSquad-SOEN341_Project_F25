@@ -3,53 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manage Events </title>
-  <link rel="stylesheet" href="css/organizerStyle.css">
+  <title>Manage Events | CampusConnect</title>
+  <link rel="stylesheet" href="organizerStyle.css">
+  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
 </head>
-<header>
-  <h1>Analytics</h1>
-  <button id="dot">☰</button>
-</header>
+<body>
 
-<!-- Dropdown Menu -->
-<div id="menu">
-  <nav>
-    <a href="organizer-dashboard.html">Dashboard</a>
-    <a href="organizer-create-event.html">Create Event</a>
-    <a href="organizer-profile.html">Profile</a>
-    <a href="manage-events.html">Analytics</a>
-    <a href="organizer-login.html">Login</a>
-  </nav>
-</div>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const dot = document.getElementById("dot");
-    const menu = document.getElementById("menu");
+  <!-- Header -->
+  <header>
+    <h1>Event Analytics</h1>
+    <button id="dot">☰</button>
+  </header>
 
-    dot.addEventListener("click", () => {
-      menu.classList.toggle("open");
-    });
-  });
-</script>
+  <!-- Menu -->
+  <div id="menu">
+    <nav>
+      <a href="organizer-dashboard.html">Dashboard</a>
+      <a href="organizer-create-event.html">Create Event</a>
+      <a href="organizer-profile.html">Profile</a>
+      <a href="manage-events.html" class="active">Analytics</a>
+      <a href="organizer-login.html">Login</a>
+    </nav>
+  </div>
 
+  <!-- Main -->
   <main>
-    <div class="card-container">
-      <div class="card">
-        <h3>Music Night Stats</h3>
-        <p class="stat">150 / 200<br><small>Tickets Claimed (75% Capacity)</small></p>
-        <button class="btn-purple">Export CSV Data</button>
-      </div>
+    <h2>Registered Event Analytics</h2>
+    <div id="analyticsContainer" class="card-container"></div>
 
-      <div class="card">
-        <h3>Ticket Validator</h3>
-        <input type="text" placeholder="Enter QR/Ticket ID">
-        <button class="btn-green">Validate Ticket</button>
-        <p class="status-text">Ready.</p>
-      </div>
+    <h2>Ticket Validator</h2>
+    <div class="card">
+      <h3>QR / Manual Validator</h3>
+      <input type="text" id="ticketInput" placeholder="Enter Ticket ID">
+      <button class="btn-primary" id="validateBtn">Validate</button>
+      <p class="status-text" id="statusText">Ready.</p>
+      <div id="qr-reader" style="width:100%; margin-top:15px;"></div>
+      <button class="btn-primary" id="exportBtn" style="margin-top:10px;">Export CSV</button>
     </div>
   </main>
+
+  <script src="manage-event.js"></script>
 </body>
 </html>
-
-
 
