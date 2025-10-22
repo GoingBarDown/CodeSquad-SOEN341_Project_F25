@@ -1,0 +1,17 @@
+AS AN ADMINISTRATOR, I WANT TO 
+
+- Be able to access all of the needed information about the organizers using my platform (their login info, their events, their analytics)
+- Be able to view all of the info about the students signing up (their login info, events they attended, program they are enrolled in)
+- Be able to view the details of all the posted events (time, details, who registered)
+- Have a consistent, minimalistic view across all interfaces while using Concordia's colors and aesthetic as they are the PO
+
+
+AS AN ORGANIZER, I WANT TO BE ABLE TO
+
+- View 
+
+AS A SOFTWARE DEVELOPER ON THE TEAM, I WANT TO BE ABLE TO
+
+- Understand how to implement the backend on my device through clear instructions
+- Communicate with my team regarding my tasks and others for coherence, which includes mutual updates  
+
