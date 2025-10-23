@@ -1,37 +1,32 @@
-
-// --- 0. Global Data Store and Mock Data ---
+// --- 0. Global Data Store and Configuration ---
 let allEvents = [];
-
-// --- Mock Data (Temporary until API integration) ---
-const mockEvents = [
-    { id: 1, title: "Annual Tech Fair 2025", date: "2025-03-15", semester: "winter", year: "2025", association: "SA - Tech Club", status: "Active", attendees: 550, ticketPrice: 15.00, organizer: "Innovate Solutions", location: "Main Auditorium", details: "A day dedicated to new technologies and student innovations." },
-    { id: 2, title: "Winter Hackathon", date: "2024-12-05", semester: "fall", year: "2024", association: "SA - Business Guild", status: "Pending", attendees: 120, ticketPrice: 0.00, organizer: "Business Minds Co.", location: "Innovation Lab", details: "A 48-hour coding challenge focused on sustainable business models." },
-    { id: 3, title: "Spring Gala", date: "2023-05-20", semester: "summer", year: "2023", association: "SA - Arts Society", status: "Past", attendees: 300, ticketPrice: 35.00, organizer: "Creative Collective", location: "Grand Ballroom", details: "Annual celebratory event with music and art showcases." }
-];
+const API_BASE_URL = '/events'; 
 
 
-// --- 1. Event Fetching (API Integration Point) ---
+// --- 1. Event Fetching (API Integration Point - GET) ---
 async function fetchAllEvents() {
     try {
-        // !!!!!!! FUTURE BACKEND INTEGRATION POINT: Replace with the actual API call
-        // const response = await fetch('/api/admin/events');
-        // allEvents = await response.json();
-
-        await new Promise(resolve => setTimeout(resolve, 50));
-        allEvents = mockEvents;
-
-        // Display the list and details
+        // GET /events (Calls crud_events.get_all_events)
+        const response = await fetch(API_BASE_URL);
+        
+        if (!response.ok) {
+            throw new Error(`Failed to fetch events: HTTP status ${response.status}`);
+        }
+        
+        allEvents = await response.json(); 
+        
         applyFilters();
     } catch (error) {
         console.error("Could not fetch events:", error);
         const container = document.getElementById('event-list-container');
         if (container) {
-            container.innerHTML = '<div style="padding: 15px; color: red;">Error loading events.</div>';
+            container.innerHTML = '<div style="padding: 15px; color: red;">Error loading events. Check server connection and API route.</div>';
         }
     }
 }
 
-// --- 2. Rendering Events and Details ---
+
+// --- 2. Rendering Events and Details (No changes needed) ---
 function renderEventList(eventsToDisplay) {
     const container = document.getElementById('event-list-container');
     const contentView = document.querySelector('.content-view');
@@ -54,7 +49,6 @@ function renderEventList(eventsToDisplay) {
         item.addEventListener('click', loadEventDetails);
         container.appendChild(item);
 
-        // Automatically load details for the first event
         if (index === 0) {
             item.classList.add('active');
             loadEventDetails({ currentTarget: item });
@@ -74,10 +68,12 @@ function loadEventDetails(event) {
         let moderationButtons = '';
         if (eventData.status.toLowerCase() === 'pending') {
             moderationButtons = `
-                <button onclick="changeEventStatus(${eventData.id}, 'Active')" class="event-action-button btn-approve">✅ Approve</button>
-                <button onclick="changeEventStatus(${eventData.id}, 'Denied')" class="event-action-button btn-deny">❌ Deny</button>
+                <button onclick="changeEventStatus(${eventData.id}, 'Active')" class="event-action-button btn-approve">Approve</button>
+                <button onclick="changeEventStatus(${eventData.id}, 'Denied')" class="event-action-button btn-deny">Deny</button>
             `;
         }
+        
+        let deleteButton = `<button onclick="deleteEvent(${eventData.id})" class="event-action-button btn-delete">Delete Event</button>`;
 
         contentView.innerHTML = `
             <div class="event-info-card">
@@ -96,7 +92,7 @@ function loadEventDetails(event) {
                     <div class="info-label">Attendees:</div>
                     <div class="info-value">${eventData.attendees}</div>
                     <div class="info-label">Ticket Price:</div>
-                    <div class="info-value">$${eventData.ticketPrice.toFixed(2)}</div>
+                    <div class="info-value">$${eventData.ticketPrice ? eventData.ticketPrice.toFixed(2) : '0.00'}</div>
                     <div class="info-label">Association:</div>
                     <div class="info-value">${eventData.association}</div>
                 </div>
@@ -107,7 +103,7 @@ function loadEventDetails(event) {
                 <div class="admin-actions">
                     ${moderationButtons}
                     <button class="event-action-button btn-edit">Edit Details</button>
-                    <button class="event-action-button btn-delete">Delete Event</button>
+                    ${deleteButton}
                 </div>
             </div>
         `;
@@ -115,26 +111,69 @@ function loadEventDetails(event) {
 }
 
 
-// --- 3. Event Status Update (Approve / Deny) ---
+// --- 3. Event Status Update (API Integration Point - PUT) ---
 async function changeEventStatus(eventId, newStatus) {
-    // !!!! FUTURE BACKEND INTEGRATION POINT: API call to update status
-    
-    const eventIndex = allEvents.findIndex(e => e.id === eventId);
-    if (eventIndex > -1) {
-        allEvents[eventIndex].status = newStatus;
-        console.log(`Event ID ${eventId} updated to: ${newStatus}`);
-        alert(`Event "${allEvents[eventIndex].title}" has been ${newStatus.toLowerCase()}.`);
+    // PUT /events/<int:event_id> (Calls crud_events.update_event)
+    try {
+        const response = await fetch(`${API_BASE_URL}/${eventId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: newStatus })
+        });
 
-        applyFilters(); 
-        const updatedItem = document.querySelector(`[data-event-id="${eventId}"]`);
-        if (updatedItem) loadEventDetails({ currentTarget: updatedItem });
+        if (!response.ok) {
+             throw new Error(`Server failed to update status for event ID ${eventId}.`);
+        }
+        
+        // Update frontend state
+        const eventIndex = allEvents.findIndex(e => e.id === eventId);
+        if (eventIndex > -1) {
+            allEvents[eventIndex].status = newStatus;
+            
+            applyFilters(); 
+            const updatedItem = document.querySelector(`[data-event-id="${eventId}"]`);
+            if (updatedItem) loadEventDetails({ currentTarget: updatedItem });
+        }
+        alert(`Event status successfully updated to: ${newStatus}.`);
+        
+    } catch (error) {
+        console.error("Error updating event status:", error);
+        alert(`Failed to save status change. Error: ${error.message}`);
     }
 }
 
 
-// --- 4. Filtering Logic ---
+// --- 4. Event Deletion (API Integration Point - DELETE) ---
+async function deleteEvent(eventId) {
+    if (!confirm("Are you sure you want to permanently delete this event? This action cannot be undone.")) {
+        return;
+    }
+    
+    // DELETE /events/<int:event_id> (Calls crud_events.delete_event)
+    try {
+        const response = await fetch(`${API_BASE_URL}/${eventId}`, {
+            method: 'DELETE'
+        });
+
+        if (!response.ok) {
+            throw new Error(`Server failed to delete event ID ${eventId}.`);
+        }
+        
+        // Remove from local array and re-render
+        allEvents = allEvents.filter(event => event.id !== eventId);
+        
+        applyFilters(); 
+        alert("Event successfully deleted.");
+        
+    } catch (error) {
+        console.error("Error deleting event:", error);
+        alert(`Failed to delete event. Error: ${error.message}`);
+    }
+}
+
+
+// --- 5. Filtering Logic (No changes needed) ---
 function applyFilters() {
-    // ... (Your filtering logic is correct and remains here) ...
     const searchTerm = document.getElementById('main-search')?.value.toLowerCase() || '';
     const year = document.getElementById('filter-year')?.value || '';
     const semester = document.getElementById('filter-semester')?.value || '';
@@ -161,7 +200,7 @@ function applyFilters() {
 }
 
 
-// --- 5. Event Listener Setup ---
+// --- 6. Event Listener Setup (No changes needed) ---
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize the event data
     fetchAllEvents();
