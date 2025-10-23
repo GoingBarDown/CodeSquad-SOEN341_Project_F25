@@ -117,7 +117,7 @@ function loadEventDetails(event) {
 
 // --- 3. Event Status Update (Approve / Deny) ---
 async function changeEventStatus(eventId, newStatus) {
-    // 💡 FUTURE BACKEND INTEGRATION POINT: API call to update status
+    // !!!! FUTURE BACKEND INTEGRATION POINT: API call to update status
     
     const eventIndex = allEvents.findIndex(e => e.id === eventId);
     if (eventIndex > -1) {
