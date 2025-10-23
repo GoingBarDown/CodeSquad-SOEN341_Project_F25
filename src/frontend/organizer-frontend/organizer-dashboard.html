@@ -16,7 +16,7 @@
 
   <div id="menu">
     <nav>
-      <a href="organizer-dashboard.html" class="active">Dashboard</a>
+      <a href="organizer-events-list.html">Events List</a>
       <a href="manage-events.html">Analytics</a>
       <a href="create-event.html">Create Event</a>
       <a href="organizer-profile.html">Profile</a>
@@ -24,48 +24,56 @@
   </div>
 
   <div id="subbar">
-    <button id="createEventBtn">Create Event</button>
+  <div class="subbar-left">
+    <span><b>Welcome back, Organizer 👋</b></span>
   </div>
 
-  <main class="main-container">
+  <div class="subbar-right">
+    <a id="createEventBtn" href="create-event.html">Create Event</a>
+    <!-- <button id="createEventBtn">+ Create Event</button> -->
+    <a id="button" href="organizer-profile.html">Profile</a>
+    <button id="logoutBtn">Logout</button>
+  </div>
+</div>
+
+<section id="dashboardHero">
+  <h2>Welcome to Your Event Hub 🎟️</h2>
+  <p>Manage your upcoming events, create new experiences, and connect with your community - all in one place.</p>
+</section>
+
+
+<main class="main-container">
     <aside class="side-panel">
-      <h3>Search & Filters</h3>
+      <h3><b>Search & Filters</b></h3>
+      <br>
       <div class="search-box">
         <input type="text" id="search" placeholder="Search events..." />
       </div>
-
-      <div class="filter-tags">
-        <select id="filterCategory">
-          <option value="">Category</option>
-          <option>Workshop</option>
-          <option>Conference</option>
-          <option>Competition</option>
-          <option>Lecture</option>
-          <option>Social</option>
-        </select>
-        <select id="filterDate">
-          <option value="">Date</option>
-          <option>Upcoming</option>
-          <option>Past</option>
-        </select>
-      </div>
+      <br>
+        <div class="filter-tags">
+                <select id="filterCategory">
+                <option value="" align="center">Category</option>
+                <option>Workshop</option>
+                <option>Conference</option>
+                <option>Lecture</option>
+                <option>Networking</option>
+                <option>Social</option>
+                </select>
+                <select id="filterDate">
+                <option value="" align="center">Date</option>
+                <option>Upcoming</option>
+                <option>Past</option>
+                </select>
+        </div>
     </aside>
         
-    <section class="content-view">
-      <h2>Your Events</h2>
-      <div id="eventsList" style="text-align:center; margin-top: 40px;">
-        <p style="font-size:1.1rem; color:#333;">No events added yet.</p>
-      </div>
-    </section>
-  </main>
+        <section class = "content-view">
+            <h2><b>Your Events</b></h2>
+                <div id="eventsList">
+                </div>
+        </section>
+</main>
 
   <script src="js/organizer.js"></script>
-  <script>
-    // Overwrite renderEvents to show empty state
-    document.addEventListener("DOMContentLoaded", () => {
-      const eventsList = document.getElementById("eventsList");
-      eventsList.innerHTML = '<p style="font-size:1.1rem; color:#333;">No events added yet.</p>';
-    });
-  </script>
 </body>
 </html>

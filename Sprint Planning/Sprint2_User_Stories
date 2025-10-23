@@ -1,17 +1,52 @@
 AS AN ADMINISTRATOR, I WANT TO 
 
-- Be able to access all of the needed information about the organizers using my platform (their login info, their events, their analytics)
-- Be able to view all of the info about the students signing up (their login info, events they attended, program they are enrolled in)
-- Be able to view the details of all the posted events (time, details, who registered)
-- Have a consistent, minimalistic view across all interfaces while using Concordia's colors and aesthetic as they are the PO
+1) Be able to access all of the needed information about the organizers using my platform (their login info, their events, their analytics) (5 US)
+2) Have a consistent, minimalistic visuals across all interfaces while using Concordia's colors and aesthetic as they are the PRODUCT OWNER (5 US)
+3) Be able to view all of the info about the students signing up (their login info, events they attended, program they are enrolled in (3 US)
+4) Be able to view all of the info about the organizers signing up (their login info, events they created (3 US)
+5) Be able to view the details of all the posted events (time, details, who registered) (3US)
 
 
-AS AN ORGANIZER, I WANT TO BE ABLE TO
+AS AN ORGANIZER, I WANT TO 
+6) be able to create my personal profile page, so that I can see my account details and the organization I am a member of.
+7) be able to see the events and the list of attendance, so that I have a clear overview of status and activities.
 
-- View 
 
 AS A SOFTWARE DEVELOPER ON THE TEAM, I WANT TO BE ABLE TO
 
-- Understand how to implement the backend on my device through clear instructions
-- Communicate with my team regarding my tasks and others for coherence, which includes mutual updates  
+8) Understand how to implement the backend on my device through clear instructions (3 US)
+9) Communicate with my team regarding my tasks and others for coherence, which includes mutual updates (0 US)
+
+TASK BREAKDOWN FOR EACH USER STORY:
+
+User Story 1 (Admin BACKEND) (Assignee: Griffin & Chandler):
+Set up backend environment and database schema
+Implemented CRUD files and route files for Tickets, Organizers, and Organizer Members; integrated with Flask app and tested backend functionality.
+
+User Story 2 (Concordia View Analysis & Add User) (Assignee: Noorjahan)
+Analyse and take note from various ticket platforms to decide on a website design that is minimalist but meets user needs.
+Test various mockups on Canva to see various options and layouts.
+Accepted feedback from teammates until a satisfactory design was created.
+Created pages for each case an admin organizer would encounter, creating a thorough mockup for the entire site.
+Creating the css that will be used by all html pages for consistent and minimalist styling. 
+
+User Story 3 (Admin-Student View) (Assignee: Reema)
+Analyze the Concordia Website to align the user interface of the official website to the event website (color palette, character style, etc)
+Code the FRONT END (HTML, CSS & JS) to obtain the user interface agreed upon in the planning 
+
+User Story 4 (Admin-Organizer View) (Assignee: Reema)
+
+Analyze the Concordia Website to align the user interface of the official website to the event website (color palette, character style, etc)
+Code the FRONT END (HTML, CSS & JS) to obtain the user interface agreed upon in the planning 
+
+User Story 5 (Admin-Event View) (Assignee: Rim)
+Analyze the Concordia Website to align the user interface of the official website to the event website (color palette, character style, etc)
+Code the FRONT END (HTML, CSS & JS) to obtain the user interface agreed upon in the planning 
+
+User Story 6 (Organizer- Profile View) (Assignee: Patricia & Sunidhi)
+Code the FRONTEND of the profile creation of the organizer
+
+User Story 7 (Organizer- Event View) (Assignee: Sunidhi)
+Analyze the content displayed 
+Code the FRONTEND of the event analytics view for the organizer 
 
