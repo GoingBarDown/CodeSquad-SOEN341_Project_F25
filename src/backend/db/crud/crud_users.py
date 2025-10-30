@@ -2,11 +2,11 @@ from db.models import User
 from db import db
 
 def get_all_users():
-    users = User.query.all()
+    users = db.session.query(User).all()
     return [user.data for user in users]
 
 def get_user_by_id(user_id):
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     return user.data if user else None
 
 def create_user(data):
@@ -16,7 +16,7 @@ def create_user(data):
     return new_user.id # Maybe change to return the dictionary
 
 def delete_user(user_id):
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     if user:
         db.session.delete(user)
         db.session.commit()
@@ -25,7 +25,7 @@ def delete_user(user_id):
         return False
 
 def update_user(user_id, data):
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     if not user:
         return None
     
