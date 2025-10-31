@@ -1,19 +1,20 @@
 
 # Users Testing
-def test_user_add(user_data):
-    pass
+# def test_user_add(user_data):
+#     pass
 
-def test_user_get_all():
-    pass
+# def test_user_get_all():
+#     pass
 
-def test_user_get_one(id):
-    pass
+# def test_user_get_one(id):
+#     pass
 
-def test_user_edit(id, user_data):
-    pass
+# def test_user_edit(id, user_data):
+#     pass
 
-def test_user_delete(id):
-    pass
+# def test_user_delete(id):
+#     pass
+# ALL USER TESTS ARE DONE
 
 
 # Events Testing

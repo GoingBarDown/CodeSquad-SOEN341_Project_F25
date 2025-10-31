@@ -1,14 +1,14 @@
 from flask import request, jsonify
-from db.crud import crud_users
+from backend.db.crud import crud_events
 
 def register_routes(app):
     @app.route('/users', methods=['GET'])
     def get_users():
-        return jsonify(crud_users.get_all_users())
+        return jsonify(crud_events.get_all_users())
 
     @app.route('/users/<int:user_id>', methods=['GET'])
     def get_user(user_id):
-        user = crud_users.get_user_by_id(user_id)
+        user = crud_events.get_user_by_id(user_id)
         if user:
             return jsonify(user)
         return jsonify({'error': 'User not found'}), 404
@@ -18,12 +18,12 @@ def register_routes(app):
         data = request.get_json()
         if not data:
             return jsonify({'error': 'Missing data'}), 400
-        user_id = crud_users.create_user(data)
+        user_id = crud_events.create_user(data)
         return jsonify({'message': 'User created', 'id': user_id}), 201
 
     @app.route('/users/<int:user_id>', methods=['DELETE'])
     def remove_user(user_id):
-        crud_users.delete_user(user_id)
+        crud_events.delete_user(user_id)
         return jsonify({'message': 'User deleted'})
     
     @app.route('/users/<int:user_id>', methods=['PUT'])
@@ -32,7 +32,7 @@ def register_routes(app):
         if not data:
             return jsonify({'error': 'Missing data'}), 400
 
-        updated_user = crud_users.update_user(user_id, data)
+        updated_user = crud_events.update_user(user_id, data)
         if not updated_user:
             return jsonify({'error': 'User not found'}), 404
 
