@@ -27,6 +27,10 @@ def test_get_user_by_id(session, sample_user_data):
     assert result["username"] == "testuser"
     assert result["email"] == "test@example.com"
 
+def test_get_user_by_id_not_found(session):
+    result = crud_users.get_user_by_id(9999)
+    assert result is None 
+
 def test_get_all_users(session, sample_user_data):
     crud_users.create_user(sample_user_data)
     crud_users.create_user({
@@ -46,6 +50,10 @@ def test_update_user(session, sample_user_data):
 
     updated = db.session.get(User, user_id)
     assert updated.username == "updated"
+
+def test_update_nonexistent_user(session):
+    result = crud_users.update_user(9999, {"username": "nothing"})
+    assert result is None
 
 def test_delete_user(session, sample_user_data):
     user_id = crud_users.create_user(sample_user_data)
