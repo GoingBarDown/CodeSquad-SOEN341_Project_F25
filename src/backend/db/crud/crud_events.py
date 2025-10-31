@@ -11,11 +11,11 @@ def _normalize_event_dates(data):
     return data
 
 def get_all_events():
-    events = Event.query.all()
+    events = db.session.query(Event).all()
     return [event.data for event in events]
 
 def get_event_by_id(event_id):
-    event = Event.query.get(event_id)
+    event = db.session.get(Event, event_id)
     return event.data if event else None
 
 def create_event(data):
@@ -26,7 +26,7 @@ def create_event(data):
     return event.data
 
 def delete_event(event_id):
-    event = Event.query.get(event_id)
+    event = db.session.get(Event, event_id)
     if not event:
         return False
 
@@ -35,7 +35,7 @@ def delete_event(event_id):
     return True
 
 def update_event(event_id, data):
-    event = Event.query.get(event_id)
+    event = db.session.get(Event, event_id)
     if not event:
         return None
 
