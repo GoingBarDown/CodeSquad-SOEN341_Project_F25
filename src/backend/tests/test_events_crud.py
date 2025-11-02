@@ -8,6 +8,7 @@ def sample_event_data():
     return {
         "title": "Music Festival",
         "description": "Outdoor summer music event",
+        "location": "Central Park",
         "start_date": "2025-08-12T18:00:00",
         "end_date": "2025-08-12T23:00:00",
         "category": "Music",
@@ -20,12 +21,14 @@ def sample_event_data():
         "rating": 4.8
     }
 
+
 def test_create_event(session, sample_event_data):
     event = crud_events.create_event(sample_event_data)
     event_id = event["id"]
     db_event = db.session.get(Event, event_id)
     assert db_event.title == "Music Festival"
     assert db_event.category == "Music"
+    assert db_event.location == "Central Park"
 
 def test_create_event_invalid_data(session):
     with pytest.raises(RuntimeError):
@@ -46,6 +49,7 @@ def test_get_all_events(session, sample_event_data):
     crud_events.create_event({
         "title": "Rave",
         "description": "Cramped and bad music",
+        "location": "Underground Club",
         "start_date": "2025-10-12T18:00:00",
         "end_date": "2025-10-12T23:00:00",
         "category": "Music",
@@ -60,6 +64,8 @@ def test_get_all_events(session, sample_event_data):
     events = crud_events.get_all_events()
     assert len(events) == 2
     assert any(e["title"] == "Rave" for e in events)
+    assert any(e["location"] == "Underground Club" for e in events)
+
 
 def test_update_event(session, sample_event_data):
     event = crud_events.create_event(sample_event_data)
