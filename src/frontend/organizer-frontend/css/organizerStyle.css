@@ -82,7 +82,7 @@ header h1 {
 }
 
 #dot:hover {
-  background: var{--primary-hover};
+  background: var(--primary-hover);
 }
 
 #menu {
