@@ -37,7 +37,7 @@ def delete_organization_member(organization_id, user_id):
             organization_id=organization_id, user_id=user_id
         ).first()
         if not member:
-            return None
+            return False
         db.session.delete(member)
         db.session.commit()
         return True

@@ -12,7 +12,7 @@ def get_ticket_by_id(ticket_id):
     try:
         ticket = db.session.get(Ticket, ticket_id)
         if not ticket:
-            raise ValueError(f"Ticket with id {ticket_id} not found.")
+            return None
         return ticket.data
     except ValueError:
         raise
@@ -33,7 +33,7 @@ def update_ticket(ticket_id, data):
     try:
         ticket = db.session.get(Ticket, ticket_id)
         if not ticket:
-            raise ValueError(f"Ticket with id {ticket_id} not found.")
+            return None
         for key, value in data.items():
             if hasattr(ticket, key):
                 setattr(ticket, key, value)
@@ -49,7 +49,7 @@ def delete_ticket(ticket_id):
     try:
         ticket = db.session.get(Ticket, ticket_id)
         if not ticket:
-            raise ValueError(f"Ticket with id {ticket_id} not found.")
+            return False
         db.session.delete(ticket)
         db.session.commit()
         return True

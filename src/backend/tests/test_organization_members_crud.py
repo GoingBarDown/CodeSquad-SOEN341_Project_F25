@@ -91,4 +91,4 @@ def test_delete_organization_member(session, setup_user_and_org):
 def test_delete_nonexistent_organization_member(session, setup_user_and_org):
     user_id, org_id = setup_user_and_org
     result = crud_organization_member.delete_organization_member(org_id, 9999)
-    assert result is None
+    assert result is False
