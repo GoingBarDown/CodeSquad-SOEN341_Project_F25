@@ -11,9 +11,7 @@ def get_all_organizations():
 def get_organization(org_id):
     try:
         org = db.session.get(Organization, org_id)
-        if not org:
-            raise ValueError(f"Organization with id {org_id} not found.")
-        return org.data
+        return org.data if org else None
     except ValueError:
         raise
     except Exception as e:
@@ -33,7 +31,7 @@ def update_organization(org_id, data):
     try:
         org = db.session.get(Organization, org_id)
         if not org:
-            raise ValueError(f"Organization with id {org_id} not found.")
+            return None
         for key, value in data.items():
             if hasattr(org, key):
                 setattr(org, key, value)
@@ -49,7 +47,7 @@ def delete_organization(org_id):
     try:
         org = db.session.get(Organization, org_id)
         if not org:
-            raise ValueError(f"Organization with id {org_id} not found.")
+            return False
         db.session.delete(org)
         db.session.commit()
         return True
