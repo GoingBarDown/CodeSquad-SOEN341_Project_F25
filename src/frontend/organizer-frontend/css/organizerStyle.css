@@ -22,10 +22,21 @@
   padding: 0;
 }
 
+:root {
+    --primary-color: #912338;
+    --primary-hover: #db0272; 
+    --light-bg: #f2f2f2; 
+    --text-dark: #2c2c2c; 
+    --border-dark: #000; 
+    --cream-bg: #E9D3D7;
+}
+
 body {
-  font-family: sans-serif;
-  background-color: #E9D3D7;
-  color: #222;
+font-family: 'Inter', sans-serif; 
+    background-color: var(--light-bg); 
+    color: var(--text-dark); 
+    margin: 0;
+    padding: 0;
 }
 
 
@@ -36,19 +47,20 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #912338;
+  background: var(--primary-color);
   color: white;
-  padding: 12px 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-family: "Poller One", sans-serif;
-  font-weight: 100;
-  font-size: 20px;
+  padding: 12px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  /* font-family: "Poller One", sans-serif; */
+  font-weight: normal;
+  font-size: initial;
   font-style: normal;
 }
 
 header h1 {
-  font-size: 1.25rem;
-  font-weight: 600;
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: normal;
 }
 
 /* Menu toggle button */
@@ -56,36 +68,38 @@ header h1 {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #ffffff;
+  background: var(--primary-color);
   cursor: pointer;
-  font-size: 24px;
+  font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
-  line-height: 1;
-  color: #912338;
+  border-radius: 50%;
+  /* line-height: 1; */
+  color: white;
   transition: background 0.3s;
 }
 
 #dot:hover {
-  background: #7e1a2d;
+  background: var{--primary-hover};
 }
 
 #menu {
-  background: #E9D3D7;
+  background: var(--cream-bg);
   overflow: hidden;
   max-height: 0;
   transition: max-height 0.3s ease;
 }
 
 #menu.open {
-  max-height: 220px;
+  max-height: 200px;
 }
 
 #menu nav a {
   display: block;
-  padding: 12px 16px;
+  padding: 12px;
+  color: var(--text-dark);
   text-decoration: none;
   font-weight: 500;
 }
@@ -96,6 +110,15 @@ header h1 {
   color: white;
 }
 
+#menu nav a {
+    color: var(--primary-color);
+    padding: 12px 20px;
+}
+#menu nav a:hover,
+#menu nav a.active {
+    background: var(--cream-bg);
+    color: var(--primary-color);
+}
 
 /* =========================================================
    3. SUB-BAR (Optional Secondary Header)
@@ -159,9 +182,9 @@ main {
 main.centered {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   min-height: calc(100vh - 60px);
-  padding: 40px 16px;
+  padding-top: 40px 16px;
 }
 
 .main-container {
@@ -197,16 +220,18 @@ main.centered {
 .card {
   background: white;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  width: 380px;
-  padding: 2.5rem;
-  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 350px;
+  padding: 30px 40px;
+  text-align: left;
+  
 }
 
 h2 {
   font-size: 1.6rem;
   font-weight: 600;
   margin-bottom: 1rem;
+  text-align: center;
 }
 
 form {
@@ -222,7 +247,7 @@ label {
   margin-top: 15px;
 }
 
-input {
+input, textarea {
   width: 100%;
   padding: 0.8rem;
   border: 1px solid #ccc;
@@ -687,17 +712,17 @@ main.profile-page {
   font-size: 1rem;
 }
 
-.profile-page input:focus,
+/* .profile-page input:focus,
 .profile-page textarea:focus {
   border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(145,35,56,0.2);
   outline: none;
-}
+} */
 
-.profile-page textarea {
+/* .profile-page textarea {
   resize: none;
   height: 70px;
-}
+} */
 
 /* Save Button */
 .btn-primary.profile-save {
