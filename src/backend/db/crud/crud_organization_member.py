@@ -14,7 +14,7 @@ def get_organization_member(organization_id, user_id):
             organization_id=organization_id, user_id=user_id
         ).first()
         if not member:
-            raise ValueError(f"Organization member with org_id={organization_id} and user_id={user_id} not found.")
+            return None
         return member.data
     except ValueError:
         raise
@@ -37,7 +37,7 @@ def delete_organization_member(organization_id, user_id):
             organization_id=organization_id, user_id=user_id
         ).first()
         if not member:
-            raise ValueError(f"Organization member with org_id={organization_id} and user_id={user_id} not found.")
+            return None
         db.session.delete(member)
         db.session.commit()
         return True
@@ -53,7 +53,7 @@ def update_organization_member(organization_id, user_id, data):
             organization_id=organization_id, user_id=user_id
         ).first()
         if not member:
-            raise ValueError(f"Organization member with org_id={organization_id} and user_id={user_id} not found.")
+            return None
         for key, value in data.items():
             if hasattr(member, key):
                 setattr(member, key, value)
