@@ -6,7 +6,7 @@ def register_routes(app):
     def get_events():
         try:
             events = crud_events.get_all_events()
-            return jsonify(events)
+            return jsonify(events), 200
         except RuntimeError as e:
             return jsonify({'error': str(e)}), 500
 
