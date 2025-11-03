@@ -19,7 +19,6 @@ def test_create_ticket(session, sample_ticket_data):
     assert db_ticket.qr_code == "QRCODE123"
 
 def test_create_ticket_invalid_data(session):
-    # Missing required fields should cause a RuntimeError
     with pytest.raises(RuntimeError):
         crud_ticket.create_ticket({"attendee_id": None})
 
@@ -31,7 +30,29 @@ def test_get_ticket_by_id(session, sample_ticket_data):
 
 def test_get_ticket_by_id_not_found(session):
     result = crud_ticket.get_ticket_by_id(9999)
-    assert result is None  # CRUD returns None when not found
+    assert result is None 
+
+def test_get_tickets_by_event(session, sample_ticket_data):
+    crud_ticket.create_ticket(sample_ticket_data)
+    crud_ticket.create_ticket({
+        "attendee_id": 2,
+        "event_id": 1,
+        "qr_code": "QRCODE456"
+    })
+    crud_ticket.create_ticket({
+        "attendee_id": 3,
+        "event_id": 2,
+        "qr_code": "QRCODE789"
+    })
+
+    tickets = crud_ticket.get_tickets_by_event(1)
+    assert len(tickets) == 2
+    assert all(t["event_id"] == 1 for t in tickets)
+    assert any(t["qr_code"] == "QRCODE456" for t in tickets)
+
+    empty_result = crud_ticket.get_tickets_by_event(9999)
+    assert empty_result == []
+
 
 def test_get_all_tickets(session, sample_ticket_data):
     crud_ticket.create_ticket(sample_ticket_data)
