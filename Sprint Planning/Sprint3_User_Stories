@@ -1,8 +1,27 @@
 As a student:
-    I want a clear, branded homepage that serves as the entry point to event discovery, making it easy to start searching and browsing.
-    I want to easily browse all published events and use search and filter tools so I can quickly find activities that interest me.
-    I want a clear button to claim my ticket, and if the event is paid, I need to be directed to a payment method placeholder.
-    after claiming a ticket, I want to immediately see a digital ticket with a unique QR code so I can use it for check-in at the even
-    I want a clear button on the event details page to easily add the event to my preferred digital calendar
+    1) I want a clear, branded homepage that serves as the entry point to event discovery, making it easy to start searching and browsing.
+    2) I want to easily browse all published events and use search and filter tools so I can quickly find activities that interest me.
+    3) I want a clear button to claim my ticket, and if the event is paid, I need to be directed to a payment method placeholder.
+    4) after claiming a ticket, I want to immediately see a digital ticket with a unique QR code so I can use it for check-in at the even
+    5) I want a clear button on the event details page to easily add the event to my preferred digital calendar
 As a user:
-    I want the student-facing website to look and function perfectly so I can use it easily while on the go.
+    6) I want the student-facing website to look and function perfectly so I can use it easily while on the go.
+
+TASK BREAKDOWN FOR EACH USER STORY:
+User Story 1:    
+    Implement JavaScript logic to fetch data from API and handle client-side filtering (date, category, organization) to update the event card grid.
+    Build the initial HTML structure and custom CSS for the student-facing homepage, including the persistent navigation and responsive base layout.
+User Story 2: 
+    Create a secure Python API endpoint that securely retrieves only those events marked status='current' (which means approved by admin) for public view.
+    Create the basic HTML structure and custom CSS for the student-facing event listing page, that students will see with a responsive card grid and filter sidebar layout.
+    Implement JavaScript logic that pulls data from the API, providing for client-side filtering for date, category, and organization to update the event card grid.
+User Story 3: 
+    Create a Python API endpoint to record a ticket claim in the database. Must handle both free claims and payment integration logic (placeholder redirect).
+    Implement the JS logic to handle the "Claim Ticket" button click, managing the POST request for free claims and the redirect flow for paid events.
+User Story 4: 
+    Implement Python logic to generate a unique, secure ticket ID upon claim and provide the corresponding QR code data/image endpoint for the frontend to fetch.
+    Implement the ticket view page (HTML/CSS) and JS to fetch and display the unique ticket details along with the generated QR code image after a successful claim.
+User Story 5: 
+    Implement a "Save to Calendar" button that uses client-side JavaScript to construct the necessary link
+User Story 6: 
+    Perform comprehensive testing on the student view for mobile responsiveness, filter stability, and overall user experience across major web browsers and phone devices.
