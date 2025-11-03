@@ -34,3 +34,12 @@ Sunidhi (40190615):
 - Updated signup, login, and event creation forms to match database requirements (2 hours)
 - Rolled back some features based on code review and feedback
 - Attended team meetings and collaborated on integration planning (1 hour)
+
+Chandler Higgins (40156534):
+- Collaborated with team members in meetings and code reviews (1h)
+- Designed and implemented the event card UI and sorting/filtering logic for the Student Events page (3h)
+- Implemented the event details modal with "Get Ticket" functionality (2h)
+- Integrated frontend with backend event registration endpoint (1h)
+- Styled the event cards, modal, and sorting controls for improved UX (1h)
+- Resolved frontend bugs (1h)
+
