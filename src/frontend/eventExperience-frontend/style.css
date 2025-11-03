@@ -168,6 +168,25 @@ header {
   background: #510c0c !important;
 }
 
+.details-btn {
+  display: block;
+  margin: 18px auto 0 auto;
+  padding: 10px 28px;
+  background: orange;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+.details-btn:hover {
+  background: #ffb300; /* a lighter yellow/orange on hover */
+  color: #871a1a;
+}
+
 .mainText{
   padding-left: 50px;
   padding-right: 50px;
