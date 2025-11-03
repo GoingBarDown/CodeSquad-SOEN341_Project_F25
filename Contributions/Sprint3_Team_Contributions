@@ -10,3 +10,10 @@ Reema Aboudraz (40253549):
 - Reviewed some pull requests and merged them when approved (1h)
 - Attended extra meetings with members to communicate and synchronize group effort (1h)
 - Organized some folders to improve project structure and adhesion
+
+
+Griffin:
+- Implemented backend testing framework (~2 hours)
+- Implemented backend users testing (1 hour)
+- Implemented backend event testing (1 hour)
+- Improved backend error handling for CRUD operations and routing (1.5 hours)
