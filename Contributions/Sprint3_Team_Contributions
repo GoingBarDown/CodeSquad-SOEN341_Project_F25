@@ -1,3 +1,28 @@
 NOORJAHAN KAZI CONTRIBUTIONS FOR SPRINT 3:
 
 - Created main page for website (3 hours)
+
+
+Reema Aboudraz (40253549):
+
+- Attended all team meetings and actively participated in conversations (2h)
+- Coded the profile page (2h)
+- Reviewed some pull requests and merged them when approved (1h)
+- Attended extra meetings with members to communicate and synchronize group effort (1h)
+- Organized some folders to improve project structure and adhesion
+
+
+Griffin:
+- Implemented backend testing framework (~2 hours)
+- Implemented backend users testing (1 hour)
+- Implemented backend event testing (1 hour)
+- Improved backend error handling for CRUD operations and routing (1.5 hours)
+- Implemented backend organization testing + organization member testing (1 hour)
+- Fixed bugs in backend involving error handling and missing data values (30 minutes)
+
+
+Rim Echahbi (40227779): 
+- Wrote and refine the User Stories and Tasks for the team, in both the issues tab and sprint planning folder. (2.5h)
+- Attended all team meetings and actively participated in conversations. (2h)
+- Reveiwed pull requests and merged them in the main when it's good to merge. (1h)
+- Created the event-data-utils.js module, for sorting, filtering, and calculating metrics for the Student Events page. (2h)

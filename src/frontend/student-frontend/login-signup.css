@@ -1,0 +1,587 @@
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: #E9D3D7;
+  color: #222;
+}
+
+
+/* =========================================================
+   2. HEADER & MENU (Top Navigation)
+   ========================================================= */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #912338;
+  color: white;
+  padding: 12px 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: "Poller One", sans-serif;
+  font-weight: 100;
+  font-size: 20px;
+  font-style: normal;
+}
+
+header h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* Menu toggle button */
+#dot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  line-height: 1;
+  color: #912338;
+  transition: background 0.3s;
+}
+
+#dot:hover {
+  background: #7e1a2d;
+}
+
+#menu {
+  background: #E9D3D7;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease;
+}
+
+#menu.open {
+  max-height: 220px;
+}
+
+#menu nav a {
+  display: block;
+  padding: 12px 16px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+#menu nav a.active,
+#menu nav a:hover {
+  background: #912338;
+  color: white;
+}
+
+
+/* =========================================================
+   3. SUB-BAR (Optional Secondary Header)
+   ========================================================= */
+/* ===== SUBBAR / ACTION BAR ===== */
+#subbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #4b0303;
+  color: white;
+  padding: 14px 32px;
+  font-family: "Poller One", sans-serif;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+#subbar span {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+  #subbar button,
+  #subbar a {
+  background-color: #8b1c33;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  margin-left: 10px;
+  text-decoration: none; 
+  display: inline-block; 
+  }
+
+#subbar button:hover {
+  background-color: #a6223d;
+  transform: translateY(-2px);
+}
+
+#createEventBtn {
+  font-size: 1rem;
+  padding: 12px 22px;
+  background-color: #b8435f;
+}
+
+#createEventBtn:hover {
+  background-color: #a22e4d;
+}
+
+/* =========================================================
+   4. PAGE CONTAINERS (Main Layout)
+   ========================================================= */
+main {
+  padding: 16px;
+}
+
+main.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 60px);
+  padding: 40px 16px;
+}
+
+.main-container {
+  display: flex;
+}
+
+/* Left sidebar */
+.side-panel {
+  width: 35%;
+  background-color: #d9e0cc;
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+  margin: 10px;
+  height: 80vh;
+}
+
+/* Right content section */
+.content-view {
+  flex: 1;
+  padding: 20px;
+  background-color: rgb(180, 180, 170);
+  margin: 2%;
+  color: white;
+  border-radius: 12px;
+  height: 80vh;
+}
+
+
+/* =========================================================
+   5. FORM CARDS (Login, Signup, Forgot Password)
+   ========================================================= */
+.card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  width: 380px;
+  padding: 2.5rem;
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+form {
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 3px;
+  font-weight: 500;
+  color: #333;
+  font-size: 0.95rem;
+  margin-top: 15px;
+}
+
+input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
+}
+
+input:focus {
+  border-color: #8b1c33;
+  outline: none;
+}
+
+
+/* =========================================================
+   6. BUTTONS
+   ========================================================= */
+.btn-primary {
+  width: 100%;
+  background-color: #8b1c33;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-primary:hover {
+  background-color: #a6223d;
+  transform: translateY(-1px);
+}
+
+#createEventBtn {
+  background-color: #8b1c33;
+  color: #fff;
+  padding: 0.6rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid black;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.5rem;
+  width: 100%;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  gap: 8px;
+}
+
+.btn-google:hover {
+  background-color: #f3f3f3;
+}
+
+.btn-google img {
+  width: 20px;
+}
+
+
+/* =========================================================
+   7. LINKS, DIVIDERS & TEXT
+   ========================================================= */
+.link-container {
+  text-align: right;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  color: #999;
+  margin: 20px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+}
+
+.divider::before {
+  margin-right: 0.75em;
+}
+
+.divider::after {
+  margin-left: 0.75em;
+}
+
+.signup-text {
+  margin-top: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+.signup-link {
+  color: #8b1c33;
+  font-weight: 600;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   8. FILTERS, TAGS & SEARCH BAR
+   ========================================================= */
+#filters {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin: 16px;
+}
+
+#filters label {
+  font-weight: 500;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+#filters input,
+#filters select {
+  margin-top: 5px;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  width: 160px;
+}
+
+#filters input:focus,
+#filters select:focus {
+  border-color: #8b1c33;
+  outline: none;
+}
+
+.filter-tags {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.filter-tags select {
+  appearance: none;
+  padding: 8px;
+  border: none;
+  background-color: rgb(180, 180, 170);
+  color: white;
+  font-weight: bold;
+  font-size: 10px;
+  border-radius: 16px;
+}
+
+.search-box input {
+  background-color: rgb(255, 240, 223);
+  border: 2px none;
+  padding: 2%;
+  width: 90%;
+  border-radius: 8px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+
+/* =========================================================
+   9. EVENTS DASHBOARD (Cards Grid)
+   ========================================================= */
+#eventsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+.eventCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  padding: 16px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.eventCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.event-info {
+  flex: 1;
+  text-align: left;
+}
+
+.event-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-left: 20px;
+}
+
+/* Buttons */
+.event-actions button {
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-view {
+  background-color: #8b1c33;
+  color: white;
+}
+
+.btn-edit {
+  background-color: #b8435f;
+  color: white;
+}
+
+.btn-delete {
+  background-color: #ccc;
+  color: #222;
+}
+
+.event-actions button:hover {
+  opacity: 0.9;
+}
+
+/* ===== Modal Dialog ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  text-align: left;
+}
+
+.modal-content h2 {
+  color: #8b1c33;
+  margin-bottom: 10px;
+}
+
+.modal-content p {
+  margin: 6px 0;
+}
+
+.modal-content .btn-close {
+  background-color: #8b1c33;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin-top: 12px;
+  cursor: pointer;
+  float: right;
+}
+
+.modal-content .btn-close:hover {
+  background-color: #a6223d;
+}
+
+.modal-content form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 500;
+  color: #333;
+}
+
+.modal-content form input,
+.modal-content form select,
+.modal-content form textarea {
+  width: 100%;
+  margin-top: 5px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+}
+
+.modal-content form input:focus,
+.modal-content form select:focus,
+.modal-content form textarea:focus {
+  border-color: #8b1c33;
+  outline: none;
+}
+
+.eventCard h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+  color: #8b1c33;
+}
+
+.eventCard p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.eventCard button {
+  margin-right: 8px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.eventCard button:first-of-type {
+  background-color: #8b1c33;
+  color: white;
+}
+
+.eventCard button:last-of-type {
+  background-color: #ccc;
+  color: #222;
+}
+
+.eventCard button:hover {
+  opacity: 0.9;
+}
+
+
+/* =========================================================
+   10. RESPONSIVE LAYOUTS
+   ========================================================= */
+@media (max-width: 600px) {
+  #filters {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #filters input,
+  #filters select {
+    width: 100%;
+  }
+
+  #eventsList {
+    grid-template-columns: 1fr;
+  }
+}
+

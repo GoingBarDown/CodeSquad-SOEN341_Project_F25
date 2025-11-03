@@ -1,0 +1,119 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: rgb(255, 240, 223);
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: rgb(151, 9, 21);
+  font-family: "Poller One", sans-serif;
+  font-size: 20px;
+  color: white;
+}
+
+#dot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  color: rgb(151, 9, 21);
+}
+
+/* Subbar */
+#subbar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 16px;
+  background: #4b0303;
+  color: white;
+  font-family: "Poller One", sans-serif;
+  font-size: 10px;
+  margin-bottom: 10px;
+}
+
+#subbar span.active {
+  text-decoration: underline;
+}
+
+/* Main Content */
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 85vh;
+}
+
+/* Profile Card */
+.profile-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.profile-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 450px;
+  color: #333;
+}
+
+.profile-header h2 {
+  font-size: 1.8rem;
+  color: rgb(151, 9, 21);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 6px;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #444;
+}
+
+.info-value {
+  color: #555;
+}
+/* Make Concordia University in header clickable */
+#logo {
+  text-decoration: none;
+  color: white;
+  font-family: "Poller One", sans-serif;
+  font-size: 20px;
+  transition: color 0.2s ease;
+}
+
+#logo:hover {
+  color: rgb(255, 220, 220);
+}
+
+
+.placeholder {
+  color: #aaa;
+  font-style: italic;
+}
