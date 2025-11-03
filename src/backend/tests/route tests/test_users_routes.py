@@ -7,6 +7,7 @@ from routes import users_routes
 def setup_routes(app):
     users_routes.register_routes(app)
 
+# - CREATE - 
 def test_create_user_success(client):
     data = {
         "username": "newuser",
@@ -50,6 +51,7 @@ def test_create_user_unique_constraint_violation(client):
     assert resp.status_code == 500
     assert "Failed to create user" in resp.get_json()["error"]
 
+# - READ - 
 def test_get_all_users(client):
     client.post("/users", json={
         "username": "u1",
@@ -80,7 +82,6 @@ def test_get_all_users_internal_error(client, app):
     body = response.get_json()
     assert "Failed to retrieve users" in body["error"]
 
-
 def test_get_user_by_id_success(client):
     create_resp = client.post("/users", json={
         "username": "findme",
@@ -108,7 +109,7 @@ def test_get_user_by_id_internal_error(client, app):
     assert response.status_code == 500
     assert "Failed to retrieve user" in response.get_json()["error"]
 
-
+# - UPDATE - 
 def test_update_user_success(client):
     create_resp = client.post("/users", json={
         "username": "oldname",
@@ -160,6 +161,7 @@ def test_update_user_unique_constraint_violation(client):
     assert resp.status_code == 500
     assert "Failed to update user" in resp.get_json()["error"]
 
+# - DELETE - 
 def test_delete_user_success(client):
     create_resp = client.post("/users", json={
         "username": "todelete",
