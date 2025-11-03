@@ -22,7 +22,7 @@ class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text)
-    # location = db.Column(db.Text)
+    location = db.Column(db.Text)
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
     category = db.Column(db.Text)
@@ -40,6 +40,7 @@ class Event(db.Model):
             'id': self.id,
             'title': self.title,
             'description': self.description,
+            'location': self.location,
             'start_date': self.start_date,
             'end_date': self.end_date,
             'category': self.category,
