@@ -16,29 +16,43 @@ const images = [
 
 let index = 0;
 
+let allEvents = [];
+
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     const response = await fetch('http://127.0.0.1:5000/events');
-    const events = await response.json();
+    allEvents = await response.json();
 
-    const cardContainer = document.querySelector('.card-container');
-    cardContainer.innerHTML = ''; // Clear existing cards
+    renderEvents(allEvents);
 
-    events.forEach(event => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <p><strong>${event.title}</strong></p>
-        <p>${event.description || ''}</p>
-        <p>${event.start_date ? new Date(event.start_date).toLocaleString() : ''}</p>
-      ${event.link ? `<a href="${event.link}" target="_blank" rel="noopener noreferrer">${event.link}</a>` : ''}      `;
-      cardContainer.appendChild(card);
+    // Add event listener for sorting
+    document.getElementById('sortBy').addEventListener('change', function() {
+      let eventsToRender = [...allEvents];
+      if (this.value === 'date') {
+        eventsToRender.sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
+      }
+      renderEvents(eventsToRender);
     });
   } catch (err) {
     console.error('Failed to load events:', err);
   }
 });
 
+function renderEvents(events) {
+  const cardContainer = document.querySelector('.card-container');
+  cardContainer.innerHTML = '';
+  events.forEach(event => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <p><strong>${event.title}</strong></p>
+      <p>${event.description || ''}</p>
+      <p>${event.start_date ? new Date(event.start_date).toLocaleString() : ''}</p>
+      ${event.link ? `<a href="${event.link}" target="_blank" rel="noopener noreferrer">${event.link}</a>` : ''}
+    `;
+    cardContainer.appendChild(card);
+  });
+}
 function changeBackground() {
   document.getElementById("slideshow").style.backgroundImage = `url('${images[index]}')`;
   index = (index + 1) % images.length;

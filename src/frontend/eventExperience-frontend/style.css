@@ -127,9 +127,39 @@ section {
 .recomended p{
   font-family: "Poller One", sans-serif;
   color: rgb(255, 255, 255);
-  font-size: larger;
+  font-size:larger;
 }
 
+.sort-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.sort-controls label {
+  color: #fff;
+  font-family: "Poller One", sans-serif;
+  font-size: 1.1em;
+}
+
+.sort-controls select {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid #871a1a;
+  background: #fff;
+  color: #871a1a;
+  font-size: 1em;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border 0.2s;
+}
+
+.sort-controls select:focus {
+  outline: none;
+  border: 2px solid #510c0c;
+}
 
 .card-container {
   display: flex;
