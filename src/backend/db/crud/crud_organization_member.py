@@ -2,36 +2,65 @@ from db.models import OrganizationMember
 from db import db
 
 def get_all_organization_members():
-    members = OrganizationMember.query.all()
-    return [member.data for member in members]
+    try:
+        members = db.session.query(OrganizationMember).all()
+        return [member.data for member in members]
+    except Exception as e:
+        raise RuntimeError(f"Failed to fetch organization members: {e}")
 
 def get_organization_member(organization_id, user_id):
-    member = OrganizationMember.query.filter_by(organization_id=organization_id, user_id=user_id).first()
-    return member.data if member else None
+    try:
+        member = db.session.query(OrganizationMember).filter_by(
+            organization_id=organization_id, user_id=user_id
+        ).first()
+        if not member:
+            return None
+        return member.data
+    except ValueError:
+        raise
+    except Exception as e:
+        raise RuntimeError(f"Failed to fetch organization member: {e}")
 
 def create_organization_member(data):
-    new_member = OrganizationMember(**data)
-    db.session.add(new_member)
-    db.session.commit()
-    return {"organization_id": new_member.organization_id, "user_id": new_member.user_id}
+    try:
+        new_member = OrganizationMember(**data)
+        db.session.add(new_member)
+        db.session.commit()
+        return {"organization_id": new_member.organization_id, "user_id": new_member.user_id}
+    except Exception as e:
+        db.session.rollback()
+        raise RuntimeError(f"Failed to create organization member: {e}")
 
 def delete_organization_member(organization_id, user_id):
-    member = OrganizationMember.query.filter_by(organization_id=organization_id, user_id=user_id).first()
-    if member:
+    try:
+        member = db.session.query(OrganizationMember).filter_by(
+            organization_id=organization_id, user_id=user_id
+        ).first()
+        if not member:
+            return False
         db.session.delete(member)
         db.session.commit()
         return True
-    else:
-        return False
+    except ValueError:
+        raise
+    except Exception as e:
+        db.session.rollback()
+        raise RuntimeError(f"Failed to delete organization member: {e}")
 
 def update_organization_member(organization_id, user_id, data):
-    member = OrganizationMember.query.filter_by(organization_id=organization_id, user_id=user_id).first()
-    if not member:
-        return None
-    
-    for key, value in data.items():
-        if hasattr(member, key):
-            setattr(member, key, value)
-    
-    db.session.commit()
-    return member.data
+    try:
+        member = db.session.query(OrganizationMember).filter_by(
+            organization_id=organization_id, user_id=user_id
+        ).first()
+        if not member:
+            return None
+        for key, value in data.items():
+            if hasattr(member, key):
+                setattr(member, key, value)
+        db.session.commit()
+        return member.data
+    except ValueError:
+        raise
+    except Exception as e:
+        db.session.rollback()
+        raise RuntimeError(f"Failed to update organization member: {e}")
