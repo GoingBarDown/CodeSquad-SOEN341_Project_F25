@@ -33,3 +33,7 @@ def delete_ticket(ticket_id):
         return True
     else:
         return False
+    
+def get_tickets_by_event(event_id):
+    tickets = Ticket.query.filter_by(event_id=event_id).all()
+    return [ticket.data for ticket in tickets]

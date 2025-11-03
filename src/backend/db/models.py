@@ -10,11 +10,37 @@ class User(db.Model):
 
     @property
     def data(self):
-        return{
+        profile_data = self.organizer_profile.data if self.organizer_profile else {}
+        return {
             "id": self.id,
             "username": self.username,
             "email": self.email,
-            "role": self.role
+            "role": self.role,
+            "profile": profile_data
+        }
+
+class OrganizerProfile(db.Model):
+    __tablename__ = 'organizer_profiles'
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    display_name = db.Column(db.String(80))
+    profile_picture = db.Column(db.String(200))  # URL to stored image
+    phone = db.Column(db.String(20))
+    bio = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+
+    # Relationships
+    user = db.relationship('User', backref=db.backref('organizer_profile', uselist=False))
+
+    @property
+    def data(self):
+        return {
+            "display_name": self.display_name,
+            "profile_picture": self.profile_picture,
+            "phone": self.phone,
+            "bio": self.bio,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
         }
 
 class Event(db.Model):
@@ -22,7 +48,7 @@ class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text)
-    # location = db.Column(db.Text)
+    location = db.Column(db.Text)
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
     category = db.Column(db.Text)
@@ -40,6 +66,7 @@ class Event(db.Model):
             'id': self.id,
             'title': self.title,
             'description': self.description,
+            'location': self.location,
             'start_date': self.start_date,
             'end_date': self.end_date,
             'category': self.category,
@@ -58,6 +85,7 @@ class Ticket(db.Model):
     attendee_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'), nullable=False)
     qr_code = db.Column(db.Text)
+    status = db.Column(db.String(20), default='pending')
 
     @property
     def data(self):
@@ -65,7 +93,8 @@ class Ticket(db.Model):
             "id": self.id,
             "attendee_id": self.attendee_id,
             "event_id": self.event_id,
-            "qr_code": self.qr_code
+            "qr_code": self.qr_code,
+            "status": self.status
         }
 
 class Organization(db.Model):
