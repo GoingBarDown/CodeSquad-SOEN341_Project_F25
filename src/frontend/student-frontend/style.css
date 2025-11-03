@@ -91,6 +91,102 @@ header {
   }
 }
 
+
+.modal-content,
+.modal-content * {
+  background: #fff !important;
+  color: #871a1a !important;
+}
+
+#modal-details p,
+#modal-details h2 {
+  background: transparent !important;
+  color: #871a1a !important;
+}
+/* Make modal background darker and content centered */
+.modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.7); /* darker overlay */
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Style the modal content for clarity */
+.modal-content {
+  background: #fff;
+  padding: 32px 24px;
+  border-radius: 14px;
+  min-width: 320px;
+  max-width: 95vw;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  font-family: "Poller One", sans-serif;
+  font-size: 1.1em;
+  text-align: left;
+}
+
+/* Style headings and paragraphs inside modal */
+#modal-details h2 {
+  margin-top: 0;
+  color: #871a1a;
+  font-size: 1.5em;
+}
+
+#modal-details p {
+  color: #333;
+  margin: 10px 0;
+  background: transparent;
+}
+
+/* Style the close button */
+#close-modal {
+  color: #871a1a;
+  font-size: 1.5em;
+  font-weight: bold;
+  background: none;
+  border: none;
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  cursor: pointer;
+}
+
+#get-ticket-btn {
+  display: block;
+  margin: 24px auto 0 auto;
+  padding: 10px 28px;
+  background: #871a1a !important;
+  color: #fff !important;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#get-ticket-btn:hover {
+  background: #510c0c !important;
+}
+
+.details-btn {
+  display: block;
+  margin: 18px auto 0 auto;
+  padding: 10px 28px;
+  background: orange;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+.details-btn:hover {
+  background: #ffb300; /* a lighter yellow/orange on hover */
+  color: #871a1a;
+}
+
 .mainText{
   padding-left: 50px;
   padding-right: 50px;
@@ -127,9 +223,39 @@ section {
 .recomended p{
   font-family: "Poller One", sans-serif;
   color: rgb(255, 255, 255);
-  font-size: larger;
+  font-size:larger;
 }
 
+.sort-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.sort-controls label {
+  color: #fff;
+  font-family: "Poller One", sans-serif;
+  font-size: 1.1em;
+}
+
+.sort-controls select {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid #871a1a;
+  background: #fff;
+  color: #871a1a;
+  font-size: 1em;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border 0.2s;
+}
+
+.sort-controls select:focus {
+  outline: none;
+  border: 2px solid #510c0c;
+}
 
 .card-container {
   display: flex;
@@ -144,11 +270,30 @@ section {
   min-width: 220px;
   max-width: 350px;
   background:  white;
-  padding: 60px 20px 20px;
+  padding: 20px 20px 60px;
   border-radius: 10px;
   text-align: center;
   font-family:DM Serif Text;
   transition: transform 0.2s ease;
+}
+
+.card p {
+  background: transparent;
+  color: rgb(151, 9, 21); /* or any color you want for the text */
+}
+
+.card p strong {
+  background: transparent;
+  color: rgb(151, 9, 21); /* or any color you want for the text */
+}
+
+.card a {
+  background: transparent;
+  color: rgb(151, 9, 21); /* or any color you want for the text */
+  border-radius: 10px;
+  border-style: solid;
+  border-color: #871a1a;
+  font-size: medium;
 }
 
 .card:hover {
