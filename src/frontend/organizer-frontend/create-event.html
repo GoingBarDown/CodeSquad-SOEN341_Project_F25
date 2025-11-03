@@ -40,8 +40,8 @@
           <option value="Conference">Conference</option>
         </select>
 
-        <label for="location">Location</label>
-        <input type="text" id="location" placeholder="Enter event location" required />
+        <!-- <label for="location">Location</label> -->
+        <!-- <input type="text" id="location" placeholder="Enter event location" required /> -->
 
         <label for="description">Description</label>
         <textarea id="description" rows="4" placeholder="Add event details..."></textarea>
@@ -51,14 +51,16 @@
     </div>
   </main>
 
-  <script src="js/organizer.js"></script>
-  <script>
+  <script src="js/create-event.js"></script>
+    <script src="js/organizer.js"></script>
+  <!-- <script>
     const form = document.getElementById('createEventForm');
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       alert("Event created successfully!");
       window.location.href = "organizer-dashboard.html";
     });
+  </script> -->
   </script>
 </body>
 </html>

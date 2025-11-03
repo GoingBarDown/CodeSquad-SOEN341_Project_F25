@@ -1,0 +1,173 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+    background-color: rgb(151, 9, 21);
+}
+
+*{
+  background-color: rgb(151, 9, 21);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: rgb(151, 9, 21);
+    font-family: "Poller One", sans-serif;
+    font-weight: 100;
+    font-size: 20px;
+    color: white;
+    font-style: normal;
+}
+
+#dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    border-width: 0;
+    color: rgb(151, 9, 21);
+}
+
+#dot svg.lucide {
+  width: 24px;
+  height: 24px;
+  stroke-width: 2;
+}
+
+
+#menu {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height .3s ease;
+}
+
+#menu.open {
+    max-height: 220px;
+}
+
+#menu nav a {
+    display: block;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #871a1a;
+    background-color: bisque;
+    text-align: center;
+    font-weight: bolder;
+  }
+
+#menu nav a:hover{
+  background-color: #510c0c;
+  color: rgb(255, 255, 255);
+}
+
+.highlights-section {          
+      width: 100%;
+      color: white;
+      display: flex;
+      justify-content: center;  
+      align-items: center;  
+      padding-top: 0px;   
+      margin-top: 0px;
+      flex-wrap: wrap;
+    }
+
+.highlight-section p{
+  text-align: right;
+
+}
+
+@media (max-width: 768px) {
+  .highlights-section {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.mainText{
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.overlay {
+  position: absolute;
+  pointer-events: none;
+  max-width: none;
+  width:150px;
+}
+
+body {
+      margin: 0;
+      background-color: rgb(151, 9, 21);
+      overflow-x:hidden;
+    }
+
+section {
+     scroll-margin-top: var(--nav-h);
+     }
+
+.recomended {
+  margin: 60px auto;
+  padding: 40px;
+  width: calc(100% - 40px);
+  max-width: 1300px;          
+  border-radius: 30px;      
+  background-color: rgb(151, 9, 21);   
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.recomended p{
+  font-family: "Poller One", sans-serif;
+  color: rgb(255, 255, 255);
+  font-size: larger;
+}
+
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;  
+}
+
+.card {
+  position: relative;
+  flex: 1 1 280px;
+  min-width: 220px;
+  max-width: 350px;
+  background:  white;
+  padding: 60px 20px 20px;
+  border-radius: 10px;
+  text-align: center;
+  font-family:DM Serif Text;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+#slideshow {
+  width: 100vw;
+  max-width: 1200px;
+  aspect-ratio: 16/9;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 1s ease-in-out;
+  margin: 0;
+  padding: 0;
+  margin-left: 0;
+
+}
+
+
+
