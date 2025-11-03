@@ -17,3 +17,5 @@ Griffin:
 - Implemented backend users testing (1 hour)
 - Implemented backend event testing (1 hour)
 - Improved backend error handling for CRUD operations and routing (1.5 hours)
+- Implemented backend organization testing + organization member testing (1 hour)
+- Fixed bugs in backend involving error handling and missing data values (30 minutes)
