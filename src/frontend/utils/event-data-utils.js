@@ -2,7 +2,7 @@
 // This module contains functions for complex data manipulation (filtering, sorting)
 // to keep the main frontend JavaScript files clean.
 
-// MOCK DATA is included here for testing the logic until the API is connected.
+// MOCK DATA is included here for testing the logic before connecting to the API.
 const mockEvents = [
     {
         id: 'evt-401',
