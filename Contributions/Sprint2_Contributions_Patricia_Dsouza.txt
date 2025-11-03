@@ -1,8 +1,0 @@
-Patricia's SPRINT 2 contribution
-- Attended all team meetings (1.5h)
-- Updated the organizerStyle.css (2h) for the HTML files (organizer-profile & manage-events.html)
-- Worked on front-end code for organizers (7h)
-    -manage_events.html
-	-organizer-profile.html
-	-manage-events.js
-

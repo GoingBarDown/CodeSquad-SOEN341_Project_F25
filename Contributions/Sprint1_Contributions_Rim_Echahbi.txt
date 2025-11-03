@@ -1,8 +1,0 @@
-Rim Echahbi 40227779
-
--Attended all team meetings (2-3 hours)
-  -Contributed to discussions about user stories and implementation
-  -Brainstorm for project
-  -Helped in the distribution of tasks
--Added all the user stories for the team in github (1 hour)
--Added tasks for each user story and assign them to team members (2 hours)

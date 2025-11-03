@@ -1,0 +1,68 @@
+AS A STUDENT, I WANT TO:
+
+Have a clear, branded homepage that serves as the entry point to event discovery, making it easy to start searching and browsing. (5US)
+Easily browse all published events using filters for a personal search (5US) (MILESTONE)
+Be able to add an event to my personal calendar for time referral (3US)
+Be able to view a straightforward way to claim my ticket (3US)
+See a digital ticket as soon as my event is paid for (3US) (MILESTONE)
+Be able to view my profile when needed with all of my personal information (2US)
+
+TASK BREAKDOWN FOR EACH USER STORY:
+
+User Story 1 (Main Page FrontEnd) (Assignee: Noorjahan):
+
+Analyze the Concordia Website to align the user interface of the official website to the event website (color palette, character style, etc)
+Code the FRONT END (HTML, CSS & JS) to obtain the user interface agreed upon in the planning 
+
+User Story 2 (Event Page FrontEnd) (Assignee: Chandler):
+
+Code the FRONT END (HTML/CSS) for the main event browsing page (index.html).
+Implement main page JavaScript (index.js) to fetch all events from the backend and display them as cards.
+
+Implement core data logic (event-data-utils.js) (Assignee: Rim)
+Create event-data-utils.js to centralize JavaScript logic for event filtering, searching, and sorting. This module will be integrated into index.js to enable the "Trending Events" and other filtering functionalities.
+
+User Story 3 (Signing Into a New Account and Logging In Page) (Assignee: Patricia Dsouza):
+
+Code the FRONTEND for the SignUp and Login Page by creating signup.html, login.html, and forgot-password.html (if the user forgets their password)
+Also created the css file for the same
+This creates the interface where the user can create a new account by signing in and then logging into their already created account
+
+User Story 4 (Ticket Claim Flow) (Assignee: Rim):
+
+Create the event-details.html page to display information for a single event.
+Create the event-details.js file to implement the core ticket claiming logic.
+Write JavaScript logic to handle the "Claim Ticket" button click.
+Implement conditional logic to check if an event is "free" or "paid".
+Manage the POST request to the backend AP for free claims.
+Manage the redirect flow to payment-placeholder.html for all paid events.
+
+User Story 5 (Organizer Frontend-Backend Integration) (Assignee: Sunidhi):
+
+Connected organizer signup, login, and event creation forms to the backend
+Updated forms to match what the database expects
+Replace mock data with actual API fetch requests
+Tested end-to-end flows 
+
+User Story 6 (Profile Page Frontend) (Assignee: Reema):
+
+Analyze the Concordia Website to align the user interface of the official website to the event website (color palette, character style, etc)
+Code the FRONT END (HTML, CSS & JS) to obtain the user interface agreed upon in the planning 
+
+User Story 7 (Backend CRUD Testing & CICD) (Assignee: Griffin):
+
+Implemented comprehensive positive and negative CRUD operation tests for all models.
+Improved backend error handling for graceful failures.
+Implemented automated test execution for CICD compliance.
+
+
+SPRINT 04 PLANNING:
+
+AS A USER, I WANT TO:
+
+Have a pleasant, uniform view when using the website
+View Event according to my personal preferences (MILESTONE)
+Claim tickets for events
+View Events I claimed a ticket for in my personal calendar
+Create Events if I am an organizer
+

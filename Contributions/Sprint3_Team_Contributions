@@ -1,1 +1,45 @@
-ADD CONTRIBUTIONS HERE 
+NOORJAHAN KAZI CONTRIBUTIONS FOR SPRINT 3:
+
+- Created main page for website (3 hours)
+
+
+Reema Aboudraz (40253549):
+
+- Attended all team meetings and actively participated in conversations (2h)
+- Coded the profile page (2h)
+- Reviewed some pull requests and merged them when approved (1h)
+- Attended extra meetings with members to communicate and synchronize group effort (1h)
+- Organized some folders to improve project structure and adhesion
+
+
+Griffin:
+- Implemented backend testing framework (~2 hours)
+- Implemented backend users testing (1 hour)
+- Implemented backend event testing (1 hour)
+- Improved backend error handling for CRUD operations and routing (1.5 hours)
+- Implemented backend organization testing + organization member testing (1 hour)
+- Implemented CICD (10 minutes)
+- Fixed bugs in backend involving error handling and missing data values (2 hours)
+- Fixed merge conflicts in backend (1 hour)
+
+Rim Echahbi (40227779): 
+- Wrote and refine the User Stories and Tasks for the team, in both the issues tab and sprint planning folder. (2.5h)
+- Attended all team meetings and actively participated in conversations. (2h)
+- Reveiwed pull requests and merged them in the main when it's good to merge. (1h)
+- Created the event-data-utils.js module, for sorting, filtering, and calculating metrics for the Student Events page. (2h)
+- Created event-details to display information for a single event and implement the core ticket claiming logic. (2h)
+
+Sunidhi (40190615):
+- Integrated organizer frontend pages and forms with Flask backend (4 hours)
+- Updated signup, login, and event creation forms to match database requirements (2 hours)
+- Rolled back some features based on code review and feedback
+- Attended team meetings and collaborated on integration planning (1 hour)
+
+Chandler Higgins (40156534):
+- Collaborated with team members in meetings and code reviews (1h)
+- Designed and implemented the event card UI and sorting/filtering logic for the Student Events page (3h)
+- Implemented the event details modal with "Get Ticket" functionality (2h)
+- Integrated frontend with backend event registration endpoint (1h)
+- Styled the event cards, modal, and sorting controls for improved UX (1h)
+- Resolved frontend bugs (1h)
+

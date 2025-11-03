@@ -26,11 +26,11 @@
       <h2><b>Organizer Login</b></h2>
   
       <form id="loginForm">
-        <label for="email">Organizer Email</label>
-        <input type="email" id="email" placeholder="  example@club.concordia.ca" required><br>
+        <label for="identifier">Username or Email</label>
+        <input type="text" id="identifier" placeholder="  Enter username or email" required><br>
         
         <label for="password">Password</label>
-        <input type="password" id="password" placeholder="  Enter password" required>
+        <input type="password" id="password" placeholder="  Enter password" minlength="8" required>
 
         <div style="text-align:right; margin-top:10px;margin-bottom:10px;">
           <a href="organizer-forgot-password.html" class="signup-link">Forgot password?</a>
@@ -53,6 +53,7 @@
     </div>
   </main>
 
-  <script src="js/organizer.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/organizer-login.js"></script>
 </body>
 </html>
