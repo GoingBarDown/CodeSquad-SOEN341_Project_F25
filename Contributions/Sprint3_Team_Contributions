@@ -27,6 +27,7 @@ Rim Echahbi (40227779):
 - Attended all team meetings and actively participated in conversations. (2h)
 - Reveiwed pull requests and merged them in the main when it's good to merge. (1h)
 - Created the event-data-utils.js module, for sorting, filtering, and calculating metrics for the Student Events page. (2h)
+- Created event-details to display information for a single event and implement the core ticket claiming logic. (2h)
 
 Sunidhi (40190615):
 - Integrated organizer frontend pages and forms with Flask backend (4 hours)
