@@ -2,7 +2,6 @@ from db.models import Event
 from db import db
 from ..utils import parse_iso_datetime
 
-
 def _normalize_event_dates(data):
     for field in ["start_date", "end_date"]:
         if field in data:
@@ -11,7 +10,6 @@ def _normalize_event_dates(data):
                 data[field] = parsed
     return data
 
-
 def get_all_events():
     try:
         events = db.session.query(Event).all()
@@ -19,12 +17,11 @@ def get_all_events():
     except Exception as e:
         raise RuntimeError(f"Failed to fetch events: {e}")
 
-
 def get_event_by_id(event_id):
     try:
         event = db.session.get(Event, event_id)
         if not event:
-            raise ValueError(f"Event with id {event_id} not found.")
+            return None
         return event.data
     except ValueError:
         raise 
@@ -42,7 +39,6 @@ def create_event(data):
         db.session.rollback()
         raise RuntimeError(f"Failed to create event: {e}")
 
-
 def delete_event(event_id):
     try:
         event = db.session.get(Event, event_id)
@@ -56,14 +52,11 @@ def delete_event(event_id):
         db.session.rollback()
         raise RuntimeError(f"Failed to delete event {event_id}: {e}")
 
-
-
-
 def update_event(event_id, data):
     try:
         event = db.session.get(Event, event_id)
         if not event:
-            raise ValueError(f"Event with id {event_id} not found.")
+            return None
 
         data = _normalize_event_dates(data)
 
