@@ -10,13 +10,11 @@ class User(db.Model):
 
     @property
     def data(self):
-        profile_data = self.organizer_profile.data if self.organizer_profile else {}
-        return {
+        return{
             "id": self.id,
             "username": self.username,
             "email": self.email,
-            "role": self.role,
-            "profile": profile_data
+            "role": self.role
         }
 
 # class OrganizerProfile(db.Model):
