@@ -14,11 +14,12 @@ def register_routes(app):
     def get_event(event_id):
         try:
             event = crud_events.get_event_by_id(event_id)
-            return jsonify(event)
-        except ValueError:
-            return jsonify({'error': 'Event not found'}), 404
+            if not event:
+                return jsonify({'error': 'Event not found'}), 404
+            return jsonify(event), 200
         except RuntimeError as e:
             return jsonify({'error': str(e)}), 500
+
     
     @app.route('/events/<int:event_id>/attendance', methods=['GET'])
     def get_event_attendance(event_id):
