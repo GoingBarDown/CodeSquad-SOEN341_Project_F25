@@ -66,71 +66,71 @@ const API = {
     },
 
     // Profile endpoints
-    async getProfile() {
-        try {
-            const response = await fetch(`${this.baseUrl}/api/organizer/profile`, {
-                headers: this.getHeaders()
-            });
-            return this.handleResponse(response);
-        } catch (error) {
-            console.error('Get profile request failed:', error);
-            throw error;
-        }
-    },
+    // async getProfile() {
+    //     try {
+    //         const response = await fetch(`${this.baseUrl}/api/organizer/profile`, {
+    //             headers: this.getHeaders()
+    //         });
+    //         return this.handleResponse(response);
+    //     } catch (error) {
+    //         console.error('Get profile request failed:', error);
+    //         throw error;
+    //     }
+    // },
 
-    async updateProfile(profileData) {
-        try {
-            const response = await fetch(`${this.baseUrl}/api/organizer/profile`, {
-                method: 'PUT',
-                headers: this.getHeaders(),
-                body: JSON.stringify(profileData)
-            });
-            return this.handleResponse(response);
-        } catch (error) {
-            console.error('Update profile request failed:', error);
-            throw error;
-        }
-    },
+    // async updateProfile(profileData) {
+    //     try {
+    //         const response = await fetch(`${this.baseUrl}/api/organizer/profile`, {
+    //             method: 'PUT',
+    //             headers: this.getHeaders(),
+    //             body: JSON.stringify(profileData)
+    //         });
+    //         return this.handleResponse(response);
+    //     } catch (error) {
+    //         console.error('Update profile request failed:', error);
+    //         throw error;
+    //     }
+    // },
 
-    async uploadProfilePicture(formData) {
-        try {
-            const response = await fetch(`${this.baseUrl}/api/organizer/profile/picture`, {
-                method: 'POST',
-                headers: this.getHeaders(),
-                body: formData
-            });
-            return this.handleResponse(response);
-        } catch (error) {
-            console.error('Upload profile picture failed:', error);
-            throw error;
-        }
-    },
+    // async uploadProfilePicture(formData) {
+    //     try {
+    //         const response = await fetch(`${this.baseUrl}/api/organizer/profile/picture`, {
+    //             method: 'POST',
+    //             headers: this.getHeaders(),
+    //             body: formData
+    //         });
+    //         return this.handleResponse(response);
+    //     } catch (error) {
+    //         console.error('Upload profile picture failed:', error);
+    //         throw error;
+    //     }
+    // },
 
-    async getOrganizations() {
-        try {
-            const response = await fetch(`${this.baseUrl}/api/organizations`, {
-                headers: this.getHeaders()
-            });
-            return this.handleResponse(response);
-        } catch (error) {
-            console.error('Get organizations failed:', error);
-            throw error;
-        }
-    },
+    // async getOrganizations() {
+    //     try {
+    //         const response = await fetch(`${this.baseUrl}/api/organizations`, {
+    //             headers: this.getHeaders()
+    //         });
+    //         return this.handleResponse(response);
+    //     } catch (error) {
+    //         console.error('Get organizations failed:', error);
+    //         throw error;
+    //     }
+    // },
 
-    async createOrganization(orgData) {
-        try {
-            const response = await fetch(`${this.baseUrl}/api/organizations`, {
-                method: 'POST',
-                headers: this.getHeaders(),
-                body: JSON.stringify(orgData)
-            });
-            return this.handleResponse(response);
-        } catch (error) {
-            console.error('Create organization failed:', error);
-            throw error;
-        }
-    },
+    // async createOrganization(orgData) {
+    //     try {
+    //         const response = await fetch(`${this.baseUrl}/api/organizations`, {
+    //             method: 'POST',
+    //             headers: this.getHeaders(),
+    //             body: JSON.stringify(orgData)
+    //         });
+    //         return this.handleResponse(response);
+    //     } catch (error) {
+    //         console.error('Create organization failed:', error);
+    //         throw error;
+    //     }
+    // },
 
     // Events endpoints
     async getEvents() {

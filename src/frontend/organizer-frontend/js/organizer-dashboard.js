@@ -43,13 +43,13 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Failed to load dashboard statistics');
         });
 
-    // Load organizer profile summary
-    API.getProfile()
-        .then(profile => {
-            document.getElementById('organizerName').textContent = profile.username;
-            document.getElementById('organizerEmail').textContent = profile.email;
-        })
-        .catch(err => console.error('Failed to load profile:', err));
+    // // Load organizer profile summary
+    // API.getProfile()
+    //     .then(profile => {
+    //         document.getElementById('organizerName').textContent = profile.username;
+    //         document.getElementById('organizerEmail').textContent = profile.email;
+    //     })
+    //     .catch(err => console.error('Failed to load profile:', err));
 
     // Menu toggle
     const menuToggle = document.getElementById('menuToggle');

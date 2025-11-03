@@ -19,29 +19,29 @@ class User(db.Model):
             "profile": profile_data
         }
 
-class OrganizerProfile(db.Model):
-    __tablename__ = 'organizer_profiles'
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    display_name = db.Column(db.String(80))
-    profile_picture = db.Column(db.String(200))  # URL to stored image
-    phone = db.Column(db.String(20))
-    bio = db.Column(db.Text)
-    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+# class OrganizerProfile(db.Model):
+#     __tablename__ = 'organizer_profiles'
+#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+#     display_name = db.Column(db.String(80))
+#     profile_picture = db.Column(db.String(200))  # URL to stored image
+#     phone = db.Column(db.String(20))
+#     bio = db.Column(db.Text)
+#     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+#     updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 
-    # Relationships
-    user = db.relationship('User', backref=db.backref('organizer_profile', uselist=False))
+#     # Relationships
+#     user = db.relationship('User', backref=db.backref('organizer_profile', uselist=False))
 
-    @property
-    def data(self):
-        return {
-            "display_name": self.display_name,
-            "profile_picture": self.profile_picture,
-            "phone": self.phone,
-            "bio": self.bio,
-            "created_at": self.created_at,
-            "updated_at": self.updated_at
-        }
+#     @property
+#     def data(self):
+#         return {
+#             "display_name": self.display_name,
+#             "profile_picture": self.profile_picture,
+#             "phone": self.phone,
+#             "bio": self.bio,
+#             "created_at": self.created_at,
+#             "updated_at": self.updated_at
+#         }
 
 class Event(db.Model):
     __tablename__ = 'events'
