@@ -30,6 +30,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       let eventsToRender = [...allEvents];
       if (this.value === 'date') {
         eventsToRender.sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
+      } else if (this.value === 'category') {
+        eventsToRender.sort((a, b) => {
+          const catA = (a.category || '').toLowerCase();
+          const catB = (b.category || '').toLowerCase();
+          return catA.localeCompare(catB);
+        });
       }
       renderEvents(eventsToRender);
     });
@@ -46,6 +52,7 @@ function renderEvents(events) {
     card.className = 'card';
     card.innerHTML = `
       <p><strong>${event.title}</strong></p>
+      <p>Category: ${event.category || ''}</p>
       <p>${event.description || ''}</p>
       <p>${event.start_date ? new Date(event.start_date).toLocaleString() : ''}</p>
       ${event.link ? `<a href="${event.link}" target="_blank" rel="noopener noreferrer">${event.link}</a>` : ''}
