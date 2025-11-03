@@ -144,11 +144,30 @@ section {
   min-width: 220px;
   max-width: 350px;
   background:  white;
-  padding: 60px 20px 20px;
+  padding: 20px 20px 60px;
   border-radius: 10px;
   text-align: center;
   font-family:DM Serif Text;
   transition: transform 0.2s ease;
+}
+
+.card p {
+  background: transparent;
+  color: rgb(151, 9, 21); /* or any color you want for the text */
+}
+
+.card p strong {
+  background: transparent;
+  color: rgb(151, 9, 21); /* or any color you want for the text */
+}
+
+.card a {
+  background: transparent;
+  color: rgb(151, 9, 21); /* or any color you want for the text */
+  border-radius: 10px;
+  border-style: solid;
+  border-color: #871a1a;
+  font-size: medium;
 }
 
 .card:hover {
