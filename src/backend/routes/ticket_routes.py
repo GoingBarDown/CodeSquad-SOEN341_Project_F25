@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from db.crud import crud_ticket
+from db.crud import crud_ticket, crud_users
 
 def register_routes(app):
     @app.route('/tickets', methods=['GET'])
@@ -28,6 +28,27 @@ def register_routes(app):
                 return jsonify({'error': 'Missing data'}), 400
             ticket = crud_ticket.create_ticket(data)
             return jsonify({'message': 'Ticket created', 'ticket': ticket}), 201
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+
+    @app.route('/tickets/validate', methods=['POST'])
+    def validate_ticket():
+        try:
+            data = request.get_json()
+            ticket_id = data.get('ticketId') if data else None
+
+            if not ticket_id:
+                return jsonify({'error': 'Ticket ID required'}), 400
+
+            ticket = crud_ticket.get_ticket_by_id(int(ticket_id))
+            if not ticket:
+                return jsonify({'valid': False}), 200
+
+            user = crud_users.get_user_by_id(ticket.get('attendee_id'))
+            return jsonify({
+                'valid': True,
+                'attendeeName': user['username'] if user else 'Unknown'
+            }), 200
         except Exception as e:
             return jsonify({'error': str(e)}), 500
 

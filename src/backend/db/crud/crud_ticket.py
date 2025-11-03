@@ -18,6 +18,15 @@ def get_ticket_by_id(ticket_id):
         raise
     except Exception as e:
         raise RuntimeError(f"Failed to fetch ticket {ticket_id}: {e}")
+    
+def get_tickets_by_event(event_id):
+    try:
+        tickets = db.session.query(Ticket).filter_by(event_id=event_id).all()
+        return [ticket.data for ticket in tickets]
+    except ValueError:
+        raise
+    except Exception as e:
+        raise RuntimeError(f"Failed to fetch tickets for event {event_id}: {e}")
 
 def create_ticket(data):
     try:

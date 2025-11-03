@@ -19,6 +19,47 @@ def register_routes(app):
             return jsonify({'error': 'Event not found'}), 404
         except RuntimeError as e:
             return jsonify({'error': str(e)}), 500
+    
+    @app.route('/events/<int:event_id>/attendance', methods=['GET'])
+    def get_event_attendance(event_id):
+        try:
+            event = crud_events.get_event_by_id(event_id)
+            if not event:
+                return jsonify({'error': 'Event not found'}), 404
+
+            tickets = crud_ticket.get_tickets_by_event(event_id)
+            registered = len(tickets)
+            checked_in = len([t for t in tickets if t.get('status') == 'checked-in'])
+
+            return jsonify({
+                'registered': registered,
+                'checked_in': checked_in
+            }), 200
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+
+    @app.route('/events/<int:event_id>/participants', methods=['GET'])
+    def get_event_participants(event_id):
+        try:
+            event = crud_events.get_event_by_id(event_id)
+            if not event:
+                return jsonify({'error': 'Event not found'}), 404
+
+            tickets = crud_ticket.get_tickets_by_event(event_id)
+            participants = []
+
+            for t in tickets:
+                user = crud_users.get_user_by_id(t.get('attendee_id'))
+                if user:
+                    participants.append({
+                        'name': user['username'],
+                        'ticketId': str(t.get('id')),
+                        'status': t.get('status')
+                    })
+
+            return jsonify(participants), 200
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
 
     @app.route('/events', methods=['POST'])
     def add_event():
