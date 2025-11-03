@@ -36,28 +36,54 @@
       </div>
 
       <form id="profileForm">
-        <label for="name">Organizer Name</label>
-        <input type="text" id="name" placeholder="Alex Johnson" required>
+        <label for="displayName">Display Name</label>
+        <input type="text" id="displayName" name="display_name" placeholder="Your display name" 
+               minlength="2" maxlength="80" required>
 
         <label for="email">Email</label>
-        <input type="email" id="email" placeholder="alex.johnson@club.concordia.ca" required>
+        <input type="email" id="email" name="email" readonly>
+        <small class="form-hint">Email cannot be changed. Contact support if needed.</small>
 
-        <label for="club">Club / Organization</label>
-        <input type="text" id="club" placeholder="Dev Society" required>
+        <label for="organization">Organization</label>
+        <select id="organization" name="organization_id">
+          <option value="">Select or create an organization</option>
+        </select>
+        <button type="button" id="createOrgBtn" class="btn-secondary">Create New Organization</button>
 
         <label for="phone">Phone Number</label>
-        <input type="text" id="phone" placeholder="123-456-7890" required>
+        <input type="tel" id="phone" name="phone" placeholder="123-456-7890" 
+               pattern="[0-9+\-\s()]*" title="Enter a valid phone number">
 
         <label for="bio">Short Bio</label>
-        <textarea id="bio" placeholder="Tell us about your club..."></textarea>
+        <textarea id="bio" name="bio" placeholder="Tell us about yourself..." 
+                  maxlength="500" rows="4"></textarea>
+        <small class="form-hint">Maximum 500 characters</small>
 
         <button type="submit" class="btn-primary">Save Changes</button>
       </form>
+      
+      <!-- Organization Creation Modal -->
+      <div id="orgModal" class="modal" style="display: none;">
+        <div class="modal-content">
+          <h3>Create New Organization</h3>
+          <form id="organizationForm">
+            <label for="orgTitle">Organization Name</label>
+            <input type="text" id="orgTitle" required>
+
+            <label for="orgDescription">Description</label>
+            <textarea id="orgDescription"></textarea>
+
+            <div class="modal-buttons">
+              <button type="button" class="btn-secondary" onclick="closeOrgModal()">Cancel</button>
+              <button type="submit" class="btn-primary">Create</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </main>
 
+  <script src="js/api.js"></script>
   <script src="js/organizer-profile.js"></script>
 </body>
-
 </html>
-
