@@ -14,8 +14,8 @@ def register_routes(app):
     def get_ticket(ticket_id):
         try:
             ticket = crud_ticket.get_ticket_by_id(ticket_id)
-            return jsonify(ticket), 200
-        except ValueError:
+            if ticket:
+                return jsonify(ticket), 200
             return jsonify({'error': 'Ticket not found'}), 404
         except Exception as e:
             return jsonify({'error': str(e)}), 500
@@ -58,7 +58,11 @@ def register_routes(app):
             data = request.get_json()
             if not data:
                 return jsonify({'error': 'Missing data'}), 400
+            
             updated_ticket = crud_ticket.update_ticket(ticket_id, data)
+            if not updated_ticket:
+                return jsonify({'error': 'Ticket not found'}), 404
+
             return jsonify({'message': 'Ticket updated', 'ticket': updated_ticket}), 200
         except ValueError:
             return jsonify({'error': 'Ticket not found'}), 404
@@ -68,7 +72,9 @@ def register_routes(app):
     @app.route('/tickets/<int:ticket_id>', methods=['DELETE'])
     def remove_ticket(ticket_id):
         try:
-            crud_ticket.delete_ticket(ticket_id)
+            deleted = crud_ticket.delete_ticket(ticket_id)
+            if not deleted:
+                return jsonify({'error': 'Ticket not found'}), 404
             return jsonify({'message': 'Ticket deleted'}), 200
         except ValueError:
             return jsonify({'error': 'Ticket not found'}), 404
