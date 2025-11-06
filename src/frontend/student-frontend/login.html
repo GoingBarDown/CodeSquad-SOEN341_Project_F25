@@ -5,12 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Sign Up</title>
   <link rel="stylesheet" href="login-signup.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poller+One&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <!-- HEADER -->
   <header>
-    <h1>Student Portal</h1>
+    <h1>CODESQUAD EVENTS</h1>
     <button id="dot">☰</button>
   </header>
 
@@ -27,7 +31,7 @@
   <!-- SIGNUP SECTION -->
   <main id="auth-page">
     <div class="auth-card">
-      <h2>Student Sign Up</h2>
+      <h2 style="color: ghostwhite; font-family: Poller One">Student Sign Up</h2>
 
       <form id="signupForm">
         <label for="name">Full Name</label>
@@ -42,7 +46,7 @@
         <label for="confirmPassword">Confirm Password</label>
         <input type="password" id="confirmPassword" placeholder="Confirm password" required>
 
-        <button type="submit" class="btn-auth">Sign Up</button>
+        <button type="submit" class="btn-auth" style="background-color: white; text-align: center; color: rgb(58, 14, 14); border: none; padding: 5px; border-radius: 5px;">Sign Up</button>
 
         <div class="divider">or</div>
 
@@ -51,7 +55,9 @@
           Sign up with Google
         </button>
 
-        <p class="auth-text">
+        <p class="auth-text"> <!--this part a bit confusin to me, this is the signin page but 
+          called login but also links signup. need to sort out
+          -->
           Already have an account? <a href="login.html" class="auth-link">Login</a>
         </p>
       </form>
