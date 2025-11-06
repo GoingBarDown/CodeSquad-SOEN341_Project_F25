@@ -30,7 +30,7 @@
     <div id="menu">
         <nav>
             <a href="index.html">HOME</a>
-            <a href="events.html">EVENTS</a>
+            <a href="#events.html">EVENTS</a>
             <a href="profilePage.html">MY PROFILE</a>
             <a href="login.html">LOGIN</a>
         </nav>
@@ -39,20 +39,24 @@
 
 <div class="highlights-section">
   <div id="slideshow"></div>
-  <div id="info"><p>HELLO</p></div>
 </div>
 
 <div class="recomended">
-  <p style="font-size: xx-large;">Latest Events</p>
+  <p style="font-size: xx-large;">Trending Events</p>
+
+  <div class="sort-controls">
+    <label for="sortBy">Sort by:</label>
+    <select id="sortBy">
+      <option value="default">Default</option>
+      <option value="date">Date</option>
+      <option value="category">Category</option>
+
+    </select>
+  </div>
 
   <div class="card-container">
 
-    <div class="card" id="event-details-container">
-      <div class="claim-section" style="margin-top: 30px; text-align: center;">
-            <button id="claim-ticket-btn" class="card-action-btn btn-register" style="font-family: 'Poller One', sans-serif; padding: 15px 30px; font-size: 1.2rem; color: white; border: none; border-radius: 10px; cursor: pointer;">
-                Claim Your Ticket
-            </button>
-        </div>
+    <div class="card">
     </div>
 
     <div class="card">
@@ -65,7 +69,6 @@
 </div>
 
 <script src="index.js" defer></script>
-<script src="event-details.js" defer></script>
 
 </body>
 </html>
