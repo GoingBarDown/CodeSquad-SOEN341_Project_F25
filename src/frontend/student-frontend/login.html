@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Sign Up</title>
+  <title>Student Login</title>
   <link rel="stylesheet" href="login-signup.css">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poller+One&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poller+One&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -20,50 +20,45 @@
 
   <!-- MENU -->
   <div id="menu">
-            <nav>
-            <a href="index.html">HOME</a>
-            <a href="event-details.html">EVENTS</a>
-            <a href="profilePage.html">MY PROFILE</a>
-            <a href="login.html">LOGIN</a>
-        </nav>
+    <nav>
+      <a href="index.html">HOME</a>
+      <a href="event-details.html">EVENTS</a>
+      <a href="profilePage.html">MY PROFILE</a>
+      <a href="signup.html">SIGN UP</a>
+    </nav>
   </div>
 
-  <!-- SIGNUP SECTION -->
+  <!-- LOGIN SECTION -->
   <main id="auth-page">
     <div class="auth-card">
-      <h2 style="color: ghostwhite; font-family: Poller One">Student Sign Up</h2>
+      <h2 style="color: ghostwhite; font-family: 'Poller One';">Student Login</h2>
 
-      <form id="signupForm">
-        <label for="name">Full Name</label>
-        <input type="text" id="name" placeholder="Your full name" required>
-
+      <form id="loginForm">
         <label for="email">Student Email</label>
         <input type="email" id="email" placeholder="example@club.concordia.ca" required>
 
         <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Create password" required>
+        <input type="password" id="password" placeholder="Enter your password" required>
 
-        <label for="confirmPassword">Confirm Password</label>
-        <input type="password" id="confirmPassword" placeholder="Confirm password" required>
-
-        <button type="submit" class="btn-auth" style="background-color: white; text-align: center; color: rgb(58, 14, 14); border: none; padding: 5px; border-radius: 5px;">Sign Up</button>
+        <button type="submit" class="btn-auth" style="background-color: white; text-align: center; color: rgb(58, 14, 14); border: none; padding: 5px; border-radius: 5px;">
+          Login
+        </button>
 
         <div class="divider">or</div>
 
         <button type="button" class="btn-google">
           <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo">
-          Sign up with Google
+          Login with Google
         </button>
 
-        <p class="auth-text"> <!--this part a bit confusin to me, this is the signin page but 
-          called login but also links signup. need to sort out
-          -->
-          Already have an account? <a href="login.html" class="auth-link">Login</a>
+        <p class="auth-text">
+          Don’t have an account? <a href="signup.html" class="auth-link">Sign Up</a>
         </p>
       </form>
     </div>
   </main>
 
+  <!-- MENU TOGGLE SCRIPT -->
   <script>
     document.getElementById("dot").addEventListener("click", () => {
       document.getElementById("menu").classList.toggle("open");
@@ -71,5 +66,3 @@
   </script>
 </body>
 </html>
-
-

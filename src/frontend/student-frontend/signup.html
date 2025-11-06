@@ -3,66 +3,76 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Organizer Sign Up</title>  
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Student Sign Up</title>
   <link rel="stylesheet" href="login-signup.css">
+
+  <!-- Poller One Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poller+One&display=swap" rel="stylesheet">
 </head>
+
 <body>
+  <!-- HEADER -->
   <header>
-    <h1>Student Portal</h1>
+    <h1>CODESQUAD EVENTS</h1>
     <button id="dot">☰</button>
   </header>
 
+  <!-- MENU -->
   <div id="menu">
     <nav>
-      <a href="login.html">Login</a>
-      <a href="">Dashboard</a>
-      <a href="">Analytics</a>
+      <a href="index.html">HOME</a>
+      <a href="event-details.html">EVENTS</a>
+      <a href="profilePage.html">MY PROFILE</a>
+      <a href="login.html">LOGIN</a>
     </nav>
   </div>
 
-  <main class="centered">
-    <div class="card">
-      <h2><b>Create a Student Account</b></h2>
+  <!-- SIGNUP SECTION -->
+  <main id="auth-page">
+    <div class="auth-card">
+      <h2 style="color: ghostwhite; font-family: 'Poller One';">
+        Create a Student Account
+      </h2>
+
       <form id="signupForm">
-        <div>
-          <label for="name">Full Name</label>
-          <input type="text" id="name" placeholder="  Your full name" required>
-        </div>
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="Your full name" required>
 
-        <div>
-          <label for="email">Student Email</label>
-          <input type="email" id="email" placeholder="  example@club.concordia.ca" required>
-        </div>
+        <label for="email">Student Email</label>
+        <input type="email" id="email" placeholder="example@club.concordia.ca" required>
 
-        <div>
-          <label for="password">Password</label>
-          <input type="password" id="password" placeholder="  Create password" required>
-        </div>
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Create password" required>
 
-        <div>
-          <label for="confirmPassword">Confirm Password</label>
-          <input type="password" id="confirmPassword" placeholder="  Confirm password" required>
-        </div>
-        <br>
-        <button type="submit" class="btn-primary">Sign Up</button>
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+
+        <button type="submit" class="btn-auth" style="background-color: white; color: rgb(58, 14, 14); border: none; padding: 5px; border-radius: 5px;">
+          Sign Up
+        </button>
 
         <div class="divider">or</div>
 
-        <button type="button" class="btn-google" style="width: 100%;">
+        <button type="button" class="btn-google">
           <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo">
           Sign up with Google
         </button>
 
-        <p class="signup-text">
+        <p class="auth-text">
           Already have an account?
-          <a href="organizer-login.html" class="signup-link">Login here</a>
+          <a href="login.html" class="auth-link">Login here</a>
         </p>
       </form>
     </div>
   </main>
 
-  <script src="index.js"></script>
+  <!-- MENU TOGGLE SCRIPT -->
+  <script>
+    document.getElementById("dot").addEventListener("click", () => {
+      document.getElementById("menu").classList.toggle("open");
+    });
+  </script>
 </body>
-
 </html>
