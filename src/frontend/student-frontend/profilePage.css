@@ -115,5 +115,12 @@ main {
 
 .placeholder {
   color: #aaa;
-  font-style: italic;
+}
+
+.profile-card{
+  background-color: bisque;
+}
+
+#student-name{
+  font-family: "Poller One", sans-serif;
 }
