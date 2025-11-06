@@ -3,11 +3,6 @@ body {
     font-family: sans-serif;
     background-color: rgb(151, 9, 21);
 }
-
-*{
-  background-color: rgb(151, 9, 21);
-}
-
 header {
     display: flex;
     justify-content: space-between;
@@ -83,6 +78,32 @@ header {
   text-align: right;
 
 }
+
+.highlights-section {
+  position: relative;
+  width: fit-content;
+}
+
+#slideshow {
+  position: relative; }
+
+#slideshow img {
+  width: 400px; 
+  height: auto;
+  display: block;
+}
+
+#info {
+  position: absolute;
+  top:94.5%;     
+  left: 0%; 
+  right: 0;
+  bottom: 0;
+  color: white;
+  background-color: #333333af;
+  font-weight: bold;
+}
+
 
 @media (max-width: 768px) {
   .highlights-section {
@@ -211,7 +232,7 @@ section {
 
 .recomended {
   margin: 60px auto;
-  padding: 40px;
+  padding-top: 10px;
   width: calc(100% - 40px);
   max-width: 1300px;          
   border-radius: 30px;      
@@ -226,6 +247,32 @@ section {
   font-size:larger;
 }
 
+.event1 {
+  margin: 60px auto;
+  padding: 40px;
+  width: calc(100% - 40px);
+  max-width: 1300px;          
+  border-radius: 30px; 
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.event1 p{
+  font-family: "Poller One", sans-serif;
+  color: rgb(255, 255, 255);
+  font-size:larger;
+}
+
+.btn-register{
+  background-color: rgb(70, 4, 4);
+}
+
+#event-details-container{
+  background-color: bisque;
+}
+.claim-section{
+  background-color: bisque;
+}
 .sort-controls {
   display: flex;
   align-items: center;
@@ -302,7 +349,7 @@ section {
 
 #slideshow {
   width: 100vw;
-  max-width: 1200px;
+  max-width: 1500px;
   aspect-ratio: 16/9;
   background-size: cover;
   background-position: center;
