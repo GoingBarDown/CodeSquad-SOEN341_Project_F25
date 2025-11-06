@@ -5,6 +5,7 @@ dot.onclick=()=>{
   dot.innerHTML=isOpen?'&#8211;':'&#8801;';}
   //minus and menu symbols
 
+
 const images = [
   "views/image.png", //ew
   "views/hackathon.png", //good
@@ -14,7 +15,32 @@ const images = [
   "views/openhouse.png" //nice
 ];
 
+const captions = [
+  "Welcome to Concordia University!",
+  "ConUHacks, Concordia's Annual 24-hour Hack-A-Thon, by HackConcordia",
+  "Concordia's Official Hockey Team, The Stingers at a game",
+  "The 2025 Comp-Sci career fair is ere to helpyou land your next internship",
+  "Fall is here! Welecome the season at Concordia's annual OctoberFest",
+  "Considering Concordia University? Come meet us at Open House to learn more."
+];
+
 let index = 0;
+
+function changeBackground() {
+  const slideshow = document.getElementById("slideshow");
+  const info = document.getElementById("info");
+
+  slideshow.style.backgroundImage = `url('${images[index]}')`;
+  info.textContent = captions[index];   //change text
+
+  index = (index + 1) % images.length;
+}
+//initial image
+changeBackground();
+
+//change every 30 seconds (5000 ms)
+setInterval(changeBackground, 10000);
+
 
 let allEvents = [];
 
@@ -85,16 +111,7 @@ function renderEvents(events) {
   };
 }
 
-function changeBackground() {
-  document.getElementById("slideshow").style.backgroundImage = `url('${images[index]}')`;
-  index = (index + 1) % images.length;
-}
 
-//initial image
-changeBackground();
-
-//change every 30 seconds (5000 ms)
-setInterval(changeBackground, 10000);
 
 
 // ===== LOGIN FORM =====
