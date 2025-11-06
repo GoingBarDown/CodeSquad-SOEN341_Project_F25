@@ -6,7 +6,7 @@
 
 body {
   font-family: sans-serif;
-  background-color: #E9D3D7;
+  background-color:  rgb(61, 20, 23);
   color: #222;
 }
 
@@ -18,7 +18,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #912338;
+  background-color: rgb(151, 9, 21);
   color: white;
   padding: 12px 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -42,6 +42,7 @@ header h1 {
   cursor: pointer;
   font-size: 24px;
   display: flex;
+  text-align: center;
   align-items: center;
   justify-content: center;
   border: none;
@@ -55,7 +56,7 @@ header h1 {
 }
 
 #menu {
-  background: #E9D3D7;
+  background: bisque;
   overflow: hidden;
   max-height: 0;
   transition: max-height 0.3s ease;
@@ -69,15 +70,17 @@ header h1 {
   display: block;
   padding: 12px 16px;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: bolder;
+  text-align: center;
+  color: #871a1a;
 }
 
 #menu nav a.active,
 #menu nav a:hover {
-  background: #912338;
-  color: white;
+   background-color: #510c0c;
+  color: rgb(255, 255, 255);
 }
-
+  
 
 /* =========================================================
    3. SUB-BAR (Optional Secondary Header)
@@ -199,7 +202,7 @@ label {
   display: block;
   margin-bottom: 3px;
   font-weight: 500;
-  color: #333;
+  color: #e9cbcb;
   font-size: 0.95rem;
   margin-top: 15px;
 }
@@ -320,6 +323,20 @@ input:focus {
 
 .signup-link:hover {
   text-decoration: underline;
+}
+
+.auth-text{
+  color: white;
+}
+
+.auth-text a{
+  color: white;
+  text-decoration: none;
+}
+
+.auth-text a:hover{
+  color: bisque;
+  text-decoration: none;
 }
 
 
