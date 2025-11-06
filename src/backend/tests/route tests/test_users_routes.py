@@ -109,6 +109,46 @@ def test_get_user_by_id_internal_error(client, app):
     assert response.status_code == 500
     assert "Failed to retrieve user" in response.get_json()["error"]
 
+# - AUTH - 
+def test_auth_user_success(client):
+    # create user first
+    client.post("/users", json={
+        "username": "loginuser",
+        "password": "mypassword",
+        "email": "login@example.com",
+        "role": "user"
+    })
+
+    resp = client.post("/users/auth", json={
+        "username": "loginuser",
+        "password": "mypassword"
+    })
+
+    assert resp.status_code == 200
+    body = resp.get_json()
+    assert body["message"] == "Authenticated"
+    assert body["user"]["username"] == "loginuser"
+
+def test_auth_user_invalid_credentials(client):
+    # create user
+    client.post("/users", json={
+        "username": "wrongtest",
+        "password": "correctpw",
+        "email": "wrongtest@example.com",
+        "role": "user"
+    })
+
+    # wrong password
+    resp = client.post("/users/auth", json={
+        "username": "wrongtest",
+        "password": "wrongpw"
+    })
+
+    assert resp.status_code == 401
+    body = resp.get_json()
+    assert body["error"] == "Invalid username or password"
+
+
 # - UPDATE - 
 def test_update_user_success(client):
     create_resp = client.post("/users", json={
