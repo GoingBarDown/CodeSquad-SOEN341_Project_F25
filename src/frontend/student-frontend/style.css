@@ -362,4 +362,39 @@ section {
 }
 
 
+/* Style the calendar title (e.g., "November 2025") */
+#calendar .fc-toolbar-title {
+    color: rgb(151, 9, 21); /* Your main red color */
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+/* Style the event blocks on the calendar */
+#calendar .fc-event {
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9em;
+    padding: 2px 4px;
+    cursor: pointer;
+}
+
+/* Style the Day of the Week Headers (e.g., Mon, Tue) */
+#calendar th {
+    font-family: "Poller One", sans-serif;
+    color: #871a1a; /* Brownish-red text */
+    background-color: rgba(255, 228, 196, 0.5); /* Light bisque */
+    border: 1px solid rgba(255, 228, 196, 0.8);
+}
+
+/* Style the main calendar cell background */
+#calendar .fc-daygrid-body {
+    background-color: white; /* White for the main grid area */
+}
+
+/* Style the current day cell */
+#calendar .fc-day-today {
+    background-color: #fff9e6 !important; /* Light yellow tint for today */
+    border: 2px solid #ffc107 !important; /* Yellow border to highlight */
+}
+
 
