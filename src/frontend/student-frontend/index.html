@@ -30,9 +30,9 @@
     <div id="menu">
         <nav>
             <a href="index.html">HOME</a>
-            <a href="events.html">EVENTS</a>
+            <a href="event-details.html">EVENTS</a>
             <a href="profilePage.html">MY PROFILE</a>
-            <a href="login.html">LOGIN</a>
+            <a href="login.html" id="loginLogoutLink">LOGIN</a>
         </nav>
     </div>
 
@@ -66,6 +66,46 @@
 
 <script src="index.js" defer></script>
 <script src="event-details.js" defer></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const link = document.getElementById("loginLogoutLink");
+    const user = localStorage.getItem("loggedInUser");
+
+    
+    if (user) {
+      link.textContent = "LOGOUT";
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        localStorage.removeItem("loggedInUser");
+        localStorage.setItem("logoutMessage", "✅ Successfully logged out!");
+        window.location.href = "login.html";
+      });
+
+      // Create big centered welcome message
+      const welcome = document.createElement("div");
+      welcome.textContent = `Welcome, ${user}!`;
+      Object.assign(welcome.style, {
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        background: "rgba(145, 35, 56, 0.9)",
+        color: "white",
+        fontFamily: "'Poller One', sans-serif",
+        fontSize: "2rem",
+        padding: "25px 50px",
+        borderRadius: "12px",
+        boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+        zIndex: "10000",
+        textAlign: "center",
+      });
+      document.body.appendChild(welcome);
+
+      setTimeout(() => welcome.remove(), 2500);
+    }
+  });
+  </script>
 
 </body>
 </html>
