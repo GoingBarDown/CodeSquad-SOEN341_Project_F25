@@ -25,10 +25,16 @@ const API = {
     // Auth endpoints
     async login(loginData) {
         try {
-            const response = await fetch(`${this.baseUrl}/users/login`, {
+            // Convert email/username format to backend expected format
+            const authData = {
+                username: loginData.username || loginData.email,
+                password: loginData.password
+            };
+            
+            const response = await fetch(`${this.baseUrl}/users/auth`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(loginData)
+                body: JSON.stringify(authData)
             });
             return this.handleResponse(response);
         } catch (error) {

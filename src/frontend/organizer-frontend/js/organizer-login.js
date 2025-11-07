@@ -17,17 +17,16 @@ if (loginForm) {
             
             const loginData = {
                 [isEmail ? 'email' : 'username']: identifier,
-                password: password,
-                role: 'organizer' // Include role to ensure proper authentication
+                password: password
             };
 
             const response = await API.login(loginData);
 
-            if (response.success) {
+            if (response.message === 'Authenticated' || response.user) {
                 // Store auth data
-                localStorage.setItem('authToken', response.token);
                 if (response.user) {
                     localStorage.setItem('userData', JSON.stringify(response.user));
+                    localStorage.setItem('authToken', response.user.id);
                 }
                 
                 // Redirect to dashboard with success message
