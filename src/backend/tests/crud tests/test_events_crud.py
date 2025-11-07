@@ -41,8 +41,8 @@ def test_get_event_by_id(session, sample_event_data):
     assert result["title"] == "Music Festival"
 
 def test_get_event_by_id_not_found(session):
-    with pytest.raises(ValueError):
-        crud_events.get_event_by_id(9999)
+    result = crud_events.get_event_by_id(9999)
+    assert result is None
 
 def test_get_all_events(session, sample_event_data):
     crud_events.create_event(sample_event_data)
@@ -75,8 +75,8 @@ def test_update_event(session, sample_event_data):
     assert updated.title == "updated"
 
 def test_update_nonexistent_event(session):
-    with pytest.raises(ValueError):
-        crud_events.update_event(9999, {"title": "does not exist"})
+    result = crud_events.update_event(9999, {"title": "Doesn't exist"})
+    assert result is None
 
 def test_delete_event(session, sample_event_data):
     event = crud_events.create_event(sample_event_data)

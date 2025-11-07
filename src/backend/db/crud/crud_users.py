@@ -15,6 +15,19 @@ def get_user_by_id(user_id):
     except Exception as e:
         raise RuntimeError(f"Failed to retrieve user {user_id}: {e}")
 
+def authenticate_user(username, password):
+    try:
+        user = db.session.query(User).filter_by(username=username).first()
+        if not user:
+            return None
+
+        if user.password != password:
+            return None
+
+        return user.data
+    except Exception as e:
+        raise RuntimeError(f"Failed to authenticate user: {e}")
+
 def create_user(data):
     try:
         new_user = User(**data)

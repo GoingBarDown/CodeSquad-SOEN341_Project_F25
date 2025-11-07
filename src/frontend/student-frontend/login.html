@@ -1,65 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Sign Up</title>
-  <link rel="stylesheet" href="login-signup.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Login</title>
+  <link rel="stylesheet" href="login-signup.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poller+One&display=swap" rel="stylesheet" />
 </head>
 
 <body>
   <!-- HEADER -->
   <header>
-    <h1>Student Portal</h1>
+    <h1>CODESQUAD EVENTS</h1>
     <button id="dot">☰</button>
   </header>
 
   <!-- MENU -->
   <div id="menu">
     <nav>
-      <a href="login.html">Login</a>
-      <a href="#">Dashboard</a>
-      <a href="#">Analytics</a>
+      <a href="index.html">HOME</a>
+      <a href="events.html">EVENTS</a>
+      <a href="profilePage.html">MY PROFILE</a>
+      <a href="signup.html">SIGN UP</a>
     </nav>
   </div>
 
-  <!-- SIGNUP SECTION -->
+  <!-- LOGIN SECTION -->
   <main id="auth-page">
     <div class="auth-card">
-      <h2>Student Sign Up</h2>
+      <h2 style="color: ghostwhite; font-family: 'Poller One';">Student Login</h2>
 
-      <form id="signupForm">
-        <label for="name">Full Name</label>
-        <input type="text" id="name" placeholder="Your full name" required>
-
+      <form id="loginForm">
         <label for="email">Student Email</label>
-        <input type="email" id="email" placeholder="example@club.concordia.ca" required>
+        <input type="email" id="email" placeholder="example@club.concordia.ca" required />
 
         <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Create password" required>
+        <input type="password" id="password" placeholder="Enter your password" required />
 
-        <label for="confirmPassword">Confirm Password</label>
-        <input type="password" id="confirmPassword" placeholder="Confirm password" required>
-
-        <button type="submit" class="btn-auth">Sign Up</button>
+        <button type="submit" class="btn-auth"
+          style="background-color:white;color:#3a0e0e;border:none;padding:5px 10px;border-radius:5px;">
+          Login
+        </button>
 
         <div class="divider">or</div>
 
         <button type="button" class="btn-google">
-          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo">
-          Sign up with Google
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" />
+          Login with Google
         </button>
 
         <p class="auth-text">
-          Already have an account? <a href="login.html" class="auth-link">Login</a>
+          Don’t have an account?
+          <a href="signup.html" class="auth-link">Sign Up</a>
         </p>
+
+        <!-- ✅ FIXED ROLE LINKS -->
+        <!-- ✅ FIXED ROLE LINKS (corrected for student-frontend path) -->
+<div class="role-switch">
+  <p style="color:white;margin-top:20px;">
+    Not a student?
+    <a href="../organizer-frontend/organizer-login.html"
+       style="color:#FFD700;text-decoration:none;font-weight:bold;">Organizer</a> |
+    <a href="../admin-frontend/admin-organizers.html"
+       style="color:#FFD700;text-decoration:none;font-weight:bold;">Admin</a>
+  </p>
+</div>
+
       </form>
     </div>
   </main>
 
+  <!-- SCRIPT -->
   <script>
+    // ===== Menu toggle =====
     document.getElementById("dot").addEventListener("click", () => {
       document.getElementById("menu").classList.toggle("open");
+    });
+
+    // ===== Toast message =====
+    function showToast(msg, color = "#4CAF50") {
+      const t = document.createElement("div");
+      Object.assign(t.style, {
+        position: "fixed",
+        bottom: "30px",
+        right: "30px",
+        background: color,
+        color: "white",
+        padding: "12px 20px",
+        borderRadius: "8px",
+        fontFamily: "sans-serif",
+        zIndex: "9999",
+      });
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 2500);
+    }
+
+    // ===== Show logout message if redirected =====
+    const logoutMsg = localStorage.getItem("logoutMessage");
+    if (logoutMsg) {
+      showToast(logoutMsg);
+      localStorage.removeItem("logoutMessage");
+    }
+
+    // ===== Handle login =====
+    const form = document.getElementById("loginForm");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const pw = document.getElementById("password").value.trim();
+
+      const savedEmail = localStorage.getItem("registeredEmail");
+      const savedPw = localStorage.getItem("registeredPassword");
+      const name = localStorage.getItem("registeredName") || "User";
+
+      if (!email || !pw) return showToast("⚠️ Please fill all fields", "#f44336");
+      if (email !== savedEmail || pw !== savedPw)
+        return showToast("❌ Invalid credentials", "#f44336");
+
+      localStorage.setItem("loggedInUser", name);
+      showToast(`✅ Welcome back, ${name}!`);
+      setTimeout(() => (window.location.href = "index.html"), 1500);
     });
   </script>
 </body>

@@ -25,8 +25,8 @@ def register_routes(app):
     def get_organization_member(organization_id, user_id):
         try:
             member = crud_organization_member.get_organization_member(organization_id, user_id)
-            return jsonify(member), 200
-        except ValueError:
+            if member:
+                return jsonify(member), 200
             return jsonify({'error': 'Organization member not found'}), 404
         except Exception as e:
             return jsonify({'error': str(e)}), 500
@@ -34,10 +34,10 @@ def register_routes(app):
     @app.route('/organization_members/<int:organization_id>/<int:user_id>', methods=['DELETE'])
     def remove_organization_member(organization_id, user_id):
         try:
-            crud_organization_member.delete_organization_member(organization_id, user_id)
+            deleted = crud_organization_member.delete_organization_member(organization_id, user_id)
+            if not deleted:
+                return jsonify({'error': 'Organization member not found'}), 404
             return jsonify({'message': 'Organization member deleted'}), 200
-        except ValueError:
-            return jsonify({'error': 'Organization member not found'}), 404
         except Exception as e:
             return jsonify({'error': str(e)}), 500
 
@@ -48,8 +48,9 @@ def register_routes(app):
             if not data:
                 return jsonify({'error': 'Missing data'}), 400
             updated_member = crud_organization_member.update_organization_member(organization_id, user_id, data)
+            if not updated_member:
+                return jsonify({'error': 'Organization member not found'}), 404
+            
             return jsonify({'message': 'Member updated', 'member': updated_member}), 200
-        except ValueError:
-            return jsonify({'error': 'Organization member not found'}), 404
         except Exception as e:
             return jsonify({'error': str(e)}), 500
