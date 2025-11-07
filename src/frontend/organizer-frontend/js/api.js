@@ -51,6 +51,18 @@ const API = {
         }
     },
 
+    async getUser(id) {
+        try {
+            const response = await fetch(`${this.baseUrl}/users/${id}`, {
+                headers: this.getHeaders()
+            });
+            return this.handleResponse(response);
+        } catch (error) {
+            console.error('Get user request failed:', error);
+            throw error;
+        }
+    },
+
     async forgotPassword(data) {
         try {
             const response = await fetch(`${this.baseUrl}/users/forgot-password`, {
@@ -198,27 +210,27 @@ const API = {
         }
     },
 
-    // Analytics endpoints
-    async getEventAttendance(eventId) {
+    // Ticket endpoints
+    async getAllTickets() {
         try {
-            const response = await fetch(`${this.baseUrl}/events/${eventId}/attendance`, {
+            const response = await fetch(`${this.baseUrl}/tickets`, {
                 headers: this.getHeaders()
             });
             return this.handleResponse(response);
         } catch (error) {
-            console.error('Get attendance request failed:', error);
+            console.error('Get all tickets request failed:', error);
             throw error;
         }
     },
 
-    async getEventParticipants(eventId) {
+    async getTicket(id) {
         try {
-            const response = await fetch(`${this.baseUrl}/events/${eventId}/participants`, {
+            const response = await fetch(`${this.baseUrl}/tickets/${id}`, {
                 headers: this.getHeaders()
             });
             return this.handleResponse(response);
         } catch (error) {
-            console.error('Get participants request failed:', error);
+            console.error('Get ticket request failed:', error);
             throw error;
         }
     },
