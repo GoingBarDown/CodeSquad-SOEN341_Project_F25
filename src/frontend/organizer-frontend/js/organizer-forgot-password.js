@@ -25,3 +25,14 @@ if (forgotForm) {
             });
     });
 }
+
+// Menu toggle
+document.addEventListener('DOMContentLoaded', () => {
+    const dot = document.getElementById('dot');
+    if (dot) {
+        dot.addEventListener('click', () => {
+            const menu = document.getElementById('menu');
+            if (menu) menu.classList.toggle('open');
+        });
+    }
+});
