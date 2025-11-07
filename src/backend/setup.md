@@ -43,7 +43,8 @@ and replace the current requirements file in the repo.
 The project does not include an initialized .db file as it can cause merge conflicts and corruption. For now each person will have to initialize their own.
 From an **active** environment **and** inside the repo, write:
 
-    sqlite3 app.db < schema.sql
+python setup_db.py
+
 >Note: You can re-run this to reset the database.
 
 This creates a .db file that you can use for storing all the data for testing purposes. It is purposefully excluded from any commits.
