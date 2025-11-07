@@ -1,10 +1,13 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 from config import Config
 from routes import users_routes, events_routes, ticket_routes, organization_routes, organization_members_routes
 from db import db
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+CORS(app)
 
 db.init_app(app)
 
