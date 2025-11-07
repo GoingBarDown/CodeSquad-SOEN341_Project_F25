@@ -36,7 +36,7 @@ function changeBackground() {
   index = (index + 1) % images.length;
 }
 //initial image
-changeBackground();
+//changeBackground();
 
 //change every 30 seconds (5000 ms)
 setInterval(changeBackground, 10000);
