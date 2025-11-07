@@ -15,11 +15,18 @@ const API = {
 
     // Helper method to handle responses
     async handleResponse(response) {
-        const data = await response.json();
-        if (!response.ok) {
-            throw new Error(data.message || 'An error occurred');
+        try {
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.error || data.message || `HTTP ${response.status}: An error occurred`);
+            }
+            return data;
+        } catch (error) {
+            if (error instanceof SyntaxError) {
+                throw new Error(`Server error: Invalid response format (HTTP ${response.status})`);
+            }
+            throw error;
         }
-        return data;
     },
 
     // Auth endpoints
@@ -45,11 +52,13 @@ const API = {
 
     async signup(userData) {
         try {
+            console.log('Sending signup request to /users with data:', userData);
             const response = await fetch(`${this.baseUrl}/users`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userData)
             });
+            console.log('Signup response status:', response.status);
             return this.handleResponse(response);
         } catch (error) {
             console.error('Signup request failed:', error);
