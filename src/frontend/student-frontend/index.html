@@ -8,57 +8,104 @@
     <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-/>
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poller+One&display=swap" rel="stylesheet">
 </head>
 
+<div id="event-modal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span id="close-modal" style="cursor:pointer;float:right;font-size:1.5em;">&times;</span>
+    <div id="modal-details"></div>
+<a href="event-details.html" id="get-ticket-btn" class="details-btn">Get Ticket</a>  </div>
+</div>
+
 <body>
   <header>
         <div id="logo">CODESQUAD EVENTS</div>
         <button id="dot">&#8801</button>
-    </header> 
+  </header> 
 
     <div id="menu">
         <nav>
             <a href="index.html">HOME</a>
-            <a href="#">EVENTS</a>
-            <a href="#">MY PROFILE</a>
-            <a href="#">LOGIN</a>
+            <a href="events.html">EVENTS</a>
+            <a href="profilePage.html">MY PROFILE</a>
+            <a href="login.html" id="loginLogoutLink">LOGIN</a>
         </nav>
     </div>
 
 
 <div class="highlights-section">
   <div id="slideshow"></div>
-  </div>
+  <div id="info"><p>HELLO</p></div>
+</div>
 
 <div class="recomended">
-  <p>Trending Events</p>
+  <p style="font-size: xx-large;">Latest Events</p>
+
   <div class="card-container">
-    <div class="card">
-      <p>
-      </p>
+
+    <div class="card" id="event-details-container">
+      <div class="claim-section" style="margin-top: 30px; text-align: center;">
+            <button id="claim-ticket-btn" class="card-action-btn btn-register" style="font-family: 'Poller One', sans-serif; padding: 15px 30px; font-size: 1.2rem; color: white; border: none; border-radius: 10px; cursor: pointer;">
+                Claim Your Ticket
+            </button>
+        </div>
     </div>
+
     <div class="card">
-  
-      <p>
-        
-     </p>
-</p>
     </div>
+
     <div class="card">
-    
-      <p>
-      
-      </p>
     </div>
+
   </div>
 </div>
 
 <script src="index.js" defer></script>
+<script src="event-details.js" defer></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const link = document.getElementById("loginLogoutLink");
+    const user = localStorage.getItem("loggedInUser");
+
+    
+    if (user) {
+      link.textContent = "LOGOUT";
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        localStorage.removeItem("loggedInUser");
+        localStorage.setItem("logoutMessage", "✅ Successfully logged out!");
+        window.location.href = "login.html";
+      });
+
+      // Create big centered welcome message
+      const welcome = document.createElement("div");
+      welcome.textContent = `Welcome, ${user}!`;
+      Object.assign(welcome.style, {
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        background: "rgba(145, 35, 56, 0.9)",
+        color: "white",
+        fontFamily: "'Poller One', sans-serif",
+        fontSize: "2rem",
+        padding: "25px 50px",
+        borderRadius: "12px",
+        boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+        zIndex: "10000",
+        textAlign: "center",
+      });
+      document.body.appendChild(welcome);
+
+      setTimeout(() => welcome.remove(), 2500);
+    }
+  });
+  </script>
 
 </body>
-
 </html>

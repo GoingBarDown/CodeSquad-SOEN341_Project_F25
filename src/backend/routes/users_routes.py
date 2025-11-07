@@ -20,6 +20,25 @@ def register_routes(app):
         except Exception as e:
             return jsonify({'error': str(e)}), 500
 
+    @app.route('/users/auth', methods=['POST'])
+    def auth_user():
+        try:
+            data = request.get_json()
+            if not data or "username" not in data or "password" not in data:
+                return jsonify({'error': 'Missing credentials'}), 400
+
+            username = data["username"]
+            password = data["password"]
+
+            user = crud_users.authenticate_user(username, password)
+            if not user:
+                return jsonify({'error': "Invalid username or password"}), 401
+
+            return jsonify({'message': 'Authenticated', 'user': user}), 200
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+
+
     @app.route('/users', methods=['POST'])
     def add_user():
         try:

@@ -81,11 +81,11 @@ function editEvent(id) {
     window.location.href = `manage-events.html?id=${id}`;
 }
 
+
 // Search and filter function
 function filterEvents() {
     const searchInput = document.getElementById('search');
     const filterCategory = document.getElementById('filterCategory');
-    
     const searchVal = searchInput?.value.toLowerCase() || "";
     const categoryVal = filterCategory?.value || "";
     
