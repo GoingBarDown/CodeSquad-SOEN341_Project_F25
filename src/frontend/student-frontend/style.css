@@ -360,6 +360,67 @@ section {
   margin-left: 0;
 
 }
+#calendar {
+    /* Use bisque background for the container */
+    background-color: bisque; 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
 
+/* Style the toolbar (Month/Week/Day buttons and title) */
+#calendar .fc-toolbar-chunk {
+    font-family: "Poller One", sans-serif;
+}
 
+/* Style the Month/Week/Day buttons */
+#calendar .fc-button-primary {
+    background-color: rgb(151, 9, 21); /* Your main red color */
+    border: none;
+    color: white;
+    border-radius: 5px;
+    padding: 8px 12px;
+    transition: background-color 0.2s;
+}
 
+#calendar .fc-button-primary:hover,
+#calendar .fc-button-primary:focus {
+    background-color: #510c0c; /* Darker red on hover/focus */
+    box-shadow: none; 
+}
+
+/* Style the calendar title (e.g., "November 2025") */
+#calendar .fc-toolbar-title {
+    color: rgb(151, 9, 21); /* Your main red color */
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+/* Style the event blocks on the calendar */
+/* These colors match the color logic defined in calendar_script.js */
+#calendar .fc-event {
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9em;
+    padding: 2px 4px;
+    cursor: pointer;
+}
+
+/* Style the Day of the Week Headers (e.g., Mon, Tue) */
+#calendar th {
+    font-family: "Poller One", sans-serif;
+    color: #871a1a; /* Brownish-red text */
+    background-color: rgba(255, 228, 196, 0.5); /* Light bisque */
+    border: 1px solid rgba(255, 228, 196, 0.8);
+}
+
+/* Style the main calendar cell background */
+#calendar .fc-daygrid-body {
+    background-color: white; /* White for the main grid area */
+}
+
+/* Style the current day cell */
+#calendar .fc-day-today {
+    background-color: #fff9e6 !important; /* Light yellow tint for today */
+    border: 2px solid #ffc107 !important; /* Yellow border to highlight */
+}
