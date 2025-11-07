@@ -1,53 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Student Login</title>
-  <link rel="stylesheet" href="login-signup.css">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poller+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="login-signup.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poller+One&display=swap" rel="stylesheet" />
 </head>
-
 <body>
-  <!-- HEADER -->
   <header>
     <h1>CODESQUAD EVENTS</h1>
     <button id="dot">☰</button>
   </header>
 
-  <!-- MENU -->
   <div id="menu">
     <nav>
       <a href="index.html">HOME</a>
-      <a href="events.html">EVENTS</a>
+      <a href="event-details.html">EVENTS</a>
       <a href="profilePage.html">MY PROFILE</a>
       <a href="signup.html">SIGN UP</a>
     </nav>
   </div>
 
-  <!-- LOGIN SECTION -->
   <main id="auth-page">
     <div class="auth-card">
       <h2 style="color: ghostwhite; font-family: 'Poller One';">Student Login</h2>
 
       <form id="loginForm">
         <label for="email">Student Email</label>
-        <input type="email" id="email" placeholder="example@club.concordia.ca" required>
+        <input type="email" id="email" placeholder="example@club.concordia.ca" required />
 
         <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Enter your password" required>
+        <input type="password" id="password" placeholder="Enter your password" required />
 
-        <button type="submit" class="btn-auth" style="background-color: white; text-align: center; color: rgb(58, 14, 14); border: none; padding: 5px; border-radius: 5px;">
+        <button type="submit" class="btn-auth" style="background-color:white;color:#3a0e0e;border:none;padding:5px;border-radius:5px;">
           Login
         </button>
 
         <div class="divider">or</div>
-
         <button type="button" class="btn-google">
-          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" />
           Login with Google
         </button>
 
@@ -58,10 +50,54 @@
     </div>
   </main>
 
-  <!-- MENU TOGGLE SCRIPT -->
   <script>
     document.getElementById("dot").addEventListener("click", () => {
       document.getElementById("menu").classList.toggle("open");
+    });
+
+    function showToast(msg, color = "#4CAF50") {
+      const t = document.createElement("div");
+      Object.assign(t.style, {
+        position: "fixed",
+        bottom: "30px",
+        right: "30px",
+        background: color,
+        color: "white",
+        padding: "12px 20px",
+        borderRadius: "8px",
+        fontFamily: "sans-serif",
+        zIndex: "9999",
+      });
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 2500);
+    }
+
+    // ✅ Show logout message when redirected
+    const logoutMsg = localStorage.getItem("logoutMessage");
+    if (logoutMsg) {
+      showToast(logoutMsg);
+      localStorage.removeItem("logoutMessage");
+    }
+
+    // ✅ Handle login
+    const form = document.getElementById("loginForm");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const pw = document.getElementById("password").value.trim();
+
+      const savedEmail = localStorage.getItem("registeredEmail");
+      const savedPw = localStorage.getItem("registeredPassword");
+      const name = localStorage.getItem("registeredName") || "User";
+
+      if (!email || !pw) return showToast("⚠️ Fill all fields", "#f44336");
+      if (email !== savedEmail || pw !== savedPw)
+        return showToast("❌ Invalid credentials", "#f44336");
+
+      localStorage.setItem("loggedInUser", name);
+      showToast(`✅ Welcome back, ${name}!`);
+      setTimeout(() => (window.location.href = "index.html"), 1500);
     });
   </script>
 </body>
