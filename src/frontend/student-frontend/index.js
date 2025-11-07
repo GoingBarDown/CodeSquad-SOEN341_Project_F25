@@ -35,12 +35,24 @@ function changeBackground() {
 
   index = (index + 1) % images.length;
 }
-//initial image
-//changeBackground();
 
-//change every 30 seconds (5000 ms)
-setInterval(changeBackground, 10000);
+// My god, please somebody fix this in the future.
+// This is the worst error handling I've written in a long time
+try {
+  changeBackground();
+  
+  // change every 10 seconds
+  setInterval(() => {
+    try {
+      changeBackground();
+    } catch (e) {
 
+    }
+  }, 10000);
+
+} catch (e) {
+
+}
 
 let allEvents = [];
 
