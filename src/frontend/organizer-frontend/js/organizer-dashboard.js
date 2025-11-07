@@ -76,9 +76,88 @@ function deleteEvent(id) {
     }
 }
 
-// Edit event
+// Edit event - opens modal dialog
 function editEvent(id) {
-    window.location.href = `manage-events.html?id=${id}`;
+    API.getEvent(id)
+        .then(event => {
+            const modal = document.createElement('div');
+            modal.classList.add('modal-overlay');
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <h2>Edit Event</h2>
+                    <form id="editForm">
+                        <label for="editTitle">Event Title</label>
+                        <input type="text" id="editTitle" value="${event.title}" required />
+
+                        <label for="editStartDate">Start Date & Time</label>
+                        <input type="datetime-local" id="editStartDate" value="${new Date(event.start_date).toISOString().slice(0, 16)}" required />
+
+                        <label for="editEndDate">End Date & Time</label>
+                        <input type="datetime-local" id="editEndDate" value="${new Date(event.end_date).toISOString().slice(0, 16)}" required />
+
+                        <label for="editCategory">Category</label>
+                        <select id="editCategory" required>
+                            <option value="">Select category</option>
+                            <option value="Workshop" ${event.category === 'Workshop' ? 'selected' : ''}>Workshop</option>
+                            <option value="Lecture" ${event.category === 'Lecture' ? 'selected' : ''}>Lecture</option>
+                            <option value="Social" ${event.category === 'Social' ? 'selected' : ''}>Social</option>
+                            <option value="Competition" ${event.category === 'Competition' ? 'selected' : ''}>Competition</option>
+                            <option value="Conference" ${event.category === 'Conference' ? 'selected' : ''}>Conference</option>
+                        </select>
+
+                        <label for="editLocation">Location</label>
+                        <input type="text" id="editLocation" value="${event.location || ''}" />
+
+                        <label for="editCapacity">Capacity</label>
+                        <input type="number" id="editCapacity" value="${event.capacity || ''}" min="1" />
+
+                        <label for="editPrice">Price</label>
+                        <input type="number" id="editPrice" value="${event.price || 0}" min="0" step="0.01" />
+
+                        <label for="editDescription">Description</label>
+                        <textarea id="editDescription" rows="4">${event.description || ''}</textarea>
+
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button type="submit" class="btn-primary" style="flex: 1;">Save Changes</button>
+                            <button type="button" class="btn-close" style="flex: 1; background-color: #ccc; color: #222;">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+
+            // Handle form submission
+            modal.querySelector('#editForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const updatedEvent = {
+                    title: document.getElementById('editTitle').value,
+                    start_date: new Date(document.getElementById('editStartDate').value).toISOString(),
+                    end_date: new Date(document.getElementById('editEndDate').value).toISOString(),
+                    category: document.getElementById('editCategory').value,
+                    location: document.getElementById('editLocation').value,
+                    capacity: parseInt(document.getElementById('editCapacity').value) || null,
+                    price: parseFloat(document.getElementById('editPrice').value) || 0,
+                    description: document.getElementById('editDescription').value
+                };
+
+                API.updateEvent(id, updatedEvent)
+                    .then(() => {
+                        alert('✅ Event updated successfully!');
+                        modal.remove();
+                        loadEvents(); // Refresh the events list
+                    })
+                    .catch(err => {
+                        console.error('Update failed:', err);
+                        alert('❌ Failed to update event: ' + (err.message || 'Please try again'));
+                    });
+            });
+
+            // Handle cancel button
+            modal.querySelector('.btn-close').addEventListener('click', () => modal.remove());
+        })
+        .catch(err => alert('Failed to load event details'));
 }
 
 
