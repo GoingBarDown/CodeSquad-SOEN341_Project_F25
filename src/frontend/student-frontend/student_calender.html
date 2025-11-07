@@ -5,16 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Campus Events Calendar</title>
 
-    <link href="./style.css" rel="stylesheet" />
+    
 
    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/main.min.css' rel='stylesheet' />
 
 
     
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    
+    <link href="style.css" rel="stylesheet" />
     <style>
         /* Basic styling for the calendar container */
+        #calendar {
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        body {
+            background-color: rgba(255, 228, 196, 0.5) !important; 
+        }
+
         #calendar {
             max-width: 1100px;
             margin: 40px auto;
@@ -23,7 +32,7 @@
 </head>
 <body>
 <header>
-        <div id="logo">CODESQUAD EVENTS</div>
+        <div id="logo">CODESQUAD Events Clendar</div>
         <button id="dot">&#8801</button>
   </header> 
 
@@ -37,7 +46,7 @@
     </div>
     
     <div class="container">
-        <h2 class="mt-5 mb-4">My Events Calendar</h2>
+        
         
         <div id='calendar'></div>
     </div>
@@ -46,7 +55,8 @@
     
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
 
-    <script src="./calender_script.js"></script>
+    <script src="calender_script.js"></script>
 
+    
 </body>
 </html>

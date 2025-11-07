@@ -21,8 +21,6 @@ def get_ticket_by_id(ticket_id):
 
 def get_tickets_by_user(user_id):
     try:
-
-        user_id = str(user_id) 
         
         tickets = db.session.query(Ticket).filter_by(attendee_id=user_id).all()
        

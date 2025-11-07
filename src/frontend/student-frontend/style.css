@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family: sans-serif;
+    font-family:  sans-serif;
     background-color: rgb(151, 9, 21);
 }
 header {
@@ -29,6 +29,7 @@ header {
     line-height: 1;
     border-width: 0;
     color: rgb(151, 9, 21);
+    margin-left: auto;
 }
 
 #dot svg.lucide {
@@ -375,7 +376,7 @@ section {
 
 /* Style the Month/Week/Day buttons */
 #calendar .fc-button-primary {
-    background-color: rgb(151, 9, 21); /* Your main red color */
+    background-color: rgb(151, 9, 21); 
     border: none;
     color: white;
     border-radius: 5px;
