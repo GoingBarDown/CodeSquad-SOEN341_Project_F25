@@ -25,10 +25,16 @@ const API = {
     // Auth endpoints
     async login(loginData) {
         try {
-            const response = await fetch(`${this.baseUrl}/users/login`, {
+            // Convert email/username format to backend expected format
+            const authData = {
+                username: loginData.username || loginData.email,
+                password: loginData.password
+            };
+            
+            const response = await fetch(`${this.baseUrl}/users/auth`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(loginData)
+                body: JSON.stringify(authData)
             });
             return this.handleResponse(response);
         } catch (error) {
@@ -47,6 +53,18 @@ const API = {
             return this.handleResponse(response);
         } catch (error) {
             console.error('Signup request failed:', error);
+            throw error;
+        }
+    },
+
+    async getUser(id) {
+        try {
+            const response = await fetch(`${this.baseUrl}/users/${id}`, {
+                headers: this.getHeaders()
+            });
+            return this.handleResponse(response);
+        } catch (error) {
+            console.error('Get user request failed:', error);
             throw error;
         }
     },
@@ -198,27 +216,27 @@ const API = {
         }
     },
 
-    // Analytics endpoints
-    async getEventAttendance(eventId) {
+    // Ticket endpoints
+    async getAllTickets() {
         try {
-            const response = await fetch(`${this.baseUrl}/events/${eventId}/attendance`, {
+            const response = await fetch(`${this.baseUrl}/tickets`, {
                 headers: this.getHeaders()
             });
             return this.handleResponse(response);
         } catch (error) {
-            console.error('Get attendance request failed:', error);
+            console.error('Get all tickets request failed:', error);
             throw error;
         }
     },
 
-    async getEventParticipants(eventId) {
+    async getTicket(id) {
         try {
-            const response = await fetch(`${this.baseUrl}/events/${eventId}/participants`, {
+            const response = await fetch(`${this.baseUrl}/tickets/${id}`, {
                 headers: this.getHeaders()
             });
             return this.handleResponse(response);
         } catch (error) {
-            console.error('Get participants request failed:', error);
+            console.error('Get ticket request failed:', error);
             throw error;
         }
     },

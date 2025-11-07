@@ -51,7 +51,7 @@ if (createEventForm) {
                 capacity: parseInt(document.getElementById('capacity').value) || null,
                 price: parseFloat(document.getElementById('price').value) || 0,
                 link: document.getElementById('link').value.trim() || null,
-                seating_arrangement: document.getElementById('seating').value.trim() || null,
+                seating: document.getElementById('seating').value.trim() || null,
                 status: document.getElementById('status').value
             };
 
@@ -68,18 +68,28 @@ if (createEventForm) {
                 throw new Error('Capacity must be a positive number');
             }
 
+            console.log('Sending event data:', eventData);
+
             // Call API to create event
             const response = await API.createEvent(eventData);
             
-            if (response.success) {
-                alert('✅ Event created successfully!');
-                window.location.href = 'organizer-events-list.html';
-            } else {
-                throw new Error(response.message || 'Failed to create event');
-            }
+            // If we get here without an error, the event was created successfully
+            alert('✅ Event created successfully!');
+            window.location.href = 'organizer-dashboard.html';
         } catch (error) {
             console.error('Create event error:', error);
             alert(`❌ Error: ${error.message || 'Failed to create event. Please try again.'}`);
         }
     });
 }
+
+// Menu toggle
+document.addEventListener('DOMContentLoaded', () => {
+    const dot = document.getElementById('dot');
+    if (dot) {
+        dot.addEventListener('click', () => {
+            const menu = document.getElementById('menu');
+            if (menu) menu.classList.toggle('open');
+        });
+    }
+});
