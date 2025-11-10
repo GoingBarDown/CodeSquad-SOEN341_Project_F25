@@ -53,6 +53,34 @@ def test_get_tickets_by_event(session, sample_ticket_data):
     empty_result = crud_ticket.get_tickets_by_event(9999)
     assert empty_result == []
 
+def test_get_tickets_by_user(session, sample_ticket_data):
+    crud_ticket.create_ticket(sample_ticket_data)
+    crud_ticket.create_ticket({
+        "attendee_id": 1,
+        "event_id": 2,
+        "qr_code": "QRCODE456"
+    })
+
+    crud_ticket.create_ticket({
+        "attendee_id": 2,
+        "event_id": 1,
+        "qr_code": "QRCODE999"
+    })
+
+    tickets = crud_ticket.get_tickets_by_user(1)
+
+    assert tickets is not None
+    assert len(tickets) == 2
+    assert all(t["attendee_id"] == 1 for t in tickets)
+
+def test_get_tickets_by_user_none(session):
+    tickets = crud_ticket.get_tickets_by_user(999)
+    assert len(tickets) == 0
+
+def test_get_tickets_by_user_error(session):
+    db.drop_all()
+    with pytest.raises(RuntimeError):
+        crud_ticket.get_tickets_by_user(1)
 
 def test_get_all_tickets(session, sample_ticket_data):
     crud_ticket.create_ticket(sample_ticket_data)
