@@ -1,10 +1,44 @@
 import pytest
 from db import db
-from routes import events_routes
+from routes import events_routes, ticket_routes, users_routes
 
 @pytest.fixture(autouse=True)
 def setup_routes(app):
+    ticket_routes.register_routes(app)
     events_routes.register_routes(app)
+    users_routes.register_routes(app)
+
+@pytest.fixture
+def student_user_and_events(client):
+    # Create user
+    user_resp = client.post("/users", json={
+        "username": "calendaruser",
+        "password": "pw",
+        "email": "calendar@example.com",
+        "role": "attendee"
+    }).get_json()
+
+    user_id = user_resp["id"]
+
+    # Create events
+    e1 = client.post("/events", json={
+        "title": "Event 1",
+        "status": "active"
+    }).get_json()
+
+    e2 = client.post("/events", json={
+        "title": "Event 2",
+        "status": "active"
+    }).get_json()
+
+    event_id_1 = e1["event"]["id"]
+    event_id_2 = e2["event"]["id"]
+
+    # Create tickets (must match your system's ticket POST payload)
+    client.post("/tickets", json={"attendee_id": user_id, "event_id": event_id_1})
+    client.post("/tickets", json={"attendee_id": user_id, "event_id": event_id_2})
+
+    return user_id, event_id_1, event_id_2
 
 # - CREATE - 
 def test_create_event_success(client):
@@ -91,6 +125,37 @@ def test_get_event_by_id_internal_error(client, app):
     assert response.status_code == 500
     assert "Failed to fetch event" in response.get_json()["error"]
 
+def test_get_student_events_success(client, student_user_and_events):
+    user_id, event_id_1, event_id_2 = student_user_and_events
+
+    resp = client.get(f"/student/{user_id}/events")
+    assert resp.status_code == 200
+
+    data = resp.get_json()
+    assert isinstance(data, list)
+    assert len(data) == 2
+
+    event_ids = {e["id"] for e in data}
+    assert str(event_id_1) in event_ids
+    assert str(event_id_2) in event_ids
+
+
+def test_get_student_events_empty(client):
+    user_resp = client.post("/users", json={
+        "username": "noticketsuser",
+        "password": "pw",
+        "email": "noevents@example.com",
+        "role": "attendee"
+    }).get_json()
+
+    user_id = user_resp["id"]
+
+    resp = client.get(f"/student/{user_id}/events")
+    assert resp.status_code == 200
+
+    data = resp.get_json()
+    assert data == []
+    
 # - UPDATE - 
 def test_update_event_success(client):
     create_resp = client.post("/events", json={
