@@ -33,23 +33,39 @@ if (signupForm) {
         }
 
         try {
+            console.log('Attempting signup with:', { username, email });
+            
             const response = await API.signup({
-                name: name,           // Store in profile later
                 username: username,   // Required by backend
                 email: email,
                 password: password,
                 role: role
             });
 
-            if (response.success) {
-                alert('✅ Signup successful! Please login.');
+            console.log('Signup response:', response);
+            
+            // Backend returns {'message': 'User created', 'id': user_id}
+            if (response.message === 'User created' || response.id) {
+                alert('✅ Signup successful! Please login with your credentials.');
                 window.location.href = 'organizer-login.html';
             } else {
-                throw new Error(response.message || 'Signup failed');
+                throw new Error(response.error || response.message || 'Signup failed');
             }
         } catch (error) {
             console.error('Signup error:', error);
-            alert(`❌ ${error.message || 'Signup failed. Please try again.'}`);
+            console.error('Error message:', error.message);
+            alert(`❌ Signup failed: ${error.message || 'Please try again.'}`);
         }
     });
 }
+
+// Menu toggle
+document.addEventListener('DOMContentLoaded', () => {
+    const dot = document.getElementById('dot');
+    if (dot) {
+        dot.addEventListener('click', () => {
+            const menu = document.getElementById('menu');
+            if (menu) menu.classList.toggle('open');
+        });
+    }
+});

@@ -1,13 +1,5 @@
-Noorjahan Kazi (40311131):
-
--Attended team meetings and actively participated(1 hour)
-- Created main page for website (3 hours)
--Reviewed and modifed all frontend components to ensure uniformity across all pages (3 hours)
--Reviewed all new css pages to make sure no conflics with existing stylesheet (1.5 hours)
-
 
 Reema Aboudraz (40253549):
-
 - Attended all team meetings and actively participated in conversations (2h)
 - Coded the profile page (2h)
 - Reviewed some pull requests and merged them when approved (1h)
@@ -45,4 +37,11 @@ Chandler Higgins (40156534):
 - Integrated frontend with backend event registration endpoint (1h)
 - Styled the event cards, modal, and sorting controls for improved UX (1h)
 - Resolved frontend bugs (1h)
+
+Patricia Dsouza (40282086):
+-Attended team meetings and actively participated(1 hour)
+- Created the login and signup page (3 hours)
+-Added the forgot password part too (3 hours)
+-Reviewed and modified all frontend components to ensure uniformity across all pages (3 hours)
+
 

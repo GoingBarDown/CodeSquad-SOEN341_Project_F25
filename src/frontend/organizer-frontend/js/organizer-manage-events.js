@@ -116,50 +116,108 @@
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Load event analytics
-    API.getEvents()
-        .then(events => {
+    // Menu toggle
+    const dot = document.getElementById("dot");
+    const menu = document.getElementById("menu");
+    dot.addEventListener("click", () => menu.classList.toggle("open"));
+
+    // Load all tickets and events for analytics
+    Promise.all([API.getEvents(), API.getAllTickets()])
+        .then(([events, allTickets]) => {
+            if (!events || events.length === 0) {
+                document.getElementById("analyticsContainer").innerHTML = "<p>No events found</p>";
+                return;
+            }
+
             const container = document.getElementById("analyticsContainer");
-            events.forEach(event => {
-                // Get attendance data for this event
-                API.getEventAttendance(event.id)
-                    .then(attendance => {
-                        const attendanceRate = Math.round((attendance.checked_in / attendance.registered) * 100);
-                        const remaining = event.capacity - attendance.registered;
-
-                        const card = document.createElement("div");
-                        card.className = "card";
-                        card.innerHTML = `
-                            <h3>${event.title}</h3>
-                            <p class="stat"><b>${attendance.registered} / ${event.capacity}</b><br>
-                            <small>Registered Participants</small></p>
-                            <p><b>Attendance Rate:</b> ${attendanceRate}%</p>
-                            <p><b>Remaining Capacity:</b> ${remaining}</p>
-                            <button class="btn-primary download-btn" data-id="${event.id}">Download CSV</button>
-                        `;
-                        container.appendChild(card);
-                    });
-            });
-
-            // Handle CSV downloads
-            document.addEventListener('click', e => {
-                if (e.target.classList.contains('download-btn')) {
-                    const eventId = e.target.dataset.id;
-                    API.getEventParticipants(eventId)
-                        .then(participants => {
-                            const csv = [
-                                ["Name", "Ticket ID", "Status"],
-                                ...participants.map(p => [p.name, p.ticketId, p.status])
-                            ].map(r => r.join(",")).join("\n");
-
-                            const blob = new Blob([csv], { type: "text/csv" });
-                            const link = document.createElement("a");
-                            link.href = URL.createObjectURL(blob);
-                            link.download = `event_${eventId}_participants.csv`;
-                            link.click();
-                        });
+            
+            // Create a map of tickets by event ID
+            const ticketsByEvent = {};
+            allTickets.forEach(ticket => {
+                const eventId = ticket.event_id;
+                if (!ticketsByEvent[eventId]) {
+                    ticketsByEvent[eventId] = [];
                 }
+                ticketsByEvent[eventId].push(ticket);
             });
+
+            events.forEach(event => {
+                // Get real ticket data for this event
+                const eventTickets = ticketsByEvent[event.id] || [];
+                const registered = eventTickets.length;
+                const checkedIn = eventTickets.filter(t => t.status === 'checked-in').length;
+                const attendanceRate = registered > 0 ? Math.round((checkedIn / registered) * 100) : 0;
+                const remaining = event.capacity - registered;
+
+                const card = document.createElement("div");
+                card.className = "card";
+                card.innerHTML = `
+                    <h3>${event.title}</h3>
+                    <p class="stat"><b>${registered} / ${event.capacity}</b><br>
+                    <small>Registered Participants</small></p>
+                    <p><b>Attendance Rate:</b> ${attendanceRate}%</p>
+                    <p><b>Checked In:</b> ${checkedIn} / ${registered}</p>
+                    <p><b>Remaining Capacity:</b> ${remaining}</p>
+                    <br>
+                    <button class="btn-primary download-btn" data-id="${event.id}" data-title="${event.title}">Download CSV</button>
+                `;
+                container.appendChild(card);
+            });
+
+            // Handle CSV downloads with real ticket data
+            document.querySelectorAll('.download-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const eventId = e.target.dataset.id;
+                    const eventTitle = e.target.dataset.title;
+                    
+                    // Get tickets for this event and fetch user data
+                    const eventTickets = ticketsByEvent[eventId] || [];
+                    
+                    if (eventTickets.length > 0) {
+                        // Fetch user data for each ticket
+                        const userPromises = eventTickets.map(ticket => 
+                            API.getUser(ticket.attendee_id)
+                                .catch(() => ({ username: 'Unknown' }))
+                        );
+                        
+                        Promise.all(userPromises)
+                            .then(users => {
+                                const participants = eventTickets.map((ticket, idx) => ({
+                                    name: users[idx]?.username || 'Unknown',
+                                    ticketId: ticket.id,
+                                    status: ticket.status
+                                }));
+                                
+                                const csv = [
+                                    ["Name", "Ticket ID", "Status"],
+                                    ...participants.map(p => [p.name, p.ticketId, p.status])
+                                ].map(r => r.join(",")).join("\n");
+
+                                const blob = new Blob([csv], { type: "text/csv" });
+                                const link = document.createElement("a");
+                                link.href = URL.createObjectURL(blob);
+                                link.download = `${eventTitle.replace(/\s+/g, "_")}_participants.csv`;
+                                link.click();
+                            });
+                    } else {
+                        // No tickets, download empty template
+                        const csv = [
+                            ["Name", "Ticket ID", "Status"],
+                            ["No participants yet", "-", "-"]
+                        ].map(r => r.join(",")).join("\n");
+
+                        const blob = new Blob([csv], { type: "text/csv" });
+                        const link = document.createElement("a");
+                        link.href = URL.createObjectURL(blob);
+                        link.download = `${eventTitle.replace(/\s+/g, "_")}_participants.csv`;
+                        link.click();
+                    }
+                });
+            });
+        })
+        .catch(err => {
+            console.error("Failed to load events or tickets:", err);
+            document.getElementById("analyticsContainer").innerHTML = "<p>Error loading events</p>";
         });
 
     // Ticket validation
@@ -175,10 +233,10 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        API.validateTicket(ticketId)
-            .then(result => {
-                if (result.valid) {
-                    statusText.textContent = `✅ Valid Ticket (${result.attendeeName})`;
+        API.getTicket(ticketId)
+            .then(ticket => {
+                if (ticket) {
+                    statusText.textContent = `✅ Valid Ticket (ID: ${ticket.id}, Status: ${ticket.status})`;
                     statusText.style.color = "green";
                 } else {
                     statusText.textContent = "❌ Invalid Ticket ID.";
@@ -186,89 +244,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             })
             .catch(err => {
-                statusText.textContent = "Error validating ticket";
+                statusText.textContent = "❌ Invalid Ticket ID.";
                 statusText.style.color = "red";
             });
     });
 
     // QR Scanner integration
-    function onScanSuccess(decodedText) {
-        ticketInput.value = decodedText;
-        validateBtn.click(); // Automatically validate scanned tickets
-    }
-
-    const qrReader = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 200 });
-    qrReader.render(onScanSuccess);
-});
-
-// Event editing functionality
-const eventId = new URLSearchParams(window.location.search).get('id');
-
-if (eventId) {
-    API.getEvent(eventId)
-        .then(event => {
-            document.getElementById('editTitle').value = event.title;
-            document.getElementById('editStartDate').value = new Date(event.start_date).toISOString().split('T')[0];
-            document.getElementById('editEndDate').value = new Date(event.end_date).toISOString().split('T')[0];
-            document.getElementById('editCategory').value = event.category;
-            document.getElementById('editCapacity').value = event.capacity || '';
-            document.getElementById('editPrice').value = event.price || '';
-            document.getElementById('editDescription').value = event.description || '';
-        })
-        .catch(err => {
-            console.error('Failed to load event:', err);
-            alert('Could not load event details');
-        });
-}
-
-const editForm = document.getElementById('editEventForm');
-if (editForm) {
-    editForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const updatedEvent = {
-            title: document.getElementById('editTitle').value,
-            description: document.getElementById('editDescription').value,
-            start_date: new Date(document.getElementById('editStartDate').value).toISOString(),
-            end_date: new Date(document.getElementById('editEndDate').value).toISOString(),
-            category: document.getElementById('editCategory').value,
-            capacity: parseInt(document.getElementById('editCapacity').value) || null,
-            price: parseFloat(document.getElementById('editPrice').value) || 0
-        };
-
-        API.updateEvent(eventId, updatedEvent)
-            .then(response => {
-                if (response.success) {
-                    alert('Event updated successfully');
-                    window.location.href = 'organizer-events-list.html';
-                } else {
-                    alert('Failed to update event: ' + (response.message || 'Please try again'));
-                }
-            })
-            .catch(err => {
-                console.error('Update failed:', err);
-                alert('Failed to update event');
-            });
-    });
-}
-
-const deleteButton = document.getElementById('deleteEventBtn');
-if (deleteButton) {
-    deleteButton.addEventListener('click', () => {
-        if (confirm('Are you sure you want to delete this event?')) {
-            API.deleteEvent(eventId)
-                .then(() => {
-                    alert('Event deleted successfully');
-                    window.location.href = 'organizer-events-list.html';
-                })
-                .catch(err => alert('Failed to delete event'));
+    try {
+        function onScanSuccess(decodedText) {
+            ticketInput.value = decodedText;
+            validateBtn.click(); // Automatically validate scanned tickets
         }
-    });
-}
 
-const cancelButton = document.getElementById('cancelBtn');
-if (cancelButton) {
-    cancelButton.addEventListener('click', () => {
-        window.location.href = 'organizer-events-list.html';
-    });
-}
+        const qrReader = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 200 });
+        qrReader.render(onScanSuccess);
+    } catch (err) {
+        console.log("QR Scanner not available:", err);
+    }
+});

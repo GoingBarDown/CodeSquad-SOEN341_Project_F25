@@ -1,35 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Student Sign Up</title>
-  <link rel="stylesheet" href="login-signup.css">
-
-  <!-- Poller One Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poller+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="login-signup.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poller+One&display=swap" rel="stylesheet" />
 </head>
-
 <body>
-  <!-- HEADER -->
   <header>
     <h1>CODESQUAD EVENTS</h1>
     <button id="dot">☰</button>
   </header>
 
-  <!-- MENU -->
   <div id="menu">
     <nav>
       <a href="index.html">HOME</a>
-      <a href="event-details.html">EVENTS</a>
+      <a href="events.html">EVENTS</a>
       <a href="profilePage.html">MY PROFILE</a>
       <a href="login.html">LOGIN</a>
     </nav>
   </div>
 
-  <!-- SIGNUP SECTION -->
   <main id="auth-page">
     <div class="auth-card">
       <h2 style="color: ghostwhite; font-family: 'Poller One';">
@@ -38,25 +30,25 @@
 
       <form id="signupForm">
         <label for="name">Full Name</label>
-        <input type="text" id="name" placeholder="Your full name" required>
+        <input type="text" id="name" placeholder="Your full name" required />
 
         <label for="email">Student Email</label>
-        <input type="email" id="email" placeholder="example@club.concordia.ca" required>
+        <input type="email" id="email" placeholder="example@club.concordia.ca" required />
 
         <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Create password" required>
+        <input type="password" id="password" placeholder="Create password" required />
 
         <label for="confirmPassword">Confirm Password</label>
-        <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+        <input type="password" id="confirmPassword" placeholder="Confirm password" required />
 
-        <button type="submit" class="btn-auth" style="background-color: white; color: rgb(58, 14, 14); border: none; padding: 5px; border-radius: 5px;">
+        <button type="submit" class="btn-auth" style="background-color:white;color:#3a0e0e;border:none;padding:5px;border-radius:5px;">
           Sign Up
         </button>
 
         <div class="divider">or</div>
 
         <button type="button" class="btn-google">
-          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" />
           Sign up with Google
         </button>
 
@@ -68,11 +60,46 @@
     </div>
   </main>
 
-  <!-- MENU TOGGLE SCRIPT -->
   <script>
+    // MENU TOGGLE
     document.getElementById("dot").addEventListener("click", () => {
       document.getElementById("menu").classList.toggle("open");
+    });
+
+    function showToast(msg, color = "#4CAF50") {
+      const t = document.createElement("div");
+      t.style.position = "fixed";
+      t.style.bottom = "30px";
+      t.style.right = "30px";
+      t.style.background = color;
+      t.style.color = "white";
+      t.style.padding = "12px 20px";
+      t.style.borderRadius = "8px";
+      t.style.fontFamily = "sans-serif";
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 3000);
+    }
+
+    const form = document.getElementById("signupForm");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const pw = document.getElementById("password").value.trim();
+      const c = document.getElementById("confirmPassword").value.trim();
+
+      if (!name || !email || !pw || !c) return showToast("⚠️ Fill all fields", "#f44336");
+      if (pw !== c) return showToast("❌ Passwords don't match", "#f44336");
+
+      localStorage.setItem("registeredName", name);
+      localStorage.setItem("registeredEmail", email);
+      localStorage.setItem("registeredPassword", pw);
+
+      showToast("✅ Account created!");
+      setTimeout(() => (window.location.href = "login.html"), 2000);
     });
   </script>
 </body>
 </html>
+

@@ -1,0 +1,30 @@
+Attendees: Everyone
+
+Task Division for the Sprint
+First Deadline: Thursday Nov 13th 6pm
+Goal: Finish polishment of the core features as described below
+
+students:
+qr codes for tickets (Rim)
+
+add events to calendar (Reema) + integrate (Chandler)
+
+mock payment process (Patricia)
+
+organizers:
+
+check stats who attended with qrcode (Noorjahan)
+
+qr scanner for ticket validation (Rim)
+
+admin:
+
+approve deny events (reema)
+
+integrate all data (chandler)
+
+account validation for organizers account ( Sunidhi)
+
+finish up testing + help with integration (Griffin)
+
+next meeting: 13th of Nov, mandatory
