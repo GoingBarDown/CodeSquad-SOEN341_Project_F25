@@ -1,6 +1,6 @@
 import pytest
 from db.crud import crud_ticket
-from db.models import Ticket
+from db.models import Ticket, Event
 from db import db
 
 @pytest.fixture
@@ -110,3 +110,40 @@ def test_delete_ticket(session, sample_ticket_data):
 
 def test_delete_nonexistent_ticket(session):
     assert crud_ticket.delete_ticket(9999) is False
+
+def test_get_tickets_and_events_for_user_success(session):
+    """Should return ticket + event details for a given student."""
+    # Create an event
+    event = Event(title="Concert", location="Main Hall")
+    db.session.add(event)
+    db.session.commit()
+
+    # Create two tickets for same student, same event
+    crud_ticket.create_ticket({"attendee_id": 10, "event_id": event.id, "qr_code": "QR1"})
+    crud_ticket.create_ticket({"attendee_id": 10, "event_id": event.id, "qr_code": "QR2"})
+
+    results = crud_ticket.get_tickets_and_events_for_user(10)
+
+    assert isinstance(results, list)
+    assert len(results) == 2
+    for entry in results:
+        assert "ticket_id" in entry
+        assert "ticket_status" in entry
+        assert "event_id" in entry
+        assert entry["event_title"] == "Concert"
+        assert entry["event_location"] == "Main Hall"
+
+
+def test_get_tickets_and_events_for_user_no_results(session):
+    """Should return empty list if student has no tickets."""
+    results = crud_ticket.get_tickets_and_events_for_user(999)
+    assert isinstance(results, list)
+    assert results == []
+
+
+def test_get_tickets_and_events_for_user_error(session):
+    """Should return empty list (and print error) if DB fails."""
+    db.drop_all()
+    results = crud_ticket.get_tickets_and_events_for_user(1)
+    assert isinstance(results, list)
+    assert results == []
