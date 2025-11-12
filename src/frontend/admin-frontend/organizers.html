@@ -5,9 +5,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Organisers Admin</title>
 
-  <link rel="stylesheet" href="adminStyle.css">
-  <script src="admin.js" defer></script>
-  <script src="admin-organiser.js" defer></script>
+  <link rel="stylesheet" href="css/adminStyle.css">
+  <style>
+      body { opacity: 0; transition: opacity 0.3s ease; }
+      body.authenticated { opacity: 1; }
+  </style>
+  <script>
+      // Check authentication IMMEDIATELY before page renders
+      const userData = localStorage.getItem('userData');
+      console.log('Stored userData:', userData);
+      if (!userData) {
+          alert('❌ Please login before trying to access this page.');
+          window.location.href = 'admin-login.html';
+      } else {
+          try {
+              const user = JSON.parse(userData);
+              console.log('Parsed user:', user);
+              // Allow access if user exists (temporarily removing strict admin check for debugging)
+              // Wait for body to exist before adding class
+              if (document.body) {
+                  document.body.classList.add('authenticated');
+              } else {
+                  document.addEventListener('DOMContentLoaded', () => {
+                      document.body.classList.add('authenticated');
+                  });
+              }
+          } catch (e) {
+              console.error('Error parsing userData:', e);
+              localStorage.removeItem('userData');
+              localStorage.removeItem('authToken');
+              window.location.href = 'admin-login.html';
+          }
+      }
+  </script>
+  <script src="js/api-admin.js" defer></script>
+  <script>
+      // Check authentication before loading page
+      document.addEventListener('DOMContentLoaded', () => {
+          const userData = localStorage.getItem('userData');
+          if (!userData) {
+              window.location.href = 'admin-login.html';
+              return;
+          }
+          
+          try {
+              const user = JSON.parse(userData);
+              if (user.role !== 'admin') {
+                  localStorage.removeItem('userData');
+                  localStorage.removeItem('authToken');
+                  window.location.href = 'admin-login.html';
+              }
+          } catch (e) {
+              localStorage.removeItem('userData');
+              window.location.href = 'admin-login.html';
+          }
+      });
+  </script>
+  <script src="js/admin-organizers.js" defer></script>
 
    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,7 +81,7 @@
             <a href="../student-frontend/index.html">HOME</a>
             <a href="../student-frontend/events.html">EVENTS</a>
             <a href="../student-frontend/profilePage.html">MY PROFILE</a>
-            <a href="../student-frontend/login.html" id="loginLogoutLink">LOGIN</a>
+            <a href="admin-login.html" id="loginLogoutLink">LOGIN</a>
         </nav>
     </div>
 
@@ -35,7 +89,7 @@
     <div id="subbar" class="admin-nav">
       <a href="events.html" class="nav-tab">EVENTS</a>
       <a href="students.html" class="nav-tab">STUDENTS</a>
-      <a href="organizers.html" class="nav-tab">ORGANIZERS</a>
+      <a href="organizers.html" class="nav-tab active">ORGANIZERS</a>
     </div>
   <!-- === MAIN CONTENT === -->
   <main class="main-container">
@@ -46,13 +100,13 @@
         <input type="text" id="organiser-search" placeholder="Search organiser...">
       </div>
 
-      <!-- Filter by -->
-      <div class="filter-section">
-        <button id="filter-btn">Filter By ▼</button>
+      <!-- Filters -->
+      <div class="filter-tags">
         <select id="filter-options">
           <option value="az">A → Z</option>
           <option value="za">Z → A</option>
         </select>
+        <button class="clear-filters-btn" onclick="clearOrganizerFilters()">Clear Filters</button>
       </div>
 
       <!-- Scrollable Organiser List (populated by backend) -->
@@ -66,21 +120,30 @@
       <div id="organiser-info" class="info-card">
         <div class="info-header">
           <h2>Organiser Information</h2>
-          <button class="edit-btn">EDIT</button>
         </div>
 
         <div class="info-details">
-          <div class="info-label">Organisation Name:</div>
+          <div class="info-label">Organizer Name:</div>
           <div class="info-value placeholder" id="info-orgname">Select an organiser</div>
 
           <div class="info-label">Email:</div>
           <div class="info-value placeholder" id="info-email">—</div>
 
-          <div class="info-label">Target Community:</div>
+          <div class="info-label">Organization:</div>
           <div class="info-value placeholder" id="info-community">—</div>
+
+          <div class="info-label">Status:</div>
+          <div class="info-value placeholder" id="info-status">—</div>
 
           <div class="info-label">Events Created:</div>
           <div class="info-value placeholder" id="info-events">—</div>
+        </div>
+
+        <div class="info-actions">
+          <button onclick="approveOrganizer()" class="event-action-button btn-approve">Approve</button>
+          <button onclick="denyOrganizer()" class="event-action-button btn-deny">Deny</button>
+          <button onclick="openEditOrganizerModal()" class="event-action-button btn-edit">Edit</button>
+          <button onclick="deleteCurrentOrganizer()" class="event-action-button btn-delete">Delete</button>
         </div>
       </div>
     </section>

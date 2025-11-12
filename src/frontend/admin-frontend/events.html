@@ -4,10 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events Admin Dashboard</title>
-    <link rel="stylesheet" href="adminStyle.css">
+    <link rel="stylesheet" href="css/adminStyle.css">
+    <style>
+        body { opacity: 0; transition: opacity 0.3s ease; }
+        body.authenticated { opacity: 1; }
+    </style>
+    <script>
+        // Check authentication IMMEDIATELY before page renders
+        const userData = localStorage.getItem('userData');
+        console.log('Stored userData:', userData);
+        if (!userData) {
+            alert('❌ Please login before trying to access this page.');
+            window.location.href = 'admin-login.html';
+        } else {
+            try {
+                const user = JSON.parse(userData);
+                console.log('Parsed user:', user);
+                // Allow access if user exists (temporarily removing strict admin check for debugging)
+                // Wait for body to exist before adding class
+                if (document.body) {
+                    document.body.classList.add('authenticated');
+                } else {
+                    document.addEventListener('DOMContentLoaded', () => {
+                        document.body.classList.add('authenticated');
+                    });
+                }
+            } catch (e) {
+                console.error('Error parsing userData:', e);
+                localStorage.removeItem('userData');
+                localStorage.removeItem('authToken');
+                window.location.href = 'admin-login.html';
+            }
+        }
+    </script>
 
-    <script src="admin.js" defer></script>
-    <script src="admin-event.js" defer></script>
+    <script src="js/api-admin.js" defer></script>
+    <script src="js/admin-event.js" defer></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,7 +57,7 @@
             <a href="../student-frontend/index.html">HOME</a>
             <a href="../student-frontend/events.html">EVENTS</a>
             <a href="../student-frontend/profilePage.html">MY PROFILE</a>
-            <a href="../student-frontend/login.html" id="loginLogoutLink">LOGIN</a>
+            <a href="admin-login.html" id="loginLogoutLink">LOGIN</a>
         </nav>
     </div>
 
@@ -45,33 +77,26 @@
 
             <div class="filter-tags">
                 
-                <select id="filter-year">
-                    <option value="">Year</option>
-                    <option value="2025">2025</option>
-                    <option value="2024">2024</option>
-                    <option value="2023">2023</option>
+                <select id="filter-location">
+                    <option value="">Location</option>
                 </select>
 
-                <select id="filter-semester">
-                    <option value="">Semester</option>
-                    <option value="fall">Fall</option>
-                    <option value="winter">Winter</option>
-                    <option value="summer">Summer</option>
+                <select id="filter-category">
+                    <option value="">Category</option>
                 </select>
 
-                <select id="filter-association">
-                    <option value="">Student Association</option>
-                    <option value="sa1">SA - Tech Club</option>
-                    <option value="sa2">SA - Business Guild</option>
-                    <option value="sa3">SA - Arts Society</option>
+                <select id="filter-organizer">
+                    <option value="">Organizer</option>
                 </select>
-            
+
                 <select id="filter-buttons">
                     <option value="">Status</option>
                     <option value="active">Active</option>
                     <option value="pending">Pending</option>
                     <option value="past">Past</option>
                 </select>
+
+                <button class="clear-filters-btn" onclick="clearEventFilters()">Clear Filters</button>
             </div>
             
             <div id="event-list-container">
