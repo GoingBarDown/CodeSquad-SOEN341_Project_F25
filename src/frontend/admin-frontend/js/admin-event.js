@@ -1,26 +1,17 @@
 // --- 0. Global Data Store and Configuration ---
 let allEvents = [];
-const API_BASE_URL = '/events'; 
 
 
 // --- 1. Event Fetching (API Integration Point - GET) ---
 async function fetchAllEvents() {
     try {
-        // GET /events (Calls crud_events.get_all_events)
-        const response = await fetch(API_BASE_URL);
-        
-        if (!response.ok) {
-            throw new Error(`Failed to fetch events: HTTP status ${response.status}`);
-        }
-        
-        allEvents = await response.json(); 
-        
+        allEvents = await ADMIN_API.getEvents();
         applyFilters();
     } catch (error) {
         console.error("Could not fetch events:", error);
         const container = document.getElementById('event-list-container');
         if (container) {
-            container.innerHTML = '<div style="padding: 15px; color: red;">Error loading events. Check server connection and API route.</div>';
+            container.innerHTML = `<div style="padding: 15px; color: red;">Error loading events: ${error.message}</div>`;
         }
     }
 }
@@ -72,38 +63,43 @@ function loadEventDetails(event) {
                 <button onclick="changeEventStatus(${eventData.id}, 'Denied')" class="event-action-button btn-deny">Deny</button>
             `;
         }
-        
-        let deleteButton = `<button onclick="deleteEvent(${eventData.id})" class="event-action-button btn-delete">Delete Event</button>`;
 
         contentView.innerHTML = `
-            <div class="event-info-card">
+            <div class="info-card">
                 <div class="info-header">
                     <h2>${eventData.title}</h2>
-                    <span class="status-tag status-${eventData.status.toLowerCase()}">${eventData.status.toUpperCase()}</span>
+                    <button class="edit-btn" onclick="openEditEventModal(${eventData.id})">EDIT</button>
                 </div>
-                <hr>
+
                 <div class="info-details">
                     <div class="info-label">Date:</div>
-                    <div class="info-value">${eventData.date}</div>
+                    <div class="info-value">${eventData.date || '—'}</div>
+
                     <div class="info-label">Location:</div>
-                    <div class="info-value">${eventData.location}</div>
+                    <div class="info-value">${eventData.location || '—'}</div>
+
                     <div class="info-label">Organizer:</div>
-                    <div class="info-value">${eventData.organizer}</div>
+                    <div class="info-value">${eventData.organizer || '—'}</div>
+
                     <div class="info-label">Attendees:</div>
-                    <div class="info-value">${eventData.attendees}</div>
+                    <div class="info-value">${eventData.attendees || '—'}</div>
+
                     <div class="info-label">Ticket Price:</div>
                     <div class="info-value">$${eventData.ticketPrice ? eventData.ticketPrice.toFixed(2) : '0.00'}</div>
-                    <div class="info-label">Association:</div>
-                    <div class="info-value">${eventData.association}</div>
-                </div>
-                
-                <h4>Description:</h4>
-                <p>${eventData.details}</p>
 
-                <div class="admin-actions">
+                    <div class="info-label">Association:</div>
+                    <div class="info-value">${eventData.association || '—'}</div>
+
+                    <div class="info-label">Status:</div>
+                    <div class="info-value">${eventData.status || '—'}</div>
+
+                    <div class="info-label">Description:</div>
+                    <div class="info-value">${eventData.details || '—'}</div>
+                </div>
+
+                <div class="info-actions">
                     ${moderationButtons}
-                    <button class="event-action-button btn-edit">Edit Details</button>
-                    ${deleteButton}
+                    <button onclick="deleteEvent(${eventData.id})" class="event-action-button btn-delete">Delete Event</button>
                 </div>
             </div>
         `;
@@ -111,64 +107,121 @@ function loadEventDetails(event) {
 }
 
 
-// --- 3. Event Status Update (API Integration Point - PUT) ---
+// --- 3. Event Status Update (Handler) ---
 async function changeEventStatus(eventId, newStatus) {
-    // PUT /events/<int:event_id> (Calls crud_events.update_event)
     try {
-        const response = await fetch(`${API_BASE_URL}/${eventId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status: newStatus })
-        });
-
-        if (!response.ok) {
-             throw new Error(`Server failed to update status for event ID ${eventId}.`);
-        }
+        await ADMIN_API.updateEventStatus(eventId, newStatus);
         
         // Update frontend state
         const eventIndex = allEvents.findIndex(e => e.id === eventId);
         if (eventIndex > -1) {
             allEvents[eventIndex].status = newStatus;
-            
             applyFilters(); 
             const updatedItem = document.querySelector(`[data-event-id="${eventId}"]`);
             if (updatedItem) loadEventDetails({ currentTarget: updatedItem });
         }
         alert(`Event status successfully updated to: ${newStatus}.`);
-        
     } catch (error) {
         console.error("Error updating event status:", error);
         alert(`Failed to save status change. Error: ${error.message}`);
     }
 }
 
-
-// --- 4. Event Deletion (API Integration Point - DELETE) ---
+// --- 4. Event Deletion (Handler) ---
 async function deleteEvent(eventId) {
+    console.log('deleteEvent called with eventId:', eventId);
+    
     if (!confirm("Are you sure you want to permanently delete this event? This action cannot be undone.")) {
         return;
     }
     
-    // DELETE /events/<int:event_id> (Calls crud_events.delete_event)
     try {
-        const response = await fetch(`${API_BASE_URL}/${eventId}`, {
-            method: 'DELETE'
-        });
-
-        if (!response.ok) {
-            throw new Error(`Server failed to delete event ID ${eventId}.`);
-        }
-        
-        // Remove from local array and re-render
+        console.log('Attempting to delete event with ID:', eventId);
+        await ADMIN_API.deleteEvent(eventId);
         allEvents = allEvents.filter(event => event.id !== eventId);
-        
         applyFilters(); 
         alert("Event successfully deleted.");
-        
     } catch (error) {
         console.error("Error deleting event:", error);
         alert(`Failed to delete event. Error: ${error.message}`);
     }
+}
+
+// --- 4b. Edit Event (Handler - opens modal dialog) ---
+function openEditEventModal(eventId) {
+    const eventData = allEvents.find(e => e.id === eventId);
+    if (!eventData) return;
+
+    const modal = document.createElement('div');
+    modal.classList.add('modal-overlay');
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h2>Edit Event: ${eventData.title}</h2>
+            <form id="editEventForm">
+                <label for="editTitle">Title:</label>
+                <input type="text" id="editTitle" value="${eventData.title || ''}" required />
+
+                <label for="editDate">Date:</label>
+                <input type="text" id="editDate" value="${eventData.date || ''}" />
+
+                <label for="editLocation">Location:</label>
+                <input type="text" id="editLocation" value="${eventData.location || ''}" />
+
+                <label for="editOrganizer">Organizer:</label>
+                <input type="text" id="editOrganizer" value="${eventData.organizer || ''}" />
+
+                <label for="editDescription">Description:</label>
+                <textarea id="editDescription" rows="4">${eventData.details || ''}</textarea>
+
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                    <button type="button" class="btn-cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Handle form submission
+    modal.querySelector('#editEventForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const updatedData = {
+            title: document.getElementById('editTitle').value,
+            date: document.getElementById('editDate').value,
+            location: document.getElementById('editLocation').value,
+            organizer: document.getElementById('editOrganizer').value,
+            details: document.getElementById('editDescription').value
+        };
+
+        try {
+            await ADMIN_API.updateEvent(eventId, updatedData);
+            alert('✅ Event updated successfully!');
+            
+            // Update local data
+            const eventIndex = allEvents.findIndex(e => e.id === eventId);
+            if (eventIndex > -1) {
+                allEvents[eventIndex] = { ...allEvents[eventIndex], ...updatedData };
+                applyFilters();
+                const updatedItem = document.querySelector(`[data-event-id="${eventId}"]`);
+                if (updatedItem) loadEventDetails({ currentTarget: updatedItem });
+            }
+            
+            modal.remove();
+        } catch (error) {
+            console.error('Error updating event:', error);
+            alert(`❌ Failed to update event: ${error.message}`);
+        }
+    });
+
+    // Handle cancel button
+    modal.querySelector('.btn-cancel').addEventListener('click', () => modal.remove());
+
+    // Close modal when clicking outside
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.remove();
+    });
 }
 
 
