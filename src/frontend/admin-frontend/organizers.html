@@ -6,7 +6,7 @@
   <title>Organisers Admin</title>
 
   <link rel="stylesheet" href="css/adminStyle.css">
-  <script src="js/admin.js" defer></script>
+  <script src="js/api-admin.js" defer></script>
   <script src="js/admin-organizers.js" defer></script>
 
    <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -66,7 +66,7 @@
       <div id="organiser-info" class="info-card">
         <div class="info-header">
           <h2>Organiser Information</h2>
-          <button class="edit-btn">EDIT</button>
+          <button class="edit-btn" onclick="openEditOrganizerModal()">EDIT</button>
         </div>
 
         <div class="info-details">
@@ -81,6 +81,10 @@
 
           <div class="info-label">Events Created:</div>
           <div class="info-value placeholder" id="info-events">—</div>
+        </div>
+
+        <div class="info-actions">
+          <button onclick="deleteCurrentOrganizer()" class="event-action-button btn-delete">Delete Organizer</button>
         </div>
       </div>
     </section>

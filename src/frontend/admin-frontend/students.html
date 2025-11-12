@@ -6,7 +6,7 @@
   <title>Students Admin</title>
 
   <link rel="stylesheet" href="css/adminStyle.css">
-  <script src="js/admin.js" defer></script>
+  <script src="js/api-admin.js" defer></script>
   <script src="js/admin-students.js" defer></script>
 
    <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -68,7 +68,7 @@
       <div id="student-info" class="info-card">
         <div class="info-header">
           <h2>Student Information</h2>
-          <button class="edit-btn">EDIT</button>
+          <button class="edit-btn" onclick="openEditStudentModal()">EDIT</button>
         </div>
 
         <div class="info-details">
@@ -92,6 +92,10 @@
 
           <div class="info-label">Events Attended:</div>
           <div class="info-value placeholder" id="info-events">—</div>
+        </div>
+
+        <div class="info-actions">
+          <button onclick="deleteCurrentStudent()" class="event-action-button btn-delete">Delete Student</button>
         </div>
       </div>
     </section>
