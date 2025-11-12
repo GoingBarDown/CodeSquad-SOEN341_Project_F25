@@ -1,4 +1,3 @@
-
 const dot=document.getElementById('dot');
 const menu=document.getElementById('menu');
 dot.onclick=()=>{
@@ -21,7 +20,6 @@ function generateIcsContent(event) {
     // Ensure end date exists, otherwise use start date
     const endDate = formatIcsDate(event.end || event.start); 
     const location = event.extendedProps.location || "Campus Location";
-    // Using the event title for the description
     const description = event.title; 
 
     // Generate a unique ID for the event
@@ -60,7 +58,7 @@ function downloadIcs(event) {
     document.body.removeChild(link);
 }
 
-// --- Modal Simulation: This replaces the simple alert() and holds the Export button ---
+//Modal Function 
 function showEventDetailsModal(info) {
     // Check if a modal is already open and remove it, just in case
     const existingModal = document.getElementById('event-modal');
@@ -72,7 +70,7 @@ function showEventDetailsModal(info) {
 
     // Create the HTML for the popup modal
     const modalHtml = `
-        <div id="event-modal" class="modal" style="display:flex;">
+        <div id="event-modal" class="modal">
             <div class="modal-content">
                 <button id="close-modal">&times;</button>
                 <h2>${info.event.title}</h2>
@@ -102,7 +100,7 @@ function showEventDetailsModal(info) {
         closeModal();
     });
 }
-// --- End Modal Simulation ---
+
 
 
 // Function to initialize and render the calendar (This is the only definition now)
@@ -115,12 +113,13 @@ function initializeCalendar() {
 
     if (!studentId) {
         console.error("User ID not found. Cannot load personalized calendar.");
-        document.getElementById('calendar').innerHTML = '<p style="color:white; text-align:center;">Please log in to view your personalized calendar.</p>';
+        // MODIFICATION: Use CSS class for styling
+        document.getElementById('calendar').innerHTML = '<p class="calendar-message info">Please log in to view your personalized calendar.</p>';
         return;
     }
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-        // --- CALENDAR CONFIGURATION ---
+        // CALENDAR CONFIGURATION 
         initialView: 'dayGridMonth', 
         headerToolbar: {
             left: 'prev,next today',
@@ -130,7 +129,7 @@ function initializeCalendar() {
         editable: false, 
         selectable: true,
         
-        // --- DATA FEED CONFIGURATION ---
+        //DATA FEED CONFIGURATION 
         events: function(fetchInfo, successCallback, failureCallback) {
             const apiPath = `/student/${studentId}/events`;
             
@@ -138,7 +137,7 @@ function initializeCalendar() {
                 url: apiPath, 
                 method: 'GET',
                 xhrFields: { withCredentials: true },
-                // headers: { 'Authorization': 'Bearer ' + authToken }, // Uncomment if using tokens
+                
                 
                 success: function(response) {
                     console.log("Events successfully fetched:", response);
@@ -146,21 +145,22 @@ function initializeCalendar() {
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error("Error fetching events:", textStatus, errorThrown, jqXHR.responseText);
-                    document.getElementById('calendar').innerHTML = '<p style="color:red; text-align:center;">Failed to load events. Check console for API errors.</p>';
+                    // MODIFICATION: Use CSS class for styling
+                    document.getElementById('calendar').innerHTML = '<p class="calendar-message error">Failed to load events. Check console for API errors.</p>';
                     failureCallback(errorThrown);
                 }
             });
         },
-        // --- INTERACTIVITY ---
+        //INTERACTIVITY
         eventClick: function(info) {
             // This is the primary modification: call the modal containing the export button
             showEventDetailsModal(info); 
             info.jsEvent.preventDefault(); 
         },
         
-        // Optional: Customize event rendering to show colors based on status
+        
         eventDidMount: function(info) {
-            // Match status strings from your backend (e.g., 'claimed')
+
             if (info.event.extendedProps.claimStatus === 'claimed') {
                 info.el.style.backgroundColor = '#871a1a'; // App red for claimed
                 info.el.style.borderColor = '#510c0c';
