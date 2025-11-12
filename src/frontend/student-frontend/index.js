@@ -1,9 +1,25 @@
-const dot=document.getElementById('dot');
-const menu=document.getElementById('menu');
-dot.onclick=()=>{
-  const isOpen=menu.classList.toggle('open');
-  dot.innerHTML=isOpen?'&#8211;':'&#8801;';}
-  //minus and menu symbols
+// ===== MENU TOGGLE =====
+document.addEventListener("DOMContentLoaded", () => {
+  const dot = document.getElementById("dot");
+  const menu = document.getElementById("menu");
+
+  if (dot && menu) {
+    dot.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevent immediate close
+      const isOpen = menu.classList.toggle("open");
+      dot.innerHTML = isOpen ? "&#8211;" : "&#8801;"; // minus vs menu symbol
+    });
+
+    // Close the menu when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!menu.contains(e.target) && e.target !== dot) {
+        menu.classList.remove("open");
+        dot.innerHTML = "&#8801;"; // reset icon
+      }
+    });
+  }
+});
+
 
 
 const images = [
