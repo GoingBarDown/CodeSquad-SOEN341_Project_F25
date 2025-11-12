@@ -59,7 +59,7 @@ class Ticket(db.Model):
     attendee_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'), nullable=False)
     qr_code = db.Column(db.Text)
-    status = db.Column(db.String(20), default='pending')
+    status = db.Column(db.String(20), default='valid') 
 
     @property
     def data(self):

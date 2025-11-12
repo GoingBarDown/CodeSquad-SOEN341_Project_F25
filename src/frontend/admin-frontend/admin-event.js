@@ -75,6 +75,16 @@ function loadEventDetails(event) {
         
         let deleteButton = `<button onclick="deleteEvent(${eventData.id})" class="event-action-button btn-delete">Delete Event</button>`;
 
+        const qrScannerHTML = `
+            <div class="qr-scanner-card">
+                <h3>Ticket Validator</h3>
+                <p>Upload a student's QR code image to check them in for this event.</p>
+                <input type="file" id="qr-file-input" accept="image/*">
+                <canvas id="qr-canvas" style="display: none;"></canvas>
+                <div id="qr-result-message"></div>
+            </div>
+        `;
+
         contentView.innerHTML = `
             <div class="event-info-card">
                 <div class="info-header">
@@ -106,7 +116,12 @@ function loadEventDetails(event) {
                     ${deleteButton}
                 </div>
             </div>
+            ${qrScannerHTML}
         `;
+        const fileInput = document.getElementById("qr-file-input");
+        if (fileInput) {
+            fileInput.addEventListener("change", handleFileSelect);
+        }
     }
 }
 
@@ -214,3 +229,75 @@ document.addEventListener('DOMContentLoaded', () => {
 
     console.log("Admin Event Script Loaded.");
 });
+
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  const canvas = document.getElementById("qr-canvas");
+  // Check if canvas exists, if not, create it dynamically (safer)
+  const ctx = canvas.getContext("2d");
+
+  reader.onload = function (event) {
+    const img = new Image();
+    img.onload = function () {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+      const imageData = ctx.getImageData(0, 0, img.width, img.height);
+      
+      // Scan for QR code
+      const code = jsQR(imageData.data, imageData.width, imageData.height);
+      
+      if (code) {
+        console.log("Found QR code:", code.data);
+        validateTicketId(code.data);
+      } else {
+        setQrResultMessage("error", "Could not read QR code from image.");
+      }
+    };
+    img.src = event.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function validateTicketId(ticketId) {
+  setQrResultMessage("info", `Validating ticket ${ticketId}...`);
+  
+  try {
+    const response = await fetch('/tickets/validate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // 'Authorization': `Bearer ${your_auth_token}` // Add auth if needed
+      },
+      body: JSON.stringify({ ticketId: ticketId })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Validation Failed");
+    }
+    
+    // Success!
+    setQrResultMessage("success", `Success! Ticket ${ticketId} checked in for ${data.attendeeName}.`);
+    // Optionally, update event stats on the page
+    
+  } catch (error) {
+    console.error("Validation error:", error.message);
+    setQrResultMessage("error", `Error: ${error.message}`);
+  }
+}
+
+function setQrResultMessage(type, message) {
+  const resultMessage = document.getElementById("qr-result-message");
+  if (resultMessage) {
+    resultMessage.textContent = message;
+    resultMessage.style.color = "black"; // Reset
+    if (type === "success") resultMessage.style.color = "green";
+    if (type === "error") resultDMessage.style.color = "red";
+    if (type === "info") resultMessage.style.color = "blue";
+  }
+}
