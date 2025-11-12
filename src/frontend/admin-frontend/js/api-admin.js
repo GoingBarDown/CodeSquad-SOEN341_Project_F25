@@ -82,6 +82,22 @@ const ADMIN_API = {
             headers: this.getHeaders()
         });
         return this.handleResponse(response);
+    },
+
+    // === USERS ===
+    async getUserById(userId) {
+        const response = await fetch(`${this.baseUrl}/users/${userId}`, {
+            headers: this.getHeaders()
+        });
+        return this.handleResponse(response);
+    },
+
+    // === EVENT ATTENDANCE ===
+    async getEventAttendance(eventId) {
+        const response = await fetch(`${this.baseUrl}/events/${eventId}/attendance`, {
+            headers: this.getHeaders()
+        });
+        return this.handleResponse(response);
     }
 };
 

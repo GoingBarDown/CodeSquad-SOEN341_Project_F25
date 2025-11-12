@@ -21,9 +21,25 @@ function applyOrganiserFilters() {
   // Fetch organizers from backend using API
   (async () => {
     try {
-      const organizers = await ADMIN_API.getOrganizers(search, filter);
+      const organizers = await ADMIN_API.getOrganizers();
       // Filter by role to get only organizers
-      const organizersList = organizers.filter(user => user.role === 'organizer');
+      let organizersList = organizers.filter(user => user.role === 'organizer');
+      
+      // Apply search filter (search in username and email)
+      if (search) {
+        organizersList = organizersList.filter(user => 
+          user.username.toLowerCase().includes(search) || 
+          user.email.toLowerCase().includes(search)
+        );
+      }
+      
+      // Apply sort filter
+      if (filter === 'az') {
+        organizersList.sort((a, b) => a.username.localeCompare(b.username));
+      } else if (filter === 'za') {
+        organizersList.sort((a, b) => b.username.localeCompare(a.username));
+      }
+      
       renderOrganiserList(organizersList);
     } catch (error) {
       console.error("Error fetching organizers:", error);
@@ -37,17 +53,41 @@ function applyOrganiserFilters() {
 
 function renderOrganiserList(organisers) {
   const listContainer = document.getElementById('organiser-list-container');
+  const searchTerm = document.getElementById('organiser-search')?.value || '';
+  
   listContainer.innerHTML = '';
 
   if (!organisers || organisers.length === 0) {
-    listContainer.innerHTML = `<div class="no-results">No organisers found.</div>`;
+    if (searchTerm) {
+      listContainer.innerHTML = `
+        <div class="no-results">
+          <div style="font-size: 1.2rem; margin-bottom: 10px;">🔍 No organizers match "${searchTerm}"</div>
+          <div style="font-size: 0.9rem; color: #666; line-height: 1.6;">
+            Try:<br>
+            - Checking your spelling<br>
+            - Using different keywords<br>
+            - <a href="#" onclick="clearOrganizerFilters(); return false;" style="color: rgb(151, 9, 21); font-weight: bold;">Clearing your search</a>
+          </div>
+        </div>
+      `;
+    } else {
+      listContainer.innerHTML = `
+        <div class="no-results">
+          <div style="font-size: 1.2rem; margin-bottom: 10px;">🏢 No organizers yet</div>
+          <div style="font-size: 0.9rem; color: #666;">Get started by creating your first organizer account!</div>
+        </div>
+      `;
+    }
     return;
   }
 
   organisers.forEach(organiser => {
     const div = document.createElement('div');
     div.classList.add('organiser-item');
-    div.textContent = `${organiser.username || organiser.email}`;
+    div.innerHTML = `
+      <div class="list-item-name">${organiser.username || organiser.email}</div>
+      <div class="list-item-preview">${organiser.email || '—'}</div>
+    `;
     div.addEventListener('click', () => showOrganiserDetails(organiser));
     listContainer.appendChild(div);
   });
@@ -162,4 +202,10 @@ function openEditOrganizerModal() {
   modal.addEventListener('click', (e) => {
     if (e.target === modal) modal.remove();
   });
+}
+
+function clearOrganizerFilters() {
+  document.getElementById('organiser-search').value = '';
+  document.getElementById('filter-options').value = 'az';
+  applyOrganiserFilters();
 }

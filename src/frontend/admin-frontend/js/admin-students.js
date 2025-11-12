@@ -24,9 +24,25 @@ function applyStudentFilters() {
   // Fetch students from backend using API
   (async () => {
     try {
-      const students = await ADMIN_API.getStudents(search, filter);
+      const students = await ADMIN_API.getStudents();
       // Filter by role to get only students
-      const studentsList = students.filter(user => user.role === 'student');
+      let studentsList = students.filter(user => user.role === 'student');
+      
+      // Apply search filter (search in username and email)
+      if (search) {
+        studentsList = studentsList.filter(user => 
+          user.username.toLowerCase().includes(search) || 
+          user.email.toLowerCase().includes(search)
+        );
+      }
+      
+      // Apply sort filter
+      if (filter === 'az') {
+        studentsList.sort((a, b) => a.username.localeCompare(b.username));
+      } else if (filter === 'za') {
+        studentsList.sort((a, b) => b.username.localeCompare(a.username));
+      }
+      
       renderStudentList(studentsList);
     } catch (error) {
       console.error("Error fetching students:", error);
@@ -40,17 +56,41 @@ function applyStudentFilters() {
 
 function renderStudentList(students) {
   const listContainer = document.getElementById('student-list-container');
+  const searchTerm = document.getElementById('student-search')?.value || '';
+  
   listContainer.innerHTML = '';
 
   if (!students || students.length === 0) {
-    listContainer.innerHTML = `<div class="no-results">No students found.</div>`;
+    if (searchTerm) {
+      listContainer.innerHTML = `
+        <div class="no-results">
+          <div style="font-size: 1.2rem; margin-bottom: 10px;">🔍 No students match "${searchTerm}"</div>
+          <div style="font-size: 0.9rem; color: #666; line-height: 1.6;">
+            Try:<br>
+            - Checking your spelling<br>
+            - Using different keywords<br>
+            - <a href="#" onclick="clearStudentFilters(); return false;" style="color: rgb(151, 9, 21); font-weight: bold;">Clearing your search</a>
+          </div>
+        </div>
+      `;
+    } else {
+      listContainer.innerHTML = `
+        <div class="no-results">
+          <div style="font-size: 1.2rem; margin-bottom: 10px;">👥 No students yet</div>
+          <div style="font-size: 0.9rem; color: #666;">Get started by creating your first student account!</div>
+        </div>
+      `;
+    }
     return;
   }
 
   students.forEach(student => {
     const div = document.createElement('div');
     div.classList.add('student-item');
-    div.textContent = student.username;
+    div.innerHTML = `
+      <div class="list-item-name">${student.username}</div>
+      <div class="list-item-preview">${student.email || '—'}</div>
+    `;
     div.addEventListener('click', () => showStudentDetails(student));
     listContainer.appendChild(div);
   });
@@ -168,5 +208,11 @@ function openEditStudentModal() {
   modal.addEventListener('click', (e) => {
     if (e.target === modal) modal.remove();
   });
+}
+
+function clearStudentFilters() {
+  document.getElementById('student-search').value = '';
+  document.getElementById('filter-options').value = 'az';
+  applyStudentFilters();
 }
 

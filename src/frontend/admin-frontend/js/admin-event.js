@@ -6,6 +6,7 @@ let allEvents = [];
 async function fetchAllEvents() {
     try {
         allEvents = await ADMIN_API.getEvents();
+        populateFilterOptions();
         applyFilters();
     } catch (error) {
         console.error("Could not fetch events:", error);
@@ -16,18 +17,99 @@ async function fetchAllEvents() {
     }
 }
 
+// --- 1b. Populate Dynamic Filter Options ---
+function populateFilterOptions() {
+    // Get unique locations
+    const locations = [...new Set(allEvents
+        .map(e => e.location)
+        .filter(Boolean)
+        .filter(loc => loc.trim() !== '')
+    )].sort();
+    
+    const locationSelect = document.getElementById('filter-location');
+    if (locationSelect) {
+        // Clear existing options except the placeholder
+        locationSelect.innerHTML = '<option value="">Location</option>';
+        locations.forEach(location => {
+            const option = document.createElement('option');
+            option.value = location;
+            option.textContent = location;
+            locationSelect.appendChild(option);
+        });
+        console.log('Populated locations:', locations);
+    }
+
+    // Get unique categories
+    const categories = [...new Set(allEvents
+        .map(e => e.category)
+        .filter(Boolean)
+        .filter(cat => cat.trim() !== '')
+    )].sort();
+    
+    const categorySelect = document.getElementById('filter-category');
+    if (categorySelect) {
+        categorySelect.innerHTML = '<option value="">Category</option>';
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            categorySelect.appendChild(option);
+        });
+        console.log('Populated categories:', categories);
+    }
+
+    // Get unique organizer IDs (showing ID since organizer name isn't returned)
+    const organizers = [...new Set(allEvents
+        .map(e => e.organizer_id)
+        .filter(Boolean)
+    )].sort((a, b) => a - b);
+    
+    const organizerSelect = document.getElementById('filter-organizer');
+    if (organizerSelect) {
+        organizerSelect.innerHTML = '<option value="">Organizer</option>';
+        organizers.forEach(organizerId => {
+            const option = document.createElement('option');
+            option.value = organizerId;
+            option.textContent = `Organizer ID: ${organizerId}`;
+            organizerSelect.appendChild(option);
+        });
+        console.log('Populated organizers:', organizers);
+    }
+}
+
 
 // --- 2. Rendering Events and Details (No changes needed) ---
 function renderEventList(eventsToDisplay) {
     const container = document.getElementById('event-list-container');
     const contentView = document.querySelector('.content-view');
+    const searchTerm = document.getElementById('main-search')?.value || '';
+    
     if (!container || !contentView) return;
 
     container.innerHTML = '';
     contentView.innerHTML = '<p class="placeholder-text">Select an event to view details.</p>';
 
     if (eventsToDisplay.length === 0) {
-        container.innerHTML = '<div class="no-results">No events match the current filter.</div>';
+        if (searchTerm) {
+            container.innerHTML = `
+                <div class="no-results">
+                    <div style="font-size: 1.2rem; margin-bottom: 10px;">🔍 No events match "${searchTerm}"</div>
+                    <div style="font-size: 0.9rem; color: #666; line-height: 1.6;">
+                        Try:<br>
+                        - Checking your spelling<br>
+                        - Using different keywords<br>
+                        - <a href="#" onclick="clearEventFilters(); return false;" style="color: rgb(151, 9, 21); font-weight: bold;">Clearing your search</a>
+                    </div>
+                </div>
+            `;
+        } else {
+            container.innerHTML = `
+                <div class="no-results">
+                    <div style="font-size: 1.2rem; margin-bottom: 10px;">📅 No events yet</div>
+                    <div style="font-size: 0.9rem; color: #666;">Get started by creating your first event!</div>
+                </div>
+            `;
+        }
         return;
     }
 
@@ -35,7 +117,7 @@ function renderEventList(eventsToDisplay) {
         const item = document.createElement('div');
         item.classList.add('event-list-item');
         item.setAttribute('data-event-id', event.id);
-        item.innerHTML = `<strong>${event.title}</strong><br><small>Status: ${event.status} | ${event.date}</small>`;
+        item.innerHTML = `<strong>${event.title}</strong><br><small>Status: ${event.status} | ${event.start_date || 'No date'}</small>`;
 
         item.addEventListener('click', loadEventDetails);
         container.appendChild(item);
@@ -56,6 +138,36 @@ function loadEventDetails(event) {
     const contentView = document.querySelector('.content-view');
 
     if (eventData && contentView) {
+        // Fetch organizer name if organizer_id exists
+        let organizerDisplay = '—';
+        if (eventData.organizer_id) {
+            ADMIN_API.getUserById(eventData.organizer_id).then(user => {
+                organizerDisplay = user.username || `Organizer ID: ${eventData.organizer_id}`;
+                // Update the organizer field in the already-rendered card
+                const organizerField = contentView.querySelector('[data-field="organizer"]');
+                if (organizerField) {
+                    organizerField.textContent = organizerDisplay;
+                }
+            }).catch(err => {
+                console.log('Could not fetch organizer name:', err);
+            });
+        }
+
+        // Fetch attendance data
+        ADMIN_API.getEventAttendance(eventData.id).then(attendance => {
+            const attendanceDisplay = `${attendance.checked_in} / ${attendance.registered}`;
+            const attendeesField = contentView.querySelector('[data-field="attendees"]');
+            if (attendeesField) {
+                attendeesField.textContent = attendanceDisplay;
+            }
+        }).catch(err => {
+            console.log('Could not fetch attendance data:', err);
+            const attendeesField = contentView.querySelector('[data-field="attendees"]');
+            if (attendeesField) {
+                attendeesField.textContent = '—';
+            }
+        });
+
         let moderationButtons = '';
         if (eventData.status.toLowerCase() === 'pending') {
             moderationButtons = `
@@ -68,37 +180,40 @@ function loadEventDetails(event) {
             <div class="info-card">
                 <div class="info-header">
                     <h2>${eventData.title}</h2>
-                    <button class="edit-btn" onclick="openEditEventModal(${eventData.id})">EDIT</button>
                 </div>
 
                 <div class="info-details">
                     <div class="info-label">Date:</div>
-                    <div class="info-value">${eventData.date || '—'}</div>
+                    <div class="info-value">${eventData.start_date ? new Date(eventData.start_date).toLocaleDateString() : '—'}</div>
+
+                    <div class="info-label">Time:</div>
+                    <div class="info-value">${eventData.start_date ? new Date(eventData.start_date).toLocaleTimeString() : '—'}</div>
 
                     <div class="info-label">Location:</div>
                     <div class="info-value">${eventData.location || '—'}</div>
 
                     <div class="info-label">Organizer:</div>
-                    <div class="info-value">${eventData.organizer || '—'}</div>
+                    <div class="info-value" data-field="organizer">${organizerDisplay}</div>
 
                     <div class="info-label">Attendees:</div>
-                    <div class="info-value">${eventData.attendees || '—'}</div>
+                    <div class="info-value" data-field="attendees">Loading...</div>
 
                     <div class="info-label">Ticket Price:</div>
-                    <div class="info-value">$${eventData.ticketPrice ? eventData.ticketPrice.toFixed(2) : '0.00'}</div>
+                    <div class="info-value">$${eventData.price ? eventData.price.toFixed(2) : '0.00'}</div>
 
                     <div class="info-label">Association:</div>
-                    <div class="info-value">${eventData.association || '—'}</div>
+                    <div class="info-value">${eventData.association || 'N/A'}</div>
 
                     <div class="info-label">Status:</div>
                     <div class="info-value">${eventData.status || '—'}</div>
 
                     <div class="info-label">Description:</div>
-                    <div class="info-value">${eventData.details || '—'}</div>
+                    <div class="info-value">${eventData.description || '—'}</div>
                 </div>
 
                 <div class="info-actions">
                     ${moderationButtons}
+                    <button onclick="openEditEventModal(${eventData.id})" class="event-action-button btn-edit">Edit Event</button>
                     <button onclick="deleteEvent(${eventData.id})" class="event-action-button btn-delete">Delete Event</button>
                 </div>
             </div>
@@ -225,12 +340,12 @@ function openEditEventModal(eventId) {
 }
 
 
-// --- 5. Filtering Logic (No changes needed) ---
+// --- 5. Filtering Logic ---
 function applyFilters() {
     const searchTerm = document.getElementById('main-search')?.value.toLowerCase() || '';
-    const year = document.getElementById('filter-year')?.value || '';
-    const semester = document.getElementById('filter-semester')?.value || '';
-    const association = document.getElementById('filter-association')?.value || '';
+    const location = document.getElementById('filter-location')?.value || '';
+    const category = document.getElementById('filter-category')?.value || '';
+    const organizerId = document.getElementById('filter-organizer')?.value || '';
     const status = document.getElementById('filter-buttons')?.value.toLowerCase() || '';
 
     if (allEvents.length === 0) {
@@ -239,13 +354,16 @@ function applyFilters() {
     }
 
     const filtered = allEvents.filter(event => {
-        const matchSearch = event.title.toLowerCase().includes(searchTerm) || event.organizer.toLowerCase().includes(searchTerm) || event.details.toLowerCase().includes(searchTerm);
-        const matchYear = !year || event.year === year;
-        const matchSemester = !semester || event.semester === semester;
-        const matchAssoc = !association || event.association === association;
+        const matchSearch = !searchTerm || 
+          event.title.toLowerCase().includes(searchTerm) || 
+          event.organizer_id?.toString().includes(searchTerm) || 
+          event.details?.toLowerCase().includes(searchTerm);
+        const matchLocation = !location || event.location === location;
+        const matchCategory = !category || event.category === category;
+        const matchOrganizer = !organizerId || event.organizer_id?.toString() === organizerId;
         const matchStatus = !status || event.status.toLowerCase() === status;
 
-        return matchSearch && matchYear && matchSemester && matchAssoc && matchStatus;
+        return matchSearch && matchLocation && matchCategory && matchOrganizer && matchStatus;
     });
 
     renderEventList(filtered);
@@ -253,17 +371,26 @@ function applyFilters() {
 }
 
 
-// --- 6. Event Listener Setup (No changes needed) ---
+// --- 6. Event Listener Setup ---
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize the event data
     fetchAllEvents();
 
     // Filters event listeners
     document.getElementById('main-search')?.addEventListener('input', applyFilters);
-    document.getElementById('filter-year')?.addEventListener('change', applyFilters);
-    document.getElementById('filter-semester')?.addEventListener('change', applyFilters);
-    document.getElementById('filter-association')?.addEventListener('change', applyFilters);
+    document.getElementById('filter-location')?.addEventListener('change', applyFilters);
+    document.getElementById('filter-category')?.addEventListener('change', applyFilters);
+    document.getElementById('filter-organizer')?.addEventListener('change', applyFilters);
     document.getElementById('filter-buttons')?.addEventListener('change', applyFilters);
 
     console.log("Admin Event Script Loaded.");
 });
+
+function clearEventFilters() {
+  document.getElementById('main-search').value = '';
+  document.getElementById('filter-location').value = '';
+  document.getElementById('filter-category').value = '';
+  document.getElementById('filter-organizer').value = '';
+  document.getElementById('filter-buttons').value = '';
+  applyFilters();
+}
