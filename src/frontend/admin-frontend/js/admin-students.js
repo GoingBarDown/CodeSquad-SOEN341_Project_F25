@@ -101,12 +101,11 @@ function showStudentDetails(student) {
   currentStudent = student;
 
   // Update existing info card fields with actual backend data
-  document.getElementById('info-firstname').textContent = student.username || '—';
-  document.getElementById('info-lastname').textContent = student.id || '—';
-  document.getElementById('info-studentid').textContent = student.id || '—';
+  document.getElementById('info-firstname').textContent = student.firstName || student.username || '—';
+  document.getElementById('info-lastname').textContent = student.lastName || student.id || '—';
+  document.getElementById('info-studentid').textContent = student.studentId || student.id || '—';
   document.getElementById('info-email').textContent = student.email || '—';
-  document.getElementById('info-password').textContent = student.role || 'Student';
-  document.getElementById('info-program').textContent = 'N/A';
+  document.getElementById('info-program').textContent = student.program || 'N/A';
   document.getElementById('info-events').textContent = 'N/A';
 
   // Remove placeholder style
@@ -130,7 +129,33 @@ async function deleteCurrentStudent() {
     console.log('Attempting to delete student with ID:', currentStudent.id);
     await ADMIN_API.deleteStudent(currentStudent.id);
     alert('✅ Student successfully deleted.');
+    
+    // Clear selection and refresh
     currentStudent = null;
+    document.getElementById('student-info').innerHTML = `
+      <div class="info-header">
+        <h2>Student Information</h2>
+      </div>
+      <div class="info-details">
+        <div class="info-label">First Name:</div>
+        <div class="info-value placeholder" id="info-firstname">Select a student</div>
+        <div class="info-label">Last Name:</div>
+        <div class="info-value placeholder" id="info-lastname">—</div>
+        <div class="info-label">Student ID:</div>
+        <div class="info-value placeholder" id="info-studentid">—</div>
+        <div class="info-label">Email:</div>
+        <div class="info-value placeholder" id="info-email">—</div>
+        <div class="info-label">Program:</div>
+        <div class="info-value placeholder" id="info-program">—</div>
+        <div class="info-label">Events Attended:</div>
+        <div class="info-value placeholder" id="info-events">—</div>
+      </div>
+      <div class="info-actions">
+        <button onclick="openEditStudentModal()" class="event-action-button btn-edit">Edit Student</button>
+        <button onclick="deleteCurrentStudent()" class="event-action-button btn-delete">Delete Student</button>
+      </div>
+    `;
+    
     applyStudentFilters(); // Refresh the list
   } catch (error) {
     console.error('Error deleting student:', error);
@@ -156,6 +181,18 @@ function openEditStudentModal() {
         <label for="editEmail">Email:</label>
         <input type="email" id="editEmail" value="${currentStudent.email || ''}" required />
 
+        <label for="editFirstName">First Name:</label>
+        <input type="text" id="editFirstName" value="${currentStudent.firstName || ''}" />
+
+        <label for="editLastName">Last Name:</label>
+        <input type="text" id="editLastName" value="${currentStudent.lastName || ''}" />
+
+        <label for="editStudentId">Student ID:</label>
+        <input type="text" id="editStudentId" value="${currentStudent.studentId || ''}" />
+
+        <label for="editProgram">Program:</label>
+        <input type="text" id="editProgram" value="${currentStudent.program || ''}" />
+
         <div style="display: flex; gap: 10px; margin-top: 20px;">
           <button type="submit" class="btn-primary">Save Changes</button>
           <button type="button" class="btn-cancel">Cancel</button>
@@ -170,13 +207,34 @@ function openEditStudentModal() {
   modal.querySelector('#editStudentForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     
+    const username = document.getElementById('editUsername').value.trim();
+    const email = document.getElementById('editEmail').value.trim();
+    
+    // Validation
+    if (!username) {
+      alert('❌ Username cannot be empty');
+      return;
+    }
+    if (!email) {
+      alert('❌ Email cannot be empty');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert('❌ Please enter a valid email address');
+      return;
+    }
+    
     const updatedData = {
-      username: document.getElementById('editUsername').value,
-      email: document.getElementById('editEmail').value
+      username,
+      email,
+      firstName: document.getElementById('editFirstName').value.trim(),
+      lastName: document.getElementById('editLastName').value.trim(),
+      studentId: document.getElementById('editStudentId').value.trim(),
+      program: document.getElementById('editProgram').value.trim()
     };
 
     try {
-      // For users, we need to use a PUT endpoint if available
+      // Update user with available fields
       const response = await fetch(`${ADMIN_API.baseUrl}/users/${currentStudent.id}`, {
         method: 'PUT',
         headers: ADMIN_API.getHeaders(),

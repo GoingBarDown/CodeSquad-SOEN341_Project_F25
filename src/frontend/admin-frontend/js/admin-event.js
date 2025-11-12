@@ -58,7 +58,7 @@ function populateFilterOptions() {
         console.log('Populated categories:', categories);
     }
 
-    // Get unique organizer IDs (showing ID since organizer name isn't returned)
+    // Get unique organizer IDs and fetch their names
     const organizers = [...new Set(allEvents
         .map(e => e.organizer_id)
         .filter(Boolean)
@@ -68,10 +68,20 @@ function populateFilterOptions() {
     if (organizerSelect) {
         organizerSelect.innerHTML = '<option value="">Organizer</option>';
         organizers.forEach(organizerId => {
-            const option = document.createElement('option');
-            option.value = organizerId;
-            option.textContent = `Organizer ID: ${organizerId}`;
-            organizerSelect.appendChild(option);
+            // Fetch organizer name
+            ADMIN_API.getUserById(organizerId).then(user => {
+                const option = document.createElement('option');
+                option.value = organizerId;
+                option.textContent = user.username || `Organizer ${organizerId}`;
+                organizerSelect.appendChild(option);
+            }).catch(err => {
+                console.log('Could not fetch organizer name for ID:', organizerId, err);
+                // Fallback to ID
+                const option = document.createElement('option');
+                option.value = organizerId;
+                option.textContent = `Organizer ${organizerId}`;
+                organizerSelect.appendChild(option);
+            });
         });
         console.log('Populated organizers:', organizers);
     }
@@ -276,17 +286,28 @@ function openEditEventModal(eventId) {
                 <label for="editTitle">Title:</label>
                 <input type="text" id="editTitle" value="${eventData.title || ''}" required />
 
-                <label for="editDate">Date:</label>
-                <input type="text" id="editDate" value="${eventData.date || ''}" />
-
                 <label for="editLocation">Location:</label>
                 <input type="text" id="editLocation" value="${eventData.location || ''}" />
 
-                <label for="editOrganizer">Organizer:</label>
-                <input type="text" id="editOrganizer" value="${eventData.organizer || ''}" />
+                <label for="editCategory">Category:</label>
+                <input type="text" id="editCategory" value="${eventData.category || ''}" />
+
+                <label for="editPrice">Price ($):</label>
+                <input type="number" id="editPrice" step="0.01" value="${eventData.price || '0'}" />
+
+                <label for="editCapacity">Capacity:</label>
+                <input type="number" id="editCapacity" value="${eventData.capacity || ''}" />
 
                 <label for="editDescription">Description:</label>
-                <textarea id="editDescription" rows="4">${eventData.details || ''}</textarea>
+                <textarea id="editDescription" rows="4">${eventData.description || ''}</textarea>
+
+                <label for="editStatus">Status:</label>
+                <select id="editStatus">
+                    <option value="active" ${eventData.status === 'active' ? 'selected' : ''}>Active</option>
+                    <option value="pending" ${eventData.status === 'pending' ? 'selected' : ''}>Pending</option>
+                    <option value="past" ${eventData.status === 'past' ? 'selected' : ''}>Past</option>
+                    <option value="cancelled" ${eventData.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                </select>
 
                 <div style="display: flex; gap: 10px; margin-top: 20px;">
                     <button type="submit" class="btn-primary">Save Changes</button>
@@ -302,12 +323,22 @@ function openEditEventModal(eventId) {
     modal.querySelector('#editEventForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         
+        const title = document.getElementById('editTitle').value.trim();
+        
+        // Validation
+        if (!title) {
+            alert('❌ Event title cannot be empty');
+            return;
+        }
+        
         const updatedData = {
-            title: document.getElementById('editTitle').value,
-            date: document.getElementById('editDate').value,
-            location: document.getElementById('editLocation').value,
-            organizer: document.getElementById('editOrganizer').value,
-            details: document.getElementById('editDescription').value
+            title,
+            location: document.getElementById('editLocation').value.trim(),
+            category: document.getElementById('editCategory').value.trim(),
+            price: parseFloat(document.getElementById('editPrice').value) || 0,
+            capacity: parseInt(document.getElementById('editCapacity').value) || null,
+            description: document.getElementById('editDescription').value.trim(),
+            status: document.getElementById('editStatus').value
         };
 
         try {

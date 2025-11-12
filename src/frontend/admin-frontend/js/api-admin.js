@@ -98,10 +98,52 @@ const ADMIN_API = {
             headers: this.getHeaders()
         });
         return this.handleResponse(response);
+    },
+
+    // === ORGANIZATIONS ===
+    async getOrganizations() {
+        const response = await fetch(`${this.baseUrl}/organizations`, {
+            headers: this.getHeaders()
+        });
+        return this.handleResponse(response);
+    },
+
+    async getOrganizationMembers() {
+        const response = await fetch(`${this.baseUrl}/organization_members`, {
+            headers: this.getHeaders()
+        });
+        return this.handleResponse(response);
+    },
+
+    async updateOrganizationStatus(orgId, status) {
+        const response = await fetch(`${this.baseUrl}/organizations/${orgId}`, {
+            method: 'PUT',
+            headers: this.getHeaders(),
+            body: JSON.stringify({ status })
+        });
+        return this.handleResponse(response);
+    },
+
+    async createOrganization(orgData) {
+        const response = await fetch(`${this.baseUrl}/organizations`, {
+            method: 'POST',
+            headers: this.getHeaders(),
+            body: JSON.stringify(orgData)
+        });
+        return this.handleResponse(response);
+    },
+
+    async updateOrganization(orgId, orgData) {
+        const response = await fetch(`${this.baseUrl}/organizations/${orgId}`, {
+            method: 'PUT',
+            headers: this.getHeaders(),
+            body: JSON.stringify(orgData)
+        });
+        return this.handleResponse(response);
     }
 };
 
-// === Shared UI: Hamburger Menu Toggle ===
+// === Shared UI: Hamburger Menu Toggle & Auth Status ===
 document.addEventListener('DOMContentLoaded', () => {
     const dot = document.getElementById('dot');
     const menu = document.getElementById('menu');
@@ -109,6 +151,22 @@ document.addEventListener('DOMContentLoaded', () => {
         dot.onclick = () => {
             const isOpen = menu.classList.toggle('open');
             dot.innerHTML = isOpen ? '&#8211;' : '&#8801;';
+        };
+    }
+    
+    // Update menu based on auth status
+    const loginLink = document.querySelector('a[href="admin-login.html"]');
+    const userData = localStorage.getItem('userData');
+    
+    if (loginLink && userData) {
+        // User is logged in, change to LOGOUT
+        loginLink.textContent = 'LOGOUT';
+        loginLink.href = '#';
+        loginLink.onclick = (e) => {
+            e.preventDefault();
+            localStorage.removeItem('userData');
+            localStorage.removeItem('authToken');
+            window.location.href = 'admin-login.html';
         };
     }
 });
