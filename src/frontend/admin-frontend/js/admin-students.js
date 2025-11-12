@@ -52,7 +52,8 @@ function showStudentDetails(student) {
   document.getElementById('info-lastname').textContent = student.lastName || '—';
   document.getElementById('info-studentid').textContent = student.id || '—';
   document.getElementById('info-email').textContent = student.email || '—';
-  document.getElementById('info-password').textContent = '••••••••'; // Hide actual password
+  document.getElementById('info-password').textContent = student.role || 'Student';
+  // document.getElementById('info-password').textContent = '••••••••'; // Hide actual password
   document.getElementById('info-program').textContent = student.program || '—';
   document.getElementById('info-events').textContent = student.eventsAttended || '—';
 
