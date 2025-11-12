@@ -12,20 +12,20 @@ body {
 
 
 /* =========================================================
-   2. HEADER & MENU (Top Navigation)
+   2. HEADER & MENU (Top Navigation) — UPDATED FOR ORGANIZER STYLE
    ========================================================= */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgb(151, 9, 21);
-  color: white;
   padding: 12px 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: rgb(151, 9, 21); /* same as before */
   font-family: "Poller One", sans-serif;
   font-weight: 100;
   font-size: 20px;
-  font-style: normal;
+  color: white;
+  position: relative; /* needed for dropdown */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
@@ -42,50 +42,65 @@ header h1 {
   cursor: pointer;
   font-size: 24px;
   display: flex;
-  text-align: center;
   align-items: center;
   justify-content: center;
   border: none;
   line-height: 1;
   color: #912338;
-  transition: background 0.3s;
 }
 
-#dot:hover {
-  background: #7e1a2d;
-}
-
+/* MENU DROPDOWN */
 #menu {
-  background: bisque;
+  position: absolute;
+  top: 60px; /* below header */
+  right: 20px;
+  background-color: #f9f6f1; /* organizer style background */
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   max-height: 0;
-  transition: max-height 0.3s ease;
+  width: 180px;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+  z-index: 1000;
 }
 
 #menu.open {
-  max-height: 220px;
+  max-height: 300px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#menu nav {
+  display: flex;
+  flex-direction: column;
 }
 
 #menu nav a {
-  display: block;
-  padding: 12px 16px;
   text-decoration: none;
-  font-weight: bolder;
-  text-align: center;
-  color: #871a1a;
+  color: #2d2d2d; /* dark text */
+  font-family: "Arial", sans-serif;
+  font-size: 15px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #ececec;
+  transition: background 0.2s ease;
 }
 
-#menu nav a.active,
-#menu nav a:hover {
-   background-color: #510c0c;
-  color: rgb(255, 255, 255);
+#menu nav a:hover,
+#menu nav a.active {
+  background-color: rgb(151, 9, 21);
+  color: #fff;
 }
-  
+
+#menu nav a:focus {
+  outline: 2px solid #ffb300;
+  outline-offset: 2px;
+}
 
 /* =========================================================
    3. SUB-BAR (Optional Secondary Header)
    ========================================================= */
-/* ===== SUBBAR / ACTION BAR ===== */
 #subbar {
   display: flex;
   justify-content: space-between;
@@ -103,8 +118,8 @@ header h1 {
   font-weight: 500;
 }
 
-  #subbar button,
-  #subbar a {
+#subbar button,
+#subbar a {
   background-color: #8b1c33;
   color: white;
   border: none;
@@ -115,9 +130,9 @@ header h1 {
   cursor: pointer;
   transition: background 0.2s, transform 0.1s;
   margin-left: 10px;
-  text-decoration: none; 
-  display: inline-block; 
-  }
+  text-decoration: none;
+  display: inline-block;
+}
 
 #subbar button:hover {
   background-color: #a6223d;
@@ -290,25 +305,23 @@ input:focus {
 
 .divider {
   display: flex;
-  align-items: center;
-  color: #999;
-  margin: 20px 0;
+  align-items: center;      /* vertically center text with lines */
+  text-align: center;
+  margin: 20px 0;           /* spacing above/below */
+  color: #666;              /* optional: text color */
+  font-weight: bold;
 }
 
 .divider::before,
 .divider::after {
   content: "";
   flex: 1;
-  border-bottom: 1px solid #ddd;
+  height: 1px;
+  background: #ccc;         /* line color */
+  margin: 0 10px;           /* space between line and text */
 }
 
-.divider::before {
-  margin-right: 0.75em;
-}
 
-.divider::after {
-  margin-left: 0.75em;
-}
 
 .signup-text {
   margin-top: 1.5rem;
@@ -602,3 +615,146 @@ input:focus {
   }
 }
 
+/* ==========================
+   CLEAN EVENTBRITE-STYLE LOGIN PAGE (SCOPED)
+   - scoped under #auth-page so it won't override other pages
+   ========================== */
+
+/* do NOT override global body here; only target the auth page */
+#auth-page {
+  background-color: #f9f9f9;
+  color: #222;
+  font-family: "Poller One", sans-serif;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 16px;
+}
+
+/* Login card (scoped) */
+#auth-page .auth-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  width: 400px;
+  padding: 2.5rem;
+  text-align: center;
+}
+
+#auth-page .auth-card h2 {
+  color: #912338;
+  margin-bottom: 1.5rem;
+}
+
+/* Inputs (scoped) */
+#auth-page .auth-card label {
+  display: block;
+  text-align: left;
+  font-family: sans-serif;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+#auth-page .auth-card input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+#auth-page .auth-card input:focus {
+  border-color: #912338;
+  outline: none;
+}
+
+/* Buttons (scoped) */
+#auth-page .btn-auth {
+  width: 100%;
+  background-color: #912338;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#auth-page .btn-auth:hover {
+  background-color: #a22e4d;
+}
+
+/* Divider and Google button (scoped) */
+/* ===== FIXED DIVIDER ===== */
+#auth-page .divider {
+  display: flex;
+  align-items: center;       /* vertically center text with lines */
+  text-align: center;
+  margin: 20px 0;            /* spacing above/below */
+  color: #999;
+  font-size: 0.9rem;
+  font-weight: normal;
+}
+
+#auth-page .divider::before,
+#auth-page .divider::after {
+  content: "";
+  flex: 1;                   /* lines expand equally */
+  height: 1px;
+  background: #ddd;          /* line color */
+  margin: 0 10px;            /* spacing between line and "or" */
+}
+
+
+#auth-page .btn-google {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#auth-page .btn-google:hover {
+  background: #f5f5f5;
+}
+
+#auth-page .btn-google img {
+  width: 20px;
+}
+
+#auth-page .auth-text {
+  margin-top: 20px;
+  color: #555;
+  font-family: sans-serif;
+}
+
+#auth-page .auth-text a {
+  color: #912338;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#auth-page .role-switch {
+  margin-top: 20px;
+  color: #555;
+  font-family: sans-serif;
+  font-size: 0.95rem;
+}
+
+#auth-page .role-switch a {
+  color: #912338;
+  text-decoration: none;
+  font-weight: 600;
+}
+#auth-page .role-switch a:hover {
+  text-decoration: underline;
+}
