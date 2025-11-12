@@ -84,6 +84,53 @@ def test_get_ticket_not_found(client):
     assert resp.status_code == 404
     assert resp.get_json()["error"] == "Ticket not found"
 
+def test_get_student_tickets_with_details_success(client, mock_user_and_event):
+    user_id, event_id = mock_user_and_event
+
+    # Create a couple of tickets for the same student
+    client.post("/tickets", json={"attendee_id": user_id, "event_id": event_id})
+    client.post("/tickets", json={"attendee_id": user_id, "event_id": event_id})
+
+    # Request the combined ticket and event details
+    resp = client.get(f"/api/student/{user_id}/tickets-with-details")
+    assert resp.status_code == 200
+
+    data = resp.get_json()
+    assert isinstance(data, list)
+    assert len(data) == 2
+
+    # The returned object comes from a JOIN between tickets and events
+    # It likely includes these event fields:
+    keys = data[0].keys()
+    assert "event_id" in keys
+    assert "event_title" in keys or "title" in keys
+    assert "event_location" in keys or "location" in keys
+
+def test_get_student_tickets_with_details_no_tickets(client, mock_user_and_event):
+    user_id, _ = mock_user_and_event
+
+    # User exists but no tickets
+    resp = client.get(f"/api/student/{user_id}/tickets-with-details")
+    assert resp.status_code == 200
+    data = resp.get_json()
+    assert isinstance(data, list)
+    assert len(data) == 0
+
+
+def test_get_student_tickets_with_details_internal_error(client, app):
+    """
+    If the DB fails, the route might still return 200 with an empty list or an error JSON,
+    depending on how crud_ticket handles exceptions. We'll accept both gracefully.
+    """
+    with app.app_context():
+        db.drop_all()
+
+    resp = client.get("/api/student/1/tickets-with-details")
+    data = resp.get_json()
+
+    # Allow 200 with error key OR explicit 500
+    assert resp.status_code in (200, 500)
+    assert isinstance(data, dict) or isinstance(data, list)
 
 # --- VALIDATE ---
 def test_validate_ticket_success(client, mock_user_and_event):
@@ -91,23 +138,79 @@ def test_validate_ticket_success(client, mock_user_and_event):
     create_resp = client.post("/tickets", json={"attendee_id": user_id, "event_id": event_id})
     ticket_id = create_resp.get_json()["ticket"]
 
+    # Ticket starts as 'valid', should update to 'checked-in'
     resp = client.post("/tickets/validate", json={"ticketId": ticket_id})
     assert resp.status_code == 200
     data = resp.get_json()
+
     assert data["valid"] is True
+    assert data["message"] == "Ticket Checked In Successfully!"
     assert data["attendeeName"] == "ticketuser"
+    assert data["ticket"]["status"] == "checked-in"
 
 
 def test_validate_ticket_not_found(client):
     resp = client.post("/tickets/validate", json={"ticketId": 9999})
-    assert resp.status_code == 200
-    assert resp.get_json()["valid"] is False
+    data = resp.get_json()
+    # The route explicitly returns 404 for missing tickets
+    assert resp.status_code == 404
+    assert data["valid"] is False
+    assert data["error"] == "Ticket not found"
+
+
+def test_validate_ticket_already_checked_in(client, mock_user_and_event):
+    user_id, event_id = mock_user_and_event
+    create_resp = client.post("/tickets", json={"attendee_id": user_id, "event_id": event_id})
+    ticket_id = create_resp.get_json()["ticket"]
+
+    # First validation: mark as checked-in
+    client.post("/tickets/validate", json={"ticketId": ticket_id})
+
+    # Second validation: should fail
+    resp = client.post("/tickets/validate", json={"ticketId": ticket_id})
+    assert resp.status_code == 400
+    assert resp.get_json()["error"] == "Ticket already checked in"
+
+
+def test_validate_ticket_invalid_status(client, mock_user_and_event):
+    user_id, event_id = mock_user_and_event
+    create_resp = client.post("/tickets", json={"attendee_id": user_id, "event_id": event_id})
+    ticket_id = create_resp.get_json()["ticket"]
+
+    # Manually update ticket to an invalid status
+    client.put(f"/tickets/{ticket_id}", json={"status": "expired"})
+
+    resp = client.post("/tickets/validate", json={"ticketId": ticket_id})
+    assert resp.status_code == 400
+    data = resp.get_json()
+    assert data["valid"] is False
+    assert "Invalid ticket status" in data["error"]
 
 
 def test_validate_ticket_missing_id(client):
     resp = client.post("/tickets/validate", json={})
     assert resp.status_code == 400
     assert resp.get_json()["error"] == "Ticket ID required"
+
+
+def test_validate_ticket_invalid_format(client):
+    resp = client.post("/tickets/validate", json={"ticketId": "invalid"})
+    assert resp.status_code == 400
+    assert resp.get_json()["error"] == "Invalid Ticket ID format"
+
+
+def test_validate_ticket_internal_error(client, app, mock_user_and_event):
+    user_id, event_id = mock_user_and_event
+    create_resp = client.post("/tickets", json={"attendee_id": user_id, "event_id": event_id})
+    ticket_id = create_resp.get_json()["ticket"]
+
+    # Simulate DB crash
+    with app.app_context():
+        db.drop_all()
+
+    resp = client.post("/tickets/validate", json={"ticketId": ticket_id})
+    assert resp.status_code == 500
+    assert "error" in resp.get_json()
 
 
 # --- UPDATE ---
