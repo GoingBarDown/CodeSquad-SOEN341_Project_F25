@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../organizer-frontend/css/organizerStyle.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poller+One&display=swap" rel="stylesheet">
+  <style>
+    main.centered .card {
+      width: 380px;
+      max-width: 90vw;
+    }
+    
+    #adminLoginForm input {
+      padding: 12px 14px !important;
+      font-size: 1rem !important;
+    }
+    
+    #adminLoginForm input[type="password"] {
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Admin Portal</h1>
+    <button id="dot">☰</button>
+  </header>
+
+  <div id="menu">
+    <nav>
+      <a href="admin-login.html">Login</a>
+      <a href="events.html">Events</a>
+      <a href="students.html">Students</a>
+      <a href="organizers.html">Organizers</a>
+    </nav>
+  </div>
+
+  <main class="centered">
+    <div class="card">
+      <h2><b>Admin Login</b></h2>
+  
+      <form id="adminLoginForm">
+        <label for="identifier">Username or Email</label>
+        <input type="text" id="identifier" placeholder="  Enter username or email" required><br>
+        
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="  Enter password" minlength="8" required>
+
+        <button type="submit" class="btn-primary">Login</button>
+
+        <p class="signup-text" style="margin-top: 1.5rem; color: #666; text-align: center; font-size: 1.2rem;">
+          ℹ️ Admin credentials required to access this panel
+        </p>
+      </form>
+    </div>
+  </main>
+
+  <script src="js/api-admin.js"></script>
+  <script src="js/admin-login.js"></script>
+</body>
+</html>
