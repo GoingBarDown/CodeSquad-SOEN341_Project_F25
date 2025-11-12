@@ -35,7 +35,7 @@
     <div id="subbar" class="admin-nav">
       <a href="events.html" class="nav-tab">EVENTS</a>
       <a href="students.html" class="nav-tab">STUDENTS</a>
-      <a href="organizers.html" class="nav-tab">ORGANIZERS</a>
+      <a href="organizers.html" class="nav-tab active">ORGANIZERS</a>
     </div>
   <!-- === MAIN CONTENT === -->
   <main class="main-container">
@@ -46,13 +46,13 @@
         <input type="text" id="organiser-search" placeholder="Search organiser...">
       </div>
 
-      <!-- Filter by -->
-      <div class="filter-section">
-        <button id="filter-btn">Filter By ▼</button>
+      <!-- Filters -->
+      <div class="filter-tags">
         <select id="filter-options">
           <option value="az">A → Z</option>
           <option value="za">Z → A</option>
         </select>
+        <button class="clear-filters-btn" onclick="clearOrganizerFilters()">Clear Filters</button>
       </div>
 
       <!-- Scrollable Organiser List (populated by backend) -->
@@ -66,7 +66,6 @@
       <div id="organiser-info" class="info-card">
         <div class="info-header">
           <h2>Organiser Information</h2>
-          <button class="edit-btn" onclick="openEditOrganizerModal()">EDIT</button>
         </div>
 
         <div class="info-details">
@@ -84,6 +83,7 @@
         </div>
 
         <div class="info-actions">
+          <button onclick="openEditOrganizerModal()" class="event-action-button btn-edit">Edit Organizer</button>
           <button onclick="deleteCurrentOrganizer()" class="event-action-button btn-delete">Delete Organizer</button>
         </div>
       </div>

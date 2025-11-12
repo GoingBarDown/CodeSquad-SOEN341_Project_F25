@@ -45,33 +45,26 @@
 
             <div class="filter-tags">
                 
-                <select id="filter-year">
-                    <option value="">Year</option>
-                    <option value="2025">2025</option>
-                    <option value="2024">2024</option>
-                    <option value="2023">2023</option>
+                <select id="filter-location">
+                    <option value="">Location</option>
                 </select>
 
-                <select id="filter-semester">
-                    <option value="">Semester</option>
-                    <option value="fall">Fall</option>
-                    <option value="winter">Winter</option>
-                    <option value="summer">Summer</option>
+                <select id="filter-category">
+                    <option value="">Category</option>
                 </select>
 
-                <select id="filter-association">
-                    <option value="">Student Association</option>
-                    <option value="sa1">SA - Tech Club</option>
-                    <option value="sa2">SA - Business Guild</option>
-                    <option value="sa3">SA - Arts Society</option>
+                <select id="filter-organizer">
+                    <option value="">Organizer</option>
                 </select>
-            
+
                 <select id="filter-buttons">
                     <option value="">Status</option>
                     <option value="active">Active</option>
                     <option value="pending">Pending</option>
                     <option value="past">Past</option>
                 </select>
+
+                <button class="clear-filters-btn" onclick="clearEventFilters()">Clear Filters</button>
             </div>
             
             <div id="event-list-container">
