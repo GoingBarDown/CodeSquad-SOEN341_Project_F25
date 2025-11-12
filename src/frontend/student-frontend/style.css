@@ -1,8 +1,10 @@
 body {
     margin: 0;
-    font-family:  sans-serif;
+    font-family: sans-serif;
     background-color: rgb(151, 9, 21);
 }
+
+/* HEADER */
 header {
     display: flex;
     justify-content: space-between;
@@ -13,14 +15,14 @@ header {
     font-weight: 100;
     font-size: 20px;
     color: white;
-    font-style: normal;
+    position: relative;
 }
 
 #dot {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: #ffffff;
+    background: white;
     cursor: pointer;
     font-size: 24px;
     display: flex;
@@ -29,40 +31,54 @@ header {
     line-height: 1;
     border-width: 0;
     color: rgb(151, 9, 21);
-    margin-left: auto;
+    position: absolute;
+    right: 20px; /* Keeps it at top right */
 }
 
-#dot svg.lucide {
-  width: 24px;
-  height: 24px;
-  stroke-width: 2;
-}
-
-
+/* MENU DROPDOWN - CLEAN VERSION */
 #menu {
+    position: absolute;
+    top: 65px;
+    right: 20px;
+    background-color: #f9f6f1; /* clean light cream */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     max-height: 0;
-    transition: max-height .3s ease;
+    width: 180px;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(-10px);
+    z-index: 1000;
 }
 
 #menu.open {
-    max-height: 220px;
+    max-height: 300px;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#menu nav {
+    display: flex;
+    flex-direction: column;
 }
 
 #menu nav a {
-    display: block;
-    padding: 12px 16px;
     text-decoration: none;
-    color: #871a1a;
-    background-color: bisque;
-    text-align: center;
-    font-weight: bolder;
-  }
-
-#menu nav a:hover{
-  background-color: #510c0c;
-  color: rgb(255, 255, 255);
+    color: #2d2d2d;
+    font-family: "Arial", sans-serif; /* Clean and modern */
+    font-size: 15px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #ececec;
+    transition: background 0.2s ease;
 }
+
+#menu nav a:hover {
+    background-color: rgb(151, 9, 21);
+    color: white;
+}
+
+/* ----------------- ORIGINAL CSS BELOW (UNCHANGED) ----------------- */
 
 .highlights-section {          
       width: 100%;
@@ -73,11 +89,10 @@ header {
       padding-top: 0px;   
       margin-top: 0px;
       flex-wrap: wrap;
-    }
+}
 
 .highlight-section p{
   text-align: right;
-
 }
 
 .highlights-section {
@@ -86,7 +101,8 @@ header {
 }
 
 #slideshow {
-  position: relative; }
+  position: relative; 
+}
 
 #slideshow img {
   width: 400px; 
@@ -105,14 +121,12 @@ header {
   font-weight: bold;
 }
 
-
 @media (max-width: 768px) {
   .highlights-section {
     flex-direction: column;
     text-align: center;
   }
 }
-
 
 .modal-content,
 .modal-content * {
@@ -125,17 +139,16 @@ header {
   background: transparent !important;
   color: #871a1a !important;
 }
-/* Make modal background darker and content centered */
+
 .modal {
   position: fixed;
   z-index: 1000;
   left: 0; top: 0;
   width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.7); /* darker overlay */
+  background: rgba(0,0,0,0.7);
   display: flex; align-items: center; justify-content: center;
 }
 
-/* Style the modal content for clarity */
 .modal-content {
   background: #fff;
   padding: 32px 24px;
@@ -148,7 +161,6 @@ header {
   text-align: left;
 }
 
-/* Style headings and paragraphs inside modal */
 #modal-details h2 {
   margin-top: 0;
   color: #871a1a;
@@ -161,7 +173,6 @@ header {
   background: transparent;
 }
 
-/* Style the close button */
 #close-modal {
   color: #871a1a;
   font-size: 1.5em;
@@ -186,6 +197,7 @@ header {
   cursor: pointer;
   transition: background 0.2s;
 }
+
 #get-ticket-btn:hover {
   background: #510c0c !important;
 }
@@ -204,8 +216,9 @@ header {
   font-weight: bold;
   transition: background 0.2s;
 }
+
 .details-btn:hover {
-  background: #ffb300; /* a lighter yellow/orange on hover */
+  background: #ffb300;
   color: #871a1a;
 }
 
@@ -222,14 +235,12 @@ header {
 }
 
 body {
-      margin: 0;
-      background-color: rgb(151, 9, 21);
-      overflow-x:hidden;
-    }
+  overflow-x:hidden;
+}
 
 section {
      scroll-margin-top: var(--nav-h);
-     }
+}
 
 .recomended {
   margin: 60px auto;
@@ -274,6 +285,7 @@ section {
 .claim-section{
   background-color: bisque;
 }
+
 .sort-controls {
   display: flex;
   align-items: center;
@@ -327,17 +339,17 @@ section {
 
 .card p {
   background: transparent;
-  color: rgb(151, 9, 21); /* or any color you want for the text */
+  color: rgb(151, 9, 21);
 }
 
 .card p strong {
   background: transparent;
-  color: rgb(151, 9, 21); /* or any color you want for the text */
+  color: rgb(151, 9, 21);
 }
 
 .card a {
   background: transparent;
-  color: rgb(151, 9, 21); /* or any color you want for the text */
+  color: rgb(151, 9, 21);
   border-radius: 10px;
   border-style: solid;
   border-color: #871a1a;
@@ -359,22 +371,19 @@ section {
   margin: 0;
   padding: 0;
   margin-left: 0;
-
 }
+
 #calendar {
-    /* Use bisque background for the container */
     background-color: bisque; 
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Style the toolbar (Month/Week/Day buttons and title) */
 #calendar .fc-toolbar-chunk {
     font-family: "Poller One", sans-serif;
 }
 
-/* Style the Month/Week/Day buttons */
 #calendar .fc-button-primary {
     background-color: rgb(151, 9, 21); 
     border: none;
@@ -386,19 +395,16 @@ section {
 
 #calendar .fc-button-primary:hover,
 #calendar .fc-button-primary:focus {
-    background-color: #510c0c; /* Darker red on hover/focus */
+    background-color: #510c0c; 
     box-shadow: none; 
 }
 
-/* Style the calendar title (e.g., "November 2025") */
 #calendar .fc-toolbar-title {
-    color: rgb(151, 9, 21); /* Your main red color */
+    color: rgb(151, 9, 21);
     font-weight: bold;
     font-size: 1.5em;
 }
 
-/* Style the event blocks on the calendar */
-/* These colors match the color logic defined in calendar_script.js */
 #calendar .fc-event {
     border-radius: 4px;
     font-weight: bold;
@@ -407,21 +413,18 @@ section {
     cursor: pointer;
 }
 
-/* Style the Day of the Week Headers (e.g., Mon, Tue) */
 #calendar th {
     font-family: "Poller One", sans-serif;
-    color: #871a1a; /* Brownish-red text */
-    background-color: rgba(255, 228, 196, 0.5); /* Light bisque */
+    color: #871a1a;
+    background-color: rgba(255, 228, 196, 0.5);
     border: 1px solid rgba(255, 228, 196, 0.8);
 }
 
-/* Style the main calendar cell background */
 #calendar .fc-daygrid-body {
-    background-color: white; /* White for the main grid area */
+    background-color: white;
 }
 
-/* Style the current day cell */
 #calendar .fc-day-today {
-    background-color: #fff9e6 !important; /* Light yellow tint for today */
-    border: 2px solid #ffc107 !important; /* Yellow border to highlight */
+    background-color: #fff9e6 !important;
+    border: 2px solid #ffc107 !important;
 }
