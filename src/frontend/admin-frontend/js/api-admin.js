@@ -166,6 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             localStorage.removeItem('userData');
             localStorage.removeItem('authToken');
+            localStorage.removeItem('lastWelcomeTime');
             window.location.href = 'admin-login.html';
         };
     }

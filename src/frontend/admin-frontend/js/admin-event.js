@@ -1,6 +1,40 @@
 // --- 0. Global Data Store and Configuration ---
 let allEvents = [];
 
+// Display welcome message with admin name
+document.addEventListener('DOMContentLoaded', () => {
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+        try {
+            const user = JSON.parse(userData);
+            const adminNameEl = document.getElementById('admin-name');
+            if (adminNameEl && user.username) {
+                adminNameEl.textContent = user.username;
+            }
+        } catch (e) {
+            console.error('Error getting admin name:', e);
+        }
+    }
+
+    // Hide welcome message after 5 minutes or if user has visited before
+    const welcomeMessage = document.getElementById('welcome-message');
+    const lastWelcomeTime = localStorage.getItem('lastWelcomeTime');
+    const now = Date.now();
+    
+    if (welcomeMessage) {
+        // If they've visited a dashboard page before, hide the welcome immediately
+        if (lastWelcomeTime) {
+            welcomeMessage.style.display = 'none';
+        } else {
+            // First time - show welcome, then hide after 5 minutes (300000ms)
+            localStorage.setItem('lastWelcomeTime', now);
+            setTimeout(() => {
+                welcomeMessage.style.display = 'none';
+            }, 300000);
+        }
+    }
+});
+
 
 // --- 1. Event Fetching (API Integration Point - GET) ---
 async function fetchAllEvents() {
