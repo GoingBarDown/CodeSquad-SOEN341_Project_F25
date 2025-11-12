@@ -1,110 +1,149 @@
-body {
-    margin: 0;
-    font-family:  sans-serif;
-    background-color: rgb(151, 9, 21);
+/* -------------------------------------------------
+   GLOBAL STYLES & COLOR VARIABLES
+------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Poller+One&family=DM+Serif+Text&display=swap');
+
+:root {
+  --primary: rgb(151, 9, 21);
+  --accent: #871a1a;
+  --light-bg: bisque;
+  --text-light: #fff;
+  --text-dark: #2d2d2d;
 }
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: var(--primary);
+  overflow-x: hidden;
+}
+
+/* -------------------------------------------------
+   HEADER & MENU
+------------------------------------------------- */
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-    background-color: rgb(151, 9, 21);
-    font-family: "Poller One", sans-serif;
-    font-weight: 100;
-    font-size: 20px;
-    color: white;
-    font-style: normal;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: var(--primary);
+  font-family: "Poller One", sans-serif;
+  font-weight: 100;
+  font-size: 20px;
+  color: var(--text-light);
+  position: relative;
 }
 
 #dot {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: #ffffff;
-    cursor: pointer;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-    border-width: 0;
-    color: rgb(151, 9, 21);
-    margin-left: auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--text-light);
+  cursor: pointer;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  border: none;
+  color: var(--primary);
+  position: absolute;
+  right: 20px;
 }
 
-#dot svg.lucide {
-  width: 24px;
-  height: 24px;
-  stroke-width: 2;
-}
-
-
+/* MENU DROPDOWN */
 #menu {
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height .3s ease;
+  position: absolute;
+  top: 65px;
+  right: 20px;
+  background-color: #f9f6f1;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  max-height: 0;
+  width: 180px;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+  z-index: 1000;
 }
 
 #menu.open {
-    max-height: 220px;
+  max-height: 300px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#menu nav {
+  display: flex;
+  flex-direction: column;
 }
 
 #menu nav a {
-    display: block;
-    padding: 12px 16px;
-    text-decoration: none;
-    color: #871a1a;
-    background-color: bisque;
-    text-align: center;
-    font-weight: bolder;
-  }
-
-#menu nav a:hover{
-  background-color: #510c0c;
-  color: rgb(255, 255, 255);
+  text-decoration: none;
+  color: var(--text-dark);
+  font-family: "Arial", sans-serif;
+  font-size: 15px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #ececec;
+  transition: background 0.2s ease;
 }
 
-.highlights-section {          
-      width: 100%;
-      color: white;
-      display: flex;
-      justify-content: center;  
-      align-items: center;  
-      padding-top: 0px;   
-      margin-top: 0px;
-      flex-wrap: wrap;
-    }
-
-.highlight-section p{
-  text-align: right;
-
+#menu nav a:hover {
+  background-color: var(--primary);
+  color: var(--text-light);
 }
 
+#menu nav a:focus {
+  outline: 2px solid #ffb300;
+  outline-offset: 2px;
+}
+
+/* -------------------------------------------------
+   HIGHLIGHTS & SLIDESHOW
+------------------------------------------------- */
 .highlights-section {
+  width: 100%;
+  color: var(--text-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 0;
+  margin-top: 0;
+  flex-wrap: wrap;
   position: relative;
   width: fit-content;
 }
 
 #slideshow {
-  position: relative; }
+  position: relative;
+  width: 100vw;
+  max-width: 1500px;
+  aspect-ratio: 16/9;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 1s ease-in-out;
+  margin: 0;
+  padding: 0;
+}
 
 #slideshow img {
-  width: 400px; 
+  width: 400px;
   height: auto;
   display: block;
 }
 
 #info {
   position: absolute;
-  top:94.5%;     
-  left: 0%; 
+  top: 94.5%;
+  left: 0;
   right: 0;
   bottom: 0;
-  color: white;
+  color: var(--text-light);
   background-color: #333333af;
   font-weight: bold;
 }
-
 
 @media (max-width: 768px) {
   .highlights-section {
@@ -113,29 +152,22 @@ header {
   }
 }
 
-
-.modal-content,
-.modal-content * {
-  background: #fff !important;
-  color: #871a1a !important;
-}
-
-#modal-details p,
-#modal-details h2 {
-  background: transparent !important;
-  color: #871a1a !important;
-}
-/* Make modal background darker and content centered */
+/* -------------------------------------------------
+   MODAL
+------------------------------------------------- */
 .modal {
   position: fixed;
   z-index: 1000;
-  left: 0; top: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.7); /* darker overlay */
-  display: flex; align-items: center; justify-content: center;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Style the modal content for clarity */
 .modal-content {
   background: #fff;
   padding: 32px 24px;
@@ -146,24 +178,22 @@ header {
   font-family: "Poller One", sans-serif;
   font-size: 1.1em;
   text-align: left;
+  color: var(--accent);
 }
 
-/* Style headings and paragraphs inside modal */
 #modal-details h2 {
   margin-top: 0;
-  color: #871a1a;
+  color: var(--accent);
   font-size: 1.5em;
 }
 
 #modal-details p {
   color: #333;
   margin: 10px 0;
-  background: transparent;
 }
 
-/* Style the close button */
 #close-modal {
-  color: #871a1a;
+  color: var(--accent);
   font-size: 1.5em;
   font-weight: bold;
   background: none;
@@ -178,102 +208,58 @@ header {
   display: block;
   margin: 24px auto 0 auto;
   padding: 10px 28px;
-  background: #871a1a !important;
-  color: #fff !important;
+  background: var(--accent);
+  color: var(--text-light);
   border: none;
   border-radius: 8px;
   font-size: 1em;
   cursor: pointer;
   transition: background 0.2s;
 }
+
 #get-ticket-btn:hover {
-  background: #510c0c !important;
+  background: #510c0c;
 }
 
-.details-btn {
-  display: block;
-  margin: 18px auto 0 auto;
-  padding: 10px 28px;
-  background: orange;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 1em;
-  cursor: pointer;
-  font-family: inherit;
-  font-weight: bold;
-  transition: background 0.2s;
-}
-.details-btn:hover {
-  background: #ffb300; /* a lighter yellow/orange on hover */
-  color: #871a1a;
+#get-ticket-btn:focus {
+  outline: 2px solid #ffb300;
+  outline-offset: 2px;
 }
 
-.mainText{
-  padding-left: 50px;
-  padding-right: 50px;
-}
-
-.overlay {
-  position: absolute;
-  pointer-events: none;
-  max-width: none;
-  width:150px;
-}
-
-body {
-      margin: 0;
-      background-color: rgb(151, 9, 21);
-      overflow-x:hidden;
-    }
-
-section {
-     scroll-margin-top: var(--nav-h);
-     }
-
-.recomended {
-  margin: 60px auto;
-  padding-top: 10px;
-  width: calc(100% - 40px);
-  max-width: 1300px;          
-  border-radius: 30px;      
-  background-color: rgb(151, 9, 21);   
-  text-align: center;
-  box-sizing: border-box;
-}
-
-.recomended p{
-  font-family: "Poller One", sans-serif;
-  color: rgb(255, 255, 255);
-  font-size:larger;
-}
-
+/* -------------------------------------------------
+   RECOMMENDED & EVENT SECTIONS
+------------------------------------------------- */
+.recomended,
 .event1 {
   margin: 60px auto;
   padding: 40px;
   width: calc(100% - 40px);
-  max-width: 1300px;          
-  border-radius: 30px; 
+  max-width: 1300px;
+  border-radius: 30px;
   text-align: center;
   box-sizing: border-box;
+  background-color: var(--primary);
 }
 
-.event1 p{
+.recomended p,
+.event1 p {
   font-family: "Poller One", sans-serif;
-  color: rgb(255, 255, 255);
-  font-size:larger;
+  color: var(--text-light);
+  font-size: larger;
 }
 
-.btn-register{
+.btn-register {
   background-color: rgb(70, 4, 4);
 }
 
-#event-details-container{
-  background-color: bisque;
+#event-details-container,
+.claim-section {
+  background-color: var(--light-bg);
 }
-.claim-section{
-  background-color: bisque;
-}
+
+/* -------------------------------------------------
+   SORT & CARD SECTIONS
+------------------------------------------------- */
 .sort-controls {
   display: flex;
   align-items: center;
@@ -283,7 +269,7 @@ section {
 }
 
 .sort-controls label {
-  color: #fff;
+  color: var(--text-light);
   font-family: "Poller One", sans-serif;
   font-size: 1.1em;
 }
@@ -291,11 +277,10 @@ section {
 .sort-controls select {
   padding: 8px 16px;
   border-radius: 6px;
-  border: 1px solid #871a1a;
+  border: 1px solid var(--accent);
   background: #fff;
-  color: #871a1a;
+  color: var(--accent);
   font-size: 1em;
-  font-family: inherit;
   cursor: pointer;
   transition: border 0.2s;
 }
@@ -309,7 +294,7 @@ section {
   display: flex;
   justify-content: center;
   gap: 20px;
-  flex-wrap: wrap;  
+  flex-wrap: wrap;
 }
 
 .card {
@@ -317,30 +302,25 @@ section {
   flex: 1 1 280px;
   min-width: 220px;
   max-width: 350px;
-  background:  white;
+  background: #fff;
   padding: 20px 20px 60px;
   border-radius: 10px;
   text-align: center;
-  font-family:DM Serif Text;
+  font-family: "DM Serif Text", serif;
   transition: transform 0.2s ease;
 }
 
-.card p {
+.card p,
+.card p strong,
+.card a {
   background: transparent;
-  color: rgb(151, 9, 21); /* or any color you want for the text */
-}
-
-.card p strong {
-  background: transparent;
-  color: rgb(151, 9, 21); /* or any color you want for the text */
+  color: var(--primary);
 }
 
 .card a {
-  background: transparent;
-  color: rgb(151, 9, 21); /* or any color you want for the text */
   border-radius: 10px;
   border-style: solid;
-  border-color: #871a1a;
+  border-color: var(--accent);
   font-size: medium;
 }
 
@@ -348,80 +328,61 @@ section {
   transform: translateY(-5px);
 }
 
-#slideshow {
-  width: 100vw;
-  max-width: 1500px;
-  aspect-ratio: 16/9;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: background-image 1s ease-in-out;
-  margin: 0;
-  padding: 0;
-  margin-left: 0;
-
-}
+/* -------------------------------------------------
+   CALENDAR
+------------------------------------------------- */
 #calendar {
-    /* Use bisque background for the container */
-    background-color: bisque; 
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: var(--light-bg);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Style the toolbar (Month/Week/Day buttons and title) */
 #calendar .fc-toolbar-chunk {
-    font-family: "Poller One", sans-serif;
+  font-family: "Poller One", sans-serif;
 }
 
-/* Style the Month/Week/Day buttons */
 #calendar .fc-button-primary {
-    background-color: rgb(151, 9, 21); 
-    border: none;
-    color: white;
-    border-radius: 5px;
-    padding: 8px 12px;
-    transition: background-color 0.2s;
+  background-color: var(--primary);
+  border: none;
+  color: white;
+  border-radius: 5px;
+  padding: 8px 12px;
+  transition: background-color 0.2s;
 }
 
 #calendar .fc-button-primary:hover,
 #calendar .fc-button-primary:focus {
-    background-color: #510c0c; /* Darker red on hover/focus */
-    box-shadow: none; 
+  background-color: #510c0c;
+  box-shadow: none;
 }
 
-/* Style the calendar title (e.g., "November 2025") */
 #calendar .fc-toolbar-title {
-    color: rgb(151, 9, 21); /* Your main red color */
-    font-weight: bold;
-    font-size: 1.5em;
+  color: var(--primary);
+  font-weight: bold;
+  font-size: 1.5em;
 }
 
-/* Style the event blocks on the calendar */
-/* These colors match the color logic defined in calendar_script.js */
 #calendar .fc-event {
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 0.9em;
-    padding: 2px 4px;
-    cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.9em;
+  padding: 2px 4px;
+  cursor: pointer;
 }
 
-/* Style the Day of the Week Headers (e.g., Mon, Tue) */
 #calendar th {
-    font-family: "Poller One", sans-serif;
-    color: #871a1a; /* Brownish-red text */
-    background-color: rgba(255, 228, 196, 0.5); /* Light bisque */
-    border: 1px solid rgba(255, 228, 196, 0.8);
+  font-family: "Poller One", sans-serif;
+  color: var(--accent);
+  background-color: rgba(255, 228, 196, 0.5);
+  border: 1px solid rgba(255, 228, 196, 0.8);
 }
 
-/* Style the main calendar cell background */
 #calendar .fc-daygrid-body {
-    background-color: white; /* White for the main grid area */
+  background-color: white;
 }
 
-/* Style the current day cell */
 #calendar .fc-day-today {
-    background-color: #fff9e6 !important; /* Light yellow tint for today */
-    border: 2px solid #ffc107 !important; /* Yellow border to highlight */
+  background-color: #fff9e6 !important;
+  border: 2px solid #ffc107 !important;
 }
