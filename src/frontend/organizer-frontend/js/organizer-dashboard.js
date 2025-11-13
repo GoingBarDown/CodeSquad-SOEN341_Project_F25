@@ -203,6 +203,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (searchInput) searchInput.addEventListener('input', filterEvents);
     if (filterCategory) filterCategory.addEventListener('change', filterEvents);
 
+
+const clearBtn = document.getElementById('clearFilters');
+    if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+            const searchField = document.getElementById('search');
+            const categoryField = document.getElementById('filterCategory');
+            const statusField = document.getElementById('filterStatus');
+
+            if (searchField) searchField.value = "";
+            if (categoryField) categoryField.value = "";
+            if (statusField) statusField.value = "";
+
+            // Re-render all events
+            renderEvents(allEvents);
+        });
+    }
+
     // Load initial events
     loadEvents();
 });
