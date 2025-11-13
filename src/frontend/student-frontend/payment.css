@@ -1,0 +1,142 @@
+/* Global */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poller One", sans-serif;
+  background-color: rgb(61, 20, 23);
+  color: white;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(151, 9, 21);
+  padding: 12px 20px;
+  color: white;
+  font-size: 1.2rem;
+}
+
+#dot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: white;
+  color: #912338;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Menu */
+#menu {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background: #f8f8f8;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 180px;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+#menu.open {
+  max-height: 300px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#menu nav {
+  display: flex;
+  flex-direction: column;
+}
+
+#menu nav a {
+  color: #333;
+  text-decoration: none;
+  padding: 10px 16px;
+  border-bottom: 1px solid #e4e4e4;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+#menu nav a:hover {
+  background-color: #912338;
+  color: white;
+}
+
+/* Center layout */
+#auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 85vh;
+}
+
+.auth-card {
+  background-color: white;
+  color: #333;
+  border-radius: 15px;
+  padding: 40px;
+  width: 380px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  text-align: left;
+}
+
+.auth-card h2 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* Form */
+form label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 6px;
+  font-family: sans-serif;
+}
+
+.btn-auth {
+  background-color: #912338;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  width: 100%;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-auth:hover {
+  background-color: #a22e4d;
+}
+
+/* Status text */
+.status-text {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 15px;
+}

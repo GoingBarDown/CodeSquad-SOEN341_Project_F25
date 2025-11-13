@@ -13,7 +13,7 @@ const MOCK_EVENT_PAID = {
     id: "evt-002",
     title: "Spring Gala & Networking Event",
     price: 25.00, // This is a paid event
-    isPaid: true
+    isPaid: true 
 };
 
 // --- CONFIGURATION ---
@@ -97,9 +97,9 @@ function redirectToPayment(event) {
     // For this sprint, we redirect to a simple placeholder page.
     
     setTimeout(() => {
-        // We will create this placeholder page next
-        window.location.href = "payment-placeholder.html"; 
-    }, 1500);
+    localStorage.setItem("selectedEvent", JSON.stringify(event)); 
+    window.location.href = "payment.html";
+}, 1500);
 }
 
 /**
