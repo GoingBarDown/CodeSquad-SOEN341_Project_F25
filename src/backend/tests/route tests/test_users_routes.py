@@ -13,7 +13,11 @@ def test_create_user_success(client):
         "username": "newuser",
         "password": "securepassword",
         "email": "new@example.com",
-        "role": "user"
+        "role": "user",
+        "first_name": "John",
+        "last_name": "Doe",
+        "student_id": 1,
+        "program": "CS"
     }
     response = client.post("/users", json=data)
 
@@ -32,7 +36,11 @@ def test_create_user_null_constraint_violation(client):
         "username": None,
         "password": "pw",
         "email": "bad@example.com",
-        "role": "user"
+        "role": "user",
+        "first_name": "Bad",
+        "last_name": "User",
+        "student_id": 2,
+        "program": "ENG"
     }
     resp = client.post("/users", json=data)
     assert resp.status_code == 500
@@ -43,7 +51,11 @@ def test_create_user_unique_constraint_violation(client):
         "username": "dupe",
         "password": "pw",
         "email": "dupe@example.com",
-        "role": "user"
+        "role": "user",
+        "first_name": "Jane",
+        "last_name": "Smith",
+        "student_id": 3,
+        "program": "BIO"
     }
     client.post("/users", json=data)
 
@@ -57,13 +69,21 @@ def test_get_all_users(client):
         "username": "u1",
         "password": "p1",
         "email": "u1@example.com",
-        "role": "user"
+        "role": "user",
+        "first_name": "A",
+        "last_name": "B",
+        "student_id": 4,
+        "program": "CS"
     })
     client.post("/users", json={
         "username": "u2",
         "password": "p2",
         "email": "u2@example.com",
-        "role": "admin"
+        "role": "admin",
+        "first_name": "C",
+        "last_name": "D",
+        "student_id": 5,
+        "program": "MATH"
     })
 
     response = client.get("/users")
@@ -87,7 +107,11 @@ def test_get_user_by_id_success(client):
         "username": "findme",
         "password": "pass",
         "email": "find@example.com",
-        "role": "user"
+        "role": "user",
+        "first_name": "E",
+        "last_name": "F",
+        "student_id": 6,
+        "program": "ENG"
     })
     user_id = create_resp.get_json()["id"]
 
@@ -111,12 +135,15 @@ def test_get_user_by_id_internal_error(client, app):
 
 # - AUTH - 
 def test_auth_user_success(client):
-    # create user first
     client.post("/users", json={
         "username": "loginuser",
         "password": "mypassword",
         "email": "login@example.com",
-        "role": "user"
+        "role": "user",
+        "first_name": "G",
+        "last_name": "H",
+        "student_id": 7,
+        "program": "CS"
     })
 
     resp = client.post("/users/auth", json={
@@ -130,15 +157,17 @@ def test_auth_user_success(client):
     assert body["user"]["username"] == "loginuser"
 
 def test_auth_user_invalid_credentials(client):
-    # create user
     client.post("/users", json={
         "username": "wrongtest",
         "password": "correctpw",
         "email": "wrongtest@example.com",
-        "role": "user"
+        "role": "user",
+        "first_name": "I",
+        "last_name": "J",
+        "student_id": 8,
+        "program": "CS"
     })
 
-    # wrong password
     resp = client.post("/users/auth", json={
         "username": "wrongtest",
         "password": "wrongpw"
@@ -148,14 +177,17 @@ def test_auth_user_invalid_credentials(client):
     body = resp.get_json()
     assert body["error"] == "Invalid username or password"
 
-
 # - UPDATE - 
 def test_update_user_success(client):
     create_resp = client.post("/users", json={
         "username": "oldname",
         "password": "pw",
         "email": "old@example.com",
-        "role": "user"
+        "role": "user",
+        "first_name": "K",
+        "last_name": "L",
+        "student_id": 9,
+        "program": "BIO"
     })
     user_id = create_resp.get_json()["id"]
 
@@ -174,7 +206,11 @@ def test_update_user_missing_data(client):
         "username": "missing",
         "password": "pw",
         "email": "missing@example.com",
-        "role": "user"
+        "role": "user",
+        "first_name": "M",
+        "last_name": "N",
+        "student_id": 10,
+        "program": "ENG"
     })
     user_id = create_resp.get_json()["id"]
 
@@ -187,14 +223,22 @@ def test_update_user_unique_constraint_violation(client):
         "username": "alpha",
         "password": "pw",
         "email": "alpha@example.com",
-        "role": "user"
+        "role": "user",
+        "first_name": "O",
+        "last_name": "P",
+        "student_id": 11,
+        "program": "CS"
     }).get_json()["id"]
 
     client.post("/users", json={
         "username": "beta",
         "password": "pw",
         "email": "beta@example.com",
-        "role": "user"
+        "role": "user",
+        "first_name": "Q",
+        "last_name": "R",
+        "student_id": 12,
+        "program": "MATH"
     })
 
     resp = client.put(f"/users/{u1}", json={"email": "beta@example.com"})
@@ -207,7 +251,11 @@ def test_delete_user_success(client):
         "username": "todelete",
         "password": "pw",
         "email": "del@example.com",
-        "role": "user"
+        "role": "user",
+        "first_name": "S",
+        "last_name": "T",
+        "student_id": 13,
+        "program": "BIO"
     })
     user_id = create_resp.get_json()["id"]
 
@@ -225,7 +273,11 @@ def test_delete_user_db_failure(client, app):
         "username": "crash",
         "password": "pw",
         "email": "crash@example.com",
-        "role": "user"
+        "role": "user",
+        "first_name": "U",
+        "last_name": "V",
+        "student_id": 14,
+        "program": "CS"
     })
     uid = r.get_json()["id"]
 
