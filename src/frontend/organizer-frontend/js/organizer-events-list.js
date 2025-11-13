@@ -1,3 +1,27 @@
+// Handle login/logout button in menu
+document.addEventListener('DOMContentLoaded', () => {
+    const loginLink = document.querySelector('a[href="organizer-login.html"]');
+    const userData = localStorage.getItem('userData');
+    
+    if (loginLink) {
+        if (userData) {
+            // User is logged in, change to LOGOUT
+            loginLink.textContent = 'Logout';
+            loginLink.href = '#';
+            loginLink.onclick = (e) => {
+                e.preventDefault();
+                localStorage.removeItem('userData');
+                localStorage.removeItem('authToken');
+                window.location.href = 'organizer-login.html';
+            };
+        } else {
+            // User is not logged in, show LOGIN
+            loginLink.textContent = 'Login';
+            loginLink.href = 'organizer-login.html';
+        }
+    }
+});
+
 let events = [];
 
 // Render events list
