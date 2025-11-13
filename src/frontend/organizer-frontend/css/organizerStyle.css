@@ -521,10 +521,10 @@ select:disabled {
   outline: none;
 }
 
-.filter-tags {
+.filter-tags{
   display: flex;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 1px;
 }
 
 .filter-tags select {
@@ -536,6 +536,22 @@ select:disabled {
   font-weight: bold;
   font-size: 10px;
   border-radius: 16px;
+}
+
+.clear-btn {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: rgb(180, 180, 170);
+  color: white;
+  font-size: 10px;
+  margin-top: 0;
+  border-radius: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.clear-btn:hover {
+  background: #5c5d5a;
 }
 
 .search-box input {
