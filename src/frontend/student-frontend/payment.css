@@ -1,4 +1,4 @@
-/* Global */
+/* -------------------- GLOBAL -------------------- */
 * {
   margin: 0;
   padding: 0;
@@ -7,54 +7,70 @@
 
 body {
   font-family: "Poller One", sans-serif;
-  background-color: rgb(61, 20, 23);
+  background-color: #3d1417;
   color: white;
+  height: 100vh;
 }
 
-/* Header */
+/* -------------------- HEADER (EXACT SAME AS LOGIN) -------------------- */
 header {
+  background-color: #960b1a;
+  color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgb(151, 9, 21);
-  padding: 12px 20px;
-  color: white;
-  font-size: 1.2rem;
+  padding: 8px 20px; /* reduced padding */
+  font-size: 1.1rem; /* smaller font size like login */
+  letter-spacing: 0.2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  height: 60px; /* shorter height */
+}
+
+header h1,
+#logo {
+  font-weight: bold;
+  font-size: 1.3rem; /* smaller logo text */
 }
 
 #dot {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: white;
-  color: #912338;
+  background-color: white;
+  color: #960b1a;
   border: none;
-  font-size: 22px;
-  cursor: pointer;
+  font-size: 18px; /* smaller icon */
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-/* Menu */
+#dot:hover {
+  transform: scale(1.05);
+}
+
+/* -------------------- MENU -------------------- */
 #menu {
   position: absolute;
-  top: 60px;
+  top: 58px;
   right: 20px;
-  background: #f8f8f8;
+  background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 180px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+  width: 130px;
   overflow: hidden;
-  max-height: 0;
   opacity: 0;
-  transform: translateY(-10px);
+  max-height: 0;
+  transform: translateY(-8px);
   transition: all 0.3s ease;
+  z-index: 10;
 }
 
 #menu.open {
-  max-height: 300px;
   opacity: 1;
+  max-height: 200px;
   transform: translateY(0);
 }
 
@@ -64,79 +80,129 @@ header {
 }
 
 #menu nav a {
-  color: #333;
   text-decoration: none;
-  padding: 10px 16px;
-  border-bottom: 1px solid #e4e4e4;
-  font-size: 14px;
-  transition: background 0.2s;
+  color: #000;
+  font-weight: bold;
+  font-size: 0.85rem;
+  padding: 9px 12px;
+  transition: background-color 0.2s ease;
 }
 
 #menu nav a:hover {
-  background-color: #912338;
-  color: white;
+  background-color: #f3d8d8;
 }
 
-/* Center layout */
+/* -------------------- MAIN -------------------- */
 #auth-page {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 85vh;
+  height: calc(100vh - 60px);
 }
 
+/* -------------------- CARD -------------------- */
 .auth-card {
-  background-color: white;
-  color: #333;
+  background-color: #ffffff;
+  color: #2b2b2b;
   border-radius: 15px;
-  padding: 40px;
-  width: 380px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 38px;
+  width: 340px;
   text-align: left;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
 .auth-card h2 {
   text-align: center;
-  margin-bottom: 15px;
+  font-size: 1.45rem; /* same as Student Login */
+  color: #7c0c0c;
+  margin-bottom: 10px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
 }
 
-/* Form */
+.auth-card h4 {
+  text-align: center;
+  color: #7c0c0c;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+}
+
+/* -------------------- FORM -------------------- */
 form label {
   display: block;
   margin-top: 15px;
   font-weight: bold;
+  font-family: "Poller One", sans-serif;
+  font-size: 0.9rem;
 }
 
 form input {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
+  padding: 9px;
   border-radius: 8px;
+  border: 1px solid #ccc;
   margin-top: 6px;
   font-family: sans-serif;
+  font-size: 0.9rem;
 }
 
+form input:focus {
+  outline: none;
+  border-color: #912338;
+}
+
+/* -------------------- BUTTON -------------------- */
 .btn-auth {
   background-color: #912338;
   color: white;
   border: none;
-  padding: 12px;
+  padding: 11px;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   width: 100%;
   margin-top: 20px;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.25s ease;
 }
 
 .btn-auth:hover {
-  background-color: #a22e4d;
+  background-color: #a63b4c;
 }
 
-/* Status text */
+/* -------------------- STATUS TEXT -------------------- */
 .status-text {
   text-align: center;
   font-weight: bold;
   margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+/* -------------------- RESPONSIVE -------------------- */
+@media (max-width: 480px) {
+  .auth-card {
+    width: 85%;
+    padding: 30px;
+  }
+
+  header {
+    font-size: 1rem;
+    height: 55px;
+  }
+
+  #dot {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  #menu {
+    width: 115px;
+    right: 12px;
+  }
+
+  #menu nav a {
+    font-size: 0.8rem;
+    padding: 8px 10px;
+  }
 }
