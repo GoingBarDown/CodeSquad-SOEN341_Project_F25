@@ -72,7 +72,7 @@ function showEventDetailsModal(info) {
 
     // Create the HTML for the popup modal
     const modalHtml = `
-        <div id="event-modal" class="modal" style="display:flex;">
+        <div id="event-modal" class="modal">
             <div class="modal-content">
                 <button id="close-modal">&times;</button>
                 <h2>${info.event.title}</h2>
@@ -102,7 +102,7 @@ function showEventDetailsModal(info) {
         closeModal();
     });
 }
-// --- End Modal Simulation ---
+
 
 
 // Function to initialize and render the calendar (This is the only definition now)

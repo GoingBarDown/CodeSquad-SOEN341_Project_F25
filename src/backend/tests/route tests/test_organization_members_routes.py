@@ -9,8 +9,16 @@ def setup_routes(app):
 
 # helper functions to create mock user and organization
 def create_user(username="testuser", email="test@example.com"):
-    return crud_users.create_user({"username": username, "password": "pass", "email": email})
-
+    return crud_users.create_user({
+        "username": username,
+        "password": "pass",
+        "email": email,
+        "role": "user",
+        "first_name": "Test",
+        "last_name": "User",
+        "student_id": int(hash(username) % 100000),
+        "program": "CS"
+    })
 def create_org(title="Test Org"):
     return crud_organization.create_organization({"title": title, "status": "active"})
 

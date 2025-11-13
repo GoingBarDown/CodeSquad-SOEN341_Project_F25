@@ -1,4 +1,4 @@
-from db.models import Ticket
+from db.models import Ticket, Event
 from db import db
 
 def get_all_tickets():
@@ -7,6 +7,37 @@ def get_all_tickets():
         return [ticket.data for ticket in tickets]
     except Exception as e:
         raise RuntimeError(f"Failed to fetch tickets: {e}")
+    
+def get_tickets_and_events_for_user(student_id):
+    """
+    this fetches all tickets for a student and joins them with their
+    corresponding event details.
+    """
+    try:
+
+        results = db.session.query(Ticket, Event)\
+            .join(Event, Ticket.event_id == Event.id)\
+            .filter(Ticket.attendee_id == student_id)\
+            .all()
+
+        # Format the data into the JSON list we need
+        tickets_list = []
+        for ticket, event in results:
+            tickets_list.append({
+                "ticket_id": ticket.id,
+                "ticket_status": ticket.status,
+                "event_id": event.id,
+                "event_title": event.title,
+                "event_date": event.start_date.isoformat() if event.start_date else None, 
+                "event_location": event.location
+            })
+
+        return tickets_list
+
+    except Exception as e:
+        print(f"Error fetching tickets with details: {e}")
+        db.session.rollback()
+        return []
 
 def get_ticket_by_id(ticket_id):
     try:

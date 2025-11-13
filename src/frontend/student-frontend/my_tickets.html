@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Tickets - Concordia University</title>
+  
+  <link rel="stylesheet" href="my_tickets.css">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poller+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="my_tickets.js" defer></script>
+  <script src="index.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <div id="logo">CODESQUAD EVENTS</div>
+    <button id="dot">&#8801</button>
+  </header> 
+
+  <div id="menu">
+    <nav>
+      <a href="index.html">HOME</a>
+      <a href="events.html">EVENTS</a>
+      <a href="my_tickets.html" class="active">MY TICKETS</a>
+      <a href="profilePage.html">MY PROFILE</a>
+      <a href="login.html">LOGIN</a>
+    </nav>
+  </div>
+
+  <main class="main-container">
+    <h2>My Tickets</h2>
+    
+    <div id="ticket-grid-container">
+      <p class="loading-message">Loading your tickets...</p>
+    </div>
+  </main>
+
+  <div class="modal-overlay" id="ticket-modal">
+    <div class="modal-content">
+      <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+      
+      <div class="modal-header">
+        <h3 id="modal-event-title">Event Title</h3>
+      </div>
+      
+      <div class="modal-body">
+        <p>
+          <strong>Date:</strong> <span id="modal-event-date">...</span><br>
+          <strong>Location:</strong> <span id="modal-event-location">...</span>
+        </p>
+        
+        <div class="modal-qr-code">
+          <img id="modal-qr-img" src="" alt="Ticket QR Code">
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <strong>Ticket ID:</strong> <span id="modal-ticket-id">...</span> | 
+        <strong>Status:</strong> <span id="modal-ticket-status">...</span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

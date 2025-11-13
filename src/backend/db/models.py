@@ -6,7 +6,11 @@ class User(db.Model):
     username = db.Column(db.String(80), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(120), nullable=False, unique=True)
-    role = db.Column(db.String(40))
+    role = db.Column(db.String(40), nullable=False)
+    first_name = db.Column(db.String(80))
+    last_name = db.Column(db.String(80))
+    student_id = db.Column(db.Integer, unique=True)
+    program = db.Column(db.String(40))
 
     @property
     def data(self):
@@ -14,7 +18,11 @@ class User(db.Model):
             "id": self.id,
             "username": self.username,
             "email": self.email,
-            "role": self.role
+            "role": self.role,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "student_id": self.student_id,
+            "program": self.program
         }
 
 class Event(db.Model):
@@ -59,7 +67,7 @@ class Ticket(db.Model):
     attendee_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'), nullable=False)
     qr_code = db.Column(db.Text)
-    status = db.Column(db.String(20), default='pending')
+    status = db.Column(db.String(20), default='valid')
 
     @property
     def data(self):
