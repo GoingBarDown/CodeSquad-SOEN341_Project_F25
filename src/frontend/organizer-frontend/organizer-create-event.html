@@ -17,6 +17,7 @@
       <a href="organizer-dashboard.html">Dashboard</a>
       <a href="organizer-manage-events.html">Analytics</a>
       <a href="organizer-profile.html">Profile</a>
+      <a href="organizer-login.html" id="loginLogoutLink">Login</a>
     </nav>
   </div>
 
@@ -27,11 +28,16 @@
         <label for="title">Event Title</label>
         <input type="text" id="title" placeholder="Enter event title" required />
 
-        <label for="startDate">Start Date & Time</label>
-        <input type="datetime-local" id="startDate" required />
-
-        <label for="endDate">End Date & Time</label>
-        <input type="datetime-local" id="endDate" required />
+        <div class="date-fields-row">
+          <div class="date-field">
+            <label for="startDate">Start Date & Time</label>
+            <input type="datetime-local" id="startDate" required />
+          </div>
+          <div class="date-field">
+            <label for="endDate">End Date & Time</label>
+            <input type="datetime-local" id="endDate" required />
+          </div>
+        </div>
 
         <label for="category">Category</label>
         <select id="category" required>
@@ -43,30 +49,42 @@
           <option value="Conference">Conference</option>
         </select>
 
-        <label for="location">Location</label>
-        <input type="text" id="location" placeholder="Enter event location" required /> 
+        <div class="form-fields-row">
+          <div class="form-field">
+            <label for="location">Location</label>
+            <input type="text" id="location" placeholder="Enter event location" required />
+          </div>
+          <div class="form-field">
+            <label for="capacity">Capacity</label>
+            <input type="number" id="capacity" placeholder="Maximum number of attendees" min="1" />
+          </div>
+        </div>
 
-        <label for="capacity">Capacity</label>
-        <input type="number" id="capacity" placeholder="Maximum number of attendees" min="1" />
-
-        <label for="price">Price</label>
-        <input type="number" id="price" placeholder="Event price" min="0" step="0.01" />
-
-        <label for="link">Event Link</label>
-        <input type="url" id="link" placeholder="Virtual event link (optional)" />
-
-        <label for="seating">Seating Arrangement</label>
-        <textarea id="seating" rows="2" placeholder="Describe seating arrangement (optional)"></textarea>
+        <div class="form-fields-row">
+          <div class="form-field">
+            <label for="price">Price</label>
+            <input type="number" id="price" placeholder="Event price" min="0" step="0.01" />
+          </div>
+          <div class="form-field">
+            <label for="link">Event Link</label>
+            <input type="url" id="link" placeholder="Virtual event link (optional)" />
+          </div>
+        </div>
 
         <label for="description">Description</label>
         <textarea id="description" rows="4" placeholder="Add event details..."></textarea>
 
-        <label for="status">Status</label>
-        <select id="status">
-          <option value="draft">Draft</option>
-          <option value="published">Published</option>
-          <option value="cancelled">Cancelled</option>
-        </select>
+        <label for="seating">Seating Arrangement</label>
+        <textarea id="seating" rows="2" placeholder="Describe seating arrangement (optional)"></textarea>
+
+        <div class="form-field-small">
+          <label for="status">Status</label>
+          <select id="status">
+            <option value="draft">Draft</option>
+            <option value="published">Published</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
 
         <button type="submit" class="btn-primary">Create Event</button>
       </form>
