@@ -1,125 +1,38 @@
-// document.addEventListener("DOMContentLoaded", () => {
-//   const dot = document.getElementById("dot");
-//   const menu = document.getElementById("menu");
-//   dot.addEventListener("click", () => menu.classList.toggle("open"));
-
-//   // 🟣 Sample Event Analytics Data
-//   const eventAnalytics = [
-//     {
-//       title: "Robotics Workshop",
-//       registered: 120,
-//       capacity: 150,
-//       attendance: 105,
-//       participants: [
-//         { name: "Alice Johnson", ticketID: "RW-001", status: "Checked-In" },
-//         { name: "Bob Smith", ticketID: "RW-002", status: "Pending" },
-//         { name: "Charlie Davis", ticketID: "RW-003", status: "Checked-In" }
-//       ]
-//     },
-//     {
-//       title: "Guest Lecture: AI",
-//       registered: 180,
-//       capacity: 200,
-//       attendance: 162,
-//       participants: [
-//         { name: "Nina Patel", ticketID: "AI-201", status: "Checked-In" },
-//         { name: "Oscar Lee", ticketID: "AI-202", status: "Pending" },
-//         { name: "Priya Mehta", ticketID: "AI-203", status: "Checked-In" }
-//       ]
-//     },
-//     {
-//       title: "Campus Social Night",
-//       registered: 90,
-//       capacity: 120,
-//       attendance: 76,
-//       participants: [
-//         { name: "Ethan Ross", ticketID: "SN-301", status: "Checked-In" },
-//         { name: "Lara Chen", ticketID: "SN-302", status: "Pending" },
-//         { name: "Marco Diaz", ticketID: "SN-303", status: "Checked-In" }
-//       ]
-//     }
-//   ];
-
-//   // 🟢 Render Analytics Cards
-//   const container = document.getElementById("analyticsContainer");
-//   eventAnalytics.forEach((event, index) => {
-//     const attendanceRate = Math.round((event.attendance / event.registered) * 100);
-//     const remaining = event.capacity - event.registered;
-
-//     const card = document.createElement("div");
-//     card.className = "card";
-//     card.innerHTML = `
-//       <h3>${event.title}</h3>
-//       <p class="stat"><b>${event.registered} / ${event.capacity}</b><br><small>Registered Participants</small></p>
-//       <p><b>Attendance Rate:</b> ${attendanceRate}%</p>
-//       <p><b>Remaining Capacity:</b> ${remaining}</p>
-//       <button class="btn-primary download-btn" data-index="${index}" style="margin-top: 12px;">Download CSV</button>
-
-//     `;
-//     container.appendChild(card);
-//   });
-
-//   // 🟠 Download Event-specific Participant CSV
-//   document.querySelectorAll(".download-btn").forEach(button => {
-//     button.addEventListener("click", (e) => {
-//       const eventIndex = e.target.dataset.index;
-//       const event = eventAnalytics[eventIndex];
-//       const csv = [
-//         ["Name", "Ticket ID", "Status"],
-//         ...event.participants.map(p => [p.name, p.ticketID, p.status])
-//       ].map(r => r.join(",")).join("\n");
-
-//       const blob = new Blob([csv], { type: "text/csv" });
-//       const link = document.createElement("a");
-//       link.href = URL.createObjectURL(blob);
-//       link.download = `${event.title.replace(/\s+/g, "_")}_participants.csv`;
-//       link.click();
-//     });
-//   });
-
-//   // 🟣 Ticket Validation & Export (shared section)
-//   const validateBtn = document.getElementById("validateBtn");
-//   const ticketInput = document.getElementById("ticketInput");
-//   const statusText = document.getElementById("statusText");
-
-//   const attendees = [
-//     { name: "Alice Johnson", ticketID: "TCK123", status: "Checked-In" },
-//     { name: "Bob Smith", ticketID: "TCK124", status: "Pending" },
-//     { name: "Carla Mendes", ticketID: "TCK125", status: "Checked-In" }
-//   ];
-
-//   validateBtn.addEventListener("click", () => {
-//     const id = ticketInput.value.trim().toUpperCase();
-//     const found = attendees.find(a => a.ticketID === id);
-//     if (!id) {
-//       statusText.textContent = "Please enter a Ticket ID.";
-//       statusText.style.color = "orange";
-//     } else if (found) {
-//       statusText.textContent = `✅ Valid Ticket (${found.name})`;
-//       statusText.style.color = "green";
-//     } else {
-//       statusText.textContent = "❌ Invalid Ticket ID.";
-//       statusText.style.color = "red";
-//     }
-//   });
-
-//   // 🟢 QR Scanner
-//   function onScanSuccess(decodedText) {
-//     ticketInput.value = decodedText;
-//     statusText.textContent = `Scanned: ${decodedText}`;
-//     statusText.style.color = "blue";
-//   }
-
-//   const qrReader = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 200 });
-//   qrReader.render(onScanSuccess);
-// });
-
-
 document.addEventListener("DOMContentLoaded", () => {
     // Menu toggle
     const dot = document.getElementById("dot");
     const menu = document.getElementById("menu");
     dot.addEventListener("click", () => menu.classList.toggle("open"));
+
+    
+    // This finds the card and updates its numbers
+    function updateAnalyticsCard(eventId) {
+        // 1. Find the card for this event
+        const card = document.querySelector(`.card[data-event-id="${eventId}"]`);
+        if (!card) return;
+
+        // 2. Find the specific stat elements we need to update
+        const registeredEl = card.querySelector(`#stat-registered-${eventId}`);
+        const checkedInEl = card.querySelector(`#stat-checked-in-${eventId}`);
+        const rateEl = card.querySelector(`#stat-rate-${eventId}`);
+        
+        if (!registeredEl || !checkedInEl || !rateEl) return;
+
+        // 3. Get the current numbers from the text
+        let registered = parseInt(registeredEl.textContent);
+        let checkedIn = parseInt(checkedInEl.textContent);
+
+        // 4. Increment the checked-in count
+        // We only call this on success, so we know it's a new check-in
+        checkedIn += 1;
+
+        // 5. Recalculate the attendance rate
+        const newRate = (registered > 0) ? Math.round((checkedIn / registered) * 100) : 0;
+
+        // 6. Update the HTML text
+        checkedInEl.textContent = checkedIn;
+        rateEl.textContent = newRate;
+    }
 
     // Load all tickets and events for analytics
     Promise.all([API.getEvents(), API.getAllTickets()])
@@ -151,12 +64,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const card = document.createElement("div");
                 card.className = "card";
+                card.setAttribute('data-event-id', event.id); //add event ID to the card
+
+                // Add unique IDs to the stat spans
                 card.innerHTML = `
                     <h3>${event.title}</h3>
-                    <p class="stat"><b>${registered} / ${event.capacity}</b><br>
+                    <p class="stat"><b><span id="stat-registered-${event.id}">${registered}</span> / ${event.capacity}</b><br>
                     <small>Registered Participants</small></p>
-                    <p><b>Attendance Rate:</b> ${attendanceRate}%</p>
-                    <p><b>Checked In:</b> ${checkedIn} / ${registered}</p>
+                    <p><b>Attendance Rate:</b> <span id="stat-rate-${event.id}">${attendanceRate}</span>%</p>
+                    <p><b>Checked In:</b> <span id="stat-checked-in-${event.id}">${checkedIn}</span> / <span id="stat-registered-total-${event.id}">${registered}</span></p>
                     <p><b>Remaining Capacity:</b> ${remaining}</p>
                     <br>
                     <button class="btn-primary download-btn" data-id="${event.id}" data-title="${event.title}">Download CSV</button>
@@ -233,20 +149,41 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        API.getTicket(ticketId)
-            .then(ticket => {
-                if (ticket) {
-                    statusText.textContent = `✅ Valid Ticket (ID: ${ticket.id}, Status: ${ticket.status})`;
-                    statusText.style.color = "green";
-                } else {
-                    statusText.textContent = "❌ Invalid Ticket ID.";
-                    statusText.style.color = "red";
-                }
-            })
-            .catch(err => {
-                statusText.textContent = "❌ Invalid Ticket ID.";
-                statusText.style.color = "red";
-            });
+        statusText.textContent = `Validating ticket ${ticketId}...`;
+        statusText.style.color = "blue";
+
+        fetch('/tickets/validate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ ticketId: ticketId })
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => {
+                    throw new Error(err.error || "Validation Failed");
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Success!
+            statusText.textContent = ` ${data.message} (For: ${data.attendeeName})`;
+            statusText.style.color = "green";
+
+            // <-- MODIFICATION: Call the update function on success -->
+            const eventId = data.ticket.event_id;
+            updateAnalyticsCard(eventId);
+            
+            // Clear input after success
+            ticketInput.value = '';
+        })
+        .catch(error => {
+            // Handle errors
+            statusText.textContent = ` Error: ${error.message}`;
+            statusText.style.color = "red";
+        });
     });
 
     // QR Scanner integration
