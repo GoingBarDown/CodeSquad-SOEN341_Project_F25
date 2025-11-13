@@ -4,11 +4,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Poller+One&family=DM+Serif+Text&display=swap');
 
 :root {
-  --primary: rgb(151, 9, 21);
-  --accent: #871a1a;
-  --light-bg: bisque;
-  --text-light: #fff;
-  --text-dark: #2d2d2d;
+     --primary-color: #912338;
+    --primary-hover: #db0272; 
+    --light-bg: #f2f2f2; 
+    --text-dark: #2c2c2c; 
+    --dark: #000; 
+    --cream-bg: #E9D3D7;
 }
 
 body {
@@ -26,11 +27,11 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  background-color: var(--primary);
-  font-family: "Poller One", sans-serif;
-  font-weight: 100;
+  background-color: #912338;
+  font-family: sans-serif;
+  font-weight: bolder;
   font-size: 20px;
-  color: var(--text-light);
+  color: white;
   position: relative;
 }
 
@@ -140,7 +141,7 @@ header {
   left: 0;
   right: 0;
   bottom: 0;
-  color: var(--text-light);
+  color: white;;
   background-color: #333333af;
   font-weight: bold;
 }
@@ -238,13 +239,12 @@ header {
   border-radius: 30px;
   text-align: center;
   box-sizing: border-box;
-  background-color: var(--primary);
 }
 
 .recomended p,
 .event1 p {
   font-family: "Poller One", sans-serif;
-  color: var(--text-light);
+  color: rgb(70, 78, 63);
   font-size: larger;
 }
 
@@ -255,6 +255,10 @@ header {
 #event-details-container,
 .claim-section {
   background-color: var(--light-bg);
+}
+
+.recomended{
+  background-color: #d9e0cc;
 }
 
 /* -------------------------------------------------
@@ -308,6 +312,8 @@ header {
   text-align: center;
   font-family: "DM Serif Text", serif;
   transition: transform 0.2s ease;
+  background-color: #912338;
+  color: rgb(255, 255, 255);
 }
 
 .card p,
@@ -326,5 +332,6 @@ header {
 
 .card:hover {
   transform: translateY(-5px);
+  color: rgb(184, 187, 177);
+  background-color: rgb(70, 78, 63);
 }
-
