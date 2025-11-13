@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Verification | CodeSquad Events</title>
+
+  <link rel="stylesheet" href="payment.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poller+One&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header>
+    <h1>CODESQUAD EVENTS</h1>
+    <button id="dot">☰</button>
+  </header>
+
+  <div id="menu">
+    <nav>
+      <a href="index.html">HOME</a>
+      <a href="events.html">EVENTS</a>
+      <a href="profilePage.html">MY PROFILE</a>
+      <a href="login.html">LOGOUT</a>
+    </nav>
+  </div>
+
+  <main id="auth-page">
+    <div class="auth-card">
+      <h2 style="color:#7c0c0c;font-family:'Poller One',sans-serif;">Payment Verification</h2>
+
+      <form id="paymentForm">
+        <label for="studentId">Enter Student ID</label>
+        <input type="text" id="studentId" placeholder="e.g., S1234567" required />
+
+        <label for="amount">Amount</label>
+        <input type="text" id="amount" value="$25" readonly />
+
+        <button type="submit" id="payBtn" class="btn-auth">Verify &amp; Pay</button>
+      </form>
+
+      <p id="paymentStatus" class="status-text"></p>
+    </div>
+  </main>
+
+  <script src="payment.js"></script>
+</body>
+</html>

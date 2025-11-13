@@ -189,17 +189,18 @@ main.centered {
 
 .main-container {
   display: flex;
+  gap: 20px;
+  padding: 20px 40px;
+  align-items: flex-start;
 }
 
 /* Left sidebar */
 .side-panel {
-  width: 35%;
+  width: 30%;
   background-color: #d9e0cc;
-  padding: 16px;
+  padding: 20px;
   border-radius: 12px;
   text-align: center;
-  margin: 10px;
-  height: 80vh;
 }
 
 /* Right content section */
@@ -207,10 +208,8 @@ main.centered {
   flex: 1;
   padding: 20px;
   background-color: rgb(180, 180, 170);
-  margin: 2%;
   color: white;
   border-radius: 12px;
-  height: 80vh;
 }
 
 
@@ -221,10 +220,21 @@ main.centered {
   background: white;
   border-radius: 16px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  width: 350px;
+  width: auto;
+  max-width: 500px;
+  min-width: 350px;
   padding: 30px 40px;
   text-align: left;
-  
+}
+
+/* Create event form card - wider */
+#createEventForm {
+  width: auto;
+}
+
+.card:has(#createEventForm) {
+  max-width: 600px;
+  min-width: 400px;
 }
 
 h2 {
@@ -253,6 +263,97 @@ input, textarea, select {
   border: 1px solid #ccc;
   border-radius: 8px;
   margin-bottom: 20px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Reduce spacing for consecutive textareas */
+textarea + label {
+  margin-top: 10px;
+}
+
+textarea {
+  margin-bottom: 10px;
+}
+
+/* Date fields row */
+.date-fields-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.date-field {
+  flex: 1;
+}
+
+.date-field label {
+  display: block;
+  margin-bottom: 3px;
+  font-weight: 500;
+  color: #333;
+  font-size: 0.95rem;
+  margin-top: 0;
+}
+
+.date-field input {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+/* Form fields row (for location, capacity, price, link) */
+.form-fields-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.form-field {
+  flex: 1;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 3px;
+  font-weight: 500;
+  color: #333;
+  font-size: 0.95rem;
+  margin-top: 0;
+}
+
+.form-field input,
+.form-field select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Small form field (for status) */
+.form-field-small {
+  max-width: 200px;
+  margin-bottom: 20px;
+}
+
+.form-field-small label {
+  display: block;
+  margin-bottom: 3px;
+  font-weight: 500;
+  color: #333;
+  font-size: 0.95rem;
+  margin-top: 15px;
+}
+
+.form-field-small select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
   font-size: 0.95rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   font-family: 'Inter', sans-serif;
@@ -291,8 +392,8 @@ select:disabled {
   color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 0.5rem;
-  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.1s ease;
@@ -420,10 +521,10 @@ select:disabled {
   outline: none;
 }
 
-.filter-tags {
+.filter-tags{
   display: flex;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 1px;
 }
 
 .filter-tags select {
@@ -435,6 +536,22 @@ select:disabled {
   font-weight: bold;
   font-size: 10px;
   border-radius: 16px;
+}
+
+.clear-btn {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: rgb(180, 180, 170);
+  color: white;
+  font-size: 10px;
+  margin-top: 0;
+  border-radius: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.clear-btn:hover {
+  background: #5c5d5a;
 }
 
 .search-box input {
