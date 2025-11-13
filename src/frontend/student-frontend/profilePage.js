@@ -1,11 +1,6 @@
-const dot = document.getElementById('dot');
-const menu = document.getElementById('menu');
-if (dot && menu) {
-  dot.onclick = () => {
-    const isOpen = menu.classList.toggle('open');
-    dot.innerHTML = isOpen ? '&#8211;' : '&#8801;';
-  };
-}
+// Menu handling is centralized in index.js; avoid duplicate handlers here to
+// prevent conflicts on profilePage.html. index.js attaches the toggle and
+// outside-click behavior at DOMContentLoaded.
 
 const API_BASE = 'http://127.0.0.1:5000';
 

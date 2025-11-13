@@ -102,6 +102,7 @@
         const email = document.getElementById("email").value.trim();
         const pw = document.getElementById("password").value.trim();
         const c = document.getElementById("confirmPassword").value.trim();
+        const studID = document.getElementById("Studentid").value.trim();
 
         if (!name || !email || !pw || !c)
           return showToast("⚠️ Fill all fields", "#f44336");
@@ -117,6 +118,7 @@
             role: "student",
             // Optionally split name into first/last if you want to store them
             first_name: name,
+            student_id: studID
           };
 
           const res = await fetch(`${API_BASE}/users`, {
