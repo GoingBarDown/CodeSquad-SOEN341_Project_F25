@@ -6,10 +6,10 @@ class User(db.Model):
     username = db.Column(db.String(80), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(120), nullable=False, unique=True)
-    role = db.Column(db.String(40), nullable=False),
-    first_name = db.Column(db.String(80)),
-    last_name = db.Column(db.String(80)),
-    student_id = db.Column(db.Integer, unique=True),
+    role = db.Column(db.String(40), nullable=False)
+    first_name = db.Column(db.String(80))
+    last_name = db.Column(db.String(80))
+    student_id = db.Column(db.Integer, unique=True)
     program = db.Column(db.String(40))
 
     @property
