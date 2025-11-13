@@ -1,6 +1,47 @@
 
 // ===== MENU TOGGLE =====
 document.addEventListener("DOMContentLoaded", () => {
+  // hide login/signup if user is already logged in
+  try {
+    const user = localStorage.getItem('loggedInUser') || (function(){
+      // fallback to cookie named userId set by login flow
+      const match = document.cookie.match(new RegExp('(^| )userId=([^;]+)'));
+      return match ? decodeURIComponent(match[2]) : null;
+    })();
+
+    if (user) {
+      const menu = document.getElementById('menu');
+      if (menu) {
+        // Remove any links that point to login or signup
+        Array.from(menu.querySelectorAll('a')).forEach(a => {
+          const href = (a.getAttribute('href') || '').toLowerCase();
+          if (href.includes('login.html') || href.includes('signup.html')) {
+            a.remove();
+          }
+        });
+
+        // Add a logout link if not already present
+        if (!menu.querySelector('#logoutLink')) {
+          const logoutA = document.createElement('a');
+          logoutA.href = '#';
+          logoutA.id = 'logoutLink';
+          logoutA.textContent = 'LOGOUT';
+          logoutA.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('loggedInUser');
+            // Remove userId cookie (expires now)
+            document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            localStorage.setItem('logoutMessage', '✅ Successfully logged out!');
+            window.location.href = 'index.html';
+          });
+          // append at end
+          menu.querySelector('nav')?.appendChild(logoutA);
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('Menu login toggle failed', err);
+  }
   const dot = document.getElementById("dot");
   const menu = document.getElementById("menu");
 

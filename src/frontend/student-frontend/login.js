@@ -4,7 +4,8 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
 
-  fetch('/users/auth', {
+  const API_BASE = 'http://127.0.0.1:5000';
+  fetch(`${API_BASE}/users/auth`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({

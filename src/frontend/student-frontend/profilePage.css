@@ -1,13 +1,12 @@
 body {
   margin: 0;
   font-family: sans-serif;
-  background-color: rgb(151, 9, 21);
+  background-color: #f4f6f8;
   overflow-x: hidden;
 }
 
-* {
-  background-color: rgb(151, 9, 21);
-}
+/* remove global background application so cards and text stay readable */
+
 
 header {
   display: flex;
@@ -88,7 +87,7 @@ main {
 }
 
 .profile-card {
-  background-color: white;
+  background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
   padding: 40px;
@@ -124,6 +123,14 @@ main {
   color: #444;
   background-color: white;
 }
+
+.info-value {
+  color: #111;
+  font-size: 16px;
+  background: transparent;
+  padding-left: 8px;
+}
+
 .calendar-button-container {
   text-align: center;
   margin-top: 25px;
@@ -143,7 +150,3 @@ main {
 .calendar-button:hover {
   background-color: rgb(180, 20, 30);
 }
-
-
-.in
-
