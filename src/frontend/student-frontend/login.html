@@ -1,161 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Student Login</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Login</title>
 
-  <link rel="stylesheet" href="login-signup.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poller+One&family=DM+Serif+Text&display=swap" rel="stylesheet" />
-</head>
+    <link rel="stylesheet" href="login-signup.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poller+One&family=DM+Serif+Text&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<body>
-  <!-- HEADER (matches index) -->
-  <header>
-  <h1>CODESQUAD EVENTS</h1>
-  <button id="dot">☰</button>
-</header>
+  <body>
+    <!-- HEADER (matches index) -->
+    <header>
+      <h1>CODESQUAD EVENTS</h1>
+      <button id="dot">☰</button>
+    </header>
 
-<div id="menu">
-  <nav>
-    <a href="index.html">HOME</a>
-    <a href="events.html">EVENTS</a>
-    <a href="signup.html">SIGN UP</a>
-  </nav>
-</div>
-
-
-  <!-- LOGIN SECTION -->
-  <main id="auth-page">
-    <div class="auth-card card"> <!-- .card kept for consistent styles -->
-      <h2>Student Login</h2>
-
-      <form id="loginForm">
-        <label for="email">Student Email</label>
-        <input type="email" id="email" placeholder="example@club.concordia.ca" required />
-
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Enter your password" required />
-
-        <button type="submit" class="btn-auth btn-primary">Login</button>
-
-        <div class="divider">or</div>
-
-        <button type="button" class="btn-google">
-          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" />
-          Login with Google
-        </button>
-
-        <p class="auth-text">
-          Don’t have an account?
-          <a href="signup.html" class="auth-link">Sign Up</a>
-        </p>
-
-        <div class="role-switch">
-          <p>
-            Not a student?
-            <a href="../organizer-frontend/organizer-login.html">Organizer</a> |
-            <a href="../admin-frontend/admin-login.html">Admin</a>
-          </p>
-        </div>
-      </form>
+    <div id="menu">
+      <nav>
+        <a href="index.html">HOME</a>
+        <a href="events.html">EVENTS</a>
+        <a href="signup.html">SIGN UP</a>
+      </nav>
     </div>
-  </main>
 
-  <!-- SCRIPT: menu logic + login handler -->
-  <script>
-    // ===== MENU TOGGLE (exact same behavior as index) =====
-    document.addEventListener("DOMContentLoaded", () => {
-      const dot = document.getElementById("dot");
-      const menu = document.getElementById("menu");
+    <!-- LOGIN SECTION -->
+    <main id="auth-page">
+      <div class="auth-card card">
+        <!-- .card kept for consistent styles -->
+        <h2>Student Login</h2>
 
-      if (dot && menu) {
-        // toggle on click, update icon, set aria-hidden
-        dot.addEventListener("click", (e) => {
-          e.stopPropagation();
-          const isOpen = menu.classList.toggle("open");
-          dot.innerHTML = isOpen ? "&#8211;" : "&#8801;";
-          menu.setAttribute("aria-hidden", !isOpen);
-        });
+        <form id="loginForm">
+          <label for="email">Student Email</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="example@club.concordia.ca"
+            required
+          />
 
-        // close when click outside
-        document.addEventListener("click", (e) => {
-          if (!menu.contains(e.target) && e.target !== dot) {
-            menu.classList.remove("open");
-            dot.innerHTML = "&#8801;";
-            menu.setAttribute("aria-hidden", "true");
-          }
-        });
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter your password"
+            required
+          />
 
-        // keyboard escape to close
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") {
-            menu.classList.remove("open");
-            dot.innerHTML = "&#8801;";
-            menu.setAttribute("aria-hidden", "true");
-          }
-        });
-      }
+          <button type="submit" class="btn-auth btn-primary">Login</button>
 
-      // ===== LOGIN FORM HANDLER (keeps your existing flow; posts to backend) =====
-      const loginForm = document.getElementById('loginForm');
-      if (loginForm) {
-        loginForm.addEventListener('submit', async (ev) => {
-          ev.preventDefault();
-          const email = document.getElementById('email').value.trim();
-          const password = document.getElementById('password').value.trim();
-          if (!email || !password) return showToast("⚠️ Please fill all fields", "#f44336");
+          <div class="divider">or</div>
 
-          // attempt backend auth (keeps same endpoint you had)
-          try {
-            const res = await fetch('/users/auth', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ username: email, password })
-            });
+          <button type="button" class="btn-google">
+            <img
+              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+              alt="Google logo"
+            />
+            Login with Google
+          </button>
 
-            if (res.status === 200) {
-              const data = await res.json();
-              document.cookie = `userId=${data.user.id}; path=/;`;
-              document.cookie = `username=${data.user.username}; path=/;`;
-              showToast("✅ Login successful!");
-              setTimeout(() => (window.location.href = 'index.html'), 900);
-            } else {
-              showToast("❌ Invalid credentials", "#f44336");
+          <p class="auth-text">
+            Don’t have an account?
+            <a href="signup.html" class="auth-link">Sign Up</a>
+          </p>
+
+          <div class="role-switch">
+            <p>
+              Not a student?
+              <a href="../organizer-frontend/organizer-login.html">Organizer</a>
+              |
+              <a href="../admin-frontend/admin-login.html">Admin</a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- SCRIPT: menu logic + login handler -->
+    <script>
+      // ===== MENU TOGGLE (exact same behavior as index) =====
+      document.addEventListener("DOMContentLoaded", () => {
+        const dot = document.getElementById("dot");
+        const menu = document.getElementById("menu");
+
+        if (dot && menu) {
+          // toggle on click, update icon, set aria-hidden
+          dot.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const isOpen = menu.classList.toggle("open");
+            dot.innerHTML = isOpen ? "&#8211;" : "&#8801;";
+            menu.setAttribute("aria-hidden", !isOpen);
+          });
+
+          // close when click outside
+          document.addEventListener("click", (e) => {
+            if (!menu.contains(e.target) && e.target !== dot) {
+              menu.classList.remove("open");
+              dot.innerHTML = "&#8801;";
+              menu.setAttribute("aria-hidden", "true");
             }
-          } catch (err) {
-            console.error(err);
-            showToast("❌ Login failed", "#f44336");
-          }
-        });
-      }
+          });
 
-      // Show logout toast if present
-      const logoutMsg = localStorage.getItem("logoutMessage");
-      if (logoutMsg) {
-        showToast(logoutMsg);
-        localStorage.removeItem("logoutMessage");
-      }
-    });
+          // keyboard escape to close
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+              menu.classList.remove("open");
+              dot.innerHTML = "&#8801;";
+              menu.setAttribute("aria-hidden", "true");
+            }
+          });
+        }
 
-    // simple toast helper (kept from your file)
-    function showToast(msg, color = "#4CAF50") {
-      const t = document.createElement("div");
-      Object.assign(t.style, {
-        position: "fixed",
-        bottom: "30px",
-        right: "30px",
-        background: color,
-        color: "white",
-        padding: "12px 20px",
-        borderRadius: "8px",
-        fontFamily: "sans-serif",
-        zIndex: "9999",
+        // ===== LOGIN FORM HANDLER (reads backend JSON on success or error) =====
+        const loginForm = document.getElementById("loginForm");
+        if (loginForm) {
+          loginForm.addEventListener("submit", async (ev) => {
+            ev.preventDefault();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            if (!email || !password)
+              return showToast("⚠️ Please fill all fields", "#f44336");
+
+            try {
+              const API_BASE = "http://127.0.0.1:5000";
+              const res = await fetch(`${API_BASE}/users/auth`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username: email, password }),
+              });
+
+              // Attempt to parse JSON regardless of status so we can show server messages
+              let payload = null;
+              try {
+                payload = await res.json();
+              } catch (parseErr) {
+                // non-JSON response; fall back to status-based message
+                console.warn(
+                  "Failed to parse JSON from /users/auth response",
+                  parseErr
+                );
+              }
+
+              if (res.ok) {
+                const data = payload || {};
+                // store minimal user info in cookies (server controls what is safe)
+                if (data.user && data.user.id) {
+                  document.cookie = `userId=${encodeURIComponent(
+                    data.user.id
+                  )}; path=/;`;
+                  document.cookie = `username=${encodeURIComponent(
+                    data.user.username || ""
+                  )}; path=/;`;
+                }
+                showToast(data.message || "✅ Login successful!");
+                setTimeout(() => (window.location.href = "index.html"), 900);
+              } else {
+                // show server-provided error message if available
+                const errMsg =
+                  (payload && (payload.message || payload.error)) ||
+                  "❌ Invalid credentials";
+                showToast(errMsg, "#f44336");
+              }
+            } catch (err) {
+              console.error("Network or fetch error during login:", err);
+              showToast("❌ Login failed (network)", "#f44336");
+            }
+          });
+        }
+
+        // Show logout toast if present
+        const logoutMsg = localStorage.getItem("logoutMessage");
+        if (logoutMsg) {
+          showToast(logoutMsg);
+          localStorage.removeItem("logoutMessage");
+        }
       });
-      t.textContent = msg;
-      document.body.appendChild(t);
-      setTimeout(() => t.remove(), 2500);
-    }
-  </script>
-</body>
+
+      // simple toast helper (kept from your file)
+      function showToast(msg, color = "#4CAF50") {
+        const t = document.createElement("div");
+        Object.assign(t.style, {
+          position: "fixed",
+          bottom: "30px",
+          right: "30px",
+          background: color,
+          color: "white",
+          padding: "12px 20px",
+          borderRadius: "8px",
+          fontFamily: "sans-serif",
+          zIndex: "9999",
+        });
+        t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 2500);
+      }
+    </script>
+  </body>
 </html>
