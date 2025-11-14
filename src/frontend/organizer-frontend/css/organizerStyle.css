@@ -1205,3 +1205,362 @@ button {
   background: #e9d3d7;
   color: #5a1b2b;
 }
+
+/* =========================================================
+   12. ORGANIZER LOGIN & SIGNUP FORMS
+   ========================================================= */
+
+/* Card styling for login and signup */
+.card-organizer {
+  max-width: 500px;
+  padding: 40px;
+}
+
+.card-organizer.login {
+  max-width: 450px;
+}
+
+/* Form heading */
+.form-heading {
+  margin-bottom: 10px;
+  font-size: 28px;
+  color: #912338;
+  font-weight: 700;
+}
+
+/* Form subtitle */
+.form-subtitle {
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Form section */
+.form-section {
+  margin-bottom: 20px;
+}
+
+/* Two-column layout for first/last name */
+.form-section-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.form-section-row > div {
+  flex: 1;
+}
+
+/* Form label */
+.form-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+/* Form input */
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #912338;
+  box-shadow: 0 0 0 3px rgba(145, 35, 56, 0.1);
+}
+
+/* Form helper text */
+.form-helper {
+  color: #999;
+  font-size: 12px;
+  display: block;
+  margin-top: 4px;
+}
+
+/* Organization section box */
+.org-section {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.org-section h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* Organization dropdown */
+.org-dropdown-wrapper {
+  margin-bottom: 15px;
+}
+
+.org-dropdown-helper {
+  color: #666;
+  margin-top: 8px;
+  display: block;
+  font-size: 13px;
+}
+
+.create-org-btn {
+  background: none;
+  border: none;
+  color: #912338;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.create-org-btn:hover {
+  text-decoration: none;
+}
+
+/* New organization container (hidden by default) */
+.new-org-container {
+  display: none;
+}
+
+.new-org-container.active {
+  display: block;
+}
+
+/* Form section for password */
+.form-section-password {
+  margin-bottom: 20px;
+}
+
+.form-section-password:last-of-type {
+  margin-bottom: 25px;
+}
+
+/* Login-specific: password reminder link */
+.password-reminder {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.password-reminder a {
+  color: #912338;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.password-reminder a:hover {
+  text-decoration: underline;
+}
+
+/* Divider styling */
+.form-divider {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-divider b {
+  color: #999;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Google login button */
+.btn-google-auth {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 20px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-google-auth:hover {
+  background-color: #f9f9f9;
+}
+
+.btn-google-auth img {
+  width: 18px;
+  height: 18px;
+}
+
+/* Sign up prompt text */
+.signup-prompt {
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+/* Footer links section */
+.form-footer-links {
+  text-align: center;
+  font-size: 13px;
+  color: #666;
+  margin-top: 15px;
+}
+
+.form-footer-links a {
+  color: #912338;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.form-footer-links a:hover {
+  text-decoration: underline;
+}
+
+/* =========================================================
+   13. APPROVAL PENDING DIALOG
+   ========================================================= */
+
+.approval-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.approval-modal-content {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.approval-modal-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.approval-modal-content h2 {
+  font-size: 24px;
+  color: #912338;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.approval-message {
+  font-size: 15px;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.approval-message strong {
+  color: #912338;
+  font-weight: 600;
+}
+
+.approval-info {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 6px;
+  border-left: 4px solid #912338;
+}
+
+.approval-btn-ok {
+  background-color: #912338;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 32px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.approval-btn-ok:hover {
+  background-color: #a6223d;
+  transform: translateY(-1px);
+}
+
+.approval-btn-ok:active {
+  transform: translateY(0);
+}
+
+/* =========================================================
+   14. EVENT STATUS BADGES
+   ========================================================= */
+.event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.event-header h3 {
+  margin: 0;
+  flex: 1;
+}
+
+.event-status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.event-status.status-draft {
+  background-color: #e8e8e8;
+  color: #555;
+}
+
+.event-status.status-published {
+  background-color: #4caf50;
+  color: white;
+}
+
+.event-status.status-cancelled {
+  background-color: #f44336;
+  color: white;
+}

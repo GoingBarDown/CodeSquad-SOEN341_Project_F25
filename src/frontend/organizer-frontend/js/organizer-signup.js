@@ -1,18 +1,97 @@
+// Store organization domains for email verification
+let organizationDomains = {};
+
+// Helper function to extract email domain
+function getEmailDomain(email) {
+    return email.substring(email.lastIndexOf('@') + 1).toLowerCase();
+}
+
+// Helper function to check if email domain matches organization
+function isEmailDomainVerified(email, orgTitle) {
+    const allowedDomain = organizationDomains[orgTitle];
+    if (!allowedDomain) return false;
+    
+    const emailDomain = getEmailDomain(email);
+    return emailDomain === allowedDomain.toLowerCase();
+}
+
+// Load organizations on page load
+document.addEventListener('DOMContentLoaded', async () => {
+    const organizationSelect = document.getElementById('organization');
+    const createOrgBtn = document.getElementById('createOrgBtn');
+    const newOrgContainer = document.getElementById('newOrgContainer');
+    
+    // Load existing organizations (only approved ones)
+    try {
+        const response = await fetch('http://127.0.0.1:5000/organizations', {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (response.ok) {
+            const organizations = await response.json();
+            // Filter to only show approved organizations
+            const approvedOrgs = organizations.filter(org => org.status === 'approved');
+            
+            // Load organization domains from seed file
+            try {
+                const seedResponse = await fetch('../../backend/organizations_seed.json');
+                if (seedResponse.ok) {
+                    const seedData = await seedResponse.json();
+                    seedData.forEach(org => {
+                        organizationDomains[org.title] = org.domain;
+                    });
+                    console.log('Loaded organization domains:', organizationDomains);
+                }
+            } catch (err) {
+                console.error('Failed to load organization domains:', err);
+            }
+            
+            approvedOrgs.forEach(org => {
+                const option = document.createElement('option');
+                option.value = org.id;
+                option.textContent = org.title;
+                organizationSelect.appendChild(option);
+            });
+        }
+    } catch (err) {
+        console.error('Failed to load organizations:', err);
+    }
+    
+    // Toggle new organization form
+    if (createOrgBtn) {
+        createOrgBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            newOrgContainer.classList.toggle('active');
+            organizationSelect.value = '';
+        });
+    }
+});
+
 const signupForm = document.getElementById('signupForm');
 if (signupForm) {
     signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const name = document.getElementById('name')?.value.trim();
+        const firstName = document.getElementById('firstName')?.value.trim();
+        const lastName = document.getElementById('lastName')?.value.trim();
         const username = document.getElementById('username')?.value.trim();
         const email = document.getElementById('email')?.value.trim();
+        const studentId = document.getElementById('studentId')?.value.trim();
+        const organizationId = document.getElementById('organization')?.value;
+        const newOrgName = document.getElementById('newOrgName')?.value.trim();
+        const newOrgDesc = document.getElementById('newOrgDesc')?.value.trim();
         const password = document.getElementById('password')?.value.trim();
         const confirmPassword = document.getElementById('confirmPassword')?.value.trim();
         const role = document.getElementById('role')?.value || 'organizer';
 
         // Validation
-        if (!name || !username || !email || !password || !confirmPassword) {
-            alert("Please fill in all fields.");
+        if (!firstName || !lastName || !username || !email || !password || !confirmPassword) {
+            alert("Please fill in all required fields.");
+            return;
+        }
+
+        if (!organizationId && !newOrgName) {
+            alert("Please select or create an organization.");
             return;
         }
 
@@ -27,25 +106,123 @@ if (signupForm) {
         }
 
         // Username validation
-        if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
-            alert("Username can only contain letters, numbers, hyphens and underscores!");
+        if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+            alert("Username can only contain letters, numbers and underscores!");
             return;
         }
 
         try {
-            console.log('Attempting signup with:', { username, email });
+            console.log('Attempting signup with:', { firstName, lastName, username, email });
             
+            // Step 1: Create the user account
             const response = await API.signup({
-                username: username,   // Required by backend
+                first_name: firstName,
+                last_name: lastName,
+                username: username,
                 email: email,
                 password: password,
-                role: role
+                role: role,
+                student_id: studentId || null
             });
 
             console.log('Signup response:', response);
             
-            // Backend returns {'message': 'User created', 'id': user_id}
             if (response.message === 'User created' || response.id) {
+                const userId = response.id;
+                let finalOrgId = null;
+                
+                // If selecting existing org, use that ID
+                if (organizationId) {
+                    finalOrgId = organizationId;
+                }
+                
+                // Step 2: Create new organization if needed
+                if (newOrgName) {
+                    try {
+                        console.log('Creating new organization:', { title: newOrgName, description: newOrgDesc, status: 'pending' });
+                        const orgResponse = await fetch('http://127.0.0.1:5000/organizations', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                title: newOrgName,
+                                description: newOrgDesc || '',
+                                status: 'pending'
+                            })
+                        });
+                        
+                        console.log('Organization creation response status:', orgResponse.status);
+                        const orgData = await orgResponse.json();
+                        console.log('Organization creation response:', orgData);
+                        
+                        if (orgResponse.ok) {
+                            finalOrgId = orgData.id;
+                            console.log('✅ New organization created with ID:', finalOrgId);
+                        } else {
+                            console.error('❌ Failed to create organization (non-200 status):', orgData);
+                            throw new Error('Failed to create organization: ' + (orgData.error || orgData.message || 'Unknown error'));
+                        }
+                    } catch (err) {
+                        console.error('❌ Error during organization creation:', err);
+                        throw new Error('Failed to create organization: ' + err.message);
+                    }
+                }
+                
+                // Step 3: Add user to organization
+                console.log('=== STEP 3: Adding user to organization ===');
+                console.log('finalOrgId:', finalOrgId);
+                console.log('userId:', userId);
+                console.log('organizationId:', organizationId);
+                console.log('newOrgName:', newOrgName);
+                
+                if (finalOrgId) {
+                    console.log('Adding user', userId, 'to organization', finalOrgId);
+                    try {
+                        // If joining existing org, check if email domain is verified for auto-approval
+                        if (organizationId && !newOrgName) {
+                            // Get the selected organization title
+                            const selectedOrgOption = document.querySelector(`#organization option[value="${organizationId}"]`);
+                            const selectedOrgTitle = selectedOrgOption?.textContent;
+                            
+                            // Check if email domain matches
+                            const isDomainVerified = isEmailDomainVerified(email, selectedOrgTitle);
+                            console.log(`Email domain verification: ${email} for ${selectedOrgTitle} = ${isDomainVerified}`);
+                            
+                            if (isDomainVerified) {
+                                console.log('Email domain verified! Organization is already approved.');
+                            }
+                        }
+                        
+                        const memberPayload = {
+                            organization_id: parseInt(finalOrgId),
+                            user_id: parseInt(userId)
+                        };
+                        console.log('Member payload:', memberPayload);
+                        
+                        const memberResponse = await fetch('http://127.0.0.1:5000/organization_members', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(memberPayload)
+                        });
+                        
+                        console.log('Member creation response status:', memberResponse.status);
+                        const memberData = await memberResponse.json();
+                        console.log('Member creation response:', memberData);
+                        
+                        if (!memberResponse.ok) {
+                            console.error('❌ Failed to add user to organization (non-200 status):', memberData);
+                            throw new Error('Failed to add user to organization: ' + (memberData.error || memberData.message || 'Unknown error'));
+                        } else {
+                            console.log('✅ User added to organization successfully');
+                        }
+                    } catch (err) {
+                        console.error('❌ Error during organization member creation:', err);
+                        throw new Error('Failed to add user to organization: ' + err.message);
+                    }
+                } else {
+                    console.error('❌ No finalOrgId set. Cannot add user to organization!');
+                    console.error('organizationId:', organizationId, 'newOrgName:', newOrgName);
+                }
+                
                 alert('✅ Signup successful! Please login with your credentials.');
                 window.location.href = 'organizer-login.html';
             } else {

@@ -1,3 +1,36 @@
+// === AUTHENTICATION CHECK ===
+function checkOrganizerAccess() {
+    const userData = localStorage.getItem('userData');
+    
+    if (!userData) {
+        alert('❌ Please login first');
+        window.location.href = 'organizer-login.html';
+        return false;
+    }
+    
+    try {
+        const user = JSON.parse(userData);
+        
+        if (user.role !== 'organizer') {
+            alert('❌ You do not have permission to access this page. Only organizers can access this area.');
+            window.location.href = '../student-frontend/index.html';
+            return false;
+        }
+        
+        return true;
+    } catch (e) {
+        console.error('Error checking organizer access:', e);
+        localStorage.clear();
+        window.location.href = 'organizer-login.html';
+        return false;
+    }
+}
+
+// Check access before loading page
+if (!checkOrganizerAccess()) {
+    throw new Error('Access denied');
+}
+
 // Handle login/logout button in menu
 document.addEventListener('DOMContentLoaded', () => {
     const loginLink = document.querySelector('a[href="organizer-login.html"]');
