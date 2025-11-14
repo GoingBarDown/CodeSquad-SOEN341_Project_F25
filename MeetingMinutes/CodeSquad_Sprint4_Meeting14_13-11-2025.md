@@ -6,7 +6,7 @@
 - @noorkaazi3 (NJ)  
 - @GriffinBonomo (Griffin)  
 - @reemaaboudraz (Reema)  
-- @Rimec100 (Romy)  
+- @Rimec100 (Rim)  
 - @something67 (Patricia)  
 - @GoingBarDown (Chandler)
 
