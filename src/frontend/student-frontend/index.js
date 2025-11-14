@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
   } catch (err) {
     console.warn('Menu login toggle failed', err);
   }
+  
   const dot = document.getElementById("dot");
   const menu = document.getElementById("menu");
 
@@ -115,6 +116,32 @@ try {
 let allEvents = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // Show ticket-created toast if navigated from payment
+  try {
+    const t = sessionStorage.getItem('ticketCreated');
+    if (t) {
+      const obj = JSON.parse(t);
+      const toast = document.createElement('div');
+      toast.id = 'ticket-toast';
+      toast.textContent = obj.message || 'Your ticket was created!';
+      toast.style.position = 'fixed';
+      toast.style.right = '16px';
+      toast.style.top = '16px';
+      toast.style.padding = '10px 14px';
+      toast.style.background = '#2b7a0b';
+      toast.style.color = 'white';
+      toast.style.borderRadius = '6px';
+      toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+      toast.style.zIndex = 9999;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.transition = 'opacity 300ms';
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 400);
+      }, 3000);
+      sessionStorage.removeItem('ticketCreated');
+    }
+  } catch (e) { /* ignore */ }
   try {
     const response = await fetch('http://127.0.0.1:5000/events');
     allEvents = await response.json();
@@ -157,6 +184,7 @@ function renderEvents(events) {
 
     // Show modal with event details when "View Details" is clicked
     card.querySelector('.details-btn').addEventListener('click', () => {
+      // Populate modal details
       document.getElementById('modal-details').innerHTML = `
         <h2>${event.title}</h2>
         <p><strong>Category:</strong> ${event.category || ''}</p>
@@ -164,6 +192,25 @@ function renderEvents(events) {
         <p><strong>Date:</strong> ${event.start_date ? new Date(event.start_date).toLocaleString() : ''}</p>
         ${event.link ? `<p><a href="${event.link}" target="_blank" rel="noopener noreferrer">${event.link}</a></p>` : ''}
       `;
+
+      // Ensure the modal's Get Ticket button will open the correct event-details URL
+      const getTicketAnchor = document.getElementById('get-ticket-btn');
+      if (getTicketAnchor) {
+        // Set href to include the event id as a query param so event-details can fetch it
+        getTicketAnchor.href = `event-details.html?id=${encodeURIComponent(event.id)}`;
+
+        // Also set up a click handler on the anchor to persist the selectedEvent into localStorage
+        // This ensures event-details has an authoritative selectedEvent even when opened via href
+        getTicketAnchor.onclick = (e) => {
+          try {
+            localStorage.setItem('selectedEvent', JSON.stringify(event));
+          } catch (err) {
+            console.warn('Failed to store selectedEvent for modal', err);
+          }
+          // allow normal navigation to proceed
+        };
+      }
+
       document.getElementById('event-modal').style.display = 'flex';
     });
 
