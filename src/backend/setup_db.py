@@ -18,10 +18,10 @@ with app.app_context():
         with open('organizations_seed.json', 'r') as f:
             organizations_data = json.load(f)
             for org_data in organizations_data:
-                org = Organization(title=org_data['title'])
+                org = Organization(title=org_data['title'], description="", status="approved")
                 db.session.add(org)
             db.session.commit()
-            print(f"✅ Seeded {len(organizations_data)} organizations.")
+            print(f"✅ Seeded {len(organizations_data)} organizations (all pre-approved).")
     except FileNotFoundError:
         print("⚠️ organizations_seed.json not found. Skipping organization seeding.")
     except Exception as e:
