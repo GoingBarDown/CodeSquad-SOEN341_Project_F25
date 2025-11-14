@@ -1,3 +1,54 @@
+// === AUTHENTICATION CHECK ===
+function checkOrganizerAccess() {
+    const userData = localStorage.getItem('userData');
+    
+    if (!userData) {
+        // Not logged in, redirect to login
+        alert('❌ Please login first');
+        window.location.href = 'organizer-login.html';
+        return false;
+    }
+    
+    try {
+        const user = JSON.parse(userData);
+        
+        if (user.role !== 'organizer') {
+            // Not an organizer, redirect away
+            alert('❌ You do not have permission to access this page. Only organizers can access this area.');
+            window.location.href = '../student-frontend/index.html';
+            return false;
+        }
+        
+        return true;
+    } catch (e) {
+        console.error('Error checking organizer access:', e);
+        localStorage.clear();
+        window.location.href = 'organizer-login.html';
+        return false;
+    }
+}
+
+// Check access before loading page
+if (!checkOrganizerAccess()) {
+    throw new Error('Access denied');
+}
+
+// Populate organizer name in welcome message
+document.addEventListener('DOMContentLoaded', () => {
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+        try {
+            const user = JSON.parse(userData);
+            const welcomeSpan = document.querySelector('.subbar-left span');
+            if (welcomeSpan) {
+                welcomeSpan.textContent = `Welcome back, ${user.username} 👋`;
+            }
+        } catch (e) {
+            console.error('Error loading organizer name:', e);
+        }
+    }
+});
+
 // Render events as cards
 function renderEvents(eventArray) {
     const eventsList = document.getElementById('eventsList');
@@ -27,9 +78,42 @@ let allEvents = [];
 
 // Load events from backend
 function loadEvents() {
+    const userData = localStorage.getItem('userData');
+    let currentOrganzerId = null;
+    
+    if (userData) {
+        try {
+            const user = JSON.parse(userData);
+            currentOrganzerId = user.id;
+        } catch (e) {
+            console.error('Error getting organizer ID:', e);
+        }
+    }
+    
     API.getEvents()
         .then(data => {
-            allEvents = Array.isArray(data) ? data : [];
+            // Filter events to show:
+            // 1. Events created by the current organizer
+            // 2. Events created by other organizers in the same organization (if organization_id is available)
+            const events = Array.isArray(data) ? data : [];
+            allEvents = events.filter(event => {
+                // Show if organizer created it
+                if (event.organizer_id === currentOrganzerId) {
+                    return true;
+                }
+                // Show if same organization (when organization_id is available in events)
+                if (event.organization_id && userData) {
+                    try {
+                        const user = JSON.parse(userData);
+                        if (user.organization_id === event.organization_id) {
+                            return true;
+                        }
+                    } catch (e) {
+                        console.error('Error checking organization:', e);
+                    }
+                }
+                return false;
+            });
             renderEvents(allEvents);
         })
         .catch(err => {
@@ -191,7 +275,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('userData');
             localStorage.removeItem('authToken');
+            alert('✅ You have been logged out successfully.');
             window.location.href = 'organizer-login.html';
         });
     }
