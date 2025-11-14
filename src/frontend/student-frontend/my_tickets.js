@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // Use the studentId in the API URL
-      const response = await fetch(`/api/student/${studentId}/tickets-with-details`);
+      const response = await fetch(`http://127.0.0.1:5000/api/student/${studentId}/tickets-with-details`);
       
       if (!response.ok) {
         throw new Error(`Failed to fetch tickets: ${response.statusText}`);
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
     modalTicketStatus.textContent = data.status;
     
     // 2. Set the QR code image source
-    modalQrImg.src = `/tickets/${data.ticketId}/qr`;
+    modalQrImg.src = `http://127.0.0.1:5000/tickets/${data.ticketId}/qr`;
     
     // 3. Show the modal
     modalOverlay.classList.add('visible');
