@@ -56,10 +56,16 @@ function renderEvents(eventArray) {
     
     eventsList.innerHTML = eventArray.length === 0 
         ? "<p>No events found.</p>" 
-        : eventArray.map(event => `
+        : eventArray.map(event => {
+            const statusClass = `status-${event.status || 'draft'}`;
+            const statusDisplay = (event.status || 'draft').charAt(0).toUpperCase() + (event.status || 'draft').slice(1);
+            return `
             <div class="eventCard">
                 <div class="event-info">
-                    <h3>${event.title}</h3>
+                    <div class="event-header">
+                        <h3>${event.title}</h3>
+                        <span class="event-status ${statusClass}">${statusDisplay}</span>
+                    </div>
                     <p><strong>Date:</strong> ${new Date(event.start_date).toLocaleDateString()}</p>
                     <p><strong>Category:</strong> ${event.category || 'N/A'}</p>
                     <p><strong>Capacity:</strong> ${event.capacity || 'Unlimited'}</p>
@@ -70,7 +76,8 @@ function renderEvents(eventArray) {
                     <button class="btn-delete" onclick="deleteEvent(${event.id})">Delete</button>
                 </div>
             </div>
-        `).join('');
+        `;
+        }).join('');
 }
 
 // Store all events for filtering
@@ -249,13 +256,16 @@ function editEvent(id) {
 function filterEvents() {
     const searchInput = document.getElementById('search');
     const filterCategory = document.getElementById('filterCategory');
+    const filterStatus = document.getElementById('filterStatus');
     const searchVal = searchInput?.value.toLowerCase() || "";
     const categoryVal = filterCategory?.value || "";
+    const statusVal = filterStatus?.value || "";
     
     const filtered = allEvents.filter(event => {
         const matchesSearch = event.title.toLowerCase().includes(searchVal);
         const matchesCategory = !categoryVal || event.category === categoryVal;
-        return matchesSearch && matchesCategory;
+        const matchesStatus = !statusVal || (event.status || 'draft') === statusVal;
+        return matchesSearch && matchesCategory && matchesStatus;
     });
     
     renderEvents(filtered);
@@ -363,9 +373,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Setup search and filter listeners
     const searchInput = document.getElementById('search');
     const filterCategory = document.getElementById('filterCategory');
+    const filterStatus = document.getElementById('filterStatus');
     
     if (searchInput) searchInput.addEventListener('input', filterEvents);
     if (filterCategory) filterCategory.addEventListener('change', filterEvents);
+    if (filterStatus) filterStatus.addEventListener('change', filterEvents);
 
 
 const clearBtn = document.getElementById('clearFilters');
