@@ -261,6 +261,73 @@ function filterEvents() {
     renderEvents(filtered);
 }
 
+// Check if organizer's email domain matches their organization's domain
+async function checkOrgApprovalStatus(user) {
+    try {
+        // Get all organization members
+        const membersResponse = await fetch('http://127.0.0.1:5000/organization_members', {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (!membersResponse.ok) {
+            console.error('Failed to fetch organization members');
+            return;
+        }
+        
+        const members = await membersResponse.json();
+        const userOrgMember = members.find(m => m.user_id === user.id);
+        
+        if (!userOrgMember) {
+            console.error('User not found in organization members');
+            return;
+        }
+        
+        // Get the organization details
+        const orgResponse = await fetch(`http://127.0.0.1:5000/organizations/${userOrgMember.organization_id}`, {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (!orgResponse.ok) {
+            console.error('Failed to fetch organization');
+            return;
+        }
+        
+        const org = await orgResponse.json();
+        
+        // Check if organization is NOT approved
+        if (org.status && org.status !== 'approved') {
+            showApprovalDialog(org);
+        }
+    } catch (err) {
+        console.error('Error checking organization approval status:', err);
+    }
+}
+
+// Show approval pending dialog
+function showApprovalDialog(org) {
+    const modal = document.createElement('div');
+    modal.classList.add('approval-modal-overlay');
+    modal.innerHTML = `
+        <div class="approval-modal-content">
+            <div class="approval-modal-icon">⏳</div>
+            <h2>Account Pending Approval</h2>
+            <p class="approval-message">
+                Your account has been created, but your organization <strong>"${org.title}"</strong> is pending approval by an administrator.
+            </p>
+            <p class="approval-info">
+                In the meantime, you can view events, but you won't be able to create or edit events until your organization is approved.
+            </p>
+            <button class="approval-btn-ok">OK</button>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    modal.querySelector('.approval-btn-ok').addEventListener('click', () => {
+        modal.remove();
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Menu toggle
     const dot = document.getElementById('dot');
@@ -280,6 +347,17 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('✅ You have been logged out successfully.');
             window.location.href = 'organizer-login.html';
         });
+    }
+
+    // Check organization approval status and show dialog if needed
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+        try {
+            const user = JSON.parse(userData);
+            checkOrgApprovalStatus(user);
+        } catch (e) {
+            console.error('Error checking approval status:', e);
+        }
     }
 
     // Setup search and filter listeners
