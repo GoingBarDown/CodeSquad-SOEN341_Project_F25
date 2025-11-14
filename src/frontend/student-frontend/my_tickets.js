@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // Use the studentId in the API URL
-      const response = await fetch(`/api/student/${studentId}/tickets-with-details`);
+      const response = await fetch(`http://127.0.0.1:5000/api/student/${studentId}/tickets-with-details`);
       
       if (!response.ok) {
         throw new Error(`Failed to fetch tickets: ${response.statusText}`);
@@ -57,28 +57,42 @@ document.addEventListener("DOMContentLoaded", () => {
         card.className = 'ticket-card';
         
         // Format the date for display
-        const eventDate = new Date(ticket.event_date).toLocaleDateString(undefined, {
+       const eventDate = ticket.event_date ? new Date(ticket.event_date).toLocaleDateString(undefined, {
           year: 'numeric',
           month: 'long',
           day: 'numeric'
-        });
+        }) : 'Date TBD';
 
         // Use data-attributes to store all ticket info on the button
         card.innerHTML = `
           <div>
             <h3>${ticket.event_title}</h3>
             <p>${eventDate}</p>
+            
+            <div class="countdown-timer" id="countdown-${ticket.ticket_id}">
+              Loading countdown...
+            </div>
           </div>
           <button class="view-ticket-btn" 
             data-title="${ticket.event_title}"
-            data-date="${ticket.event_date}"
-            data-location="${ticket.event_location}"
+            data-date="${ticket.event_date || ''}"
+            data-location="${ticket.event_location || 'N/A'}"
             data-ticket-id="${ticket.ticket_id}"
             data-status="${ticket.ticket_status}">
             View Ticket
           </button>
         `;
         gridContainer.appendChild(card);
+        //Find the new element and start it timer
+        const countdownElement = document.getElementById(`countdown-${ticket.ticket_id}`);
+        if (countdownElement && ticket.event_date) {
+            // Call our new countdown function
+            startCountdown(countdownElement, ticket.event_date);
+        } else if (countdownElement) {
+            // Handle cases where there's no date
+            countdownElement.innerHTML = "Event date not set.";
+            countdownElement.classList.add("expired");
+        }
       });
 
       // Add event listeners to all the new buttons
@@ -92,25 +106,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /**
-   * Opens the modal and populates it with data from the clicked button.
-   */
+  
+   // Opens the modal and populates it with data from the clicked button.
+   
   function openTicketModal(event) {
     const button = event.currentTarget;
     const data = button.dataset;
 
     // 1. Populate the modal with data
     modalEventTitle.textContent = data.title;
-    modalEventDate.textContent = new Date(data.date).toLocaleString(undefined, {
+    const eventDateStr = data.date ? new Date(data.date).toLocaleString(undefined, {
         dateStyle: 'full',
         timeStyle: 'short',
-    });
+    }) : 'Date TBD';
+    modalEventDate.textContent = eventDateStr;
     modalEventLocation.textContent = data.location || 'N/A';
     modalTicketId.textContent = data.ticketId;
     modalTicketStatus.textContent = data.status;
     
     // 2. Set the QR code image source
-    modalQrImg.src = `/tickets/${data.ticketId}/qr`;
+    modalQrImg.src = `http://127.0.0.1:5000/tickets/${data.ticketId}/qr`;
     
     // 3. Show the modal
     modalOverlay.classList.add('visible');
@@ -122,6 +137,37 @@ document.addEventListener("DOMContentLoaded", () => {
     modalOverlay.classList.remove('visible');
   }
 
+  /**
+   * Starts a countdown timer for a specific element.
+   * @param {HTMLElement} element - The div to update.
+   * @param {string} eventDateString - The ISO date string from the backend.
+   */
+
+  function startCountdown(element, eventDateString) {
+    const eventTime = new Date(eventDateString).getTime();
+
+    // Update the countdown every second
+    const interval = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = eventTime - now;
+
+        // Time calculations
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Display the result
+        if (distance > 0) {
+            element.innerHTML = `Starts in: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+        } else {
+            // Event has passed
+            clearInterval(interval);
+            element.innerHTML = "This event has already passed.";
+            element.classList.add("expired"); // This will make it gray
+        }
+    }, 1000);
+  }
   // Main Execution 
   
   // Add listeners to close the modal
