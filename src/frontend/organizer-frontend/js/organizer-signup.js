@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const createOrgBtn = document.getElementById('createOrgBtn');
     const newOrgContainer = document.getElementById('newOrgContainer');
     
-    // Load existing organizations
+    // Load existing organizations (only approved ones)
     try {
         const response = await fetch('http://127.0.0.1:5000/organizations', {
             headers: { 'Content-Type': 'application/json' }
@@ -12,7 +12,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         if (response.ok) {
             const organizations = await response.json();
-            organizations.forEach(org => {
+            // Filter to only show approved organizations
+            const approvedOrgs = organizations.filter(org => org.status === 'approved');
+            approvedOrgs.forEach(org => {
                 const option = document.createElement('option');
                 option.value = org.id;
                 option.textContent = org.title;
