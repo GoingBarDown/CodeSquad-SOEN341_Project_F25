@@ -27,10 +27,15 @@ if (loginForm) {
                 if (response.user) {
                     localStorage.setItem('userData', JSON.stringify(response.user));
                     localStorage.setItem('authToken', response.user.id);
+                    
+                    // Show personalized welcome message
+                    const organizerName = response.user.username || 'Organizer';
+                    alert(`✅ Welcome back, ${organizerName}! Login successful!`);
+                } else {
+                    alert('✅ Login successful!');
                 }
                 
-                // Redirect to dashboard with success message
-                alert('✅ Login successful!');
+                // Redirect to dashboard
                 window.location.href = 'organizer-dashboard.html';
             } else {
                 throw new Error(response.message || 'Invalid credentials');

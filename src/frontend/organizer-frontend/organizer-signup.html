@@ -22,45 +22,79 @@
   </div>
 
   <main class="centered">
-    <div class="card">
-      <h2><b>Create an Organizer Account</b></h2>
+    <div class="card card-organizer">
+      <h2 class="form-heading">Create an Account</h2>
+      <p class="form-subtitle">Join our organizer community and start creating your events!</p>
+      
       <form id="signupForm">
-        <div>
-          <label for="name">Full Name</label>
-          <input type="text" id="name" placeholder="  Your full name" required>
+        <!-- Personal Information Section -->
+        <div class="form-section-row">
+          <div>
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" id="firstName" placeholder="First name" required class="form-input">
+          </div>
+          <div>
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" id="lastName" placeholder="Last name" required class="form-input">
+          </div>
         </div>
 
-        <div>
-          <label for="username">Username</label>
-          <input type="text" id="username" placeholder="  Choose a username" pattern="[a-zA-Z0-9_-]+" minlength="3" maxlength="30" required>
-          <!-- <small class="form-hint">Letters, numbers, hyphens and underscores only</small> -->
+        <!-- Login Credentials Section -->
+        <div class="form-section">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" id="username" placeholder="Choose a username" pattern="[a-zA-Z0-9_]+" minlength="3" maxlength="30" required class="form-input">
+          <small class="form-helper">Letters, numbers and underscores only</small>
         </div>
 
-        <div>
-          <label for="email">Organizer Email</label>
-          <input type="email" id="email" placeholder="  example@club.concordia.ca" required>
+        <div class="form-section">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" placeholder="example@club.concordia.ca" required class="form-input">
         </div>
 
-        <div>
-          <label for="password">Password</label>
-          <input type="password" id="password" placeholder="  Create password" minlength="8" required>
+        <!-- Organization Section -->
+        <div class="org-section">
+          <h3>Organization Information</h3>
+          
+          <div class="org-dropdown-wrapper">
+            <label for="organization" class="form-label">Organization/Student Club</label>
+            <select id="organization" class="form-input">
+              <option value="">-- Select or create organization --</option>
+            </select>
+            <small class="org-dropdown-helper">
+              Don't see your organization? 
+              <button type="button" id="createOrgBtn" class="create-org-btn">Create new</button>
+            </small>
+          </div>
+
+          <div id="newOrgContainer" class="new-org-container">
+            <label for="newOrgName" class="form-label">New Organization Name</label>
+            <input type="text" id="newOrgName" placeholder="Enter organization name" class="form-input" style="margin-bottom: 12px;">
+            
+            <label for="newOrgDesc" class="form-label">Organization Description</label>
+            <textarea id="newOrgDesc" placeholder="Brief description of your organization" rows="3" class="form-input"></textarea>
+          </div>
         </div>
 
-        <div>
-          <label for="confirmPassword">Confirm Password</label>
-          <input type="password" id="confirmPassword" placeholder="  Confirm password" minlength="8" required>
+        <!-- Optional Information -->
+        <div class="form-section">
+          <label for="studentId" class="form-label">Student ID <small style="color: #999; font-weight: 400;">(optional)</small></label>
+          <input type="text" id="studentId" placeholder="Your student ID (if applicable)" class="form-input">
+        </div>
+
+        <!-- Password Section -->
+        <div class="form-section-password">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" id="password" placeholder="Create password (min. 8 characters)" minlength="8" required class="form-input">
+        </div>
+
+        <div class="form-section-password">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <input type="password" id="confirmPassword" placeholder="Confirm password" minlength="8" required class="form-input">
         </div>
         
         <input type="hidden" id="role" value="organizer">
-        <br>
-        <button type="submit" class="btn-primary">Sign Up</button>
-
-        <!-- <div class="divider">or</div>
-
-        <button type="button" class="btn-google" style="width: 100%;">
-          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo">
-          Sign up with Google
-        </button> -->
+        
+        <button type="submit" class="btn-primary">Create Account</button>
 
         <p class="signup-text">
           Already have an account?
