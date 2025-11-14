@@ -1,3 +1,20 @@
+// Store organization domains for email verification
+let organizationDomains = {};
+
+// Helper function to extract email domain
+function getEmailDomain(email) {
+    return email.substring(email.lastIndexOf('@') + 1).toLowerCase();
+}
+
+// Helper function to check if email domain matches organization
+function isEmailDomainVerified(email, orgTitle) {
+    const allowedDomain = organizationDomains[orgTitle];
+    if (!allowedDomain) return false;
+    
+    const emailDomain = getEmailDomain(email);
+    return emailDomain === allowedDomain.toLowerCase();
+}
+
 // Load organizations on page load
 document.addEventListener('DOMContentLoaded', async () => {
     const organizationSelect = document.getElementById('organization');
@@ -14,6 +31,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             const organizations = await response.json();
             // Filter to only show approved organizations
             const approvedOrgs = organizations.filter(org => org.status === 'approved');
+            
+            // Load organization domains from seed file
+            try {
+                const seedResponse = await fetch('../../backend/organizations_seed.json');
+                if (seedResponse.ok) {
+                    const seedData = await seedResponse.json();
+                    seedData.forEach(org => {
+                        organizationDomains[org.title] = org.domain;
+                    });
+                    console.log('Loaded organization domains:', organizationDomains);
+                }
+            } catch (err) {
+                console.error('Failed to load organization domains:', err);
+            }
+            
             approvedOrgs.forEach(org => {
                 const option = document.createElement('option');
                 option.value = org.id;
@@ -124,6 +156,21 @@ if (signupForm) {
                 // Step 3: Add user to organization
                 if (finalOrgId) {
                     try {
+                        // If joining existing org, check if email domain is verified for auto-approval
+                        if (organizationId && !newOrgName) {
+                            // Get the selected organization title
+                            const selectedOrgOption = document.querySelector(`#organization option[value="${organizationId}"]`);
+                            const selectedOrgTitle = selectedOrgOption?.textContent;
+                            
+                            // Check if email domain matches
+                            const isDomainVerified = isEmailDomainVerified(email, selectedOrgTitle);
+                            console.log(`Email domain verification: ${email} for ${selectedOrgTitle} = ${isDomainVerified}`);
+                            
+                            if (isDomainVerified) {
+                                console.log('Email domain verified! Organization is already approved.');
+                            }
+                        }
+                        
                         await fetch('http://127.0.0.1:5000/organization-members', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
