@@ -1,4 +1,4 @@
-/* global ADMIN_API */
+/* global API */
 
 // === AUTHENTICATION CHECK ===
 function checkOrganizerAccess() {
