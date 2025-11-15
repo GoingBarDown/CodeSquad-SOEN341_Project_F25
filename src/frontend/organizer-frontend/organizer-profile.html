@@ -58,26 +58,34 @@
     <div class="card">
       <h2>Profile</h2>
 
-      <div class="profile-pic-section">
-        <img id="profilePic" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile">
-        <label for="fileUpload" class="upload-btn">Change Photo</label>
-        <input type="file" id="fileUpload" accept="image/*" hidden>
-      </div>
-
       <form id="profileForm">
-        <label for="displayName">Display Name</label>
-        <input type="text" id="displayName" name="display_name" placeholder="Your display name" 
-               minlength="2" maxlength="80" required>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" readonly>
+        <small class="form-hint">Username cannot be changed.</small>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="first_name" placeholder="Your first name" 
+                   minlength="2" maxlength="80">
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="last_name" placeholder="Your last name" 
+                   minlength="2" maxlength="80">
+          </div>
+        </div>
 
         <label for="email">Email</label>
         <input type="email" id="email" name="email" readonly>
         <small class="form-hint">Email cannot be changed. Contact support if needed.</small>
 
         <label for="organization">Organization</label>
-        <select id="organization" name="organization_id">
-          <option value="">Select or create an organization</option>
+        <select id="organization" name="organization_id" disabled>
+          <option value="">No Organization</option>
         </select>
-        <button type="button" id="createOrgBtn" class="btn-secondary">Create New Organization</button>
+        <small class="form-hint">Organization cannot be changed. Contact support if needed.</small>
 
         <label for="phone">Phone Number</label>
         <input type="tel" id="phone" name="phone" placeholder="123-456-7890" 
@@ -90,25 +98,6 @@
 
         <button type="submit" class="btn-primary">Save Changes</button>
       </form>
-      
-      <!-- Organization Creation Modal -->
-      <div id="orgModal" class="modal" style="display: none;">
-        <div class="modal-content">
-          <h3>Create New Organization</h3>
-          <form id="organizationForm">
-            <label for="orgTitle">Organization Name</label>
-            <input type="text" id="orgTitle" required>
-
-            <label for="orgDescription">Description</label>
-            <textarea id="orgDescription"></textarea>
-
-            <div class="modal-buttons">
-              <button type="button" class="btn-secondary" onclick="closeOrgModal()">Cancel</button>
-              <button type="submit" class="btn-primary">Create</button>
-            </div>
-          </form>
-        </div>
-      </div>
     </div>
   </main>
 

@@ -87,11 +87,13 @@ let allEvents = [];
 function loadEvents() {
     const userData = localStorage.getItem('userData');
     let currentOrganzerId = null;
+    let currentOrgId = null;
     
     if (userData) {
         try {
             const user = JSON.parse(userData);
             currentOrganzerId = user.id;
+            currentOrgId = user.organization_id;
         } catch (e) {
             console.error('Error getting organizer ID:', e);
         }
@@ -103,24 +105,19 @@ function loadEvents() {
             // 1. Events created by the current organizer
             // 2. Events created by other organizers in the same organization (if organization_id is available)
             const events = Array.isArray(data) ? data : [];
+            
             allEvents = events.filter(event => {
                 // Show if organizer created it
                 if (event.organizer_id === currentOrganzerId) {
                     return true;
                 }
                 // Show if same organization (when organization_id is available in events)
-                if (event.organization_id && userData) {
-                    try {
-                        const user = JSON.parse(userData);
-                        if (user.organization_id === event.organization_id) {
-                            return true;
-                        }
-                    } catch (e) {
-                        console.error('Error checking organization:', e);
-                    }
+                if (event.organization_id && currentOrgId && event.organization_id === currentOrgId) {
+                    return true;
                 }
                 return false;
             });
+            
             renderEvents(allEvents);
         })
         .catch(err => {

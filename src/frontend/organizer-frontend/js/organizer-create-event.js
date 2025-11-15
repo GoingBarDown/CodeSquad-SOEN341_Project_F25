@@ -130,6 +130,18 @@ if (createEventForm) {
             // Collect all form data using field names expected by backend
             const startVal = document.getElementById('startDate').value;
             const endVal = document.getElementById('endDate').value;
+            
+            // Get the current organizer ID
+            const userData = localStorage.getItem('userData');
+            let organizerId = null;
+            if (userData) {
+                try {
+                    const user = JSON.parse(userData);
+                    organizerId = user.id;
+                } catch (e) {
+                    console.error('Error getting organizer ID:', e);
+                }
+            }
 
             const eventData = {
                 title: document.getElementById('title').value.trim(),
@@ -142,7 +154,8 @@ if (createEventForm) {
                 price: document.getElementById('price').value ? parseFloat(document.getElementById('price').value) : 0,
                 link: document.getElementById('link').value.trim() || null,
                 seating: document.getElementById('seating').value.trim() || null,
-                status: document.getElementById('status').value || 'draft'
+                status: document.getElementById('status').value || 'draft',
+                organizer_id: organizerId
             };
 
             // Basic validations

@@ -142,7 +142,9 @@ function initializeCalendar() {
                 
                 success: function(response) {
                     console.log("Events successfully fetched:", response);
-                    successCallback(response); 
+                    // Only show published events on student calendar
+                    const publishedEvents = response.filter(event => event.status === 'published');
+                    successCallback(publishedEvents); 
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error("Error fetching events:", textStatus, errorThrown, jqXHR.responseText);

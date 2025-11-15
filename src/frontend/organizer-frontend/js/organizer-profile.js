@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 localStorage.removeItem('userData');
                 localStorage.removeItem('authToken');
+                localStorage.removeItem('selectedProfilePicture');
                 window.location.href = 'organizer-login.html';
             };
         } else {
@@ -60,191 +61,102 @@ document.getElementById('dot').addEventListener('click', () => {
   document.getElementById('menu').classList.toggle('open');
 });
 
-// Preview uploaded profile photo
-document.getElementById('fileUpload').addEventListener('change', (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      document.getElementById('profilePic').src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
-});
+// Load user profile data and setup form
+document.addEventListener('DOMContentLoaded', async () => {
+    const profileForm = document.getElementById('profileForm');
+    const organizationSelect = document.getElementById('organization');
 
-// Save form info
-document.getElementById('profileForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  alert("✅ Profile updated successfully!");
-});
+    // Load user profile
+    async function loadProfile() {
+        try {
+            const userData = localStorage.getItem('userData');
+            if (!userData) return;
+            
+            const user = JSON.parse(userData);
+            
+            // Fill form with user data from localStorage
+            document.getElementById('username').value = user.username || '';
+            document.getElementById('firstName').value = user.first_name || '';
+            document.getElementById('lastName').value = user.last_name || '';
+            document.getElementById('email').value = user.email || '';
+            document.getElementById('phone').value = user.phone || '';
+            document.getElementById('bio').value = user.bio || '';
 
-// !!!! changes below need to wait until organizer profile API is ready
-// document.addEventListener('DOMContentLoaded', async () => {
-//     const profileForm = document.getElementById('profileForm');
-//     const organizationForm = document.getElementById('organizationForm');
-//     const createOrgBtn = document.getElementById('createOrgBtn');
-//     const orgModal = document.getElementById('orgModal');
-//     const organizationSelect = document.getElementById('organization');
-//     const fileUpload = document.getElementById('fileUpload');
+            // Load organizations and set selected one if exists
+            await loadOrganizations(user.organization_id);
+        } catch (error) {
+            console.error('Error loading profile:', error);
+        }
+    }
 
-//     // Load user profile
-//     async function loadProfile() {
-//         try {
-//             const response = await API.getProfile();
-//             if (response.success) {
-//                 // Fill form with profile data
-//                 document.getElementById('displayName').value = response.data.display_name || '';
-//                 document.getElementById('email').value = response.data.email || '';
-//                 document.getElementById('phone').value = response.data.phone || '';
-//                 document.getElementById('bio').value = response.data.bio || '';
+    // Load organizations for dropdown
+    async function loadOrganizations(currentOrgId) {
+        try {
+            const response = await fetch('http://127.0.0.1:5000/organizations');
+            const orgs = await response.json();
+            
+            organizationSelect.innerHTML = '<option value="">No Organization</option>';
+            orgs.forEach(org => {
+                const option = document.createElement('option');
+                option.value = org.id;
+                option.textContent = org.title;
+                organizationSelect.appendChild(option);
+            });
 
-//                 // Update profile picture if exists
-//                 if (response.data.profile_picture) {
-//                     document.getElementById('profilePic').src = response.data.profile_picture;
-//                 }
+            // If user has an organization, select it
+            if (currentOrgId) {
+                organizationSelect.value = currentOrgId;
+            }
+        } catch (error) {
+            console.error('Error loading organizations:', error);
+        }
+    }
 
-//                 // Load organizations and set selected one if exists
-//                 await loadOrganizations();
-//             }
-//         } catch (error) {
-//             console.error('Error loading profile:', error);
-//             alert('❌ Failed to load profile data');
-//         }
-//     }
+    // Handle profile form submission
+    if (profileForm) {
+        profileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-//     // Load organizations for dropdown
-//     async function loadOrganizations() {
-//         try {
-//             const response = await API.getOrganizations();
-//             if (response.success) {
-//                 organizationSelect.innerHTML = '<option value="">Select or create an organization</option>';
-//                 response.data.forEach(org => {
-//                     const option = document.createElement('option');
-//                     option.value = org.id;
-//                     option.textContent = org.title;
-//                     organizationSelect.appendChild(option);
-//                 });
+            const userData = localStorage.getItem('userData');
+            const user = JSON.parse(userData);
+            
+            const profileData = {
+                first_name: document.getElementById('firstName').value.trim(),
+                last_name: document.getElementById('lastName').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                bio: document.getElementById('bio').value.trim()
+            };
 
-//                 // If user has an organization, select it
-//                 if (response.userOrganizationId) {
-//                     organizationSelect.value = response.userOrganizationId;
-//                 }
-//             }
-//         } catch (error) {
-//             console.error('Error loading organizations:', error);
-//             alert('❌ Failed to load organizations');
-//         }
-//     }
+            try {
+                const response = await fetch(`http://127.0.0.1:5000/users/${user.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(profileData)
+                });
 
-//     // Handle profile picture upload
-//     if (fileUpload) {
-//         fileUpload.addEventListener('change', async (e) => {
-//             const file = e.target.files[0];
-//             if (file) {
-//                 const maxSize = 5 * 1024 * 1024; // 5MB
-//                 if (file.size > maxSize) {
-//                     alert('❌ File size must be less than 5MB');
-//                     return;
-//                 }
-
-//                 try {
-//                     // Show preview
-//                     const reader = new FileReader();
-//                     reader.onload = (e) => {
-//                         document.getElementById('profilePic').src = e.target.result;
-//                     };
-//                     reader.readAsDataURL(file);
-
-//                     // Upload file
-//                     const formData = new FormData();
-//                     formData.append('profile_picture', file);
-//                     const response = await API.uploadProfilePicture(formData);
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Update localStorage with new data
+                    user.first_name = profileData.first_name;
+                    user.last_name = profileData.last_name;
+                    user.phone = profileData.phone;
+                    user.bio = profileData.bio;
+                    localStorage.setItem('userData', JSON.stringify(user));
                     
-//                     if (!response.success) {
-//                         throw new Error(response.message || 'Upload failed');
-//                     }
-//                 } catch (error) {
-//                     console.error('Upload error:', error);
-//                     alert(`❌ ${error.message || 'Failed to upload profile picture'}`);
-//                 }
-//             }
-//         });
-//     }
+                    alert('✅ Profile updated successfully!');
+                } else {
+                    throw new Error(result.error || result.message || 'Failed to update profile');
+                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                alert(`❌ ${error.message || 'Failed to update profile'}`);
+            }
+        });
+    }
 
-//     // Handle profile form submission
-//     if (profileForm) {
-//         profileForm.addEventListener('submit', async (e) => {
-//             e.preventDefault();
-
-//             const profileData = {
-//                 display_name: document.getElementById('displayName').value.trim(),
-//                 phone: document.getElementById('phone').value.trim(),
-//                 bio: document.getElementById('bio').value.trim(),
-//                 organization_id: document.getElementById('organization').value || null
-//             };
-
-//             try {
-//                 const response = await API.updateProfile(profileData);
-//                 if (response.success) {
-//                     alert('✅ Profile updated successfully!');
-//                 } else {
-//                     throw new Error(response.message || 'Failed to update profile');
-//                 }
-//             } catch (error) {
-//                 console.error('Error updating profile:', error);
-//                 alert(`❌ ${error.message || 'Failed to update profile'}`);
-//             }
-//         });
-//     }
-
-//     // Handle organization creation
-//     if (organizationForm) {
-//         organizationForm.addEventListener('submit', async (e) => {
-//             e.preventDefault();
-
-//             const orgData = {
-//                 title: document.getElementById('orgTitle').value.trim(),
-//                 description: document.getElementById('orgDescription').value.trim()
-//             };
-
-//             try {
-//                 const response = await API.createOrganization(orgData);
-//                 if (response.success) {
-//                     alert('✅ Organization created successfully!');
-//                     closeOrgModal();
-//                     await loadOrganizations();
-//                     organizationSelect.value = response.data.id;
-//                 } else {
-//                     throw new Error(response.message || 'Failed to create organization');
-//                 }
-//             } catch (error) {
-//                 console.error('Error creating organization:', error);
-//                 alert(`❌ ${error.message || 'Failed to create organization'}`);
-//             }
-//         });
-//     }
-
-//     // Modal controls
-//     if (createOrgBtn) {
-//         createOrgBtn.addEventListener('click', () => {
-//             orgModal.style.display = 'block';
-//         });
-//     }
-
-//     window.closeOrgModal = () => {
-//         if (orgModal) {
-//             orgModal.style.display = 'none';
-//             organizationForm.reset();
-//         }
-//     };
-
-//     // Close modal if clicking outside
-//     window.addEventListener('click', (e) => {
-//         if (e.target === orgModal) {
-//             closeOrgModal();
-//         }
-//     });
-
-//     // Initial load
-//     loadProfile();
-// });
+    // Initial load
+    loadProfile();
+});
