@@ -1,7 +1,4 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-
-name: Run Pytest
+name: Run Pytest & ESLint
 
 on:
   push:
@@ -13,9 +10,10 @@ permissions:
   contents: read
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
 
+  test:
+    name: Run Python Tests
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -34,3 +32,57 @@ jobs:
       - name: Run tests
         working-directory: src/backend
         run: pytest
+
+
+  eslint:
+    name: Run ESLint on Frontend
+    runs-on: ubuntu-latest
+    needs: test
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install ESLint
+        run: |
+          npm install eslint@8.10.0
+          npm install @microsoft/eslint-formatter-sarif@3.1.0
+
+      - name: Run ESLint (SARIF + Text)
+        run: |
+          mkdir -p eslint-reports
+          # Generate SARIF for GitHub Code Scanning
+          npx eslint "src/frontend/**/*.{js,jsx,ts,tsx}" \
+            --config src/frontend/.eslintrc.js \
+            --ext .js,.jsx,.ts,.tsx \
+            --format @microsoft/eslint-formatter-sarif \
+            --output-file eslint-reports/eslint-results.sarif || true
+          # Generate human-readable text report for PR review
+          npx eslint "src/frontend/**/*.{js,jsx,ts,tsx}" \
+            --config src/frontend/.eslintrc.js \
+            --ext .js,.jsx,.ts,.tsx \
+            --format stylish \
+            --output-file eslint-reports/eslint-results.txt || true
+          # Print text report to Actions log
+          echo "==== ESLint Report ===="
+          cat eslint-reports/eslint-results.txt || echo "No linting issues found"
+
+      - name: Upload SARIF to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: eslint-reports/eslint-results.sarif
+          wait-for-processing: true
+
+      - name: Upload ESLint Text Report Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: eslint-text-report
+          path: eslint-reports/eslint-results.txt
