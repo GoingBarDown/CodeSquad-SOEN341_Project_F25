@@ -19,65 +19,82 @@ body {
 
 /* === HEADER === */
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-    background-color: rgb(151, 9, 21);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-    font-weight: 700;
-    font-size: 18px;
-    color: white;
-    letter-spacing: 0.5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: #912338;
+  font-family: sans-serif;
+  font-weight: bolder;
+  font-size: 20px;
+  color: white;
+  position: relative;
 }
 
 #dot {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: #ffffff;
-    cursor: pointer;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    color: rgb(151, 9, 21);
-    transition: transform 0.2s;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--text-light);
+  cursor: pointer;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  border: none;
+  color: var(--primary);
+  position: absolute;
+  right: 20px;
 }
 
-#dot:hover {
-    transform: scale(1.1);
-}
-
-#dot svg.lucide {
-  width: 24px;
-  height: 24px;
-  stroke-width: 2;
-}
-
-/* === MENU === */
+/* MENU DROPDOWN */
 #menu {
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.3s ease;
+  position: absolute;
+  top: 65px;
+  right: 20px;
+  background-color: #f9f6f1;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  max-height: 0;
+  width: 180px;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+  z-index: 1000;
 }
 
 #menu.open {
-    max-height: 220px;
+  max-height: 300px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#menu nav {
+  display: flex;
+  flex-direction: column;
 }
 
 #menu nav a {
-    display: block;
-    padding: 12px 16px;
-    text-decoration: none;
-    color: #350404;
-    font-weight: bold;
-    transition: background-color 0.2s;
+  text-decoration: none;
+  color: var(--text-dark);
+  font-family: "Arial", sans-serif;
+  font-size: 15px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #ececec;
+  transition: background 0.2s ease;
 }
 
 #menu nav a:hover {
-    background-color: rgba(255, 240, 223, 0.5);
+  background-color: transparent !important;
+  color: inherit !important;
+  cursor: default;
+}
+
+#menu nav a:focus {
+  outline: 2px solid #ffb300;
+  outline-offset: 2px;
 }
 
 /* === SUBBAR === */

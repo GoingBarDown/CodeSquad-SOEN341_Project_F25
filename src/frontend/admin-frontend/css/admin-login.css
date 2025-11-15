@@ -1,0 +1,1157 @@
+/* =========================================================
+   ORGANIZER STYLE SHEET
+   CampusConnect / Event Management Portal
+   ---------------------------------------------------------
+   Combines:
+   - Dashboard (Events, Filters, Cards)
+   - Organizer Portal (Login, Signup, Forgot Password)
+   - Profile Page Additions (from organizer-profile.css)
+   ---------------------------------------------------------
+   Color Scheme:
+   Maroon (#912338), Cream (#E9D3D7), White, Gray
+   Typography: Sans-serif + "Poller One" for headers
+   ========================================================= */
+
+
+/* =========================================================
+   1. GLOBAL RESET & BASE STYLES
+   ========================================================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+    --primary-color: #912338;
+    --primary-hover: #db0272; 
+    --light-bg: #f2f2f2; 
+    --text-dark: #2c2c2c; 
+    --border-dark: #000; 
+    --cream-bg: #E9D3D7;
+}
+
+body {
+font-family: 'Inter', sans-serif; 
+    background-color: var(--light-bg); 
+    color: var(--text-dark); 
+    margin: 0;
+    padding: 0;
+}
+
+
+/* =========================================================
+   2. HEADER & MENU (Top Navigation)
+   ========================================================= */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: #912338;
+  font-family: sans-serif;
+  font-weight: bolder;
+  font-size: 20px;
+  color: white;
+  position: relative;
+}
+
+#dot {
+  background: none;           /* remove white circle */
+  border: none;               /* no outline */
+  color: white;               /* white lines */
+  font-size: 22px;            /* smaller like student site */
+  cursor: pointer;
+  position: absolute;
+  right: 20px;
+  top: 10px;
+}
+
+
+/* MENU DROPDOWN */
+#menu {
+  position: absolute;
+  top: 65px;
+  right: 20px;
+  background-color: #f9f6f1;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  max-height: 0;
+  width: 180px;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+  z-index: 1000;
+}
+
+#menu.open {
+  max-height: 300px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#menu nav {
+  display: flex;
+  flex-direction: column;
+}
+
+#menu nav a {
+  text-decoration: none;
+  color: var(--text-dark);
+  font-family: "Arial", sans-serif;
+  font-size: 15px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #ececec;
+  transition: background 0.2s ease;
+}
+
+#menu nav a:hover {
+  background-color: transparent !important;
+  color: inherit !important;
+  cursor: default;
+}
+
+#menu nav a:focus {
+  outline: 2px solid #ffb300;
+  outline-offset: 2px;
+}
+/* =========================================================
+   3. SUB-BAR (Optional Secondary Header)
+   ========================================================= */
+/* ===== SUBBAR / ACTION BAR ===== */
+#subbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #4b0303;
+  color: white;
+  padding: 14px 32px;
+  font-family: "Poller One", sans-serif;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+#subbar span {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+  #subbar button,
+  #subbar a {
+  background-color: #8b1c33;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  margin-left: 10px;
+  text-decoration: none; 
+  display: inline-block; 
+  }
+
+#subbar button:hover {
+  background-color: #a6223d;
+  transform: translateY(-2px);
+}
+
+#createEventBtn {
+  font-size: 1rem;
+  padding: 12px 22px;
+  background-color: #b8435f;
+}
+
+#createEventBtn:hover {
+  background-color: #a22e4d;
+}
+
+/* =========================================================
+   4. PAGE CONTAINERS (Main Layout)
+   ========================================================= */
+main {
+  padding: 16px;
+}
+
+main.centered {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: calc(100vh - 60px);
+  padding-top: 40px 16px;
+}
+
+.main-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px 40px;
+  align-items: flex-start;
+}
+
+/* Left sidebar */
+.side-panel {
+  width: 30%;
+  background-color: #d9e0cc;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+/* Right content section */
+.content-view {
+  flex: 1;
+  padding: 20px;
+  background-color: rgb(180, 180, 170);
+  color: white;
+  border-radius: 12px;
+}
+
+
+/* =========================================================
+   5. FORM CARDS (Login, Signup, Forgot Password)
+   ========================================================= */
+.card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: auto;
+  max-width: 500px;
+  min-width: 350px;
+  padding: 30px 40px;
+  text-align: left;
+}
+
+/* Create event form card - wider */
+#createEventForm {
+  width: auto;
+}
+
+.card:has(#createEventForm) {
+  max-width: 600px;
+  min-width: 400px;
+}
+
+h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+form {
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 3px;
+  font-weight: 500;
+  color: #333;
+  font-size: 0.95rem;
+  margin-top: 15px;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Reduce spacing for consecutive textareas */
+textarea + label {
+  margin-top: 10px;
+}
+
+textarea {
+  margin-bottom: 10px;
+}
+
+/* Date fields row */
+.date-fields-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.date-field {
+  flex: 1;
+}
+
+.date-field label {
+  display: block;
+  margin-bottom: 3px;
+  font-weight: 500;
+  color: #333;
+  font-size: 0.95rem;
+  margin-top: 0;
+}
+
+.date-field input {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+/* Form fields row (for location, capacity, price, link) */
+.form-fields-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.form-field {
+  flex: 1;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 3px;
+  font-weight: 500;
+  color: #333;
+  font-size: 0.95rem;
+  margin-top: 0;
+}
+
+.form-field input,
+.form-field select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Small form field (for status) */
+.form-field-small {
+  max-width: 200px;
+  margin-bottom: 20px;
+}
+
+.form-field-small label {
+  display: block;
+  margin-bottom: 3px;
+  font-weight: 500;
+  color: #333;
+  font-size: 0.95rem;
+  margin-top: 15px;
+}
+
+.form-field-small select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: #8b1c33;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 28, 51, 0.1);
+}
+
+/* Dropdown Select Styling */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b1c33' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1.25rem;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+select:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+
+/* =========================================================
+   6. BUTTONS
+   ========================================================= */
+.btn-primary {
+  width: 100%;
+  background-color: #8b1c33;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-primary:hover {
+  background-color: #a6223d;
+  transform: translateY(-1px);
+}
+
+#createEventBtn {
+  background-color: #8b1c33;
+  color: #fff;
+  padding: 0.6rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid black;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.5rem;
+  width: 100%;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  gap: 8px;
+}
+
+.btn-google:hover {
+  background-color: #f3f3f3;
+}
+
+.btn-google img {
+  width: 20px;
+}
+
+
+/* =========================================================
+   7. LINKS, DIVIDERS & TEXT
+   ========================================================= */
+.link-container {
+  text-align: right;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  color: #999;
+  margin: 20px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+}
+
+.divider::before {
+  margin-right: 0.75em;
+}
+
+.divider::after {
+  margin-left: 0.75em;
+}
+
+.signup-text {
+  margin-top: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+.signup-link {
+  color: #8b1c33;
+  font-weight: 600;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   8. FILTERS, TAGS & SEARCH BAR
+   ========================================================= */
+#filters {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin: 16px;
+}
+
+#filters label {
+  font-weight: 500;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+#filters input,
+#filters select {
+  margin-top: 5px;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  width: 160px;
+}
+
+#filters input:focus,
+#filters select:focus {
+  border-color: #8b1c33;
+  outline: none;
+}
+
+.filter-tags{
+  display: flex;
+  gap: 12px;
+  margin-bottom: 1px;
+}
+
+.filter-tags select {
+  appearance: none;
+  padding: 8px;
+  border: none;
+  background-color: rgb(180, 180, 170);
+  color: white;
+  font-weight: bold;
+  font-size: 10px;
+  border-radius: 16px;
+}
+
+.clear-btn {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: rgb(180, 180, 170);
+  color: white;
+  font-size: 10px;
+  margin-top: 0;
+  border-radius: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.clear-btn:hover {
+  background: #5c5d5a;
+}
+
+.search-box input {
+  background-color: rgb(255, 240, 223);
+  border: 2px none;
+  padding: 2%;
+  width: 90%;
+  border-radius: 8px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+
+/* =========================================================
+   9. EVENTS DASHBOARD (Cards Grid)
+   ========================================================= */
+#eventsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+.eventCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  padding: 16px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.eventCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.event-info {
+  flex: 1;
+  text-align: left;
+}
+
+.event-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-left: 20px;
+}
+
+/* Buttons */
+.event-actions button {
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-view {
+  background-color: #8b1c33;
+  color: white;
+}
+
+.btn-edit {
+  background-color: #b8435f;
+  color: white;
+}
+
+.btn-delete {
+  background-color: #ccc;
+  color: #222;
+}
+
+.event-actions button:hover {
+  opacity: 0.9;
+}
+
+/* ===== Modal Dialog ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  text-align: left;
+}
+
+.modal-content h2 {
+  color: #8b1c33;
+  margin-bottom: 10px;
+}
+
+.modal-content p {
+  margin: 6px 0;
+}
+
+.modal-content .btn-close {
+  background-color: #8b1c33;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin-top: 12px;
+  cursor: pointer;
+  float: right;
+}
+
+.modal-content .btn-close:hover {
+  background-color: #a6223d;
+}
+
+.modal-content form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 500;
+  color: #333;
+}
+
+.modal-content form input,
+.modal-content form select,
+.modal-content form textarea {
+  width: 100%;
+  margin-top: 5px;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modal-content form select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b1c33' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1.25rem;
+  padding-right: 2rem;
+  cursor: pointer;
+}
+
+.modal-content form input:focus,
+.modal-content form select:focus,
+.modal-content form textarea:focus {
+  border-color: #8b1c33;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 28, 51, 0.1);
+}
+
+.eventCard h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+  color: #8b1c33;
+}
+
+.eventCard p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.eventCard button {
+  margin-right: 8px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.eventCard button:first-of-type {
+  background-color: #8b1c33;
+  color: white;
+}
+
+.eventCard button:last-of-type {
+  background-color: #ccc;
+  color: #222;
+}
+
+.eventCard button:hover {
+  opacity: 0.9;
+}
+
+
+/* =========================================================
+   10. RESPONSIVE LAYOUTS
+   ========================================================= */
+@media (max-width: 600px) {
+  #filters {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #filters input,
+  #filters select {
+    width: 100%;
+  }
+
+  #eventsList {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* =========================================================
+   11. PROFILE PAGE ADDITIONS
+   ========================================================= */
+:root {
+  --primary-color: #912338;
+  --primary-hover: #db0272;
+  --light-bg: #f2f2f2;
+  --text-dark: #2c2c2c;
+  --border-dark: #000;
+}
+
+/* Profile Page Layout */
+main.profile-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 80px;
+  min-height: calc(100vh - 70px);
+}
+
+.card.profile {
+  background: white;
+  border: 1px solid var(--border-dark);
+  border-radius: 8px;
+  padding: 30px 40px;
+  width: 450px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: left;
+}
+
+/* Form Hints */
+.form-hint {
+  display: block;
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: -15px;
+  margin-bottom: 15px;
+}
+
+/* Organization Section */
+#organization {
+  margin-bottom: 10px;
+}
+
+.btn-secondary {
+  background-color: #666;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-bottom: 20px;
+}
+
+.btn-secondary:hover {
+  background-color: #555;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Read-only Field */
+input[readonly] {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.card.profile h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Profile Picture */
+.profile-pic-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#profilePic {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 2px solid var(--primary-color);
+  object-fit: cover;
+  margin-bottom: 8px;
+}
+
+.upload-btn {
+  display: inline-block;
+  background: var(--primary-hover);
+  color: white;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.upload-btn:hover {
+  background: var(--primary-color);
+}
+
+/* Profile Inputs */
+.profile-page label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.profile-page input,
+.profile-page textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 14px;
+  border: 1px solid var(--border-dark);
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+/* .profile-page input:focus,
+.profile-page textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(145,35,56,0.2);
+  outline: none;
+} */
+
+/* .profile-page textarea {
+  resize: none;
+  height: 70px;
+} */
+
+/* Save Button */
+.btn-primary.profile-save {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  width: 100%;
+  padding: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-primary.profile-save:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+/* ===== HERO / INTRO SECTION ===== */
+#dashboardHero {
+  text-align: center;
+  background: linear-gradient(135deg, #912338, #b8435f);
+  color: white;
+  padding: 20px 10px;
+  border-radius: 8px;
+  margin: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+#dashboardHero h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+#dashboardHero p {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+/* =========================================================
+   10. MANAGAING EVENTS AND SHOWING ANALYTICS
+   ========================================================= */
+
+:root {
+  --primary: #912338;
+  --accent: #db0272;
+  --header-bg: #e9d3d7;
+  --gray-bg: #f6f6f6;
+  --text-dark: #222;
+  --button-purple: #5a32c9;
+  --button-green: #387c2c;
+}
+
+/* Global Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  background-color: var(--gray-bg);
+  color: var(--text-dark);
+}
+
+/* Header Bar */
+header {
+  background-color: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+
+
+.sub-header {
+  background: #e9d3d7;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 14px 40px;
+  border-bottom: 2px solid #d2b5b5;
+}
+
+.sub-header a {
+  text-decoration: none;
+  color: #222;
+  font-weight: 500;
+  padding-bottom: 6px;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.sub-header a.active {
+  color: #912338;
+  border-bottom: 3px solid #912338;
+}
+
+/* Page Content */
+main {
+  padding: 40px;
+}
+
+/* Section Heading */
+main h2 {
+  font-size: 1.8rem;
+  color: var(--primary);
+  margin-bottom: 16px;
+}
+
+/* Event/Analytics Container Cards */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.card {
+  flex: 1;
+  min-width: 320px;
+  background: white;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card h3 {
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+/* Stats */
+.stat {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #111;
+}
+
+.stat small {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Inputs & Buttons */
+input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 12px;
+  font-size: 1rem;
+}
+
+button {
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* Purple and Green Buttons */
+.btn-purple {
+  background-color: var(--button-purple);
+}
+
+.btn-purple:hover {
+  background-color: #4a24b5;
+}
+
+.btn-green {
+  background-color: var(--button-green);
+}
+
+.btn-green:hover {
+  background-color: #2c6524;
+}
+
+/* Footer text */
+.status-text {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  main {
+    padding: 20px;
+  }
+
+  .card-container {
+    flex-direction: column;
+  }
+
+  .card {
+    width: 100%;
+  }
+}
