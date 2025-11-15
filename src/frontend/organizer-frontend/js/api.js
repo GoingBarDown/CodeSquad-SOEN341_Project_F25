@@ -262,5 +262,110 @@ const API = {
             console.error('Validate ticket request failed:', error);
             throw error;
         }
+    },
+
+    // Organization endpoints
+    async getOrganizations() {
+        try {
+            const response = await fetch(`${this.baseUrl}/organizations`, {
+                headers: this.getHeaders()
+            });
+            return this.handleResponse(response);
+        } catch (error) {
+            console.error('Get organizations request failed:', error);
+            throw error;
+        }
+    },
+
+    async getOrganizationMembers() {
+        try {
+            const response = await fetch(`${this.baseUrl}/organization_members`, {
+                headers: this.getHeaders()
+            });
+            return this.handleResponse(response);
+        } catch (error) {
+            console.error('Get organization members request failed:', error);
+            throw error;
+        }
     }
 };
+
+// Shared function to check if organizer is denied and lock page if needed
+async function checkAndEnforceDeniedStatus(user) {
+    try {
+        // Get all organization members
+        const membersResponse = await fetch('http://127.0.0.1:5000/organization_members', {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (!membersResponse.ok) {
+            console.error('Failed to fetch organization members');
+            return false;
+        }
+        
+        const members = await membersResponse.json();
+        const userOrgMember = members.find(m => m.user_id === user.id);
+        
+        if (!userOrgMember) {
+            console.error('User not found in organization members');
+            return false;
+        }
+        
+        // Get the organization details
+        const orgResponse = await fetch(`http://127.0.0.1:5000/organizations/${userOrgMember.organization_id}`, {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (!orgResponse.ok) {
+            console.error('Failed to fetch organization');
+            return false;
+        }
+        
+        const org = await orgResponse.json();
+        
+        // If organization is denied, show dialog and lock page
+        if (org.status === 'denied') {
+            showDeniedAccessDialog(org);
+            return true; // User is denied
+        }
+        
+        return false; // User is not denied
+    } catch (err) {
+        console.error('Error checking denied status:', err);
+        return false;
+    }
+}
+
+// Show denied access dialog with no dismissal option
+function showDeniedAccessDialog(org) {
+    const modal = document.createElement('div');
+    modal.classList.add('approval-modal-overlay');
+    modal.style.zIndex = '10000';
+    
+    modal.innerHTML = `
+        <div class="approval-modal-content">
+            <div class="approval-modal-icon">❌</div>
+            <h2>Account Denied</h2>
+            <p class="approval-message">
+                Your account was denied. Contact customer support for assistance.
+            </p>
+            <button class="approval-btn-ok" onclick="logoutDeniedUser()">OK</button>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Disable all page content
+    const pageContent = document.querySelector('main') || document.querySelector('.dashboard-container') || document.querySelector('.container');
+    if (pageContent) {
+        pageContent.style.display = 'none';
+    }
+}
+
+// Logout denied user
+function logoutDeniedUser() {
+    localStorage.removeItem('userData');
+    localStorage.removeItem('authToken');
+    alert('Your account access has been denied. Please contact customer support.');
+    window.location.href = 'organizer-login.html';
+}

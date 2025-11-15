@@ -337,29 +337,61 @@ async function checkOrgApprovalStatus(user) {
     }
 }
 
-// Show approval pending dialog
+// Show approval pending or denied dialog
 function showApprovalDialog(org) {
     const modal = document.createElement('div');
     modal.classList.add('approval-modal-overlay');
+    
+    let title, icon, message, info, isDenied = false;
+    
+    if (org.status === 'denied') {
+        title = 'Account Denied';
+        icon = '❌';
+        message = 'Your account was denied. Contact customer support for assistance.';
+        info = '';
+        isDenied = true;
+    } else {
+        title = 'Account Pending Approval';
+        icon = '⏳';
+        message = `Your account has been created, but your organization <strong>"${org.title}"</strong> is pending approval by an administrator.`;
+        info = 'In the meantime, you can view events, but you won\'t be able to create or edit events until your organization is approved.';
+    }
+    
     modal.innerHTML = `
         <div class="approval-modal-content">
-            <div class="approval-modal-icon">⏳</div>
-            <h2>Account Pending Approval</h2>
+            <div class="approval-modal-icon">${icon}</div>
+            <h2>${title}</h2>
             <p class="approval-message">
-                Your account has been created, but your organization <strong>"${org.title}"</strong> is pending approval by an administrator.
+                ${message}
             </p>
-            <p class="approval-info">
-                In the meantime, you can view events, but you won't be able to create or edit events until your organization is approved.
-            </p>
-            <button class="approval-btn-ok">OK</button>
+            ${info ? `<p class="approval-info">${info}</p>` : ''}
+            ${isDenied ? '<button class="approval-btn-ok" onclick="logoutDeniedUser()">OK</button>' : '<button class="approval-btn-ok">OK</button>'}
         </div>
     `;
     
     document.body.appendChild(modal);
     
-    modal.querySelector('.approval-btn-ok').addEventListener('click', () => {
-        modal.remove();
-    });
+    // If denied, disable all page content and make modal non-dismissible
+    if (isDenied) {
+        const pageContent = document.querySelector('main') || document.querySelector('.dashboard-container');
+        if (pageContent) {
+            pageContent.style.display = 'none';
+        }
+        modal.style.pointerEvents = 'auto';
+        modal.querySelector('.approval-btn-ok').addEventListener('click', logoutDeniedUser);
+    } else {
+        modal.querySelector('.approval-btn-ok').addEventListener('click', () => {
+            modal.remove();
+        });
+    }
+}
+
+// Logout denied user
+function logoutDeniedUser() {
+    localStorage.removeItem('userData');
+    localStorage.removeItem('authToken');
+    alert('Your account access has been denied. Please contact customer support.');
+    window.location.href = 'organizer-login.html';
 }
 
 document.addEventListener('DOMContentLoaded', () => {
