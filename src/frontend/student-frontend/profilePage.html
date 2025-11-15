@@ -3,63 +3,109 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Profile - Concordia University</title>
-  <link rel="stylesheet" href="profilePage.css">
-  <script src="profilePage.js" defer></script>
-  <script src="index.js" defer></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+  <title>Student Profile | CampusConnect</title>
+
+  <!-- AUTHENTICATION CHECK -->
+  <script>
+    (function() {
+      const userData = localStorage.getItem('studentData');
+
+      if (!userData) {
+        alert("❌ Please login first");
+        window.location.href = "login.html";
+        return;
+      }
+
+      try {
+        const user = JSON.parse(userData);
+        if (user.role !== "student") {
+          alert("❌ Students only. You do not have permission to access this page.");
+          window.location.href = "index.html";
+          return;
+        }
+      } catch (err) {
+        console.error("Error checking student access:", err);
+        localStorage.clear();
+        window.location.href = "login.html";
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="css/organizerStyle.css">
+  <!-- same styling for both pages -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <header>
-    <div id="logo">CODESQUAD EVENTS</div>
-    <button id="dot">&#8801</button>
-  </header> 
+    <h1>CODESQUAD EVENTS</h1>
+    <button id="dot">☰</button>
+  </header>
 
+  <!-- Menu -->
   <div id="menu">
     <nav>
-      <a href="index.html">HOME</a>
-      <a href="events.html">EVENTS</a>
-      <a href="profilePage.html">MY PROFILE</a>
-      <a href="login.html">LOGIN</a>
+      <a href="index.html">Home</a>
+      <a href="events.html">Events</a>
+      <a href="student-profile.html">My Profile</a>
+      <a href="login.html" id="loginLogoutLink">Login</a>
     </nav>
   </div>
 
-  <main>
-    <section class="profile-container">
-      <div class="profile-card">
-        <div class="profile-header">
-          <h2 id="student-name" class="placeholder">Student Name</h2>
-        </div>
+  <!-- Profile Card -->
+  <main class="centered">
+    <div class="card">
+      <h2>My Profile</h2>
 
-        <div class="profile-details">
-          <div class="info-row">
-            <div class="info-label">Email:</div>
-            <div class="info-value" id="student-email">—</div>
+      <form id="studentProfileForm">
+
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" readonly>
+        <small class="form-hint">Username cannot be changed.</small>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="first_name" minlength="2" maxlength="80">
           </div>
 
-          <div class="info-row">
-            <div class="info-label">Password:</div>
-            <div class="info-value" id="student-password">—</div>
-          </div>
-
-          <div class="info-row">
-            <div class="info-label">Student ID:</div>
-            <div class="info-value" id="student-id">—</div>
-          </div>
-
-          <div class="info-row">
-            <div class="info-label">Program:</div>
-            <div class="info-value" id="student-program">—</div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="last_name" minlength="2" maxlength="80">
           </div>
         </div>
-        <div class="calendar-button-container">
-          <a href="student_calender.html" class="calendar-button">View My Event Calendar</a>
-        </div>
-      </div>
-    </section>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" readonly>
+        <small class="form-hint">Email cannot be changed.</small>
+
+        <label for="studentId">Student ID</label>
+        <input type="text" id="studentId" readonly>
+
+        <label for="program">Program</label>
+        <input type="text" id="program" name="program" placeholder="Computer Science">
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" pattern="[0-9+\-\s()]*">
+
+        <label for="bio">Short Bio</label>
+        <textarea id="bio" name="bio" maxlength="500" rows="4"
+          placeholder="Tell us about yourself..."></textarea>
+        <small class="form-hint">Maximum 500 characters</small>
+
+        <a href="student_calender.html" class="calendar-button" style="margin-top:10px;">
+          View My Event Calendar
+        </a>
+
+        <button type="submit" class="btn-primary" style="margin-top:15px;">Save Changes</button>
+      </form>
+    </div>
   </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/student-profile.js"></script>
 </body>
 </html>
+
