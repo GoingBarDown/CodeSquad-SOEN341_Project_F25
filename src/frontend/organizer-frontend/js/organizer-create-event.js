@@ -1,3 +1,36 @@
+// === AUTHENTICATION CHECK ===
+function checkOrganizerAccess() {
+    const userData = localStorage.getItem('userData');
+    
+    if (!userData) {
+        alert('❌ Please login first');
+        window.location.href = 'organizer-login.html';
+        return false;
+    }
+    
+    try {
+        const user = JSON.parse(userData);
+        
+        if (user.role !== 'organizer') {
+            alert('❌ You do not have permission to access this page. Only organizers can access this area.');
+            window.location.href = '../student-frontend/index.html';
+            return false;
+        }
+        
+        return true;
+    } catch (e) {
+        console.error('Error checking organizer access:', e);
+        localStorage.clear();
+        window.location.href = 'organizer-login.html';
+        return false;
+    }
+}
+
+// Check access before loading page
+if (!checkOrganizerAccess()) {
+    throw new Error('Access denied');
+}
+
 // Handle login/logout button in menu
 document.addEventListener('DOMContentLoaded', () => {
     const loginLink = document.querySelector('a[href="organizer-login.html"]');
@@ -23,12 +56,77 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// Check if organizer's organization is approved
+async function checkOrgApprovalBeforeEvent() {
+    const userData = localStorage.getItem('userData');
+    if (!userData) return false;
+    
+    try {
+        const user = JSON.parse(userData);
+        console.log('User:', user);
+        
+        // Get all organization members
+        const membersResponse = await fetch('http://127.0.0.1:5000/organization_members', {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (!membersResponse.ok) {
+            console.error('Failed to fetch organization members');
+            return true; // Allow if can't verify
+        }
+        
+        const members = await membersResponse.json();
+        console.log('All members:', members);
+        const userOrgMember = members.find(m => m.user_id === user.id);
+        console.log('User org member:', userOrgMember);
+        
+        if (!userOrgMember) {
+            console.error('User not found in organization members');
+            return true; // Allow if can't find membership
+        }
+        
+        // Get the organization details
+        const orgResponse = await fetch(`http://127.0.0.1:5000/organizations/${userOrgMember.organization_id}`, {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (!orgResponse.ok) {
+            console.error('Failed to fetch organization');
+            return true; // Allow if can't verify
+        }
+        
+        const org = await orgResponse.json();
+        console.log('Organization:', org);
+        
+        // Check if organization is approved
+        // Block if status is null, 'pending', or anything other than 'approved'
+        if (org.status !== 'approved') {
+            console.log(`Organization status is "${org.status}", blocking event creation`);
+            const statusDisplay = org.status || 'pending approval';
+            alert(`❌ You cannot create events yet. Your organization "${org.title}" is ${statusDisplay}.`);
+            return false;
+        }
+        
+        console.log('Organization is approved');
+        return true; // Organization is approved, allow event creation
+    } catch (err) {
+        console.error('Error checking organization approval:', err);
+        return true; // Allow if error checking
+    }
+}
+
 const createEventForm = document.getElementById('createEventForm');
 if (createEventForm) {
     createEventForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         try {
+            // Check if organization is approved before creating event
+            const isApproved = await checkOrgApprovalBeforeEvent();
+            if (!isApproved) {
+                return; // Event creation blocked
+            }
+
             // Collect all form data using field names expected by backend
             const startVal = document.getElementById('startDate').value;
             const endVal = document.getElementById('endDate').value;

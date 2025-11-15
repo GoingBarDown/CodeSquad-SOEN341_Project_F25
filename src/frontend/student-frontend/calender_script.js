@@ -60,7 +60,7 @@ function downloadIcs(event) {
     document.body.removeChild(link);
 }
 
-// --- Modal Simulation: This replaces the simple alert() and holds the Export button ---
+//Modal Simulation: This replaces the simple alert() and holds the Export button
 function showEventDetailsModal(info) {
     // Check if a modal is already open and remove it, just in case
     const existingModal = document.getElementById('event-modal');
@@ -120,7 +120,7 @@ function initializeCalendar() {
     }
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-        // --- CALENDAR CONFIGURATION ---
+        //CALENDAR CONFIGURATION
         initialView: 'dayGridMonth', 
         headerToolbar: {
             left: 'prev,next today',
@@ -130,15 +130,15 @@ function initializeCalendar() {
         editable: false, 
         selectable: true,
         
-        // --- DATA FEED CONFIGURATION ---
+        //DATA FEED CONFIGURATION
         events: function(fetchInfo, successCallback, failureCallback) {
-            const apiPath = `/student/${studentId}/events`;
+            const apiPath = `http://127.0.0.1:5000/student/${studentId}/events`;
             
             $.ajax({
                 url: apiPath, 
                 method: 'GET',
                 xhrFields: { withCredentials: true },
-                // headers: { 'Authorization': 'Bearer ' + authToken }, // Uncomment if using tokens
+                
                 
                 success: function(response) {
                     console.log("Events successfully fetched:", response);
@@ -151,18 +151,18 @@ function initializeCalendar() {
                 }
             });
         },
-        // --- INTERACTIVITY ---
+        // INTERACTIVITY
         eventClick: function(info) {
             // This is the primary modification: call the modal containing the export button
             showEventDetailsModal(info); 
             info.jsEvent.preventDefault(); 
         },
         
-        // Optional: Customize event rendering to show colors based on status
+        // Customize event rendering to show colors based on status
         eventDidMount: function(info) {
-            // Match status strings from your backend (e.g., 'claimed')
+            // Match status strings from backend
             if (info.event.extendedProps.claimStatus === 'claimed') {
-                info.el.style.backgroundColor = '#871a1a'; // App red for claimed
+                info.el.style.backgroundColor = '#871a1a'; //red for claimed
                 info.el.style.borderColor = '#510c0c';
             } else if (info.event.extendedProps.claimStatus === 'saved') {
                 info.el.style.backgroundColor = '#ffc107'; // Yellow for saved

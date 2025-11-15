@@ -6,10 +6,13 @@
   <title>Organizer Login</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/organizerStyle.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
-    <h1>Organizer Portal</h1>
+    <h1>CODESQUAD EVENTS</h1>
     <button id="dot">☰</button>
   </header>
 
@@ -22,34 +25,44 @@
   </div>
 
   <main class="centered">
-    <div class="card">
-      <h2><b>Organizer Login</b></h2>
+    <div class="card card-organizer login">
+      <h2 class="form-heading">Organizer Login</h2>
+      <p class="form-subtitle">Access your event management dashboard</p>
   
       <form id="loginForm">
-        <label for="identifier">Username or Email</label>
-        <input type="text" id="identifier" placeholder="  Enter username or email" required><br>
+        <div class="form-section">
+          <label for="identifier" class="form-label">Username or Email</label>
+          <input type="text" id="identifier" placeholder="Enter username or email" required class="form-input">
+        </div>
         
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="  Enter password" minlength="8" required>
+        <div class="form-section">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" id="password" placeholder="Enter password" minlength="8" required class="form-input">
+        </div>
 
-        <div style="text-align:right; margin-top:10px;margin-bottom:10px;">
-          <a href="organizer-forgot-password.html" class="signup-link">Forgot password?</a>
+        <div class="password-reminder">
+          <a href="organizer-forgot-password.html">Forgot password?</a>
         </div>
 
         <button type="submit" class="btn-primary">Login</button>
+         
+        <div class="form-divider"><b> <br>OR</b></div>
 
-        <div class="divider"><b>or</b></div>
-
-        <button type="button" class="btn-google">
+        <button type="button" class="btn-google-auth">
           <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="">
           Login with Google
         </button>
 
-        <p class="signup-text">
-          Don’t have an account?
-          <a href="organizer-signup.html" class="signup-link">Sign up</a><br>
-          Not an Organizer?<br>
-           Login as a <a href="../student-frontend/login.html" class="signup-link">Student</a> or an <a href="../admin-frontend/admin-login.html" class="signup-link">Administrator</a>
+        <p class="signup-prompt">
+          Don't have an account?
+          <a href="organizer-signup.html" class="signup-link">Sign up</a>
+        </p>
+
+        <p class="form-footer-links">
+          Not an Organizer?
+          <a href="../student-frontend/login.html">Login as Student</a>
+          or
+          <a href="../admin-frontend/admin-login.html">Admin</a>
         </p>
       </form>
     </div>

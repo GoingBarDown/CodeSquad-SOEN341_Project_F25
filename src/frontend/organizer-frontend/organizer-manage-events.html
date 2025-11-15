@@ -4,14 +4,43 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manage Events | CampusConnect</title>
+  
+  <!-- AUTHENTICATION CHECK - RUN BEFORE PAGE LOADS -->
+  <script>
+    (function() {
+      const userData = localStorage.getItem('userData');
+      
+      if (!userData) {
+        alert('❌ Please login first');
+        window.location.href = 'organizer-login.html';
+        return;
+      }
+      
+      try {
+        const user = JSON.parse(userData);
+        if (user.role !== 'organizer') {
+          alert('❌ You do not have permission to access this page. Only organizers can access this area.');
+          window.location.href = '../student-frontend/index.html';
+          return;
+        }
+      } catch (e) {
+        console.error('Error checking organizer access:', e);
+        localStorage.clear();
+        window.location.href = 'organizer-login.html';
+      }
+    })();
+  </script>
+  
   <link rel="stylesheet" href="css/organizerStyle.css">
   <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
-</head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
 <body>
 
   <!-- Header -->
   <header>
-    <h1>Event Analytics</h1>
+    <h1>CODESQUAD EVENTS</h1>
     <button id="dot">☰</button>
   </header>
 
