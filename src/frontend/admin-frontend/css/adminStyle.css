@@ -244,16 +244,17 @@ main {
 
 .filter-tags select {
     appearance: none;
-    padding: 10px 12px;
+    padding: 8px 12px;              /* smaller padding → smaller size */
     border: none;
-    background-color: #a8ad9f;
+    background-color: #a8ad9f;      /* same color as picture 2 */
     color: white;
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: 0.85rem;             /* slightly smaller text */
     border-radius: 6px;
     cursor: pointer;
     text-align: center;
-    width: auto;
+    width: auto;                    /* prevents full width */
+    min-width: 110px;               /* size similar to picture 1 */
 }
 
 .filter-tags select:hover {

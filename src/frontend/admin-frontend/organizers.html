@@ -105,12 +105,19 @@
 
       <!-- Filters -->
       <div class="filter-tags">
-        <select id="filter-options">
-          <option value="az">A → Z</option>
-          <option value="za">Z → A</option>
-        </select>
-        <button class="clear-filters-btn" onclick="clearOrganizerFilters()">Clear Filters</button>
-      </div>
+    <select id="filter-options">
+        <option value="az">A → Z</option>
+        <option value="za">Z → A</option>
+    </select>
+
+    <select id="filter-org">
+        <option value="">Organization</option>
+    </select>
+
+    <button class="clear-filters-btn" onclick="clearOrganizerFilters()">Clear Filters</button>
+</div>
+
+
 
       <!-- Scrollable Organiser List (populated by backend) -->
       <div id="organiser-list-container">
