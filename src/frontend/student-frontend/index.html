@@ -34,16 +34,44 @@
     <button id="dot">&#8801;</button>
   </header>
 
-  <!-- ✅ CLEAN SIDE DROPDOWN MENU -->
-  <div id="menu">
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="events.html">Events</a>
-      <a href="profilePage.html">Profile</a>
-      <a href="login.html">Log In</a>
-      <a href="signup.html">Sign Up</a>
-    </nav>
-  </div>
+<!-- SIDE MENU -->
+<div id="menu">
+
+  <!-- GUEST MENU -->
+  <nav id="guest-menu">
+    <a href="index.html">Home</a>
+    <a href="events.html">Events</a>
+    <a href="login.html">Log In</a>
+    <a href="signup.html">Sign Up</a>
+  </nav>
+
+  <!-- STUDENT MENU -->
+  <nav id="student-menu" style="display:none;">
+    <a href="index.html">Home</a>
+    <a href="profilePage.html">Profile</a>
+    <a href="tickets.html">My Tickets</a>
+    <a href="student_calendar.html">Calendar</a>
+    <a href="#" id="logout-btn-student">Log Out</a>
+  </nav>
+
+  <!-- ORGANIZER MENU -->
+  <nav id="organizer-menu" style="display:none;">
+    <a href="index.html">Home</a>
+    <a href="profilePage.html">Profile</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="analytics.html">Analytics</a>
+    <a href="#" id="logout-btn-organizer">Log Out</a>
+  </nav>
+
+  <!-- ADMIN MENU -->
+  <nav id="admin-menu" style="display:none;">
+    <a href="index.html">Home</a>
+    <a href="#" id="logout-btn-admin">Log Out</a>
+  </nav>
+
+</div>
+
+
 
   <div class="highlights-section">
     <div id="slideshow"></div>
