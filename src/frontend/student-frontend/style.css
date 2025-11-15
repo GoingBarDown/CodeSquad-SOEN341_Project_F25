@@ -176,9 +176,9 @@ header {
   min-width: 320px;
   max-width: 95vw;
   box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-  font-family: "Poller One", sans-serif;
   font-size: 1.1em;
   text-align: left;
+  font-weight: 400;
   color: var(--accent);
 }
 
@@ -243,9 +243,10 @@ header {
 
 .recomended p,
 .event1 p {
-  font-family: "Poller One", sans-serif;
+  font-weight: bold;
   color: rgb(70, 78, 63);
   font-size: larger;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .btn-register {
@@ -274,7 +275,6 @@ header {
 
 .sort-controls label {
   color: var(--text-light);
-  font-family: "Poller One", sans-serif;
   font-size: 1.1em;
 }
 
