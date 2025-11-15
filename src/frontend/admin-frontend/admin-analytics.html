@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Analytics</title>
+
+    <!-- Shared CSS -->
+    <link rel="stylesheet" href="css/adminStyle.css">
+
+    <!-- Fade-in auth -->
+    <style>
+        body { opacity: 0; transition: opacity 0.3s ease; }
+        body.authenticated { opacity: 1; }
+    </style>
+
+    <!-- Authentication (same as other pages) -->
+    <script>
+        const userData = localStorage.getItem('userData');
+        if (!userData) {
+            alert("❌ Please login before trying to access this page.");
+            window.location.href = "admin-login.html";
+        } else {
+            try {
+                const user = JSON.parse(userData);
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add("authenticated");
+                });
+            } catch (e) {
+                localStorage.removeItem("userData");
+                localStorage.removeItem("authToken");
+                window.location.href = "admin-login.html";
+            }
+        }
+    </script>
+
+    <!-- API + Analytics JS -->
+    <script src="js/api-admin.js" defer></script>
+    <script src="js/admin-analytics.js" defer></script>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div id="logo">CODESQUAD EVENTS</div>
+        <div id="welcome-message" style="flex: 1; text-align: center; font-size: 1rem; color: white;">
+            Welcome back, <strong id="admin-name">Admin</strong>! 👋
+        </div>
+        <button id="dot">&#8801;</button>
+    </header>
+
+    <!-- DROPDOWN MENU -->
+    <div id="menu">
+        <nav>
+            <a href="../student-frontend/index.html">HOME</a>
+            <a href="../student-frontend/events.html">EVENTS</a>
+            <a href="../student-frontend/profilePage.html">MY PROFILE</a>
+            <a href="admin-login.html" id="loginLogoutLink">LOGIN</a>
+        </nav>
+    </div>
+
+    <!-- SUBBAR -->
+    <div id="subbar" class="admin-nav">
+        <a href="events.html" class="nav-tab">EVENTS</a>
+        <a href="students.html" class="nav-tab">STUDENTS</a>
+        <a href="organizers.html" class="nav-tab">ORGANIZERS</a>
+        <a href="organizations.html" class="nav-tab">ORGANIZATIONS</a>
+        <a href="admin-analytics.html" class="nav-tab active">ANALYTICS</a>
+    </div>
+
+    <!-- MAIN LAYOUT -->
+    <main class="main-container">
+
+        <!-- LEFT PANEL = ANALYTICS BOXES -->
+        <aside class="side-panel">
+            <h2>Platform Statistics</h2>
+
+            <div class="analytics-box">
+                <h3>Total Events</h3>
+                <p id="stat-total-events">0</p>
+            </div>
+
+            <div class="analytics-box">
+                <h3>Published Events</h3>
+                <p id="stat-published-events">0</p>
+            </div>
+
+            <div class="analytics-box">
+                <h3>Total Students</h3>
+                <p id="stat-total-students">0</p>
+            </div>
+
+            <div class="analytics-box">
+                <h3>Total Organizers</h3>
+                <p id="stat-total-organizers">0</p>
+            </div>
+        </aside>
+
+        <!-- RIGHT PANEL = INFORMATION CARD -->
+        <section class="content-view">
+            <div class="info-card">
+                <div class="info-header">
+                    <h2>Analytics Dashboard</h2>
+                </div>
+
+                <p style="font-size: 1rem; color:#444;">
+                    This dashboard gives a quick overview of overall platform activity.
+                </p>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>

@@ -592,3 +592,53 @@ main {
 .btn-cancel:hover {
   background-color: #bbb;
 }
+
+/* =========================================================
+   ANALYTICS PAGE STYLING
+   ========================================================= */
+
+/* Analytics side panel heading */
+.side-panel h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    color: rgb(151, 9, 21);
+}
+
+/* Analytics metric boxes */
+.analytics-box {
+    background-color: #b6bda9;
+    padding: 16px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: 0.2s ease;
+}
+
+.analytics-box:hover {
+    background-color: #a8ad9f;
+    transform: translateY(-2px);
+}
+
+.analytics-box h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 6px;
+}
+
+.analytics-box p {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0;
+}
+
+/* Right panel title */
+.info-card h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: rgb(151, 9, 21);
+    margin-bottom: 10px;
+}
