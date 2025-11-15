@@ -64,10 +64,15 @@ function renderEvents(eventArray) {
     
     eventsList.innerHTML = eventArray.length === 0 
         ? "<p>No events found.</p>" 
-        : eventArray.map(event => `
+        : eventArray.map(event => {
+            const status = event.status || 'draft';
+            const statusDisplay = status.charAt(0).toUpperCase() + status.slice(1);
+            const statusClass = `status-${status.toLowerCase()}`;
+            return `
             <div class="eventCard">
                 <div class="event-info">
                     <h3>${event.title}</h3>
+                    <span class="event-status ${statusClass}">${statusDisplay}</span>
                     <p><strong>Date:</strong> ${new Date(event.start_date).toLocaleDateString()}</p>
                     <p><strong>Category:</strong> ${event.category || 'N/A'}</p>
                     <p><strong>Capacity:</strong> ${event.capacity || 'Unlimited'}</p>
@@ -78,7 +83,8 @@ function renderEvents(eventArray) {
                     <button class="btn-delete" onclick="deleteEvent(${event.id})">Delete</button>
                 </div>
             </div>
-        `).join('');
+        `;
+        }).join('');
 }
 
 // Load events from backend

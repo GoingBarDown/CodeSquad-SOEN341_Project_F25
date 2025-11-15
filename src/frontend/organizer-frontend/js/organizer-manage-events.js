@@ -149,9 +149,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.className = "card";
                 card.setAttribute('data-event-id', event.id); //add event ID to the card
 
+                // Determine status display
+                const status = event.status || 'draft';
+                const statusDisplay = status.charAt(0).toUpperCase() + status.slice(1);
+                const statusClass = `status-${status.toLowerCase()}`;
+
                 // Add unique IDs to the stat spans
                 card.innerHTML = `
                     <h3>${event.title}</h3>
+                    <span class="event-status ${statusClass}">${statusDisplay}</span>
                     <p class="stat"><b><span id="stat-registered-${event.id}">${registered}</span> / ${event.capacity}</b><br>
                     <small>Registered Participants</small></p>
                     <p><b>Attendance Rate:</b> <span id="stat-rate-${event.id}">${attendanceRate}</span>%</p>
