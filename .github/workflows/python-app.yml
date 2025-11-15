@@ -1,7 +1,4 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-
-name: Run Pytest
+name: Run Pytest & JSLint
 
 on:
   push:
@@ -13,9 +10,9 @@ permissions:
   contents: read
 
 jobs:
+
   test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -34,3 +31,31 @@ jobs:
       - name: Run tests
         working-directory: src/backend
         run: pytest
+
+
+  jslint:
+    name: Run JSLint on frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node (used only for linting)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install JSLint
+        run: npm install -g jslint
+
+      - name: Run JSLint on all frontend JS
+        run: |
+          # Lint ALL JavaScript under /src/frontend/
+          jslint "src/frontend/**/*.js" > jslint_report.txt || true
+
+      - name: Upload JSLint Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jslint-report
+          path: jslint_report.txt
