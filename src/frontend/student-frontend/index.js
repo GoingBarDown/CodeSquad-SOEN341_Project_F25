@@ -117,7 +117,10 @@ let allEvents = [];
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     const response = await fetch('http://127.0.0.1:5000/events');
-    allEvents = await response.json();
+    const events = await response.json();
+    
+    // Only show published events on student side
+    allEvents = events.filter(event => event.status === 'published');
 
     renderEvents(allEvents);
 
