@@ -89,9 +89,10 @@
   
     <div id="subbar" class="admin-nav">
       <a href="events.html" class="nav-tab">EVENTS</a>
-      <a href="students.html" class="nav-tab">STUDENTS</a>
-      <a href="organizers.html" class="nav-tab active">ORGANIZERS</a>
-      <a href="organizations.html" class="nav-tab">ORGANIZATIONS</a>
+    <a href="students.html" class="nav-tab">STUDENTS</a>
+    <a href="organizers.html" class="nav-tab">ORGANIZERS</a>
+    <a href="organizations.html" class="nav-tab">ORGANIZATIONS</a>
+    <a href="admin-analytics.html" class="nav-tab">ANALYTICS</a>
     </div>
 
   <!-- === MAIN CONTENT === -->
@@ -105,12 +106,19 @@
 
       <!-- Filters -->
       <div class="filter-tags">
-        <select id="filter-options">
-          <option value="az">A → Z</option>
-          <option value="za">Z → A</option>
-        </select>
-        <button class="clear-filters-btn" onclick="clearOrganizerFilters()">Clear Filters</button>
-      </div>
+    <select id="filter-options">
+        <option value="az">A → Z</option>
+        <option value="za">Z → A</option>
+    </select>
+
+    <select id="filter-org">
+        <option value="">Organization</option>
+    </select>
+
+    <button class="clear-filters-btn" onclick="clearOrganizerFilters()">Clear Filters</button>
+</div>
+
+
 
       <!-- Scrollable Organiser List (populated by backend) -->
       <div id="organiser-list-container">

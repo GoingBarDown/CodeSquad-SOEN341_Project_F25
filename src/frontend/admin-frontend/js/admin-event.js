@@ -18,21 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Hide welcome message after 5 minutes or if user has visited before
     const welcomeMessage = document.getElementById('welcome-message');
-    const lastWelcomeTime = localStorage.getItem('lastWelcomeTime');
-    const now = Date.now();
-    
-    if (welcomeMessage) {
-        // If they've visited a dashboard page before, hide the welcome immediately
-        if (lastWelcomeTime) {
-            welcomeMessage.style.display = 'none';
-        } else {
-            // First time - show welcome, then hide after 5 minutes (300000ms)
-            localStorage.setItem('lastWelcomeTime', now);
-            setTimeout(() => {
-                welcomeMessage.style.display = 'none';
-            }, 300000);
-        }
-    }
+if (welcomeMessage) {
+    welcomeMessage.style.display = 'block';
+}
 });
 
 
@@ -336,12 +324,11 @@ function openEditEventModal(eventId) {
                 <textarea id="editDescription" rows="4">${eventData.description || ''}</textarea>
 
                 <label for="editStatus">Status:</label>
-                <select id="editStatus">
-                    <option value="active" ${eventData.status === 'active' ? 'selected' : ''}>Active</option>
-                    <option value="pending" ${eventData.status === 'pending' ? 'selected' : ''}>Pending</option>
-                    <option value="past" ${eventData.status === 'past' ? 'selected' : ''}>Past</option>
-                    <option value="cancelled" ${eventData.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
-                </select>
+<select id="editStatus">
+    <option value="draft" ${eventData.status === 'draft' ? 'selected' : ''}>Draft</option>
+    <option value="published" ${eventData.status === 'published' ? 'selected' : ''}>Published</option>
+    <option value="cancelled" ${eventData.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+</select>
 
                 <div style="display: flex; gap: 10px; margin-top: 20px;">
                     <button type="submit" class="btn-primary">Save Changes</button>

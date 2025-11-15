@@ -244,16 +244,17 @@ main {
 
 .filter-tags select {
     appearance: none;
-    padding: 10px 12px;
+    padding: 8px 12px;              /* smaller padding → smaller size */
     border: none;
-    background-color: #a8ad9f;
+    background-color: #a8ad9f;      /* same color as picture 2 */
     color: white;
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: 0.85rem;             /* slightly smaller text */
     border-radius: 6px;
     cursor: pointer;
     text-align: center;
-    width: auto;
+    width: auto;                    /* prevents full width */
+    min-width: 110px;               /* size similar to picture 1 */
 }
 
 .filter-tags select:hover {
@@ -590,4 +591,65 @@ main {
 
 .btn-cancel:hover {
   background-color: #bbb;
+}
+
+/* =========================================================
+   ANALYTICS PAGE STYLING
+   ========================================================= */
+
+/* OUTER PANEL (left analytics panel) */
+.side-panel {
+    background: #ffffff;                     /* White card */
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);  /* Soft shadow - matches right side */
+}
+
+/* Title */
+.side-panel h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: rgb(151, 9, 21);                  /* Same red as your theme */
+    font-weight: 700;
+}
+
+/* SMALL ANALYTICS BOXES */
+.analytics-box {
+    background: #fce2e2;                     /* Softer light red */
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    text-align: center;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.05);   /* Same subtle shadow as other cards */
+}
+
+/* Headings inside small boxes */
+.analytics-box h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: rgb(151, 9, 21);                  /* Matching red */
+    font-weight: 700;
+}
+
+/* Number inside small boxes */
+.analytics-box p {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+    color: #333;
+}
+
+.analytics-box:hover {
+    background-color: #a8ad9f;
+    transform: translateY(-2px);
+}
+
+
+
+/* Right panel title */
+.info-card h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: rgb(151, 9, 21);
+    margin-bottom: 10px;
 }

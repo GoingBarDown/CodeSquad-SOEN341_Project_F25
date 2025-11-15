@@ -1155,3 +1155,25 @@ button {
     width: 100%;
   }
 }
+/* ============================
+   ROLE SWITCH (Login Bottom Links)
+   ============================ */
+.role-switch {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.role-switch a {
+  color: var(--primary-color);   /* dark maroon (#912338) */
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0 4px;
+  transition: color 0.2s ease;
+}
+
+.role-switch a:hover {
+  color: var(--primary-hover);   /* bright red (#db0272) */
+  text-decoration: underline;
+}

@@ -1,3 +1,4 @@
+/* global ADMIN_API */
 document.addEventListener('DOMContentLoaded', () => {
   console.log("Admin Organiser Page Loaded");
 
@@ -17,27 +18,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Hide welcome message after 5 minutes or if user has visited before
   const welcomeMessage = document.getElementById('welcome-message');
-  const lastWelcomeTime = localStorage.getItem('lastWelcomeTime');
-  const now = Date.now();
-  
-  if (welcomeMessage) {
-    // If they've visited a dashboard page before, hide the welcome immediately
-    if (lastWelcomeTime) {
-      welcomeMessage.style.display = 'none';
-    } else {
-      // First time - show welcome, then hide after 5 minutes (300000ms)
-      localStorage.setItem('lastWelcomeTime', now);
-      setTimeout(() => {
-        welcomeMessage.style.display = 'none';
-      }, 300000);
-    }
-  }
+if (welcomeMessage) {
+    welcomeMessage.style.display = 'block';
+}
 
   const searchInput = document.getElementById('organiser-search');
   const filterSelect = document.getElementById('filter-options');
+  const orgFilter = document.getElementById('filter-org'); 
+
 
   if (searchInput) searchInput.addEventListener('input', applyOrganiserFilters);
   if (filterSelect) filterSelect.addEventListener('change', applyOrganiserFilters);
+  if (orgFilter) orgFilter.addEventListener('change', applyOrganiserFilters);
 
   applyOrganiserFilters(); // Load once
 });
@@ -45,57 +37,86 @@ document.addEventListener('DOMContentLoaded', () => {
 let currentOrganizer = null;
 let organizationData = {}; // Map of organizer user_id to organization
 
+
 function applyOrganiserFilters() {
   const search = document.getElementById('organiser-search')?.value.toLowerCase() || '';
-  const filter = document.getElementById('filter-options')?.value || '';
+  const sortFilter = document.getElementById('filter-options')?.value || '';
 
-  console.log("Filters applied:", { search, filter });
-
-  // Fetch organizers from backend using API
   (async () => {
     try {
-      const organizers = await ADMIN_API.getOrganizers();
-      // Filter by role to get only organizers
+      let organizers = await ADMIN_API.getOrganizers();
       let organizersList = organizers.filter(user => user.role === 'organizer');
-      
-      // Fetch organization data and members
+
       const organizations = await ADMIN_API.getOrganizations();
       const members = await ADMIN_API.getOrganizationMembers();
-      
-      // Map organizers to their organizations
+
+      // ---- STEP 1: POPULATE ORGANIZATION DROPDOWN BEFORE READING IT ----
+      const orgFilterSelect = document.getElementById('filter-org');
+      if (orgFilterSelect) {
+        const previousValue = orgFilterSelect.value; // save user's selection
+
+        orgFilterSelect.innerHTML = `<option value="">Organization</option>`;
+        const uniqueOrgs = [...new Set(organizations.map(org => org.title))];
+
+        uniqueOrgs.forEach(title => {
+          const opt = document.createElement('option');
+          opt.value = title;
+          opt.textContent = title;
+          orgFilterSelect.appendChild(opt);
+        });
+
+        // Restore previous selection
+        orgFilterSelect.value = previousValue;
+      }
+
+      // NOW read the selected org
+      const orgFilter = orgFilterSelect?.value || '';
+
+      // ---- STEP 2: BUILD MAP organizer → organization ----
       organizationData = {};
       members.forEach(member => {
         const org = organizations.find(o => o.id === member.organization_id);
-        if (org) {
-          organizationData[member.user_id] = org;
-        }
+        if (org) organizationData[member.user_id] = org;
       });
-      
-      // Apply search filter (search in username and email)
+
+      // ---- STEP 3: APPLY ORG FILTER ----
+      if (orgFilter) {
+        organizersList = organizersList.filter(user => {
+          const org = organizationData[user.id];
+          return org?.title === orgFilter;
+        });
+      }
+
+      // ---- STEP 4: SEARCH FILTER ----
       if (search) {
-        organizersList = organizersList.filter(user => 
-          user.username.toLowerCase().includes(search) || 
+        organizersList = organizersList.filter(user =>
+          user.username.toLowerCase().includes(search) ||
           user.email.toLowerCase().includes(search)
         );
       }
-      
-      // Apply sort filter
-      if (filter === 'az') {
+
+      // ---- STEP 5: SORT ----
+      if (sortFilter === 'az') {
         organizersList.sort((a, b) => a.username.localeCompare(b.username));
-      } else if (filter === 'za') {
+      } else if (sortFilter === 'za') {
         organizersList.sort((a, b) => b.username.localeCompare(a.username));
       }
-      
+
+      // ---- STEP 6: RENDER ----
       renderOrganiserList(organizersList);
+
     } catch (error) {
       console.error("Error fetching organizers:", error);
       const listContainer = document.getElementById('organiser-list-container');
       if (listContainer) {
-        listContainer.innerHTML = `<div class="no-results">Error loading organizers: ${error.message}</div>`;
+        listContainer.innerHTML =
+          `<div class="no-results">Error loading organizers: ${error.message}</div>`;
       }
     }
   })();
 }
+
+
 
 function renderOrganiserList(organisers) {
   const listContainer = document.getElementById('organiser-list-container');
@@ -376,6 +397,7 @@ function openEditOrganizerModal() {
 function clearOrganizerFilters() {
   document.getElementById('organiser-search').value = '';
   document.getElementById('filter-options').value = 'az';
+  document.getElementById('filter-org').value = '';
   applyOrganiserFilters();
 }
 
