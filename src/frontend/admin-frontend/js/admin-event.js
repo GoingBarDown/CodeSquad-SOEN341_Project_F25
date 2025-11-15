@@ -324,12 +324,11 @@ function openEditEventModal(eventId) {
                 <textarea id="editDescription" rows="4">${eventData.description || ''}</textarea>
 
                 <label for="editStatus">Status:</label>
-                <select id="editStatus">
-                    <option value="active" ${eventData.status === 'active' ? 'selected' : ''}>Active</option>
-                    <option value="pending" ${eventData.status === 'pending' ? 'selected' : ''}>Pending</option>
-                    <option value="past" ${eventData.status === 'past' ? 'selected' : ''}>Past</option>
-                    <option value="cancelled" ${eventData.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
-                </select>
+<select id="editStatus">
+    <option value="draft" ${eventData.status === 'draft' ? 'selected' : ''}>Draft</option>
+    <option value="published" ${eventData.status === 'published' ? 'selected' : ''}>Published</option>
+    <option value="cancelled" ${eventData.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+</select>
 
                 <div style="display: flex; gap: 10px; margin-top: 20px;">
                     <button type="submit" class="btn-primary">Save Changes</button>
