@@ -17,21 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Hide welcome message after 5 minutes or if user has visited before
   const welcomeMessage = document.getElementById('welcome-message');
-  const lastWelcomeTime = localStorage.getItem('lastWelcomeTime');
-  const now = Date.now();
-  
-  if (welcomeMessage) {
-    // If they've visited a dashboard page before, hide the welcome immediately
-    if (lastWelcomeTime) {
-      welcomeMessage.style.display = 'none';
-    } else {
-      // First time - show welcome, then hide after 5 minutes (300000ms)
-      localStorage.setItem('lastWelcomeTime', now);
-      setTimeout(() => {
-        welcomeMessage.style.display = 'none';
-      }, 300000);
-    }
-  }
+if (welcomeMessage) {
+    welcomeMessage.style.display = 'block';
+}
 
   const searchInput = document.getElementById('organiser-search');
   const filterSelect = document.getElementById('filter-options');
