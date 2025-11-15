@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Profile | CampusConnect</title>
 
-  <!-- IMPORTANT: use the same main CSS as index.html -->
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="profilePage.css">
 
@@ -15,13 +14,14 @@
 </head>
 
 <body class="student-profile-page">
-  <!-- HEADER: identical structure to index.html -->
+
+  <!-- Header -->
   <header>
     <div id="logo">CODESQUAD EVENTS</div>
     <button id="dot">&#8801;</button>
   </header>
 
-  <!-- SMALL DROPDOWN MENU (same structure as index, but student-only) -->
+  <!-- Menu -->
   <div id="menu">
     <nav id="student-menu">
       <a href="index.html">Home</a>
@@ -37,48 +37,78 @@
     <div class="card">
       <h2>Profile</h2>
 
-      <form id="studentProfileForm">
+      <!-- ========================== -->
+      <!--       VIEW MODE            -->
+      <!-- ========================== -->
+      <div id="profileView">
 
-  <!-- First Name -->
-  <label for="firstName">First Name</label>
-  <input type="text" id="firstName" name="first_name" minlength="2" maxlength="80">
+        <label>First Name</label>
+        <div class="view-box" id="viewFirstName"></div>
 
-  <!-- Last Name -->
-  <label for="lastName">Last Name</label>
-  <input type="text" id="lastName" name="last_name" minlength="2" maxlength="80">
+        <label>Last Name</label>
+        <div class="view-box" id="viewLastName"></div>
 
-  <!-- Email -->
-  <label for="email">Email</label>
-  <input type="email" id="email" readonly>
-  <small class="form-hint">Email cannot be changed.</small>
+        <label>Email</label>
+        <div class="view-box" id="viewEmail"></div>
 
-  <!-- Student ID -->
-  <label for="studentId">Student ID</label>
-  <input type="text" id="studentId" readonly>
-  <small class="form-hint">Student ID cannot be changed.</small>
+        <label>Student ID</label>
+        <div class="view-box" id="viewStudentId"></div>
 
-  <!-- Program -->
-  <label for="program">Program</label>
-  <input type="text" id="program" name="program" placeholder="Computer Science">
+        <label>Program</label>
+        <div class="view-box" id="viewProgram"></div>
 
-  <!-- Phone Number -->
-  <label for="phone">Phone Number</label>
-  <input type="tel" id="phone" name="phone" pattern="[0-9+\-\s()]*">
+        <label>Phone Number</label>
+        <div class="view-box" id="viewPhone"></div>
 
-  <!-- Short Bio -->
-  <label for="bio">Short Bio</label>
-  <textarea id="bio" name="bio" maxlength="500" rows="4"
-    placeholder="Tell us about yourself..."></textarea>
-  <small class="form-hint">Maximum 500 characters</small>
+        <label>Short Bio</label>
+        <div class="view-box" id="viewBio"></div>
 
-  <!-- Calendar Button -->
-  <a href="student_calender.html" class="calendar-button">
-    View My Event Calendar
-  </a>
+        <a href="student_calender.html" class="calendar-button">
+          View My Event Calendar
+        </a>
 
-  <!-- Save Button -->
-  <button type="submit" class="btn-primary">Save Changes</button>
-</form>
+        <button id="editBtn" class="btn-primary" style="margin-top: 15px;">
+          Edit Profile
+        </button>
+      </div>
+
+      <!-- ========================== -->
+      <!--         EDIT MODE          -->
+      <!-- ========================== -->
+      <form id="studentProfileForm" style="display:none;">
+
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="first_name" minlength="2" maxlength="80">
+
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" name="last_name" minlength="2" maxlength="80">
+
+        <label for="email">Email</label>
+        <input type="email" id="email" readonly>
+        <small class="form-hint">Email cannot be changed.</small>
+
+        <label for="studentId">Student ID</label>
+        <input type="text" id="studentId" readonly>
+        <small class="form-hint">Student ID cannot be changed.</small>
+
+        <label for="program">Program</label>
+        <input type="text" id="program" name="program">
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" pattern="[0-9+()\\s-]*">
+
+        <label for="bio">Short Bio</label>
+        <textarea id="bio" name="bio" maxlength="500" rows="4"></textarea>
+        <small class="form-hint">Maximum 500 characters</small>
+
+        <a href="student_calender.html" class="calendar-button">
+          View My Event Calendar
+        </a>
+
+        <button type="submit" class="btn-primary" style="margin-top: 15px;">
+          Save Changes
+        </button>
+      </form>
 
     </div>
   </main>
@@ -86,21 +116,18 @@
   <script src="js/api.js"></script>
   <script src="js/student-profile.js"></script>
 
-  <!-- MENU TOGGLE + LOGOUT (same behavior as index) -->
   <script>
-    // Hamburger toggle
+    // Menu toggle
     document.getElementById("dot").addEventListener("click", () => {
-      const menu = document.getElementById("menu");
-      menu.classList.toggle("open");
+      document.getElementById("menu").classList.toggle("open");
     });
 
-    // Logout behavior
+    // Logout logic
     document.addEventListener("DOMContentLoaded", () => {
       const logoutBtn = document.getElementById("logout-btn-student");
       if (logoutBtn) {
         logoutBtn.addEventListener("click", (e) => {
           e.preventDefault();
-          // Clear whatever you use for student login
           localStorage.removeItem("studentData");
           localStorage.removeItem("loggedInUser");
           window.location.href = "index.html";
@@ -108,6 +135,6 @@
       }
     });
   </script>
+
 </body>
 </html>
-
