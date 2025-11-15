@@ -83,9 +83,40 @@ function renderEvents(eventArray) {
 
 // Load events from backend
 function loadEvents() {
+    const userData = localStorage.getItem('userData');
+    let currentOrganzerId = null;
+    
+    if (userData) {
+        try {
+            const user = JSON.parse(userData);
+            currentOrganzerId = user.id;
+        } catch (e) {
+            console.error('Error getting organizer ID:', e);
+        }
+    }
+    
     API.getEvents()
         .then(data => {
-            events = Array.isArray(data) ? data : [];
+            // Filter to show only events created by current organizer
+            const allEvents = Array.isArray(data) ? data : [];
+            events = allEvents.filter(event => {
+                // Show if organizer created it
+                if (event.organizer_id === currentOrganzerId) {
+                    return true;
+                }
+                // Show if same organization (when organization_id is available in events)
+                if (event.organization_id && userData) {
+                    try {
+                        const user = JSON.parse(userData);
+                        if (user.organization_id === event.organization_id) {
+                            return true;
+                        }
+                    } catch (e) {
+                        console.error('Error checking organization:', e);
+                    }
+                }
+                return false;
+            });
             renderEvents(events);
         })
         .catch(err => {

@@ -92,7 +92,35 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load all tickets and events for analytics
     Promise.all([API.getEvents(), API.getAllTickets()])
         .then(([events, allTickets]) => {
-            if (!events || events.length === 0) {
+            // Get the current organizer and organization info
+            const userData = localStorage.getItem('userData');
+            let currentOrganzerId = null;
+            let currentOrgId = null;
+            
+            if (userData) {
+                try {
+                    const user = JSON.parse(userData);
+                    currentOrganzerId = user.id;
+                    currentOrgId = user.organization_id;
+                } catch (e) {
+                    console.error('Error getting user info:', e);
+                }
+            }
+            
+            // Filter events to only show those created by current organizer or organization
+            const filteredEvents = events.filter(event => {
+                // Show if organizer created it
+                if (event.organizer_id === currentOrganzerId) {
+                    return true;
+                }
+                // Show if same organization
+                if (event.organization_id && currentOrgId && event.organization_id === currentOrgId) {
+                    return true;
+                }
+                return false;
+            });
+            
+            if (!filteredEvents || filteredEvents.length === 0) {
                 document.getElementById("analyticsContainer").innerHTML = "<p>No events found</p>";
                 return;
             }
@@ -109,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ticketsByEvent[eventId].push(ticket);
             });
 
-            events.forEach(event => {
+            filteredEvents.forEach(event => {
                 // Get real ticket data for this event
                 const eventTickets = ticketsByEvent[event.id] || [];
                 const registered = eventTickets.length;
