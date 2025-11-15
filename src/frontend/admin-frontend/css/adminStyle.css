@@ -597,23 +597,46 @@ main {
    ANALYTICS PAGE STYLING
    ========================================================= */
 
-/* Analytics side panel heading */
-.side-panel h2 {
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: 18px;
-    color: rgb(151, 9, 21);
+/* OUTER PANEL (left analytics panel) */
+.side-panel {
+    background: #ffffff;                     /* White card */
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);  /* Soft shadow - matches right side */
 }
 
-/* Analytics metric boxes */
+/* Title */
+.side-panel h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: rgb(151, 9, 21);                  /* Same red as your theme */
+    font-weight: 700;
+}
+
+/* SMALL ANALYTICS BOXES */
 .analytics-box {
-    background-color: #b6bda9;
-    padding: 16px;
-    border-radius: 10px;
-    margin-bottom: 15px;
+    background: #fce2e2;                     /* Softer light red */
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
     text-align: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    transition: 0.2s ease;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.05);   /* Same subtle shadow as other cards */
+}
+
+/* Headings inside small boxes */
+.analytics-box h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: rgb(151, 9, 21);                  /* Matching red */
+    font-weight: 700;
+}
+
+/* Number inside small boxes */
+.analytics-box p {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+    color: #333;
 }
 
 .analytics-box:hover {
@@ -621,19 +644,7 @@ main {
     transform: translateY(-2px);
 }
 
-.analytics-box h3 {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #ffffff;
-    margin-bottom: 6px;
-}
 
-.analytics-box p {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: #ffffff;
-    margin: 0;
-}
 
 /* Right panel title */
 .info-card h2 {
