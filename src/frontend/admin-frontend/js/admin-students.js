@@ -236,6 +236,22 @@ async function openEditStudentModal() {
         <label for="editProgram">Program:</label>
         <input type="text" id="editProgram" value="${studentData.program || ''}" />
 
+        <label>Assign Role:</label>
+        <div style="display: flex; gap: 15px; margin: 10px 0 20px 0; padding: 12px; background: #f5f5f5; border-radius: 6px;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin: 0;">
+            <input type="radio" name="editRole" value="student" ${studentData.role === 'student' ? 'checked' : ''} required />
+            <span style="font-weight: 500;">Student</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin: 0;">
+            <input type="radio" name="editRole" value="organizer" ${studentData.role === 'organizer' ? 'checked' : ''} required />
+            <span style="font-weight: 500;">Organizer</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin: 0;">
+            <input type="radio" name="editRole" value="admin" ${studentData.role === 'admin' ? 'checked' : ''} required />
+            <span style="font-weight: 500;">Admin</span>
+          </label>
+        </div>
+
         <div style="display: flex; gap: 10px; margin-top: 20px;">
           <button type="submit" class="btn-primary">Save Changes</button>
           <button type="button" class="btn-cancel">Cancel</button>
@@ -267,6 +283,9 @@ async function openEditStudentModal() {
       return;
     }
     
+    // Get selected role from radio buttons
+    const role = document.querySelector('input[name="editRole"]:checked').value;
+    
     // Use snake_case for backend API
     const updatedData = {
       username,
@@ -274,7 +293,8 @@ async function openEditStudentModal() {
       first_name: document.getElementById('editFirstName').value.trim(),
       last_name: document.getElementById('editLastName').value.trim(),
       student_id: document.getElementById('editStudentId').value.trim(),
-      program: document.getElementById('editProgram').value.trim()
+      program: document.getElementById('editProgram').value.trim(),
+      role: role
     };
 
     try {
