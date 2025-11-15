@@ -1,4 +1,4 @@
-name: Run Pytest & JSLint
+name: Run Pytest & ESLint
 
 on:
   push:
@@ -12,6 +12,7 @@ permissions:
 jobs:
 
   test:
+    name: Run Python Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -33,29 +34,38 @@ jobs:
         run: pytest
 
 
-  jslint:
-    name: Run JSLint on frontend
+  eslint:
+    name: Run ESLint on Frontend
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      security-events: write
+      actions: read 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node (used only for linting)
+      - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Install JSLint
-        run: npm install -g jslint
-
-      - name: Run JSLint on all frontend JS
+      - name: Install ESLint
         run: |
-          # Lint ALL JavaScript under /src/frontend/
-          jslint "src/frontend/**/*.js" > jslint_report.txt || true
+          npm install eslint@8.10.0
+          npm install @microsoft/eslint-formatter-sarif@3.1.0
 
-      - name: Upload JSLint Report
-        uses: actions/upload-artifact@v4
+      - name: Run ESLint
+        env:
+          SARIF_ESLINT_IGNORE_SUPPRESSED: "true"
+        run: |
+          npx eslint "src/frontend/**/*.{js,jsx,ts,tsx}" \
+            --config .eslintrc.js \
+            --format @microsoft/eslint-formatter-sarif \
+            --output-file eslint-results.sarif || true
+
+      - name: Upload ESLint Results
+        uses: github/codeql-action/upload-sarif@v3
         with:
-          name: jslint-report
-          path: jslint_report.txt
+          sarif_file: eslint-results.sarif
+          wait-for-processing: true
