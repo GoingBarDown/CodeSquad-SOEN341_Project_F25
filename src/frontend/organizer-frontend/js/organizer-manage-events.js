@@ -1,3 +1,5 @@
+/* global ADMIN_API */
+
 // === AUTHENTICATION CHECK ===
 function checkOrganizerAccess() {
     const userData = localStorage.getItem('userData');
