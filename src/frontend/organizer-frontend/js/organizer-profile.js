@@ -1,4 +1,5 @@
 // === AUTHENTICATION CHECK ===
+
 function checkOrganizerAccess() {
     const userData = localStorage.getItem('userData');
     
@@ -45,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 localStorage.removeItem('userData');
                 localStorage.removeItem('authToken');
-                localStorage.removeItem('selectedProfilePicture');
                 window.location.href = 'organizer-login.html';
             };
         } else {
@@ -56,217 +56,215 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Toggle dropdown
-document.getElementById('dot').addEventListener('click', () => {
-  document.getElementById('menu').classList.toggle('open');
-});
+document.addEventListener("DOMContentLoaded", () => {
 
-// Load user profile data and setup form
-document.addEventListener('DOMContentLoaded', async () => {
+    // Toggle dropdown
+    const dot = document.getElementById("dot");
+    const menu = document.getElementById("menu");
+
+    if (dot && menu) {
+        dot.addEventListener("click", () => {
+            menu.classList.toggle("open");
+        });
+    }
+
+    // Preview uploaded profile photo
+    const fileUpload = document.getElementById('fileUpload');
+    const profilePic = document.getElementById('profilePic');
+
+    if (fileUpload && profilePic) {
+        fileUpload.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    profilePic.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // Save form info
     const profileForm = document.getElementById('profileForm');
-    const organizationSelect = document.getElementById('organization');
 
-    // Check organization approval status first
-    const userData = localStorage.getItem('userData');
-    if (userData) {
-        try {
-            const user = JSON.parse(userData);
-            await checkOrgApprovalStatus(user);
-        } catch (e) {
-            console.error('Error checking approval status:', e);
-        }
-    }
-
-    // Load user profile
-    async function loadProfile() {
-        try {
-            const userData = localStorage.getItem('userData');
-            if (!userData) return;
-            
-            const user = JSON.parse(userData);
-            
-            // Fill form with user data from localStorage
-            document.getElementById('username').value = user.username || '';
-            document.getElementById('firstName').value = user.first_name || '';
-            document.getElementById('lastName').value = user.last_name || '';
-            document.getElementById('email').value = user.email || '';
-            document.getElementById('phone').value = user.phone || '';
-            document.getElementById('bio').value = user.bio || '';
-
-            // Load organizations and set selected one if exists
-            await loadOrganizations(user.organization_id);
-        } catch (error) {
-            console.error('Error loading profile:', error);
-        }
-    }
-
-    // Load organizations for dropdown
-    async function loadOrganizations(currentOrgId) {
-        try {
-            const response = await fetch('http://127.0.0.1:5000/organizations');
-            const orgs = await response.json();
-            
-            organizationSelect.innerHTML = '<option value="">No Organization</option>';
-            orgs.forEach(org => {
-                const option = document.createElement('option');
-                option.value = org.id;
-                option.textContent = org.title;
-                organizationSelect.appendChild(option);
-            });
-
-            // If user has an organization, select it
-            if (currentOrgId) {
-                organizationSelect.value = currentOrgId;
-            }
-        } catch (error) {
-            console.error('Error loading organizations:', error);
-        }
-    }
-
-    // Handle profile form submission
     if (profileForm) {
-        profileForm.addEventListener('submit', async (e) => {
+        profileForm.addEventListener('submit', (e) => {
             e.preventDefault();
-
-            const userData = localStorage.getItem('userData');
-            const user = JSON.parse(userData);
-            
-            const profileData = {
-                first_name: document.getElementById('firstName').value.trim(),
-                last_name: document.getElementById('lastName').value.trim(),
-                phone: document.getElementById('phone').value.trim(),
-                bio: document.getElementById('bio').value.trim()
-            };
-
-            try {
-                const response = await fetch(`http://127.0.0.1:5000/users/${user.id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(profileData)
-                });
-
-                const result = await response.json();
-                
-                if (response.ok) {
-                    // Update localStorage with new data
-                    user.first_name = profileData.first_name;
-                    user.last_name = profileData.last_name;
-                    user.phone = profileData.phone;
-                    user.bio = profileData.bio;
-                    localStorage.setItem('userData', JSON.stringify(user));
-                    
-                    alert('✅ Profile updated successfully!');
-                } else {
-                    throw new Error(result.error || result.message || 'Failed to update profile');
-                }
-            } catch (error) {
-                console.error('Error updating profile:', error);
-                alert(`❌ ${error.message || 'Failed to update profile'}`);
-            }
+            alert("✅ Profile updated successfully!");
         });
     }
 
-    // Initial load
-    loadProfile();
+    // The API integration remains commented out (as requested)
 });
 
-// Check organization approval status
-async function checkOrgApprovalStatus(user) {
-    try {
-        // Get all organization members
-        const membersResponse = await fetch('http://127.0.0.1:5000/organization_members', {
-            headers: { 'Content-Type': 'application/json' }
-        });
-        
-        if (!membersResponse.ok) {
-            console.error('Failed to fetch organization members');
-            return;
-        }
-        
-        const members = await membersResponse.json();
-        const userOrgMember = members.find(m => m.user_id === user.id);
-        
-        if (!userOrgMember) {
-            console.error('User not found in organization members');
-            return;
-        }
-        
-        // Get the organization details
-        const orgResponse = await fetch(`http://127.0.0.1:5000/organizations/${userOrgMember.organization_id}`, {
-            headers: { 'Content-Type': 'application/json' }
-        });
-        
-        if (!orgResponse.ok) {
-            console.error('Failed to fetch organization');
-            return;
-        }
-        
-        const org = await orgResponse.json();
-        
-        // Check if organization is NOT approved
-        if (org.status && org.status !== 'approved') {
-            showApprovalDialog(org);
-        }
-    } catch (err) {
-        console.error('Error checking organization approval status:', err);
-    }
-}
+// !!!! changes below need to wait until organizer profile API is ready
+// document.addEventListener('DOMContentLoaded', async () => {
+//     const profileForm = document.getElementById('profileForm');
+//     const organizationForm = document.getElementById('organizationForm');
+//     const createOrgBtn = document.getElementById('createOrgBtn');
+//     const orgModal = document.getElementById('orgModal');
+//     const organizationSelect = document.getElementById('organization');
+//     const fileUpload = document.getElementById('fileUpload');
 
-// Show approval pending or denied dialog
-function showApprovalDialog(org) {
-    const modal = document.createElement('div');
-    modal.classList.add('approval-modal-overlay');
-    
-    let title, icon, message, info, isDenied = false;
-    
-    if (org.status === 'denied') {
-        title = 'Account Denied';
-        icon = '❌';
-        message = 'Your account was denied. Contact customer support for assistance.';
-        info = '';
-        isDenied = true;
-    } else {
-        title = 'Account Pending Approval';
-        icon = '⏳';
-        message = `Your account has been created, but your organization <strong>"${org.title}"</strong> is pending approval by an administrator.`;
-        info = 'In the meantime, you can view events, but you won\'t be able to create or edit events until your organization is approved.';
-    }
-    
-    modal.innerHTML = `
-        <div class="approval-modal-content">
-            <div class="approval-modal-icon">${icon}</div>
-            <h2>${title}</h2>
-            <p class="approval-message">
-                ${message}
-            </p>
-            ${info ? `<p class="approval-info">${info}</p>` : ''}
-            ${isDenied ? '<button class="approval-btn-ok" onclick="logoutDeniedUser()">OK</button>' : '<button class="approval-btn-ok">OK</button>'}
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    
-    // If denied, disable all page content and make modal non-dismissible
-    if (isDenied) {
-        const pageContent = document.querySelector('main') || document.querySelector('.dashboard-container');
-        if (pageContent) {
-            pageContent.style.display = 'none';
-        }
-        modal.style.pointerEvents = 'auto';
-        modal.querySelector('.approval-btn-ok').addEventListener('click', logoutDeniedUser);
-    } else {
-        modal.querySelector('.approval-btn-ok').addEventListener('click', () => {
-            modal.remove();
-        });
-    }
-}
+//     // Load user profile
+//     async function loadProfile() {
+//         try {
+//             const response = await API.getProfile();
+//             if (response.success) {
+//                 // Fill form with profile data
+//                 document.getElementById('displayName').value = response.data.display_name || '';
+//                 document.getElementById('email').value = response.data.email || '';
+//                 document.getElementById('phone').value = response.data.phone || '';
+//                 document.getElementById('bio').value = response.data.bio || '';
 
-// Logout denied user
-function logoutDeniedUser() {
-    localStorage.removeItem('userData');
-    localStorage.removeItem('authToken');
-    alert('Your account access has been denied. Please contact customer support.');
-    window.location.href = 'organizer-login.html';
-}
+//                 // Update profile picture if exists
+//                 if (response.data.profile_picture) {
+//                     document.getElementById('profilePic').src = response.data.profile_picture;
+//                 }
+
+//                 // Load organizations and set selected one if exists
+//                 await loadOrganizations();
+//             }
+//         } catch (error) {
+//             console.error('Error loading profile:', error);
+//             alert('❌ Failed to load profile data');
+//         }
+//     }
+
+//     // Load organizations for dropdown
+//     async function loadOrganizations() {
+//         try {
+//             const response = await API.getOrganizations();
+//             if (response.success) {
+//                 organizationSelect.innerHTML = '<option value="">Select or create an organization</option>';
+//                 response.data.forEach(org => {
+//                     const option = document.createElement('option');
+//                     option.value = org.id;
+//                     option.textContent = org.title;
+//                     organizationSelect.appendChild(option);
+//                 });
+
+//                 // If user has an organization, select it
+//                 if (response.userOrganizationId) {
+//                     organizationSelect.value = response.userOrganizationId;
+//                 }
+//             }
+//         } catch (error) {
+//             console.error('Error loading organizations:', error);
+//             alert('❌ Failed to load organizations');
+//         }
+//     }
+
+//     // Handle profile picture upload
+//     if (fileUpload) {
+//         fileUpload.addEventListener('change', async (e) => {
+//             const file = e.target.files[0];
+//             if (file) {
+//                 const maxSize = 5 * 1024 * 1024; // 5MB
+//                 if (file.size > maxSize) {
+//                     alert('❌ File size must be less than 5MB');
+//                     return;
+//                 }
+
+//                 try {
+//                     // Show preview
+//                     const reader = new FileReader();
+//                     reader.onload = (e) => {
+//                         document.getElementById('profilePic').src = e.target.result;
+//                     };
+//                     reader.readAsDataURL(file);
+
+//                     // Upload file
+//                     const formData = new FormData();
+//                     formData.append('profile_picture', file);
+//                     const response = await API.uploadProfilePicture(formData);
+                    
+//                     if (!response.success) {
+//                         throw new Error(response.message || 'Upload failed');
+//                     }
+//                 } catch (error) {
+//                     console.error('Upload error:', error);
+//                     alert(`❌ ${error.message || 'Failed to upload profile picture'}`);
+//                 }
+//             }
+//         });
+//     }
+
+//     // Handle profile form submission
+//     if (profileForm) {
+//         profileForm.addEventListener('submit', async (e) => {
+//             e.preventDefault();
+
+//             const profileData = {
+//                 display_name: document.getElementById('displayName').value.trim(),
+//                 phone: document.getElementById('phone').value.trim(),
+//                 bio: document.getElementById('bio').value.trim(),
+//                 organization_id: document.getElementById('organization').value || null
+//             };
+
+//             try {
+//                 const response = await API.updateProfile(profileData);
+//                 if (response.success) {
+//                     alert('✅ Profile updated successfully!');
+//                 } else {
+//                     throw new Error(response.message || 'Failed to update profile');
+//                 }
+//             } catch (error) {
+//                 console.error('Error updating profile:', error);
+//                 alert(`❌ ${error.message || 'Failed to update profile'}`);
+//             }
+//         });
+//     }
+
+//     // Handle organization creation
+//     if (organizationForm) {
+//         organizationForm.addEventListener('submit', async (e) => {
+//             e.preventDefault();
+
+//             const orgData = {
+//                 title: document.getElementById('orgTitle').value.trim(),
+//                 description: document.getElementById('orgDescription').value.trim()
+//             };
+
+//             try {
+//                 const response = await API.createOrganization(orgData);
+//                 if (response.success) {
+//                     alert('✅ Organization created successfully!');
+//                     closeOrgModal();
+//                     await loadOrganizations();
+//                     organizationSelect.value = response.data.id;
+//                 } else {
+//                     throw new Error(response.message || 'Failed to create organization');
+//                 }
+//             } catch (error) {
+//                 console.error('Error creating organization:', error);
+//                 alert(`❌ ${error.message || 'Failed to create organization'}`);
+//             }
+//         });
+//     }
+
+//     // Modal controls
+//     if (createOrgBtn) {
+//         createOrgBtn.addEventListener('click', () => {
+//             orgModal.style.display = 'block';
+//         });
+//     }
+
+//     window.closeOrgModal = () => {
+//         if (orgModal) {
+//             orgModal.style.display = 'none';
+//             organizationForm.reset();
+//         }
+//     };
+
+//     // Close modal if clicking outside
+//     window.addEventListener('click', (e) => {
+//         if (e.target === orgModal) {
+//             closeOrgModal();
+//         }
+//     });
+
+//     // Initial load
+//     loadProfile();
+// });
