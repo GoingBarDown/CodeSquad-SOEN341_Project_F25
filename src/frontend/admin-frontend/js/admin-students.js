@@ -133,9 +133,10 @@ function showStudentDetails(student) {
   currentStudent = student;
 
   // Update existing info card fields with actual backend data
-  document.getElementById('info-firstname').textContent = student.firstName || student.username || '—';
-  document.getElementById('info-lastname').textContent = student.lastName || student.id || '—';
-  document.getElementById('info-studentid').textContent = student.studentId || student.id || '—';
+  // Backend returns snake_case, so use correct field names
+  document.getElementById('info-firstname').textContent = student.first_name || student.username || '—';
+  document.getElementById('info-lastname').textContent = student.last_name || '—';
+  document.getElementById('info-studentid').textContent = student.student_id || student.id || '—';
   document.getElementById('info-email').textContent = student.email || '—';
   document.getElementById('info-program').textContent = student.program || 'N/A';
   document.getElementById('info-events').textContent = 'N/A';
@@ -195,35 +196,45 @@ async function deleteCurrentStudent() {
   }
 }
 
-function openEditStudentModal() {
+async function openEditStudentModal() {
   if (!currentStudent) {
     alert('Please select a student first');
     return;
+  }
+
+  // Fetch fresh student data from backend
+  let studentData = currentStudent;
+  try {
+    studentData = await ADMIN_API.getUserById(currentStudent.id);
+    console.log('Fetched fresh student data:', studentData);
+  } catch (error) {
+    console.error('Error fetching student data:', error);
+    // Continue with currentStudent data if fetch fails
   }
 
   const modal = document.createElement('div');
   modal.classList.add('modal-overlay');
   modal.innerHTML = `
     <div class="modal-content">
-      <h2>Edit Student: ${currentStudent.username}</h2>
+      <h2>Edit Student: ${studentData.username}</h2>
       <form id="editStudentForm">
         <label for="editUsername">Username:</label>
-        <input type="text" id="editUsername" value="${currentStudent.username || ''}" required />
+        <input type="text" id="editUsername" value="${studentData.username || ''}" required />
 
         <label for="editEmail">Email:</label>
-        <input type="email" id="editEmail" value="${currentStudent.email || ''}" required />
+        <input type="email" id="editEmail" value="${studentData.email || ''}" required />
 
         <label for="editFirstName">First Name:</label>
-        <input type="text" id="editFirstName" value="${currentStudent.firstName || ''}" />
+        <input type="text" id="editFirstName" value="${studentData.first_name || ''}" />
 
         <label for="editLastName">Last Name:</label>
-        <input type="text" id="editLastName" value="${currentStudent.lastName || ''}" />
+        <input type="text" id="editLastName" value="${studentData.last_name || ''}" />
 
         <label for="editStudentId">Student ID:</label>
-        <input type="text" id="editStudentId" value="${currentStudent.studentId || ''}" />
+        <input type="text" id="editStudentId" value="${studentData.student_id || ''}" />
 
         <label for="editProgram">Program:</label>
-        <input type="text" id="editProgram" value="${currentStudent.program || ''}" />
+        <input type="text" id="editProgram" value="${studentData.program || ''}" />
 
         <div style="display: flex; gap: 10px; margin-top: 20px;">
           <button type="submit" class="btn-primary">Save Changes</button>
@@ -256,17 +267,18 @@ function openEditStudentModal() {
       return;
     }
     
+    // Use snake_case for backend API
     const updatedData = {
       username,
       email,
-      firstName: document.getElementById('editFirstName').value.trim(),
-      lastName: document.getElementById('editLastName').value.trim(),
-      studentId: document.getElementById('editStudentId').value.trim(),
+      first_name: document.getElementById('editFirstName').value.trim(),
+      last_name: document.getElementById('editLastName').value.trim(),
+      student_id: document.getElementById('editStudentId').value.trim(),
       program: document.getElementById('editProgram').value.trim()
     };
 
     try {
-      // Update user with available fields
+      // Update user with correct field names
       const response = await fetch(`${ADMIN_API.baseUrl}/users/${currentStudent.id}`, {
         method: 'PUT',
         headers: ADMIN_API.getHeaders(),
@@ -278,13 +290,17 @@ function openEditStudentModal() {
         throw new Error(data.error || 'Failed to update student');
       }
       
+      const result = await response.json();
       alert('✅ Student updated successfully!');
       
-      // Update local data
-      currentStudent = { ...currentStudent, ...updatedData };
+      // Update local data with the response data
+      currentStudent = result.data || result || { ...currentStudent, ...updatedData };
       showStudentDetails(currentStudent);
       
       modal.remove();
+      
+      // Refresh the student list to reflect any changes
+      applyStudentFilters();
     } catch (error) {
       console.error('Error updating student:', error);
       alert(`❌ Failed to update student: ${error.message}`);
