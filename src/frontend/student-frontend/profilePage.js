@@ -1,6 +1,5 @@
-// Menu handling is centralized in index.js; avoid duplicate handlers here to
-// prevent conflicts on profilePage.html. index.js attaches the toggle and
-// outside-click behavior at DOMContentLoaded.
+// Profile Page – fully merged & correct version
+// ---------------------------------------------
 
 const API_BASE = 'http://127.0.0.1:5000';
 
@@ -12,78 +11,62 @@ function getCookie(name) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+
+  // 🔒 LOGIN PROTECTION
+  const userId = getCookie('userId') || localStorage.getItem('userId');
+  if (!userId) {
+    window.location.href = 'login.html';
+    return;
+  }
+
+  // Make sure homepage displays correct menu
+  localStorage.setItem("role", "student");
+  localStorage.setItem("loggedInUser", "student");
+
   try {
-    // helper to parse JSON safely
+    // helper to parse json safely
     async function safeJson(res) {
-      try {
-        return await res.json();
-      } catch (e) {
-        const text = await res.text().catch(() => '<unreadable>');
-        console.warn('Response not JSON:', text);
-        return null;
-      }
+      try { return await res.json(); }
+      catch { return null; }
     }
 
-    // Primary approach: use the userId cookie that the login page sets.
-    // The backend exposes GET /users/<id> which returns the user object.
-    const userId = getCookie('userId') || localStorage.getItem('userId');
-    if (!userId) {
-      console.warn('No userId found in cookie/localStorage; cannot load profile. Redirecting to login.');
-      window.location.href = 'login.html';
-      return;
-    }
+    // primary fetch
+    let res = await fetch(`${API_BASE}/users/${encodeURIComponent(userId)}`);
 
-  // NOTE: removed credentials: 'include' to avoid requiring backend CORS credential support.
-  // If your server requires cookies for auth, either serve the frontend from same origin
-  // or ask backend team to enable Access-Control-Allow-Credentials.
-  let res = await fetch(`${API_BASE}/users/${encodeURIComponent(userId)}`);
-    console.debug(`/users/${userId}`, res.status);
-
-    // If unauthorized -> redirect to login
     if (res.status === 401) {
-      console.warn('Not authenticated (401). Redirecting to login.');
       window.location.href = 'login.html';
       return;
     }
 
-    // If not OK, try legacy endpoint /api/student/me as a fallback
+    // fallback
     if (!res.ok) {
-      console.warn(`/users/${userId} returned ${res.status} — trying /api/student/me fallback`);
-  // Try fallback endpoint without credentials
-  res = await fetch(`${API_BASE}/api/student/me`);
-      console.debug('/api/student/me', res.status);
-      if (!res.ok) {
-        throw new Error(`Failed to fetch profile (tried /users/${userId} and /api/student/me): ${res.status}`);
-      }
+      res = await fetch(`${API_BASE}/api/student/me`);
+      if (!res.ok) throw new Error("Unable to fetch student profile.");
     }
 
     const student = await safeJson(res);
-    if (!student) {
-      console.error('No student data received from server');
-      return;
-    }
+    if (!student) return;
 
-    // Normalize fields from backend user model
-  // Backend user.data fields (from db/models.User.data):
-  // id, username, email, role, first_name, last_name, student_id, program
-  const displayName = (student.first_name || student.username || `${student.first_name || ''} ${student.last_name || ''}`.trim() || 'N/A');
-  const email = student.email || 'N/A';
-  const studentId = (student.student_id != null && student.student_id !== '') ? student.student_id : (student.id || 'N/A');
-  const program = student.program || 'N/A';
+    // backend normalization
+    const first = student.first_name || "";
+    const last = student.last_name || "";
+    const email = student.email || "";
+    const studentId = student.student_id || student.id || "";
+    const program = student.program || "";
+    const phone = student.phone || "";
+    const bio = student.bio || "";
 
-    const nameEl = document.getElementById('student-name');
-    const emailEl = document.getElementById('student-email');
-    const pwdEl = document.getElementById('student-password');
-    const idEl = document.getElementById('student-id');
-    const programEl = document.getElementById('student-program');
-
-    if (nameEl) nameEl.textContent = displayName;
-    if (emailEl) emailEl.textContent = email;
-    if (pwdEl) pwdEl.textContent = '********'; // never show raw password
-    if (idEl) idEl.textContent = studentId;
-    if (programEl) programEl.textContent = program;
+    // fill input fields
+    document.getElementById("firstName").value = first;
+    document.getElementById("lastName").value = last;
+    document.getElementById("email").value = email;
+    document.getElementById("studentId").value = studentId;
+    document.getElementById("program").value = program;
+    document.getElementById("phone").value = phone;
+    document.getElementById("bio").value = bio;
 
   } catch (error) {
-    console.error('Error loading student profile:', error);
+    console.error("Error loading student profile:", error);
   }
 });
+
