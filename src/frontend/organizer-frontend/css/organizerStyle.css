@@ -1,19 +1,4 @@
 /* =========================================================
-   ORGANIZER STYLE SHEET
-   CampusConnect / Event Management Portal
-   ---------------------------------------------------------
-   Combines:
-   - Dashboard (Events, Filters, Cards)
-   - Organizer Portal (Login, Signup, Forgot Password)
-   - Profile Page Additions (from organizer-profile.css)
-   ---------------------------------------------------------
-   Color Scheme:
-   Maroon (#912338), Cream (#E9D3D7), White, Gray
-   Typography: Sans-serif + "Poller One" for headers
-   ========================================================= */
-
-
-/* =========================================================
    1. GLOBAL RESET & BASE STYLES
    ========================================================= */
 * {
@@ -39,86 +24,6 @@ font-family: 'Inter', sans-serif;
     padding: 0;
 }
 
-
-/* =========================================================
-   2. HEADER & MENU (Top Navigation)
-   ========================================================= */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: var(--primary-color);
-  color: white;
-  padding: 12px 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  /* font-family: "Poller One", sans-serif; */
-  font-weight: normal;
-  font-size: initial;
-  font-style: normal;
-}
-
-header h1 {
-  margin: 0;
-  font-size: 1.3rem;
-  font-weight: normal;
-}
-
-/* Menu toggle button */
-#dot {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--primary-color);
-  cursor: pointer;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: 50%;
-  /* line-height: 1; */
-  color: white;
-  transition: background 0.3s;
-}
-
-#dot:hover {
-  background: var(--primary-hover);
-}
-
-#menu {
-  background: var(--cream-bg);
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.3s ease;
-}
-
-#menu.open {
-  max-height: 200px;
-}
-
-#menu nav a {
-  display: block;
-  padding: 12px;
-  color: var(--text-dark);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-#menu nav a.active,
-#menu nav a:hover {
-  background: #912338;
-  color: white;
-}
-
-#menu nav a {
-    color: var(--primary-color);
-    padding: 12px 20px;
-}
-#menu nav a:hover,
-#menu nav a.active {
-    background: var(--cream-bg);
-    color: var(--primary-color);
-}
 
 /* =========================================================
    3. SUB-BAR (Optional Secondary Header)
@@ -1772,4 +1677,3 @@ button {
     padding: 20px;
   }
 }
-
