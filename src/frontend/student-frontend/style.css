@@ -52,35 +52,43 @@ header {
   right: 20px;
 }
 
-/* MENU DROPDOWN */
+/* ---------------------------
+   VERTICAL DROPDOWN MENU
+--------------------------- */
 #menu {
   position: absolute;
   top: 65px;
   right: 20px;
+  width: 180px;                 /* menu width */
   background-color: #f9f6f1;
   border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
   overflow: hidden;
-  max-height: 0;
-  width: 180px;
-  transition: all 0.3s ease;
+  max-height: 0;                 /* hidden by default */
   opacity: 0;
   transform: translateY(-10px);
+  transition: all 0.3s ease;
   z-index: 1000;
+
+  display: flex;                 /* stack navs vertically */
+  flex-direction: column;
 }
 
 #menu.open {
-  max-height: 300px;
+  max-height: 500px;             /* large enough for all links */
   opacity: 1;
   transform: translateY(0);
 }
 
 #menu nav {
-  display: flex;
+  display: flex;                 /* stack links vertically */
   flex-direction: column;
+  width: 100%;
 }
 
 #menu nav a {
+  display: block;                /* full width links */
+  width: 100%;
   text-decoration: none;
   color: var(--text-dark);
   font-family: "Arial", sans-serif;
@@ -99,6 +107,7 @@ header {
   outline: 2px solid #ffb300;
   outline-offset: 2px;
 }
+
 
 /* -------------------------------------------------
    HIGHLIGHTS & SLIDESHOW
