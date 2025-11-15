@@ -1,3 +1,36 @@
+// === AUTHENTICATION CHECK ===
+function checkOrganizerAccess() {
+    const userData = localStorage.getItem('userData');
+    
+    if (!userData) {
+        alert('❌ Please login first');
+        window.location.href = 'organizer-login.html';
+        return false;
+    }
+    
+    try {
+        const user = JSON.parse(userData);
+        
+        if (user.role !== 'organizer') {
+            alert('❌ You do not have permission to access this page. Only organizers can access this area.');
+            window.location.href = '../student-frontend/index.html';
+            return false;
+        }
+        
+        return true;
+    } catch (e) {
+        console.error('Error checking organizer access:', e);
+        localStorage.clear();
+        window.location.href = 'organizer-login.html';
+        return false;
+    }
+}
+
+// Check access before loading page
+if (!checkOrganizerAccess()) {
+    throw new Error('Access denied');
+}
+
 // Handle login/logout button in menu
 document.addEventListener('DOMContentLoaded', () => {
     const loginLink = document.querySelector('a[href="organizer-login.html"]');
@@ -18,6 +51,16 @@ document.addEventListener('DOMContentLoaded', () => {
             // User is not logged in, show LOGIN
             loginLink.textContent = 'Login';
             loginLink.href = 'organizer-login.html';
+        }
+    }
+
+    // Check organization approval status and show dialog if needed
+    if (userData) {
+        try {
+            const user = JSON.parse(userData);
+            checkOrgApprovalStatus(user);
+        } catch (e) {
+            console.error('Error checking approval status:', e);
         }
     }
 
@@ -59,7 +102,35 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load all tickets and events for analytics
     Promise.all([API.getEvents(), API.getAllTickets()])
         .then(([events, allTickets]) => {
-            if (!events || events.length === 0) {
+            // Get the current organizer and organization info
+            const userData = localStorage.getItem('userData');
+            let currentOrganzerId = null;
+            let currentOrgId = null;
+            
+            if (userData) {
+                try {
+                    const user = JSON.parse(userData);
+                    currentOrganzerId = user.id;
+                    currentOrgId = user.organization_id;
+                } catch (e) {
+                    console.error('Error getting user info:', e);
+                }
+            }
+            
+            // Filter events to only show those created by current organizer or organization
+            const filteredEvents = events.filter(event => {
+                // Show if organizer created it
+                if (event.organizer_id === currentOrganzerId) {
+                    return true;
+                }
+                // Show if same organization
+                if (event.organization_id && currentOrgId && event.organization_id === currentOrgId) {
+                    return true;
+                }
+                return false;
+            });
+            
+            if (!filteredEvents || filteredEvents.length === 0) {
                 document.getElementById("analyticsContainer").innerHTML = "<p>No events found</p>";
                 return;
             }
@@ -76,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ticketsByEvent[eventId].push(ticket);
             });
 
-            events.forEach(event => {
+            filteredEvents.forEach(event => {
                 // Get real ticket data for this event
                 const eventTickets = ticketsByEvent[event.id] || [];
                 const registered = eventTickets.length;
@@ -88,9 +159,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.className = "card";
                 card.setAttribute('data-event-id', event.id); //add event ID to the card
 
+                // Determine status display
+                const status = event.status || 'draft';
+                const statusDisplay = status.charAt(0).toUpperCase() + status.slice(1);
+                const statusClass = `status-${status.toLowerCase()}`;
+
                 // Add unique IDs to the stat spans
                 card.innerHTML = `
                     <h3>${event.title}</h3>
+                    <span class="event-status ${statusClass}">${statusDisplay}</span>
                     <p class="stat"><b><span id="stat-registered-${event.id}">${registered}</span> / ${event.capacity}</b><br>
                     <small>Registered Participants</small></p>
                     <p><b>Attendance Rate:</b> <span id="stat-rate-${event.id}">${attendanceRate}</span>%</p>
@@ -221,3 +298,102 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("QR Scanner not available:", err);
     }
 });
+
+// Check organization approval status
+async function checkOrgApprovalStatus(user) {
+    try {
+        // Get all organization members
+        const membersResponse = await fetch('http://127.0.0.1:5000/organization_members', {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (!membersResponse.ok) {
+            console.error('Failed to fetch organization members');
+            return;
+        }
+        
+        const members = await membersResponse.json();
+        const userOrgMember = members.find(m => m.user_id === user.id);
+        
+        if (!userOrgMember) {
+            console.error('User not found in organization members');
+            return;
+        }
+        
+        // Get the organization details
+        const orgResponse = await fetch(`http://127.0.0.1:5000/organizations/${userOrgMember.organization_id}`, {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (!orgResponse.ok) {
+            console.error('Failed to fetch organization');
+            return;
+        }
+        
+        const org = await orgResponse.json();
+        
+        // Check if organization is NOT approved
+        if (org.status && org.status !== 'approved') {
+            showApprovalDialog(org);
+        }
+    } catch (err) {
+        console.error('Error checking organization approval status:', err);
+    }
+}
+
+// Show approval pending or denied dialog
+function showApprovalDialog(org) {
+    const modal = document.createElement('div');
+    modal.classList.add('approval-modal-overlay');
+    
+    let title, icon, message, info, isDenied = false;
+    
+    if (org.status === 'denied') {
+        title = 'Account Denied';
+        icon = '❌';
+        message = 'Your account was denied. Contact customer support for assistance.';
+        info = '';
+        isDenied = true;
+    } else {
+        title = 'Account Pending Approval';
+        icon = '⏳';
+        message = `Your account has been created, but your organization <strong>"${org.title}"</strong> is pending approval by an administrator.`;
+        info = 'In the meantime, you can view events, but you won\'t be able to create or edit events until your organization is approved.';
+    }
+    
+    modal.innerHTML = `
+        <div class="approval-modal-content">
+            <div class="approval-modal-icon">${icon}</div>
+            <h2>${title}</h2>
+            <p class="approval-message">
+                ${message}
+            </p>
+            ${info ? `<p class="approval-info">${info}</p>` : ''}
+            ${isDenied ? '<button class="approval-btn-ok" onclick="logoutDeniedUser()">OK</button>' : '<button class="approval-btn-ok">OK</button>'}
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // If denied, disable all page content and make modal non-dismissible
+    if (isDenied) {
+        const pageContent = document.querySelector('main') || document.querySelector('.dashboard-container');
+        if (pageContent) {
+            pageContent.style.display = 'none';
+        }
+        modal.style.pointerEvents = 'auto';
+        modal.querySelector('.approval-btn-ok').addEventListener('click', logoutDeniedUser);
+    } else {
+        modal.querySelector('.approval-btn-ok').addEventListener('click', () => {
+            modal.remove();
+        });
+    }
+}
+
+// Logout denied user
+function logoutDeniedUser() {
+    localStorage.removeItem('userData');
+    localStorage.removeItem('authToken');
+    alert('Your account access has been denied. Please contact customer support.');
+    window.location.href = 'organizer-login.html';
+}

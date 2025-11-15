@@ -44,6 +44,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      // Use the studentId in the API URL
+      const response = await fetch(`http://127.0.0.1:5000/api/student/${studentId}/tickets-with-details`);
+      
       if (!response.ok) {
         throw new Error(`Failed to fetch tickets: ${response.statusText}`);
       }
@@ -67,16 +70,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const rawEventDate = ticket.event_date || ticket.eventDate || ticket.event_date || ticket.eventDateRaw || ticket.event_date_raw;
         // Format the date for display
         const eventDate = new Date(rawEventDate).toLocaleDateString(undefined, {
+       const eventDate = ticket.event_date ? new Date(ticket.event_date).toLocaleDateString(undefined, {
           year: 'numeric',
           month: 'long',
           day: 'numeric'
-        });
+        }) : 'Date TBD';
 
         // Use data-attributes to store all ticket info on the button
         card.innerHTML = `
           <div>
             <h3>${ticket.event_title}</h3>
             <p>${eventDate}</p>
+            
+            <div class="countdown-timer" id="countdown-${ticket.ticket_id}">
+              Loading countdown...
+            </div>
           </div>
           <button class="view-ticket-btn" 
             data-title="${ticket.event_title}"
@@ -84,10 +92,24 @@ document.addEventListener("DOMContentLoaded", () => {
             data-location="${ticket.event_location}"
             data-ticket-id="${ticket.ticket_id || ticket.ticketId || ticket.id}"
             data-status="${ticket.ticket_status || ticket.status}">
+            data-date="${ticket.event_date || ''}"
+            data-location="${ticket.event_location || 'N/A'}"
+            data-ticket-id="${ticket.ticket_id}"
+            data-status="${ticket.ticket_status}">
             View Ticket
           </button>
         `;
         gridContainer.appendChild(card);
+        //Find the new element and start it timer
+        const countdownElement = document.getElementById(`countdown-${ticket.ticket_id}`);
+        if (countdownElement && ticket.event_date) {
+            // Call our new countdown function
+            startCountdown(countdownElement, ticket.event_date);
+        } else if (countdownElement) {
+            // Handle cases where there's no date
+            countdownElement.innerHTML = "Event date not set.";
+            countdownElement.classList.add("expired");
+        }
       });
 
       // If the page was opened with a highlightTicket query param, try to auto-open it
@@ -118,9 +140,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /**
-   * Opens the modal and populates it with data from the clicked button.
-   */
+  
+   // Opens the modal and populates it with data from the clicked button.
+   
   function openTicketModal(event) {
     const button = event.currentTarget;
     const data = button.dataset;
@@ -128,9 +150,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // 1. Populate the modal with data
   modalEventTitle.textContent = data.title;
   modalEventDate.textContent = new Date(data.date).toLocaleString(undefined, {
+    // 1. Populate the modal with data
+    modalEventTitle.textContent = data.title;
+    const eventDateStr = data.date ? new Date(data.date).toLocaleString(undefined, {
         dateStyle: 'full',
         timeStyle: 'short',
-    });
+    }) : 'Date TBD';
+    modalEventDate.textContent = eventDateStr;
     modalEventLocation.textContent = data.location || 'N/A';
   // Normalize ticket id field names in dataset (dataset keys are lowercase)
   const ticketId = data.ticketId || data.ticketid || data.ticket || data['ticket-id'] || data['ticket-id'];
@@ -168,6 +194,11 @@ document.addEventListener("DOMContentLoaded", () => {
         modalQrImg.parentNode.replaceChild(canvas, modalQrImg);
       }
     };
+    modalTicketId.textContent = data.ticketId;
+    modalTicketStatus.textContent = data.status;
+    
+    // 2. Set the QR code image source
+    modalQrImg.src = `http://127.0.0.1:5000/tickets/${data.ticketId}/qr`;
     
     // 3. Show the modal
     modalOverlay.classList.add('visible');
@@ -179,6 +210,37 @@ document.addEventListener("DOMContentLoaded", () => {
     modalOverlay.classList.remove('visible');
   }
 
+  /**
+   * Starts a countdown timer for a specific element.
+   * @param {HTMLElement} element - The div to update.
+   * @param {string} eventDateString - The ISO date string from the backend.
+   */
+
+  function startCountdown(element, eventDateString) {
+    const eventTime = new Date(eventDateString).getTime();
+
+    // Update the countdown every second
+    const interval = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = eventTime - now;
+
+        // Time calculations
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Display the result
+        if (distance > 0) {
+            element.innerHTML = `Starts in: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+        } else {
+            // Event has passed
+            clearInterval(interval);
+            element.innerHTML = "This event has already passed.";
+            element.classList.add("expired"); // This will make it gray
+        }
+    }, 1000);
+  }
   // Main Execution 
   
   // Add listeners to close the modal

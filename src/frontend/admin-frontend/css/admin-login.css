@@ -44,82 +44,78 @@ font-family: 'Inter', sans-serif;
    2. HEADER & MENU (Top Navigation)
    ========================================================= */
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: var(--primary-color);
-  color: white;
-  padding: 12px 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  /* font-family: "Poller One", sans-serif; */
-  font-weight: normal;
-  font-size: initial;
-  font-style: normal;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: rgb(151, 9, 21);
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: white;
+    letter-spacing: 0.5px;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 1.3rem;
-  font-weight: normal;
-}
-
-/* Menu toggle button */
 #dot {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--primary-color);
+  background: none;           /* remove white circle */
+  border: none;               /* no outline */
+  color: white;               /* white lines */
+  font-size: 22px;            /* smaller like student site */
   cursor: pointer;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: 50%;
-  /* line-height: 1; */
-  color: white;
-  transition: background 0.3s;
+  position: absolute;
+  right: 20px;
+  top: 10px;
 }
 
-#dot:hover {
-  background: var(--primary-hover);
-}
 
+/* MENU DROPDOWN */
 #menu {
-  background: var(--cream-bg);
+  position: absolute;
+  top: 65px;
+  right: 20px;
+  background-color: #f9f6f1;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   max-height: 0;
-  transition: max-height 0.3s ease;
+  width: 180px;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+  z-index: 1000;
 }
 
 #menu.open {
-  max-height: 200px;
+  max-height: 300px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#menu nav {
+  display: flex;
+  flex-direction: column;
 }
 
 #menu nav a {
-  display: block;
-  padding: 12px;
-  color: var(--text-dark);
   text-decoration: none;
-  font-weight: 500;
+  color: var(--text-dark);
+  font-family: "Arial", sans-serif;
+  font-size: 15px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #ececec;
+  transition: background 0.2s ease;
 }
 
-#menu nav a.active,
 #menu nav a:hover {
-  background: #912338;
-  color: white;
+  background-color: transparent !important;
+  color: inherit !important;
+  cursor: default;
 }
 
-#menu nav a {
-    color: var(--primary-color);
-    padding: 12px 20px;
+#menu nav a:focus {
+  outline: 2px solid #ffb300;
+  outline-offset: 2px;
 }
-#menu nav a:hover,
-#menu nav a.active {
-    background: var(--cream-bg);
-    color: var(--primary-color);
-}
-
 /* =========================================================
    3. SUB-BAR (Optional Secondary Header)
    ========================================================= */
@@ -158,11 +154,6 @@ header h1 {
   }
 
 #subbar button:hover {
-  background-color: #a6223d;
-  transform: translateY(-2px);
-}
-
-#subbar a:hover {
   background-color: #a6223d;
   transform: translateY(-2px);
 }
@@ -1030,19 +1021,7 @@ header h1 {
   font-size: 1.4rem;
 }
 
-#dot {
-  background: white;
-  color: var(--primary);
-  border: none;
-  font-size: 1.4rem;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
+
 
 .sub-header {
   background: #e9d3d7;
@@ -1176,600 +1155,3 @@ button {
     width: 100%;
   }
 }
-/* === NAVBAR DROPDOWN FIX (CampusConnect Style) === */
-#menu {
-  background: #f4f4f4;
-  overflow: hidden;
-  max-height: 0; /* Hidden by default */
-  transition: max-height 0.4s ease;
-  border-bottom: 2px solid #e0e0e0;
-}
-
-#menu.open {
-  max-height: 400px; /* Expands when .open class is added */
-}
-
-#menu nav {
-  display: flex;
-  flex-direction: column;
-  padding: 10px 0;
-}
-
-#menu nav a {
-  color: #912338;
-  text-decoration: none;
-  font-weight: 500;
-  padding: 12px 20px;
-  border-radius: 6px;
-  margin: 2px 16px;
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-#menu nav a:hover,
-#menu nav a.active {
-  background: #e9d3d7;
-  color: #5a1b2b;
-}
-
-/* =========================================================
-   12. ORGANIZER LOGIN & SIGNUP FORMS
-   ========================================================= */
-
-/* Card styling for login and signup */
-.card-organizer {
-  max-width: 500px;
-  padding: 40px;
-}
-
-.card-organizer.login {
-  max-width: 450px;
-}
-
-/* Form heading */
-.form-heading {
-  margin-bottom: 10px;
-  font-size: 28px;
-  color: #912338;
-  font-weight: 700;
-}
-
-/* Form subtitle */
-.form-subtitle {
-  color: #666;
-  margin-bottom: 30px;
-  font-size: 14px;
-  text-align: center;
-}
-
-/* Form section */
-.form-section {
-  margin-bottom: 20px;
-}
-
-/* Two-column layout for first/last name */
-.form-section-row {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.form-section-row > div {
-  flex: 1;
-}
-
-/* Form label */
-.form-label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #333;
-}
-
-/* Form input */
-.form-input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 14px;
-  font-family: 'Inter', sans-serif;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: #912338;
-  box-shadow: 0 0 0 3px rgba(145, 35, 56, 0.1);
-}
-
-/* Form helper text */
-.form-helper {
-  color: #999;
-  font-size: 12px;
-  display: block;
-  margin-top: 4px;
-}
-
-/* Organization section box */
-.org-section {
-  background: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-.org-section h3 {
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 15px;
-}
-
-/* Organization dropdown */
-.org-dropdown-wrapper {
-  margin-bottom: 15px;
-}
-
-.org-dropdown-helper {
-  color: #666;
-  margin-top: 8px;
-  display: block;
-  font-size: 13px;
-}
-
-.create-org-btn {
-  background: none;
-  border: none;
-  color: #912338;
-  cursor: pointer;
-  text-decoration: underline;
-  padding: 0;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.create-org-btn:hover {
-  text-decoration: none;
-}
-
-/* New organization container (hidden by default) */
-.new-org-container {
-  display: none;
-}
-
-.new-org-container.active {
-  display: block;
-}
-
-/* Form section for password */
-.form-section-password {
-  margin-bottom: 20px;
-}
-
-.form-section-password:last-of-type {
-  margin-bottom: 25px;
-}
-
-/* Login-specific: password reminder link */
-.password-reminder {
-  text-align: right;
-  margin-bottom: 20px;
-}
-
-.password-reminder a {
-  color: #912338;
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.password-reminder a:hover {
-  text-decoration: underline;
-}
-
-/* Divider styling */
-.form-divider {
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.form-divider b {
-  color: #999;
-  font-size: 13px;
-  font-weight: 500;
-}
-
-/* Google login button */
-.btn-google-auth {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  background: white;
-  border-radius: 6px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 20px;
-  transition: background-color 0.2s ease;
-}
-
-.btn-google-auth:hover {
-  background-color: #f9f9f9;
-}
-
-.btn-google-auth img {
-  width: 18px;
-  height: 18px;
-}
-
-/* Sign up prompt text */
-.signup-prompt {
-  text-align: center;
-  font-size: 14px;
-  margin-bottom: 15px;
-}
-
-/* Footer links section */
-.form-footer-links {
-  text-align: center;
-  font-size: 13px;
-  color: #666;
-  margin-top: 15px;
-}
-
-.form-footer-links a {
-  color: #912338;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.form-footer-links a:hover {
-  text-decoration: underline;
-}
-
-/* =========================================================
-   13. APPROVAL PENDING DIALOG
-   ========================================================= */
-
-.approval-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
-}
-
-.approval-modal-content {
-  background: white;
-  border-radius: 12px;
-  padding: 40px;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  animation: slideIn 0.3s ease;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.approval-modal-icon {
-  font-size: 48px;
-  margin-bottom: 20px;
-}
-
-.approval-modal-content h2 {
-  font-size: 24px;
-  color: #912338;
-  margin-bottom: 16px;
-  font-weight: 600;
-}
-
-.approval-message {
-  font-size: 15px;
-  color: #333;
-  line-height: 1.6;
-  margin-bottom: 16px;
-}
-
-.approval-message strong {
-  color: #912338;
-  font-weight: 600;
-}
-
-.approval-info {
-  font-size: 14px;
-  color: #666;
-  line-height: 1.6;
-  margin-bottom: 24px;
-  padding: 12px;
-  background: #f9f9f9;
-  border-radius: 6px;
-  border-left: 4px solid #912338;
-}
-
-.approval-btn-ok {
-  background-color: #912338;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 12px 32px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-}
-
-.approval-btn-ok:hover {
-  background-color: #a6223d;
-  transform: translateY(-1px);
-}
-
-.approval-btn-ok:active {
-  transform: translateY(0);
-}
-
-/* =========================================================
-   14. EVENT STATUS BADGES
-   ========================================================= */
-.event-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.event-header h3 {
-  margin: 0;
-  flex: 1;
-}
-
-.event-status {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-}
-
-.event-status.status-draft {
-  background-color: #e8e8e8;
-  color: #555;
-}
-
-.event-status.status-published {
-  background-color: #4caf50;
-  color: white;
-}
-
-.event-status.status-cancelled {
-  background-color: #f44336;
-  color: white;
-}
-
-/* Profile form layout for side-by-side fields */
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.form-group label {
-  font-weight: 600;
-  color: var(--text-dark);
-  font-size: 0.95em;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-  padding: 12px 14px;
-  border: 2px solid #e0e0e0;
-  border-radius: 6px;
-  font-family: inherit;
-  font-size: 0.95em;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(145, 35, 56, 0.1);
-}
-
-.form-group input:readonly,
-.form-group select:disabled {
-  background-color: #f5f5f5;
-  color: #777;
-  cursor: not-allowed;
-  border-color: #ddd;
-}
-
-@media (max-width: 768px) {
-  .form-row {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-}
-
-.modal {
-  position: fixed;
-  z-index: 10000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  animation: fadeIn 0.3s ease;
-}
-
-.modal.show {
-  display: flex;
-}
-
-@keyframes fadeIn {
-  from {
-    background-color: rgba(0, 0, 0, 0);
-  }
-  to {
-    background-color: rgba(0, 0, 0, 0.6);
-  }
-}
-
-.modal-content {
-  background-color: white;
-  padding: 30px;
-  border-radius: 12px;
-  max-width: 600px;
-  width: 90%;
-  max-height: 80vh;
-  overflow-y: auto;
-  position: relative;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  animation: slideIn 0.3s ease;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateY(-50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.modal-close {
-  position: absolute;
-  right: 20px;
-  top: 15px;
-  font-size: 28px;
-  font-weight: bold;
-  color: #999;
-  cursor: pointer;
-  transition: color 0.2s;
-  line-height: 1;
-}
-
-.modal-close:hover {
-  color: var(--primary-color);
-}
-
-.modal-content h3 {
-  text-align: center;
-  color: var(--primary-color);
-  margin-bottom: 20px;
-  font-size: 1.3em;
-  margin-top: 0;
-}
-
-.avatar-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.avatar-option {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  background-color: #f9f9f9;
-}
-
-.avatar-option:hover {
-  border-color: var(--primary-color);
-  background-color: #fff;
-  box-shadow: 0 4px 12px rgba(145, 35, 56, 0.15);
-}
-
-.avatar-option:active {
-  transform: scale(0.98);
-}
-
-.avatar-option img {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  pointer-events: none;
-}
-
-.modal-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  padding-top: 10px;
-  border-top: 1px solid #e0e0e0;
-}
-
-.btn-secondary {
-  background-color: #999;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.btn-secondary:hover {
-  background-color: #777;
-}
-
-@media (max-width: 600px) {
-  .avatar-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
-
-  .avatar-option img {
-    width: 60px;
-    height: 60px;
-  }
-
-  .modal-content {
-    padding: 20px;
-  }
-}
-

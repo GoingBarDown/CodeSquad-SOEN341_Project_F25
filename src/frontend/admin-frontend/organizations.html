@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Organisers Admin</title>
+  <title>Organizations Admin</title>
 
   <link rel="stylesheet" href="css/adminStyle.css">
   <style>
@@ -61,9 +61,9 @@
           }
       });
   </script>
-  <script src="js/admin-organizers.js" defer></script>
+  <script src="js/admin-organizations.js" defer></script>
 
- <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
 
@@ -90,8 +90,8 @@
     <div id="subbar" class="admin-nav">
       <a href="events.html" class="nav-tab">EVENTS</a>
       <a href="students.html" class="nav-tab">STUDENTS</a>
-      <a href="organizers.html" class="nav-tab active">ORGANIZERS</a>
-      <a href="organizations.html" class="nav-tab">ORGANIZATIONS</a>
+      <a href="organizers.html" class="nav-tab">ORGANIZERS</a>
+      <a href="organizations.html" class="nav-tab active">ORGANIZATIONS</a>
     </div>
 
   <!-- === MAIN CONTENT === -->
@@ -100,7 +100,7 @@
     <aside class="side-panel">
       <!-- Search -->
       <div class="search-box">
-        <input type="text" id="organiser-search" placeholder="Search organiser...">
+        <input type="text" id="organization-search" placeholder="Search organization...">
       </div>
 
       <!-- Filters -->
@@ -109,47 +109,48 @@
           <option value="az">A → Z</option>
           <option value="za">Z → A</option>
         </select>
-        <button class="clear-filters-btn" onclick="clearOrganizerFilters()">Clear Filters</button>
+        <button class="clear-filters-btn" onclick="clearOrganizationFilters()">Clear Filters</button>
       </div>
 
-      <!-- Scrollable Organiser List (populated by backend) -->
-      <div id="organiser-list-container">
-        <!-- Organiser items will be dynamically inserted here -->
+      <!-- Scrollable Organization List (populated by backend) -->
+      <div id="organization-list-container">
+        <!-- Organization items will be dynamically inserted here -->
       </div>
     </aside>
 
     <!-- RIGHT PANEL -->
     <section class="content-view">
-      <div id="organiser-info" class="info-card">
+      <div id="organization-info" class="info-card">
         <div class="info-header">
-          <h2>Organiser Information</h2>
+          <h2>Organization Information</h2>
         </div>
 
         <div class="info-details">
-          <div class="info-label">Organizer ID:</div>
+          <div class="info-label">Organization ID:</div>
           <div class="info-value placeholder" id="info-id">—</div>
 
-          <div class="info-label">Organizer Name:</div>
-          <div class="info-value placeholder" id="info-orgname">Select an organiser</div>
+          <div class="info-label">Organization Name:</div>
+          <div class="info-value placeholder" id="info-name">Select an organization</div>
 
-          <div class="info-label">Email:</div>
-          <div class="info-value placeholder" id="info-email">—</div>
-
-          <div class="info-label">Organization:</div>
-          <div class="info-value placeholder" id="info-community">—</div>
+          <div class="info-label">Description:</div>
+          <div class="info-value placeholder" id="info-description">—</div>
 
           <div class="info-label">Status:</div>
           <div class="info-value placeholder" id="info-status">—</div>
+
+          <div class="info-label">Members:</div>
+          <div class="info-value placeholder" id="info-members">—</div>
 
           <div class="info-label">Events Created:</div>
           <div class="info-value placeholder" id="info-events">—</div>
         </div>
 
         <div class="info-actions">
-          <button onclick="approveOrganizer()" class="event-action-button btn-approve">Approve</button>
-          <button onclick="denyOrganizer()" class="event-action-button btn-deny">Deny</button>
-          <button onclick="openEditOrganizerModal()" class="event-action-button btn-edit">Edit</button>
-          <button onclick="deleteCurrentOrganizer()" class="event-action-button btn-delete">Delete</button>
+          <button onclick="approveOrganization()" class="event-action-button btn-approve">Approve</button>
+          <button onclick="denyOrganization()" class="event-action-button btn-deny">Deny</button>
+          <button onclick="openEditOrganizationModal()" class="event-action-button btn-edit">Edit</button>
+          <button onclick="openManageMembersModal()" class="event-action-button btn-edit">Manage Members</button>
+          <button onclick="deleteCurrentOrganization()" class="event-action-button btn-delete">Delete</button>
         </div>
       </div>
     </section>
