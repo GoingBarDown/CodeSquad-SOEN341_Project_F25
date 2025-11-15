@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
         statusText.textContent = `Validating ticket ${ticketId}...`;
         statusText.style.color = "blue";
 
-        fetch('/tickets/validate', {
+        fetch('http://127.0.0.1:5000/tickets/validate', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -293,9 +293,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const qrReader = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 200 });
-        qrReader.render(onScanSuccess);
+        qrReader.render(onScanSuccess, (error) => {
+            console.error("QR Scanner error:", error);
+        });
     } catch (err) {
-        console.log("QR Scanner not available:", err);
+        console.error("QR Scanner initialization failed:", err);
+        document.getElementById("qr-reader").innerHTML = "<p style='color:red;'>QR Scanner failed to load. Check console for details.</p>";
     }
 });
 

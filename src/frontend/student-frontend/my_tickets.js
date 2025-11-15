@@ -135,8 +135,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. Populate the modal with data
     modalEventTitle.textContent = data.title;
     const eventDateStr = data.date ? new Date(data.date).toLocaleString(undefined, {
-        dateStyle: 'full',
-        timeStyle: 'short',
+      dateStyle: 'full',
+      timeStyle: 'short'
     }) : 'Date TBD';
     modalEventDate.textContent = eventDateStr;
     modalEventLocation.textContent = data.location || 'N/A';

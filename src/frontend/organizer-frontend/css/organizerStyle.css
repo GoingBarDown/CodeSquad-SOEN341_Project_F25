@@ -1662,6 +1662,120 @@ button {
   background-color: #777;
 }
 
+/* Validator Layout */
+.validator-container {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  margin-bottom: 40px;
+  align-items: start;
+}
+
+.validator-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 25px;
+  text-align: left;
+}
+
+.validator-card h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--text-dark);
+}
+
+.validator-card input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-size: 1rem;
+}
+
+.manual-validator-card input {
+  width: 300px;
+  min-width: 250px;
+}
+
+.validator-card .btn-primary {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary-color);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.manual-validator-card .btn-primary {
+  width: 100%;
+}
+
+.validator-card .btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+/* Manual validator card - auto width */
+.manual-validator-card {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Style html5-qrcode buttons */
+#qr-reader button {
+  background: var(--primary-color) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 12px 24px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: background 0.3s !important;
+  margin-bottom: 15px !important;
+}
+
+#qr-reader button:hover {
+  background: var(--primary-hover) !important;
+}
+
+/* Style file input and file button area */
+#qr-reader input[type="file"],
+#qr-reader div[class*="file"],
+#qr-reader a {
+  display: block !important;
+  margin: 15px 0 !important;
+  text-align: center !important;
+}
+
+#qr-reader a {
+  color: var(--primary-color) !important;
+  text-decoration: underline !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: color 0.3s !important;
+}
+
+#qr-reader a::before {
+  content: "or ";
+}
+
+#qr-reader a:hover {
+  color: var(--primary-hover) !important;
+}
+
+@media (max-width: 768px) {
+  .validator-container {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 600px) {
   .avatar-grid {
     grid-template-columns: repeat(3, 1fr);
