@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+
 let events = [];
 
 // Render events list
@@ -103,26 +104,21 @@ function loadEvents() {
     
     API.getEvents()
         .then(data => {
-            // Filter to show only events created by current organizer
             const allEvents = Array.isArray(data) ? data : [];
             events = allEvents.filter(event => {
-                // Show if organizer created it
-                if (event.organizer_id === currentOrganzerId) {
-                    return true;
-                }
-                // Show if same organization (when organization_id is available in events)
+                if (event.organizer_id === currentOrganzerId) return true;
+
                 if (event.organization_id && userData) {
                     try {
                         const user = JSON.parse(userData);
-                        if (user.organization_id === event.organization_id) {
-                            return true;
-                        }
+                        if (user.organization_id === event.organization_id) return true;
                     } catch (e) {
                         console.error('Error checking organization:', e);
                     }
                 }
                 return false;
             });
+
             renderEvents(events);
         })
         .catch(err => {
@@ -130,6 +126,7 @@ function loadEvents() {
             renderEvents([]);
         });
 }
+
 
 // Search and filter
 const searchInput = document.getElementById('search');
@@ -149,6 +146,7 @@ function filterEvents() {
     
     renderEvents(filtered);
 }
+
 
 // View event details
 function viewDetails(id) {
@@ -175,19 +173,21 @@ function viewDetails(id) {
         .catch(err => alert('Failed to load event details'));
 }
 
+
 // Delete event
 function deleteEvent(id) {
     if (confirm('Are you sure you want to delete this event?')) {
         API.deleteEvent(id)
             .then(() => {
-                loadEvents(); // Refresh the list
+                loadEvents();
                 alert('Event deleted successfully');
             })
             .catch(err => alert('Failed to delete event'));
     }
 }
 
-// Edit event - opens modal dialog
+
+// Edit event
 function editEvent(id) {
     API.getEvent(id)
         .then(event => {
@@ -197,17 +197,20 @@ function editEvent(id) {
                 <div class="modal-content">
                     <h2>Edit Event</h2>
                     <form id="editForm">
+
                         <label for="editTitle">Event Title</label>
                         <input type="text" id="editTitle" value="${event.title}" required />
 
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                             <div>
                                 <label for="editStartDate">Start Date & Time</label>
-                                <input type="datetime-local" id="editStartDate" value="${new Date(event.start_date).toISOString().slice(0, 16)}" required />
+                                <input type="datetime-local" id="editStartDate"
+                                  value="${new Date(event.start_date).toISOString().slice(0, 16)}" required />
                             </div>
                             <div>
                                 <label for="editEndDate">End Date & Time</label>
-                                <input type="datetime-local" id="editEndDate" value="${new Date(event.end_date).toISOString().slice(0, 16)}" required />
+                                <input type="datetime-local" id="editEndDate"
+                                  value="${new Date(event.end_date).toISOString().slice(0, 16)}" required />
                             </div>
                         </div>
 
@@ -218,7 +221,7 @@ function editEvent(id) {
                             </div>
                             <div>
                                 <label for="editCategory">Category</label>
-                                <select id="editCategory" required>
+                                <select id="editCategory">
                                     <option value="">Select category</option>
                                     <option value="Workshop" ${event.category === 'Workshop' ? 'selected' : ''}>Workshop</option>
                                     <option value="Lecture" ${event.category === 'Lecture' ? 'selected' : ''}>Lecture</option>
@@ -229,42 +232,26 @@ function editEvent(id) {
                             </div>
                         </div>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                            <div>
-                                <label for="editCapacity">Capacity</label>
-                                <input type="number" id="editCapacity" value="${event.capacity || ''}" min="1" />
-                            </div>
-                            <div>
-                                <label for="editPrice">Price</label>
-                                <input type="number" id="editPrice" value="${event.price || 0}" min="0" step="0.01" />
-                            </div>
-                        </div>
+                        <label for="editCapacity">Capacity</label>
+                        <input type="number" id="editCapacity" value="${event.capacity || ''}" min="1" />
 
-                        <label for="editStatus">Status</label>
-                        <select id="editStatus" required>
-                            <option value="draft" ${event.status === 'draft' ? 'selected' : ''}>Draft</option>
-                            <option value="published" ${event.status === 'published' ? 'selected' : ''}>Published</option>
-                            <option value="cancelled" ${event.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
-                        </select>
+                        <label for="editPrice">Price</label>
+                        <input type="number" id="editPrice" value="${event.price || 0}" min="0" step="0.01" />
 
                         <label for="editDescription">Description</label>
                         <textarea id="editDescription" rows="4">${event.description || ''}</textarea>
 
                         <div style="display: flex; gap: 10px; margin-top: 20px;">
-                            <div style="flex: 1; min-width: 0;">
-                                <button type="submit" class="btn-primary" style="width: 100%; padding: 12px 1rem; margin-top: 0; float: none;">Save Changes</button>
-                            </div>
-                            <div style="flex: 1; min-width: 0;">
-                                <button type="button" class="btn-close" style="width: 100%; padding: 12px 1rem; margin-top: 0; float: none; background-color: #ccc; color: #222;">Cancel</button>
-                            </div>
+                            <button type="submit" class="btn-primary" style="flex: 1;">Save Changes</button>
+                            <button type="button" class="btn-close" style="flex: 1; background-color: #ccc; color: #222;">Cancel</button>
                         </div>
+
                     </form>
                 </div>
             `;
 
             document.body.appendChild(modal);
 
-            // Handle form submission
             modal.querySelector('#editForm').addEventListener('submit', (e) => {
                 e.preventDefault();
                 
@@ -276,7 +263,6 @@ function editEvent(id) {
                     location: document.getElementById('editLocation').value,
                     capacity: parseInt(document.getElementById('editCapacity').value) || null,
                     price: parseFloat(document.getElementById('editPrice').value) || 0,
-                    status: document.getElementById('editStatus').value,
                     description: document.getElementById('editDescription').value
                 };
 
@@ -284,140 +270,51 @@ function editEvent(id) {
                     .then(() => {
                         alert('✅ Event updated successfully!');
                         modal.remove();
-                        loadEvents(); // Refresh the events list
+                        loadEvents();
                     })
                     .catch(err => {
-                        console.error('Update failed:', err);
-                        alert('❌ Failed to update event: ' + (err.message || 'Please try again'));
+                        alert('❌ Failed to update event');
                     });
             });
 
-            // Handle cancel button
             modal.querySelector('.btn-close').addEventListener('click', () => modal.remove());
         })
         .catch(err => alert('Failed to load event details'));
 }
 
+
 // Initial load
 document.addEventListener('DOMContentLoaded', loadEvents);
 
-// Menu toggle
+
+
+/* -------------------------------------------------
+   ✅ UPDATED MENU TOGGLE + LOGOUT (YOUR VERSION)
+   ------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', () => {
     const dot = document.getElementById('dot');
-    if (dot) {
+    const menu = document.getElementById('menu');
+    const logoutBtn = document.getElementById('logout-btn-organizer');
+
+    // Toggle menu dropdown
+    if (dot && menu) {
         dot.addEventListener('click', () => {
-            const menu = document.getElementById('menu');
-            if (menu) menu.classList.toggle('open');
+            menu.classList.toggle('open');
         });
     }
 
-    // Check organization approval status and show dialog if needed
-    const userData = localStorage.getItem('userData');
-    if (userData) {
-        try {
-            const user = JSON.parse(userData);
-            checkOrgApprovalStatus(user);
-        } catch (e) {
-            console.error('Error checking approval status:', e);
-        }
+    // Logout logic
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            localStorage.removeItem('userData');
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('role');
+            localStorage.removeItem('loggedInUser');
+
+            // Redirect organizer to main homepage
+            window.location.href = '../student-frontend/index.html';
+        });
     }
 });
-
-// Check organization approval status
-async function checkOrgApprovalStatus(user) {
-    try {
-        // Get all organization members
-        const membersResponse = await fetch('http://127.0.0.1:5000/organization_members', {
-            headers: { 'Content-Type': 'application/json' }
-        });
-        
-        if (!membersResponse.ok) {
-            console.error('Failed to fetch organization members');
-            return;
-        }
-        
-        const members = await membersResponse.json();
-        const userOrgMember = members.find(m => m.user_id === user.id);
-        
-        if (!userOrgMember) {
-            console.error('User not found in organization members');
-            return;
-        }
-        
-        // Get the organization details
-        const orgResponse = await fetch(`http://127.0.0.1:5000/organizations/${userOrgMember.organization_id}`, {
-            headers: { 'Content-Type': 'application/json' }
-        });
-        
-        if (!orgResponse.ok) {
-            console.error('Failed to fetch organization');
-            return;
-        }
-        
-        const org = await orgResponse.json();
-        
-        // Check if organization is NOT approved
-        if (org.status && org.status !== 'approved') {
-            showApprovalDialog(org);
-        }
-    } catch (err) {
-        console.error('Error checking organization approval status:', err);
-    }
-}
-
-// Show approval pending or denied dialog
-function showApprovalDialog(org) {
-    const modal = document.createElement('div');
-    modal.classList.add('approval-modal-overlay');
-    
-    let title, icon, message, info, isDenied = false;
-    
-    if (org.status === 'denied') {
-        title = 'Account Denied';
-        icon = '❌';
-        message = 'Your account was denied. Contact customer support for assistance.';
-        info = '';
-        isDenied = true;
-    } else {
-        title = 'Account Pending Approval';
-        icon = '⏳';
-        message = `Your account has been created, but your organization <strong>"${org.title}"</strong> is pending approval by an administrator.`;
-        info = 'In the meantime, you can view events, but you won\'t be able to create or edit events until your organization is approved.';
-    }
-    
-    modal.innerHTML = `
-        <div class="approval-modal-content">
-            <div class="approval-modal-icon">${icon}</div>
-            <h2>${title}</h2>
-            <p class="approval-message">
-                ${message}
-            </p>
-            ${info ? `<p class="approval-info">${info}</p>` : ''}
-            ${isDenied ? '<button class="approval-btn-ok" onclick="logoutDeniedUser()">OK</button>' : '<button class="approval-btn-ok">OK</button>'}
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    
-    // If denied, disable all page content and make modal non-dismissible
-    if (isDenied) {
-        const pageContent = document.querySelector('main') || document.querySelector('.dashboard-container');
-        if (pageContent) {
-            pageContent.style.display = 'none';
-        }
-        modal.style.pointerEvents = 'auto';
-        modal.querySelector('.approval-btn-ok').addEventListener('click', logoutDeniedUser);
-    } else {
-        modal.querySelector('.approval-btn-ok').addEventListener('click', () => {
-            modal.remove();
-        });
-    }
-}
-
-// Logout denied user
-function logoutDeniedUser() {
-    localStorage.removeItem('userData');
-    localStorage.removeItem('authToken');
-    alert('Your account access has been denied. Please contact customer support.');
-    window.location.href = 'organizer-login.html';
-}
