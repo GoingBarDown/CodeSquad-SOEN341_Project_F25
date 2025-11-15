@@ -140,6 +140,33 @@ const ADMIN_API = {
             body: JSON.stringify(orgData)
         });
         return this.handleResponse(response);
+    },
+
+    // === ORGANIZATION MEMBERS ===
+    async addOrganizationMember(organizationId, userId) {
+        const response = await fetch(`${this.baseUrl}/organization_members`, {
+            method: 'POST',
+            headers: this.getHeaders(),
+            body: JSON.stringify({ organization_id: organizationId, user_id: userId })
+        });
+        return this.handleResponse(response);
+    },
+
+    async removeOrganizationMember(organizationId, userId) {
+        const response = await fetch(`${this.baseUrl}/organization_members/${organizationId}/${userId}`, {
+            method: 'DELETE',
+            headers: this.getHeaders()
+        });
+        return this.handleResponse(response);
+    },
+
+    async getOrganizationMembersByOrg(organizationId) {
+        const response = await fetch(`${this.baseUrl}/organization_members`, {
+            headers: this.getHeaders()
+        });
+        const members = await this.handleResponse(response);
+        // Filter members for this specific organization
+        return members.filter(m => m.organization_id === organizationId);
     }
 };
 

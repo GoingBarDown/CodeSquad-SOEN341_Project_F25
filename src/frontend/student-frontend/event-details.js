@@ -1,174 +1,140 @@
-// --- Mock Event Data ---
-// We use this to test our logic until the backend API is ready.
-// We need two examples: one free, one paid.
+// event-details.js is now a small launcher. It should set `localStorage.selectedEvent`
+// (as a JSON string) and redirect the user to `payment.html` where the actual
+// rendering and payment/claim logic live.
 
-const MOCK_EVENT_FREE = {
-    id: "evt-001",
-    title: "Cybersecurity Workshop",
-    price: 0, // This is a free event
-    isPaid: false
-};
+// For the working launcher behavior we only store a SAMPLE_EVENT and redirect
+// the user to `payment.html`. The payment page is responsible for rendering
+// event details and handling ticket creation.
 
-const MOCK_EVENT_PAID = {
-    id: "evt-002",
-    title: "Spring Gala & Networking Event",
-    price: 25.00, // This is a paid event
-    isPaid: true 
-};
+// Render the real event details. Strategy:
+// 1) If the URL contains ?id=<n>, fetch /events/<n>
+// 2) Else if localStorage.selectedEvent exists, use that
+// 3) Else fetch /events and use the first event returned (fallback)
+// Claim button stores the selected event (as JSON) and redirects to payment.html
 
-// --- CONFIGURATION ---
-// Change this to test the two different flows
-const CURRENT_EVENT = MOCK_EVENT_PAID; 
-// const CURRENT_EVENT = MOCK_EVENT_FREE; 
-
-// Base URL for the backend API
-const API_BASE_URL = 'http://127.0.0.1:5000/api';
-
-
-// --- Main Setup ---
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Load the event details onto the page
-    loadEventDetails(CURRENT_EVENT);
-
-    // 2. Attach the click listener to the claim button
-    const claimButton = document.getElementById('claim-ticket-btn');
-    if (claimButton) {
-        claimButton.addEventListener('click', () => {
-            handleClaimTicket(CURRENT_EVENT);
-        });
-    }
-
-    // 3. Attach listener for the mobile menu
-    const dot = document.getElementById('dot');
-    const menu = document.getElementById('menu');
-    if (dot && menu) {
-        dot.onclick = () => {
-            menu.classList.toggle('open');
-        }
-    }
-});
-
-/**
- * Loads the mock event data into the HTML
- */
-function loadEventDetails(event) {
-    const container = document.getElementById('event-details-container');
-    const button = document.getElementById('claim-ticket-btn');
-
-    let priceText = event.isPaid ? `$${event.price.toFixed(2)}` : 'FREE';
-
-    container.innerHTML = `
-        <h1 style="font-family: 'Poller One', sans-serif;">${event.title}</h1>
-        <p style="font-size: 1.5rem; font-weight: bold;">Price: ${priceText}</p>
-        <p>Event ID: ${event.id}</p>
-    `;
-    
-    // Update button text
-    if (event.isPaid) {
-        button.textContent = "Proceed to Payment";
-    } else {
-        button.textContent = "Claim Free Ticket";
-    }
+async function fetchEventById(id) {
+  try {
+    const resp = await fetch(`http://127.0.0.1:5000/events/${encodeURIComponent(id)}`);
+    if (!resp.ok) return null;
+    return await resp.json();
+  } catch (e) {
+    console.warn('Failed to fetch event by id', e);
+    return null;
+  }
 }
 
-/**
- * This is the main function for your task.
- * It checks if the event is free or paid and calls the correct function.
- */
-function handleClaimTicket(event) {
-    if (event.isPaid) {
-        // If it's a paid event, redirect to the payment flow
-        redirectToPayment(event);
-    } else {
-        // If it's a free event, send the POST request
-        claimFreeTicket(event);
-    }
+async function fetchFirstEvent() {
+  try {
+    const resp = await fetch('http://127.0.0.1:5000/events');
+    if (!resp.ok) return null;
+    const list = await resp.json();
+    return Array.isArray(list) && list.length ? list[0] : null;
+  } catch (e) {
+    console.warn('Failed to fetch events list', e);
+    return null;
+  }
 }
 
-/**
- * Task 1: Redirect flow for PAID events
- */
-function redirectToPayment(event) {
-    const notificationArea = document.getElementById('notification-area');
-    notificationArea.textContent = "Redirecting to payment processor...";
-    notificationArea.style.color = "blue";
-    
-    // In a real app, this would redirect to a Stripe, PayPal, or Moneris page.
-    // For this sprint, we redirect to a simple placeholder page.
-    
-    setTimeout(() => {
-    localStorage.setItem("selectedEvent", JSON.stringify(event)); 
-    window.location.href = "payment.html";
-}, 1500);
+
+function renderEventInto(container, event) {
+  if (!container || !event) return;
+
+  // Price formatting: treat 0 or 0.0 as FREE
+  const priceNum = Number(event.price ?? event.cost ?? 0);
+  const priceText = Number.isFinite(priceNum) && priceNum > 0 ? `$${priceNum.toFixed(2)}` : 'FREE';
+
+  // Date formatting (backend provides RFC-style strings; Date can parse them)
+  const start = event.start_date ? new Date(event.start_date) : null;
+  const end = event.end_date ? new Date(event.end_date) : null;
+  const startText = start ? start.toLocaleString() : 'TBA';
+  const endText = end ? end.toLocaleString() : 'TBA';
+
+  const capacity = event.capacity ?? event.max_capacity ?? 'N/A';
+  const category = event.category || 'N/A';
+  const seating = event.seating || 'N/A';
+  const rating = (event.rating !== undefined && event.rating !== null) ? String(event.rating) : 'N/A';
+
+  const linkHtml = event.link ? `<a href="${event.link}" target="_blank" rel="noopener noreferrer">${event.link}</a>` : '';
+
+  container.innerHTML = `
+    <h1 style="font-family: 'Poller One', sans-serif;">${event.title || 'Event'}</h1>
+    <p style="font-size: 1.1rem; font-weight: bold;">Price: ${priceText}</p>
+    <p><strong>Category:</strong> ${category}</p>
+    <p><strong>Capacity:</strong> ${capacity}</p>
+    <p><strong>Seating:</strong> ${seating}</p>
+    <p><strong>Rating:</strong> ${rating}</p>
+    <p style="margin-top:8px;"><strong>Description:</strong><br>${event.description || ''}</p>
+    <p style="margin-top:8px;"><strong>Start:</strong> ${startText}</p>
+    <p><strong>End:</strong> ${endText}</p>
+    <p><strong>Location:</strong> ${event.location || 'TBA'}</p>
+    ${linkHtml ? `<p><strong>Link:</strong> ${linkHtml}</p>` : ''}
+    <p style="margin-top:12px; font-size:0.9rem; color:#666;"><strong>Status:</strong> ${event.status || 'N/A'} &nbsp; <strong>Organizer:</strong> ${event.organizer_id ?? 'N/A'} &nbsp; <strong>Event ID:</strong> ${event.id}</p>
+  `;
 }
 
-/**
- * Task 2: POST request for FREE claims
- */
-async function claimFreeTicket(event) {
-    const claimButton = document.getElementById('claim-ticket-btn');
-    const notificationArea = document.getElementById('notification-area');
-    
-    // Disable button to prevent multiple clicks
-    claimButton.disabled = true;
-    claimButton.textContent = "Processing...";
-    notificationArea.style.color = "blue";
-    notificationArea.textContent = "Attempting to claim your ticket...";
+function getQueryParam(name) {
+  const params = new URLSearchParams(window.location.search);
+  return params.get(name);
+}
 
-    // --- BACKEND HOOK ---
-    // This is the logic that calls the backend (Task BE-4.2)
-    // We will simulate it for now.
-    
+document.addEventListener('DOMContentLoaded', async () => {
+  const container = document.getElementById('event-details-container');
+
+  // 1) Try query param id
+  const idParam = getQueryParam('id');
+  let event = null;
+  if (idParam) {
+    event = await fetchEventById(idParam);
+  }
+
+  // 2) Try localStorage.selectedEvent
+  if (!event) {
     try {
-        // --- UNCOMMENT THIS BLOCK WHEN BACKEND IS READY ---
-        /*
-        const response = await fetch(`${API_BASE_URL}/tickets/claim`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                // We'll need to send an Auth token when login is working
-                // 'Authorization': `Bearer ${YOUR_AUTH_TOKEN}` 
-            },
-            body: JSON.stringify({
-                eventId: event.id
-            })
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Ticket claim failed. Please try again.');
-        }
-
-        const ticketData = await response.json();
-        */
-        // --- END OF BACKEND BLOCK ---
-
-        // --- SIMULATION (Delete when backend is ready) ---
-        // Simulate a 2-second network delay
-        await new Promise(resolve => setTimeout(resolve, 2000)); 
-        const ticketData = { 
-            ticketId: "sim-ticket-12345", 
-            eventId: event.id, 
-            eventName: event.title 
-        };
-        // --- END OF SIMULATION ---
-
-        // SUCCESS!
-        notificationArea.style.color = "green";
-        notificationArea.textContent = "Success! Your ticket has been claimed.";
-
-        // Redirect to the "My Ticket" page (Task FE-S2.2)
-        setTimeout(() => {
-            // We pass the new ticket ID to the next page via URL
-            window.location.href = `my-ticket.html?ticketId=${ticketData.ticketId}`;
-        }, 1500);
-
-    } catch (err) {
-        // ERROR!
-        console.error('Ticket Claim Error:', err);
-        notificationArea.style.color = "red";
-        notificationArea.textContent = `Error: ${err.message}`;
-        claimButton.disabled = false;
-        claimButton.textContent = "Claim Free Ticket";
+      const sel = localStorage.getItem('selectedEvent');
+      if (sel) event = JSON.parse(sel);
+    } catch (e) {
+      console.warn('Could not parse selectedEvent from localStorage', e);
     }
-}
+  }
+
+  // If we have a stored event with an id, prefer to refresh it from the server
+  // (this replaces stale mock/sample objects stored earlier)
+  if (event && (event.id !== undefined && event.id !== null)) {
+    const fetched = await fetchEventById(event.id);
+    if (fetched) {
+      event = fetched;
+    }
+  }
+
+  // 3) Fallback to first event from backend
+  if (!event) {
+    event = await fetchFirstEvent();
+  }
+
+  // Render what we have (or a friendly message)
+  if (event) {
+    renderEventInto(container, event);
+  } else if (container) {
+    container.innerHTML = '<p>Could not load event details. Please try again later.</p>';
+  }
+
+  // Claim button: save the selected event (the authoritative object we fetched) and go to payment
+  const claimButton = document.getElementById('claim-ticket-btn');
+  if (claimButton) {
+    claimButton.addEventListener('click', () => {
+      try {
+        if (event) {
+          localStorage.setItem('selectedEvent', JSON.stringify(event));
+        }
+      } catch (e) {
+        console.warn('Failed to save selectedEvent', e);
+      }
+      window.location.href = 'payment.html';
+    });
+  }
+
+  // preserve menu toggle UX
+  const dot = document.getElementById('dot');
+  const menu = document.getElementById('menu');
+  if (dot && menu) dot.onclick = () => menu.classList.toggle('open');
+});

@@ -144,6 +144,7 @@ function showOrganiserDetails(organiser) {
   currentOrganizer = organiser;
 
   // Update existing info card fields with actual backend data
+  document.getElementById('info-id').textContent = organiser.id || '—';
   document.getElementById('info-orgname').textContent = organiser.username || '—';
   document.getElementById('info-email').textContent = organiser.email || '—';
   
@@ -177,12 +178,12 @@ function showOrganiserDetails(organiser) {
     if (editBtn) editBtn.style.display = 'block';
     if (deleteBtn) deleteBtn.style.display = 'block';
   }
-  // No organization (shouldn't happen with new logic, but just in case)
+  // No organization or other status: show Edit/Delete and approve buttons
   else {
     if (approveBtn) approveBtn.style.display = 'block';
     if (denyBtn) denyBtn.style.display = 'block';
-    if (editBtn) editBtn.style.display = 'none';
-    if (deleteBtn) deleteBtn.style.display = 'none';
+    if (editBtn) editBtn.style.display = 'block';
+    if (deleteBtn) deleteBtn.style.display = 'block';
   }
 
   // Remove placeholder style
@@ -249,6 +250,22 @@ function openEditOrganizerModal() {
         <textarea id="editOrgDesc" ${!org ? 'disabled' : ''} placeholder="Brief description of the organization">${orgDesc || ''}</textarea>
         ${!org ? '<small style="color: #999;">Organization will be created when approved</small>' : ''}
 
+        <label>Assign Role:</label>
+        <div style="display: flex; gap: 15px; margin: 10px 0 20px 0; padding: 12px; background: #f5f5f5; border-radius: 6px;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin: 0;">
+            <input type="radio" name="editRole" value="student" ${currentOrganizer.role === 'student' ? 'checked' : ''} required />
+            <span style="font-weight: 500;">Student</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin: 0;">
+            <input type="radio" name="editRole" value="organizer" ${currentOrganizer.role === 'organizer' ? 'checked' : ''} required />
+            <span style="font-weight: 500;">Organizer</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin: 0;">
+            <input type="radio" name="editRole" value="admin" ${currentOrganizer.role === 'admin' ? 'checked' : ''} required />
+            <span style="font-weight: 500;">Admin</span>
+          </label>
+        </div>
+
         <div style="display: flex; gap: 10px; margin-top: 20px;">
           <button type="submit" class="btn-primary">Save Changes</button>
           <button type="button" class="btn-cancel">Cancel</button>
@@ -280,9 +297,13 @@ function openEditOrganizerModal() {
       return;
     }
     
+    // Get selected role from radio buttons
+    const role = document.querySelector('input[name="editRole"]:checked').value;
+    
     const updatedData = {
       username,
-      email
+      email,
+      role: role
     };
 
     try {
