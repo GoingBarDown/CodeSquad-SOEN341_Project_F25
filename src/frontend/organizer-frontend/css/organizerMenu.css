@@ -1,0 +1,110 @@
+/* ===========================
+   ORGANIZER MENU = HOME MENU
+   =========================== */
+@import url('https://fonts.googleapis.com/css2?family=Poller+One&family=DM+Serif+Text&display=swap');
+
+:root {
+  --primary-color: #912338;
+  --primary-hover: #db0272;
+  --light-bg: #f2f2f2;
+  --text-dark: #2c2c2c;
+  --dark: #000;
+  --cream-bg: #E9D3D7;
+
+  /* these are used in the menu in style.css */
+  --primary: #912338;
+  --text-light: #ffffff;
+}
+
+/* ---------- HEADER ---------- */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: #912338;
+  font-family: sans-serif;
+  font-weight: bolder;
+  font-size: 20px;
+  color: white;
+  position: relative;
+}
+
+#logo {
+  font-family: sans-serif;
+}
+
+/* hamburger */
+#dot {
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  /* EXACT MATCH TO INDEX */
+  color: white;
+  font-size: 22px;       /* thinner + smaller */
+  font-weight: normal;   /* removes bold look */
+  line-height: 1;        /* prevents "thick" display */
+  padding: 0;            /* no extra padding */
+  
+  position: absolute;
+  right: 20px;
+  top: 10px;
+}
+
+
+
+/* ---------- DROPDOWN MENU ---------- */
+#menu {
+  position: absolute;
+  top: 65px;
+  right: 20px;
+  width: 180px;
+  background-color: #f9f6f1;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  overflow: hidden;
+  max-height: 0;         /* hidden by default */
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+
+  display: flex;         /* stack navs vertically */
+  flex-direction: column;
+}
+
+#menu.open {
+  max-height: 500px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#menu nav {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+#menu nav a {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: var(--text-dark);
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #ececec;
+  transition: background 0.2s ease;
+}
+
+#menu nav a:hover {
+  background-color: var(--primary);
+  color: var(--text-light);
+}
+
+#menu nav a:focus {
+  outline: 2px solid #ffb300;
+  outline-offset: 2px;
+}
+
