@@ -33,7 +33,8 @@ jobs:
         working-directory: src/backend
         run: pytest
 
-    eslint:
+
+  eslint:
     name: Run ESLint on Frontend
     runs-on: ubuntu-latest
     needs: test
