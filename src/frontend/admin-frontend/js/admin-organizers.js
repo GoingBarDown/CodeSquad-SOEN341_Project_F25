@@ -1,3 +1,4 @@
+/* global ADMIN_API */
 document.addEventListener('DOMContentLoaded', () => {
   console.log("Admin Organiser Page Loaded");
 
