@@ -262,6 +262,7 @@ main {
 
 /* === LIST CONTAINERS === */
 #organiser-list-container,
+#organization-list-container,
 #student-list-container,
 #event-list-container {
     flex-grow: 1;
