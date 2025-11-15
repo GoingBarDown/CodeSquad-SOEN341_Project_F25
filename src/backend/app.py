@@ -19,9 +19,25 @@ organization_members_routes.register_routes(app)
 
 @app.route('/')
 def index():
+    """Root endpoint for verifying API availability.
+
+    Returns: tuple:
+            - JSON message confirming the API is reachable.
+            - HTTP status 200.
+    """
     return jsonify({"message": "Hello, this is root"})
 
 if __name__ == '__main__':
+    """Application entry point.
+
+    Behavior:
+        - Initializes the database and creates all tables if they do not exist.
+        - Runs the Flask development server with debug mode enabled.
+
+    Note:
+        Running with debug=True enables auto-reload and improved error messages,
+        but should not be used in production.
+    """
     with app.app_context():
         db.create_all()
     app.run(debug=True)
