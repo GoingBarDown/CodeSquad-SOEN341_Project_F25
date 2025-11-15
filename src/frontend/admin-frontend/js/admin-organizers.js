@@ -144,6 +144,7 @@ function showOrganiserDetails(organiser) {
   currentOrganizer = organiser;
 
   // Update existing info card fields with actual backend data
+  document.getElementById('info-id').textContent = organiser.id || '—';
   document.getElementById('info-orgname').textContent = organiser.username || '—';
   document.getElementById('info-email').textContent = organiser.email || '—';
   
