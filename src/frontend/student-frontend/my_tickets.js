@@ -34,18 +34,15 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-  // Use the studentId in the API URL (explicit backend base so frontend works when served from file://)
-  const BACKEND_BASE = 'http://127.0.0.1:5000';
-  const response = await fetch(`${BACKEND_BASE}/api/student/${encodeURIComponent(studentId)}/tickets-with-details`);
+      // Use the studentId in the API URL (explicit backend base so frontend works when served from file://)
+      const BACKEND_BASE = 'http://127.0.0.1:5000';
+      const response = await fetch(`${BACKEND_BASE}/api/student/${encodeURIComponent(studentId)}/tickets-with-details`);
 
       if (response.status === 401) {
         gridContainer.innerHTML = '<p class="loading-message" style="color: red;">Unauthorized. Please log in.</p>';
         setTimeout(() => window.location.href = 'login.html', 1000);
         return;
       }
-
-      // Use the studentId in the API URL
-      const response = await fetch(`http://127.0.0.1:5000/api/student/${studentId}/tickets-with-details`);
       
       if (!response.ok) {
         throw new Error(`Failed to fetch tickets: ${response.statusText}`);
@@ -67,10 +64,9 @@ document.addEventListener("DOMContentLoaded", () => {
         card.className = 'ticket-card';
         
         // Normalize field names from backend: event_date or eventDate
-  const rawEventDate = ticket.event_date || ticket.eventDate || ticket.event_date || ticket.eventDateRaw || ticket.event_date_raw;
+        const rawEventDate = ticket.event_date || ticket.eventDate || ticket.eventDateRaw || ticket.event_date_raw;
         // Format the date for display
-        const eventDate = new Date(rawEventDate).toLocaleDateString(undefined, {
-       const eventDate = ticket.event_date ? new Date(ticket.event_date).toLocaleDateString(undefined, {
+        const eventDate = rawEventDate ? new Date(rawEventDate).toLocaleDateString(undefined, {
           year: 'numeric',
           month: 'long',
           day: 'numeric'
@@ -92,10 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
             data-location="${ticket.event_location}"
             data-ticket-id="${ticket.ticket_id || ticket.ticketId || ticket.id}"
             data-status="${ticket.ticket_status || ticket.status}">
-            data-date="${ticket.event_date || ''}"
-            data-location="${ticket.event_location || 'N/A'}"
-            data-ticket-id="${ticket.ticket_id}"
-            data-status="${ticket.ticket_status}">
             View Ticket
           </button>
         `;
@@ -147,21 +139,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const button = event.currentTarget;
     const data = button.dataset;
 
-  // 1. Populate the modal with data
-  modalEventTitle.textContent = data.title;
-  modalEventDate.textContent = new Date(data.date).toLocaleString(undefined, {
     // 1. Populate the modal with data
     modalEventTitle.textContent = data.title;
     const eventDateStr = data.date ? new Date(data.date).toLocaleString(undefined, {
-        dateStyle: 'full',
-        timeStyle: 'short',
+      dateStyle: 'full',
+      timeStyle: 'short'
     }) : 'Date TBD';
     modalEventDate.textContent = eventDateStr;
     modalEventLocation.textContent = data.location || 'N/A';
-  // Normalize ticket id field names in dataset (dataset keys are lowercase)
-  const ticketId = data.ticketId || data.ticketid || data.ticket || data['ticket-id'] || data['ticket-id'];
-  modalTicketId.textContent = ticketId;
-  modalTicketStatus.textContent = data.status || data.status;
+    
+    // Normalize ticket id field names in dataset (dataset keys are lowercase)
+    const ticketId = data.ticketId || data.ticketid || data['ticket-id'] || data.ticket || data.id;
+    modalTicketId.textContent = ticketId;
+    modalTicketStatus.textContent = data.status || 'valid';
 
     // 2. Set the QR code image source (use absolute backend base)
     const BACKEND_BASE = 'http://127.0.0.1:5000';
@@ -194,11 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
         modalQrImg.parentNode.replaceChild(canvas, modalQrImg);
       }
     };
-    modalTicketId.textContent = data.ticketId;
-    modalTicketStatus.textContent = data.status;
-    
-    // 2. Set the QR code image source
-    modalQrImg.src = `http://127.0.0.1:5000/tickets/${data.ticketId}/qr`;
     
     // 3. Show the modal
     modalOverlay.classList.add('visible');
