@@ -1,77 +1,75 @@
 
-// ===== MENU TOGGLE =====
+// ===== MENU TOGGLE + ROLE-BASED DISPLAY =====
 document.addEventListener("DOMContentLoaded", () => {
-  // hide login/signup if user is already logged in
-  try {
-    const user = localStorage.getItem('loggedInUser') || (function(){
-      // fallback to cookie named userId set by login flow
-      const match = document.cookie.match(new RegExp('(^| )userId=([^;]+)'));
-      return match ? decodeURIComponent(match[2]) : null;
-    })();
+  const role = localStorage.getItem("role"); // "student", "organizer", "admin"
+  const isLoggedIn = localStorage.getItem("loggedInUser");
 
-    if (user) {
-      const menu = document.getElementById('menu');
-      if (menu) {
-        // Remove any links that point to login or signup
-        Array.from(menu.querySelectorAll('a')).forEach(a => {
-          const href = (a.getAttribute('href') || '').toLowerCase();
-          if (href.includes('login.html') || href.includes('signup.html')) {
-            a.remove();
-          }
-        });
+  const guestMenu     = document.getElementById("guest-menu");
+  const studentMenu   = document.getElementById("student-menu");
+  const organizerMenu = document.getElementById("organizer-menu");
+  const adminMenu     = document.getElementById("admin-menu");
 
-        // Add a logout link if not already present
-        if (!menu.querySelector('#logoutLink')) {
-          const logoutA = document.createElement('a');
-          logoutA.href = '#';
-          logoutA.id = 'logoutLink';
-          logoutA.textContent = 'LOGOUT';
-          logoutA.addEventListener('click', (e) => {
-            e.preventDefault();
-            localStorage.removeItem('loggedInUser');
-            // Remove userId cookie (expires now)
-            document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-            localStorage.setItem('logoutMessage', '✅ Successfully logged out!');
-            window.location.href = 'index.html';
-          });
-          // append at end
-          menu.querySelector('nav')?.appendChild(logoutA);
-        }
-      }
-    }
-  } catch (err) {
-    console.warn('Menu login toggle failed', err);
+  // Hide all menus initially
+  guestMenu && (guestMenu.style.display = "none");
+  studentMenu && (studentMenu.style.display = "none");
+  organizerMenu && (organizerMenu.style.display = "none");
+  adminMenu && (adminMenu.style.display = "none");
+
+  // Show menu based on role
+  if (!isLoggedIn || !role) {
+    guestMenu && (guestMenu.style.display = "block");
+  } else if (role === "student") {
+    studentMenu && (studentMenu.style.display = "block");
+  } else if (role === "organizer") {
+    organizerMenu && (organizerMenu.style.display = "block");
+  } else if (role === "admin") {
+    adminMenu && (adminMenu.style.display = "block");
+  } else {
+    guestMenu && (guestMenu.style.display = "block");
   }
-  
+
+  // Logout buttons
+  const logoutButtons = [
+    document.getElementById("logout-btn-student"),
+    document.getElementById("logout-btn-organizer"),
+    document.getElementById("logout-btn-admin")
+  ];
+
+  logoutButtons.forEach(btn => {
+    btn?.addEventListener("click", () => {
+      localStorage.removeItem("role");
+      localStorage.removeItem("loggedInUser");
+      window.location.href = "index.html";
+    });
+  });
+
+  // MENU TOGGLE (hamburger)
   const dot = document.getElementById("dot");
   const menu = document.getElementById("menu");
 
   if (dot && menu) {
     dot.addEventListener("click", (e) => {
-      e.stopPropagation(); // Prevent immediate close
-      const isOpen = menu.classList.toggle("open");
-      dot.innerHTML = isOpen ? "&#8211;" : "&#8801;"; // minus vs menu symbol
+      e.stopPropagation();
+      menu.classList.toggle("open");
     });
 
-    // Close the menu when clicking outside
     document.addEventListener("click", (e) => {
       if (!menu.contains(e.target) && e.target !== dot) {
         menu.classList.remove("open");
-        dot.innerHTML = "&#8801;"; // reset icon
       }
     });
   }
 });
 
 
-
+// ===== SLIDESHOW =====
 const images = [
-  "views/image.png", //ew
-  "views/hackathon.png", //good
-  "views/hockey.png", //good
-  "views/jobfair.png", //switch
-  "views/october.png", //nicee
-  "views/openhouse.png" //nice
+  "views/image.png",
+  "views/hackathon.png",
+  "views/hockey.png",
+  "views/jobfair.png",
+  "views/october.png",
+  "views/openhouse.png"
 ];
 
 const captions = [
@@ -84,37 +82,23 @@ const captions = [
 ];
 
 let index = 0;
-
 function changeBackground() {
   const slideshow = document.getElementById("slideshow");
   const info = document.getElementById("info");
-
   slideshow.style.backgroundImage = `url('${images[index]}')`;
-  info.textContent = captions[index];   //change text
-
+  info.textContent = captions[index];
   index = (index + 1) % images.length;
 }
 
-// My god, please somebody fix this in the future.
-// This is the worst error handling I've written in a long time
 try {
   changeBackground();
-  
-  // change every 10 seconds
   setInterval(() => {
-    try {
-      changeBackground();
-    } catch (e) {
-
-    }
+    try { changeBackground(); } catch(e) {}
   }, 10000);
+} catch(e) {}
 
-} catch (e) {
-
-}
-
+// ===== EVENTS FETCH + RENDER =====
 let allEvents = [];
-
 document.addEventListener('DOMContentLoaded', async () => {
   // Show ticket-created toast if navigated from payment
   try {
@@ -144,35 +128,27 @@ document.addEventListener('DOMContentLoaded', async () => {
   } catch (e) { /* ignore */ }
   try {
     const response = await fetch('http://127.0.0.1:5000/events');
-    const events = await response.json();
-    
-    // Only show published events on student side
-    allEvents = events.filter(event => event.status === 'published');
-
+    allEvents = await response.json();
     renderEvents(allEvents);
 
-    // Add event listener for sorting
-    document.getElementById('sortBy').addEventListener('change', function() {
+    document.getElementById('sortBy')?.addEventListener('change', function() {
       let eventsToRender = [...allEvents];
       if (this.value === 'date') {
-        eventsToRender.sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
+        eventsToRender.sort((a,b) => new Date(a.start_date) - new Date(b.start_date));
       } else if (this.value === 'category') {
-        eventsToRender.sort((a, b) => {
-          const catA = (a.category || '').toLowerCase();
-          const catB = (b.category || '').toLowerCase();
-          return catA.localeCompare(catB);
-        });
+        eventsToRender.sort((a,b) => (a.category||'').toLowerCase().localeCompare((b.category||'').toLowerCase()));
       }
       renderEvents(eventsToRender);
     });
-  } catch (err) {
-    console.error('Failed to load events:', err);
-  }
+
+  } catch (err) { console.error('Failed to load events:', err); }
 });
 
 function renderEvents(events) {
   const cardContainer = document.querySelector('.card-container');
+  if (!cardContainer) return;
   cardContainer.innerHTML = '';
+
   events.forEach(event => {
     const card = document.createElement('div');
     card.className = 'card';
@@ -185,7 +161,6 @@ function renderEvents(events) {
       <button class="details-btn" data-id="${event.id}">View Details</button>
     `;
 
-    // Show modal with event details when "View Details" is clicked
     card.querySelector('.details-btn').addEventListener('click', () => {
       // Populate modal details
       document.getElementById('modal-details').innerHTML = `
@@ -220,34 +195,19 @@ function renderEvents(events) {
     cardContainer.appendChild(card);
   });
 
-  // Close modal logic (ensure only set once)
-  document.getElementById('close-modal').onclick = () => {
-    document.getElementById('event-modal').style.display = 'none';
-  };
-  window.onclick = (e) => {
-    if (e.target.id === 'event-modal') {
-      document.getElementById('event-modal').style.display = 'none';
-    }
-  };
+  // Modal close
+  document.getElementById('close-modal').onclick = () => { document.getElementById('event-modal').style.display = 'none'; };
+  window.onclick = (e) => { if (e.target.id === 'event-modal') document.getElementById('event-modal').style.display = 'none'; };
 }
-
-
-
 
 // ===== LOGIN FORM =====
 const loginForm = document.getElementById('loginForm');
 if (loginForm) {
   loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
-
     const email = document.getElementById('email')?.value.trim();
     const password = document.getElementById('password')?.value.trim();
-
-    if (!email || !password) {
-      alert("Please fill in all fields.");
-      return;
-    }
-
+    if (!email || !password) { alert("Please fill in all fields."); return; }
     alert(`Logging in as: ${email}`);
   });
 }
@@ -257,16 +217,10 @@ const signupForm = document.getElementById('signupForm');
 if (signupForm) {
   signupForm.addEventListener('submit', (e) => {
     e.preventDefault();
-
     const name = document.getElementById('name')?.value.trim();
     const email = document.getElementById('signupEmail')?.value.trim();
     const password = document.getElementById('signupPassword')?.value.trim();
-
-    if (!name || !email || !password) {
-      alert("Please fill in all fields.");
-      return;
-    }
-
+    if (!name || !email || !password) { alert("Please fill in all fields."); return; }
     alert(`Signing up as: ${name} (${email})`);
   });
 }
@@ -276,14 +230,8 @@ const forgotForm = document.getElementById('forgotForm');
 if (forgotForm) {
   forgotForm.addEventListener('submit', (e) => {
     e.preventDefault();
-
     const email = document.getElementById('forgotEmail')?.value.trim();
-
-    if (!email) {
-      alert("Please enter your email.");
-      return;
-    }
-
+    if (!email) { alert("Please enter your email."); return; }
     alert(`Password reset link sent to: ${email}`);
   });
 }
