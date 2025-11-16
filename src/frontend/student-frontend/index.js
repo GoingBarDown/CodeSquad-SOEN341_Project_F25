@@ -1,8 +1,19 @@
 
 // ===== MENU TOGGLE + ROLE-BASED DISPLAY =====
 document.addEventListener("DOMContentLoaded", () => {
+  // Accept role from localStorage or fallback to presence of userId cookie / loggedInUser
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+  }
+
   const role = localStorage.getItem("role"); // "student", "organizer", "admin"
-  const isLoggedIn = localStorage.getItem("loggedInUser");
+  const loggedInUser = localStorage.getItem("loggedInUser");
+  const cookieUserId = getCookie('userId');
+  const lsUserId = localStorage.getItem('userId');
+  const isLoggedIn = Boolean(loggedInUser || cookieUserId || lsUserId);
 
   const guestMenu     = document.getElementById("guest-menu");
   const studentMenu   = document.getElementById("student-menu");
@@ -15,10 +26,11 @@ document.addEventListener("DOMContentLoaded", () => {
   organizerMenu && (organizerMenu.style.display = "none");
   adminMenu && (adminMenu.style.display = "none");
 
-  // Show menu based on role
-  if (!isLoggedIn || !role) {
+  // Show menu based on role or login state
+  if (!isLoggedIn && !role) {
     guestMenu && (guestMenu.style.display = "block");
-  } else if (role === "student") {
+  } else if (role === "student" || isLoggedIn) {
+    // default to student menu when logged in without role
     studentMenu && (studentMenu.style.display = "block");
   } else if (role === "organizer") {
     organizerMenu && (organizerMenu.style.display = "block");
@@ -36,9 +48,16 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   logoutButtons.forEach(btn => {
-    btn?.addEventListener("click", () => {
-      localStorage.removeItem("role");
-      localStorage.removeItem("loggedInUser");
+    btn?.addEventListener("click", (e) => {
+      e.preventDefault();
+      // remove client-side stored login info
+      try { localStorage.removeItem("role"); } catch(e){}
+      try { localStorage.removeItem("loggedInUser"); } catch(e){}
+      try { localStorage.removeItem("userId"); } catch(e){}
+      // expire cookie
+      document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      // optionally set a logout message then redirect to index
+      try { localStorage.setItem("logoutMessage", "\u2705 Successfully logged out!"); } catch(e){}
       window.location.href = "index.html";
     });
   });
@@ -100,6 +119,31 @@ try {
 // ===== EVENTS FETCH + RENDER =====
 let allEvents = [];
 document.addEventListener('DOMContentLoaded', async () => {
+  // Show logout toast if user was redirected here after logout
+  try {
+    const lm = localStorage.getItem('logoutMessage');
+    if (lm) {
+      const toast = document.createElement('div');
+      toast.id = 'logout-toast';
+      toast.textContent = lm;
+      toast.style.position = 'fixed';
+      toast.style.right = '16px';
+      toast.style.top = '16px';
+      toast.style.padding = '10px 14px';
+      toast.style.background = '#2b7a0b';
+      toast.style.color = 'white';
+      toast.style.borderRadius = '6px';
+      toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+      toast.style.zIndex = 9999;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.transition = 'opacity 300ms';
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 400);
+      }, 3000);
+      localStorage.removeItem('logoutMessage');
+    }
+  } catch (e) { /* ignore */ }
   // Show ticket-created toast if navigated from payment
   try {
     const t = sessionStorage.getItem('ticketCreated');
