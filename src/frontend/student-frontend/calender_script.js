@@ -107,24 +107,8 @@ function showEventDetailsModal(info) {
     // Attach the export action to the button
     document.getElementById('export-ics-btn').addEventListener('click', () => {
         downloadIcs(info.event);
-        closeModal();
+        closeModal();    
     });
-}
-
-
-
-// Function to get userId from cookies
-function getUserIdFromCookie() {
-    const name = 'userId=';
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const cookieArray = decodedCookie.split(';');
-    for (let cookie of cookieArray) {
-        cookie = cookie.trim();
-        if (cookie.indexOf(name) === 0) {
-            return cookie.substring(name.length);
-        }
-    }
-    return null;
 }
 
 // Function to initialize and render the calendar (This is the only definition now)
@@ -176,7 +160,9 @@ function loadCalendarForStudent(calendarEl, studentId) {
                     try {
                         const errorData = JSON.parse(jqXHR.responseText);
                         errorMsg = errorData.error || errorData.message || errorMsg;
-                    } catch(e) {}
+                    } catch(e) {
+                        // Could not parse error response
+                    }
                     document.getElementById('calendar').innerHTML = '<p style="color:red; text-align:center;">' + errorMsg + '</p>';
                     failureCallback(errorThrown);
                 }
