@@ -6,6 +6,14 @@ dot.onclick=()=>{
   dot.innerHTML=isOpen?'&#8211;':'&#8801;';}
   //minus and menu symbols
 
+// Helper function to read cookies (same as in profilePage.js)
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return null;
+}
+
 function formatIcsDate(date) {
     if (!date) return '';
     // Adjust for local timezone offset before formatting to UTC.
@@ -105,13 +113,26 @@ function showEventDetailsModal(info) {
 
 
 
+// Function to get userId from cookies
+function getUserIdFromCookie() {
+    const name = 'userId=';
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookieArray = decodedCookie.split(';');
+    for (let cookie of cookieArray) {
+        cookie = cookie.trim();
+        if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length);
+        }
+    }
+    return null;
+}
+
 // Function to initialize and render the calendar (This is the only definition now)
 function initializeCalendar() {
     var calendarEl = document.getElementById('calendar');
     
-    // Set default user ID for testing
-    const studentId = localStorage.getItem('userId') || '1'; 
-    const authToken = localStorage.getItem('authToken'); 
+    // Get user ID from cookies (set by login page)
+    const studentId = getCookie('userId');
 
     if (!studentId) {
         console.error("User ID not found. Cannot load personalized calendar.");
@@ -119,6 +140,10 @@ function initializeCalendar() {
         return;
     }
 
+    loadCalendarForStudent(calendarEl, studentId);
+}
+
+function loadCalendarForStudent(calendarEl, studentId) {
     var calendar = new FullCalendar.Calendar(calendarEl, {
         //CALENDAR CONFIGURATION
         initialView: 'dayGridMonth', 
@@ -133,22 +158,26 @@ function initializeCalendar() {
         //DATA FEED CONFIGURATION
         events: function(fetchInfo, successCallback, failureCallback) {
             const apiPath = `http://127.0.0.1:5000/student/${studentId}/events`;
-            
             $.ajax({
                 url: apiPath, 
                 method: 'GET',
-                xhrFields: { withCredentials: true },
-                
+                dataType: 'json',
                 
                 success: function(response) {
-                    console.log("Events successfully fetched:", response);
-                    // Only show published events on student calendar
-                    const publishedEvents = response.filter(event => event.status === 'published');
-                    successCallback(publishedEvents); 
+                    // Show all events that the student has tickets for
+                    successCallback(response); 
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    console.error("Error fetching events:", textStatus, errorThrown, jqXHR.responseText);
-                    document.getElementById('calendar').innerHTML = '<p style="color:red; text-align:center;">Failed to load events. Check console for API errors.</p>';
+                    console.error("Error fetching events - Status:", jqXHR.status);
+                    console.error("Error text:", textStatus);
+                    console.error("Error thrown:", errorThrown);
+                    console.error("Response text:", jqXHR.responseText);
+                    let errorMsg = 'Failed to load events.';
+                    try {
+                        const errorData = JSON.parse(jqXHR.responseText);
+                        errorMsg = errorData.error || errorData.message || errorMsg;
+                    } catch(e) {}
+                    document.getElementById('calendar').innerHTML = '<p style="color:red; text-align:center;">' + errorMsg + '</p>';
                     failureCallback(errorThrown);
                 }
             });
