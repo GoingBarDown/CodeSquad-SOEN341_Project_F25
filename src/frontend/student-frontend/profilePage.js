@@ -1,8 +1,6 @@
-// Profile Page – fully merged & correct version
-// ---------------------------------------------
-
 const API_BASE = 'http://127.0.0.1:5000';
 
+// Get user ID from cookie or localStorage
 function getCookie(name) {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
@@ -12,61 +10,72 @@ function getCookie(name) {
 
 document.addEventListener('DOMContentLoaded', async () => {
 
-  // 🔒 LOGIN PROTECTION
   const userId = getCookie('userId') || localStorage.getItem('userId');
   if (!userId) {
     window.location.href = 'login.html';
     return;
   }
 
-  // Make sure homepage displays correct menu
-  localStorage.setItem("role", "student");
-  localStorage.setItem("loggedInUser", "student");
+  // Form elements
+  const form = document.getElementById("studentProfileForm");
+  const firstName = document.getElementById("firstName");
+  const lastName = document.getElementById("lastName");
+  const email = document.getElementById("email");
+  const studentId = document.getElementById("studentId");
+  const program = document.getElementById("program");
+  const phone = document.getElementById("phone");
+  const bio = document.getElementById("bio");
 
-  try {
-    // helper to parse json safely
-    async function safeJson(res) {
-      try { return await res.json(); }
-      catch { return null; }
+  // Load student data
+  async function loadProfile() {
+    try {
+      let res = await fetch(`${API_BASE}/users/${encodeURIComponent(userId)}`);
+      if (!res.ok) throw new Error("Cannot load profile");
+
+      const student = await res.json();
+
+      firstName.value = student.first_name || "";
+      lastName.value = student.last_name || "";
+      email.value = student.email || "";
+      studentId.value = student.student_id || student.id || "";
+      program.value = student.program || "";
+      phone.value = student.phone || "";
+      bio.value = student.bio || "";
+
+    } catch (error) {
+      console.error("Profile load error:", error);
     }
-
-    // primary fetch
-    let res = await fetch(`${API_BASE}/users/${encodeURIComponent(userId)}`);
-
-    if (res.status === 401) {
-      window.location.href = 'login.html';
-      return;
-    }
-
-    // fallback
-    if (!res.ok) {
-      res = await fetch(`${API_BASE}/api/student/me`);
-      if (!res.ok) throw new Error("Unable to fetch student profile.");
-    }
-
-    const student = await safeJson(res);
-    if (!student) return;
-
-    // backend normalization
-    const first = student.first_name || "";
-    const last = student.last_name || "";
-    const email = student.email || "";
-    const studentId = student.student_id || student.id || "";
-    const program = student.program || "";
-    const phone = student.phone || "";
-    const bio = student.bio || "";
-
-    // fill input fields
-    document.getElementById("firstName").value = first;
-    document.getElementById("lastName").value = last;
-    document.getElementById("email").value = email;
-    document.getElementById("studentId").value = studentId;
-    document.getElementById("program").value = program;
-    document.getElementById("phone").value = phone;
-    document.getElementById("bio").value = bio;
-
-  } catch (error) {
-    console.error("Error loading student profile:", error);
   }
-});
 
+  await loadProfile();
+
+  // Save handler
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const updated = {
+      first_name: firstName.value.trim(),
+      last_name: lastName.value.trim(),
+      program: program.value.trim(),
+      phone: phone.value.trim(),
+      bio: bio.value.trim(),
+    };
+
+    try {
+      const res = await fetch(`${API_BASE}/users/${encodeURIComponent(userId)}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updated)
+      });
+
+      if (!res.ok) throw new Error("Failed to update profile");
+
+      alert("Profile updated successfully!");
+
+    } catch (err) {
+      alert("Error updating profile.");
+      console.error(err);
+    }
+  });
+
+});
