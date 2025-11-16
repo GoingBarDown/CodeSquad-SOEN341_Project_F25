@@ -7,6 +7,7 @@
   
   <!-- AUTHENTICATION CHECK - RUN BEFORE PAGE LOADS -->
   <script>
+    
     (function() {
       const userData = localStorage.getItem('userData');
       
@@ -29,9 +30,12 @@
         window.location.href = 'organizer-login.html';
       }
     })();
+    
   </script>
   
   <link rel="stylesheet" href="css/organizerStyle.css" />
+  <link rel="stylesheet" href="css/organizerMenu.css">  
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
@@ -43,13 +47,15 @@
   </header>
 
   <div id="menu">
-    <nav>
-      <a href="organizer-dashboard.html">Dashboard</a>
-      <a href="organizer-manage-events.html">Analytics</a>
-      <a href="organizer-profile.html">Profile</a>
-      <a href="organizer-login.html" id="loginLogoutLink">Login</a>
-    </nav>
-  </div>
+  <nav id="organizer-menu">
+    <a href="organizer-profile.html">Profile</a>
+    <a href="organizer-dashboard.html">Dashboard</a>
+    <a href="organizer-create-event.html">Create an Event</a>
+    <a href="organizer-events-list.html">Event List</a>
+    <a href="organizer-manage-events.html">Analytics</a>
+    <a href="#" id="logout-btn-organizer">Log Out</a>
+  </nav>
+</div>
 
   <main class="centered">
     <div class="card">

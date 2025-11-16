@@ -1,4 +1,5 @@
-// === AUTHENTICATION CHECK ===
+/// === AUTHENTICATION CHECK ===
+
 function checkOrganizerAccess() {
     const userData = localStorage.getItem('userData');
     
@@ -56,9 +57,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Toggle dropdown
-document.getElementById('dot').addEventListener('click', () => {
-  document.getElementById('menu').classList.toggle('open');
+// Menu toggle + logout
+document.addEventListener('DOMContentLoaded', () => {
+    const dot = document.getElementById('dot');
+    const menu = document.getElementById('menu');
+    const logoutBtn = document.getElementById('logout-btn-organizer');
+
+    // Toggle menu
+    if (dot && menu) {
+        dot.addEventListener('click', () => {
+            menu.classList.toggle('open');
+        });
+    }
+
+    // Logout logic
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            localStorage.removeItem('userData');
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('role');
+            localStorage.removeItem('loggedInUser');
+
+            // Send organizer back to main homepage
+            window.location.href = '../student-frontend/index.html';
+        });
+    }
 });
 
 // Load user profile data and setup form

@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     seedData.forEach(org => {
                         organizationDomains[org.title] = org.domain;
                     });
+                    console.log('Loaded organization domains:', organizationDomains);
                 }
             } catch (err) {
                 console.error('Failed to load organization domains:', err);
@@ -111,6 +112,8 @@ if (signupForm) {
         }
 
         try {
+            console.log('Attempting signup with:', { firstName, lastName, username, email });
+            
             // Step 1: Create the user account
             const response = await API.signup({
                 first_name: firstName,
@@ -122,6 +125,8 @@ if (signupForm) {
                 student_id: studentId || null
             });
 
+            console.log('Signup response:', response);
+            
             if (response.message === 'User created' || response.id) {
                 const userId = response.id;
                 let finalOrgId = null;
@@ -134,6 +139,7 @@ if (signupForm) {
                 // Step 2: Create new organization if needed
                 if (newOrgName) {
                     try {
+                        console.log('Creating new organization:', { title: newOrgName, description: newOrgDesc, status: 'pending' });
                         const orgResponse = await fetch('http://127.0.0.1:5000/organizations', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -144,10 +150,13 @@ if (signupForm) {
                             })
                         });
                         
+                        console.log('Organization creation response status:', orgResponse.status);
                         const orgData = await orgResponse.json();
+                        console.log('Organization creation response:', orgData);
                         
                         if (orgResponse.ok) {
                             finalOrgId = orgData.id;
+                            console.log('✅ New organization created with ID:', finalOrgId);
                         } else {
                             console.error('❌ Failed to create organization (non-200 status):', orgData);
                             throw new Error('Failed to create organization: ' + (orgData.error || orgData.message || 'Unknown error'));
@@ -159,7 +168,14 @@ if (signupForm) {
                 }
                 
                 // Step 3: Add user to organization
+                console.log('=== STEP 3: Adding user to organization ===');
+                console.log('finalOrgId:', finalOrgId);
+                console.log('userId:', userId);
+                console.log('organizationId:', organizationId);
+                console.log('newOrgName:', newOrgName);
+                
                 if (finalOrgId) {
+                    console.log('Adding user', userId, 'to organization', finalOrgId);
                     try {
                         // If joining existing org, check if email domain is verified for auto-approval
                         if (organizationId && !newOrgName) {
@@ -169,12 +185,18 @@ if (signupForm) {
                             
                             // Check if email domain matches
                             const isDomainVerified = isEmailDomainVerified(email, selectedOrgTitle);
+                            console.log(`Email domain verification: ${email} for ${selectedOrgTitle} = ${isDomainVerified}`);
+                            
+                            if (isDomainVerified) {
+                                console.log('Email domain verified! Organization is already approved.');
+                            }
                         }
                         
                         const memberPayload = {
                             organization_id: parseInt(finalOrgId),
                             user_id: parseInt(userId)
                         };
+                        console.log('Member payload:', memberPayload);
                         
                         const memberResponse = await fetch('http://127.0.0.1:5000/organization_members', {
                             method: 'POST',
@@ -182,11 +204,15 @@ if (signupForm) {
                             body: JSON.stringify(memberPayload)
                         });
                         
+                        console.log('Member creation response status:', memberResponse.status);
                         const memberData = await memberResponse.json();
+                        console.log('Member creation response:', memberData);
                         
                         if (!memberResponse.ok) {
                             console.error('❌ Failed to add user to organization (non-200 status):', memberData);
                             throw new Error('Failed to add user to organization: ' + (memberData.error || memberData.message || 'Unknown error'));
+                        } else {
+                            console.log('✅ User added to organization successfully');
                         }
                     } catch (err) {
                         console.error('❌ Error during organization member creation:', err);
@@ -194,6 +220,7 @@ if (signupForm) {
                     }
                 } else {
                     console.error('❌ No finalOrgId set. Cannot add user to organization!');
+                    console.error('organizationId:', organizationId, 'newOrgName:', newOrgName);
                 }
                 
                 alert('✅ Signup successful! Please login with your credentials.');
@@ -203,6 +230,7 @@ if (signupForm) {
             }
         } catch (error) {
             console.error('Signup error:', error);
+            console.error('Error message:', error.message);
             alert(`❌ Signup failed: ${error.message || 'Please try again.'}`);
         }
     });
