@@ -28,22 +28,40 @@ if (loginForm) {
                     localStorage.setItem('userData', JSON.stringify(response.user));
                     localStorage.setItem('authToken', response.user.id);
                     
-                    // Set role to organizer so index.html shows organizer menu
-                    localStorage.setItem('role', 'organizer');
-                    localStorage.setItem('loggedInUser', response.user.username || 'Organizer');
-
-                    // Personalized welcome message
+                    // Fetch the user's organization_id from organization_members
+                    try {
+                        const membersResponse = await fetch('http://127.0.0.1:5000/organization_members', {
+                            headers: { 'Content-Type': 'application/json' }
+                        });
+                        
+                        if (membersResponse.ok) {
+                            const members = await membersResponse.json();
+                            const userOrgMember = members.find(m => m.user_id === response.user.id);
+                            
+                            if (userOrgMember) {
+                                // Update userData with organization_id
+                                const userDataWithOrg = {
+                                    ...response.user,
+                                    organization_id: userOrgMember.organization_id
+                                };
+                                localStorage.setItem('userData', JSON.stringify(userDataWithOrg));
+                                console.log('Added organization_id to userData:', userOrgMember.organization_id);
+                            }
+                        }
+                    } catch (err) {
+                        console.warn('Could not fetch organization_id:', err);
+                        // Continue anyway, the app will still work but with limited filtering
+                    }
+                    
+                    // Show personalized welcome message
                     const organizerName = response.user.username || 'Organizer';
                     alert(`✅ Welcome back, ${organizerName}! Login successful!`);
                 } else {
-                    // fallback
-                    localStorage.setItem('role', 'organizer');
-                    localStorage.setItem('loggedInUser', 'Organizer');
                     alert('✅ Login successful!');
                 }
                 
-                // Redirect to index.html instead of dashboard
-                window.location.href = "../student-frontend/index.html";
+                // Redirect to dashboard
+                window.location.href = 'organizer-dashboard.html';
             } else {
                 throw new Error(response.message || 'Invalid credentials');
             }
@@ -54,4 +72,13 @@ if (loginForm) {
     });
 }
 
-;
+// Menu toggle
+document.addEventListener('DOMContentLoaded', () => {
+    const dot = document.getElementById('dot');
+    if (dot) {
+        dot.addEventListener('click', () => {
+            const menu = document.getElementById('menu');
+            if (menu) menu.classList.toggle('open');
+        });
+    }
+});

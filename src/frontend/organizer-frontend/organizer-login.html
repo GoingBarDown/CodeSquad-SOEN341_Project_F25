@@ -5,62 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Organizer Login</title>
   <script src="https://cdn.tailwindcss.com"></script>
-
   <link rel="stylesheet" href="css/organizerStyle.css">
-  <link rel="stylesheet" href="css/organizerMenu.css">
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
 </head>
-
 <body>
   <header>
-    <div id="logo">CODESQUAD EVENTS</div>
-    <button id="dot">&#8801;</button>
+    <h1>CODESQUAD EVENTS</h1>
+    <button id="dot">☰</button>
   </header>
 
   <div id="menu">
-
-    <nav id="guest-menu">
-      <a href="../student-frontend/index.html">Home</a>
-      <a href="../student-frontend/events.html">Events</a>
-      <a href="organizer-signup.html">Sign Up</a>
+    <nav>
+      <a href="organizer-login.html">Login</a>
+      <a href="organizer-dashboard.html">Dashboard</a>
+      <a href="organizer-manage-events.html">Analytics</a>
     </nav>
-
-    <nav id="student-menu" style="display:none;">
-      <a href="../student-frontend/index.html">Home</a>
-      <a href="../student-frontend/profilePage.html">Profile</a>
-      <a href="../student-frontend/tickets.html">My Tickets</a>
-      <a href="../student-frontend/student_calendar.html">Calendar</a>
-      <a href="#" id="logout-btn-student">Log Out</a>
-    </nav>
-
-    <nav id="organizer-menu" style="display:none;">
-      <a href="organizer-profile.html">Profile</a>
-    <a href="organizer-dashboard.html">Dashboard</a>
-    <a href="organizer-create-event.html">Create an Event</a>
-    <a href="organizer-events-list.html">Event List</a>
-    <a href="organizer-manage-events.html">Analytics</a>
-      <a href="#" id="logout-btn-organizer">Log Out</a>
-    </nav>
-
-    <nav id="admin-menu" style="display:none;">
-      <a href="../student-frontend/index.html">Home</a>
-      <a href="#" id="logout-btn-admin">Log Out</a>
-    </nav>
-
   </div>
-  <!-- END OF MENU WRAPPER -->
 
   <main class="centered">
     <div class="card card-organizer login">
       <h2 class="form-heading">Organizer Login</h2>
       <p class="form-subtitle">Access your event management dashboard</p>
-
+  
       <form id="loginForm">
         <div class="form-section">
           <label for="identifier" class="form-label">Username or Email</label>
           <input type="text" id="identifier" placeholder="Enter username or email" required class="form-input">
         </div>
-
+        
         <div class="form-section">
           <label for="password" class="form-label">Password</label>
           <input type="password" id="password" placeholder="Enter password" minlength="8" required class="form-input">
@@ -71,7 +45,7 @@
         </div>
 
         <button type="submit" class="btn-primary">Login</button>
-
+         
         <div class="form-divider"><b> <br>OR</b></div>
 
         <button type="button" class="btn-google-auth">
@@ -96,7 +70,5 @@
 
   <script src="js/api.js"></script>
   <script src="js/organizer-login.js"></script>
-  <script src="js/organizer-menu.js"></script>
-
 </body>
 </html>
