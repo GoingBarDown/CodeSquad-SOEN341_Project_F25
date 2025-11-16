@@ -7,6 +7,7 @@
   
   <!-- AUTHENTICATION CHECK - RUN BEFORE PAGE LOADS -->
   <script>
+    
     (function() {
       const userData = localStorage.getItem('userData');
       
@@ -32,11 +33,12 @@
   </script>
   
   <link rel="stylesheet" href="css/organizerStyle.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.4/html5-qrcode.min.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
-</head>
+  <link rel="stylesheet" href="css/organizerMenu.css">  
+
+  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
 <body>
 
   <!-- Header -->
@@ -47,36 +49,30 @@
 
   <!-- Menu -->
   <div id="menu">
-    <nav>
-      <a href="organizer-dashboard.html">Dashboard</a>
-      <a href="organizer-create-event.html">Create Event</a>
-      <a href="organizer-profile.html">Profile</a>
-      <a href="organizer-manage-events.html" class="active">Analytics</a>
-      <a href="organizer-login.html" id="loginLogoutLink">Login</a>
-    </nav>
-  </div>
+  <nav id="organizer-menu">
+    <a href="organizer-profile.html">Profile</a>
+    <a href="organizer-dashboard.html">Dashboard</a>
+    <a href="organizer-create-event.html">Create an Event</a>
+    <a href="organizer-events-list.html">Event List</a>
+    <a href="organizer-manage-events.html">Analytics</a>
+    <a href="#" id="logout-btn-organizer">Log Out</a>
+  </nav>
+</div>
 
   <!-- Main -->
   <main>
-    <h2>Ticket Validator</h2>
-    <div class="validator-container">
-      <!-- QR Code Scanner -->
-      <div class="validator-card">
-        <h3>QR Code Scanner</h3>
-        <div id="qr-reader" style="width:100%; margin-bottom:15px;"></div>
-        <p class="status-text" id="statusText">Ready.</p>
-      </div>
-
-      <!-- Manual Validator -->
-      <div class="validator-card manual-validator-card">
-        <h3>Manual Validator</h3>
-        <input type="text" id="ticketInput" placeholder="Enter Ticket ID">
-        <button class="btn-primary" id="validateBtn">Validate</button>
-      </div>
-    </div>
-
-    <h2 style="margin-top:40px;">Event Analytics</h2>
+    <h2>Registered Event Analytics</h2>
     <div id="analyticsContainer" class="card-container"></div>
+<br>
+    <h2>Ticket Validator</h2>
+    <div class="card">
+      <h3>QR / Manual Validator</h3>
+      <input type="text" id="ticketInput" placeholder="Enter Ticket ID">
+      <button class="btn-primary" id="validateBtn">Validate</button>
+      <p class="status-text" id="statusText">Ready.</p>
+      <div id="qr-reader" style="width:100%; margin-top:15px;"></div>
+      <button class="btn-primary" id="exportBtn" style="margin-top:10px;">Export CSV</button>
+    </div>
   </main>
 
   <script src="js/api.js"></script>
