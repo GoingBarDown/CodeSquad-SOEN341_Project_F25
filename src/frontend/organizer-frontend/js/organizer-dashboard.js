@@ -1,5 +1,4 @@
 // === AUTHENTICATION CHECK ===
-
 function checkOrganizerAccess() {
     const userData = localStorage.getItem('userData');
     
@@ -88,11 +87,13 @@ let allEvents = [];
 function loadEvents() {
     const userData = localStorage.getItem('userData');
     let currentOrganzerId = null;
+    let currentOrgId = null;
     
     if (userData) {
         try {
             const user = JSON.parse(userData);
             currentOrganzerId = user.id;
+            currentOrgId = user.organization_id;
         } catch (e) {
             console.error('Error getting organizer ID:', e);
         }
@@ -104,24 +105,19 @@ function loadEvents() {
             // 1. Events created by the current organizer
             // 2. Events created by other organizers in the same organization (if organization_id is available)
             const events = Array.isArray(data) ? data : [];
+            
             allEvents = events.filter(event => {
                 // Show if organizer created it
                 if (event.organizer_id === currentOrganzerId) {
                     return true;
                 }
                 // Show if same organization (when organization_id is available in events)
-                if (event.organization_id && userData) {
-                    try {
-                        const user = JSON.parse(userData);
-                        if (user.organization_id === event.organization_id) {
-                            return true;
-                        }
-                    } catch (e) {
-                        console.error('Error checking organization:', e);
-                    }
+                if (event.organization_id && currentOrgId && event.organization_id === currentOrgId) {
+                    return true;
                 }
                 return false;
             });
+            
             renderEvents(allEvents);
         })
         .catch(err => {
@@ -181,37 +177,63 @@ function editEvent(id) {
                         <label for="editTitle">Event Title</label>
                         <input type="text" id="editTitle" value="${event.title}" required />
 
-                        <label for="editStartDate">Start Date & Time</label>
-                        <input type="datetime-local" id="editStartDate" value="${new Date(event.start_date).toISOString().slice(0, 16)}" required />
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <label for="editStartDate">Start Date & Time</label>
+                                <input type="datetime-local" id="editStartDate" value="${new Date(event.start_date).toISOString().slice(0, 16)}" required />
+                            </div>
+                            <div>
+                                <label for="editEndDate">End Date & Time</label>
+                                <input type="datetime-local" id="editEndDate" value="${new Date(event.end_date).toISOString().slice(0, 16)}" required />
+                            </div>
+                        </div>
 
-                        <label for="editEndDate">End Date & Time</label>
-                        <input type="datetime-local" id="editEndDate" value="${new Date(event.end_date).toISOString().slice(0, 16)}" required />
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <label for="editLocation">Location</label>
+                                <input type="text" id="editLocation" value="${event.location || ''}" />
+                            </div>
+                            <div>
+                                <label for="editCategory">Category</label>
+                                <select id="editCategory" required>
+                                    <option value="">Select category</option>
+                                    <option value="Workshop" ${event.category === 'Workshop' ? 'selected' : ''}>Workshop</option>
+                                    <option value="Lecture" ${event.category === 'Lecture' ? 'selected' : ''}>Lecture</option>
+                                    <option value="Social" ${event.category === 'Social' ? 'selected' : ''}>Social</option>
+                                    <option value="Competition" ${event.category === 'Competition' ? 'selected' : ''}>Competition</option>
+                                    <option value="Conference" ${event.category === 'Conference' ? 'selected' : ''}>Conference</option>
+                                </select>
+                            </div>
+                        </div>
 
-                        <label for="editCategory">Category</label>
-                        <select id="editCategory" required>
-                            <option value="">Select category</option>
-                            <option value="Workshop" ${event.category === 'Workshop' ? 'selected' : ''}>Workshop</option>
-                            <option value="Lecture" ${event.category === 'Lecture' ? 'selected' : ''}>Lecture</option>
-                            <option value="Social" ${event.category === 'Social' ? 'selected' : ''}>Social</option>
-                            <option value="Competition" ${event.category === 'Competition' ? 'selected' : ''}>Competition</option>
-                            <option value="Conference" ${event.category === 'Conference' ? 'selected' : ''}>Conference</option>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <label for="editCapacity">Capacity</label>
+                                <input type="number" id="editCapacity" value="${event.capacity || ''}" min="1" />
+                            </div>
+                            <div>
+                                <label for="editPrice">Price</label>
+                                <input type="number" id="editPrice" value="${event.price || 0}" min="0" step="0.01" />
+                            </div>
+                        </div>
+
+                        <label for="editStatus">Status</label>
+                        <select id="editStatus" required>
+                            <option value="draft" ${event.status === 'draft' ? 'selected' : ''}>Draft</option>
+                            <option value="published" ${event.status === 'published' ? 'selected' : ''}>Published</option>
+                            <option value="cancelled" ${event.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
                         </select>
-
-                        <label for="editLocation">Location</label>
-                        <input type="text" id="editLocation" value="${event.location || ''}" />
-
-                        <label for="editCapacity">Capacity</label>
-                        <input type="number" id="editCapacity" value="${event.capacity || ''}" min="1" />
-
-                        <label for="editPrice">Price</label>
-                        <input type="number" id="editPrice" value="${event.price || 0}" min="0" step="0.01" />
 
                         <label for="editDescription">Description</label>
                         <textarea id="editDescription" rows="4">${event.description || ''}</textarea>
 
                         <div style="display: flex; gap: 10px; margin-top: 20px;">
-                            <button type="submit" class="btn-primary" style="flex: 1;">Save Changes</button>
-                            <button type="button" class="btn-close" style="flex: 1; background-color: #ccc; color: #222;">Cancel</button>
+                            <div style="flex: 1; min-width: 0;">
+                                <button type="submit" class="btn-primary" style="width: 100%; padding: 12px 1rem; margin-top: 0; float: none;">Save Changes</button>
+                            </div>
+                            <div style="flex: 1; min-width: 0;">
+                                <button type="button" class="btn-close" style="width: 100%; padding: 12px 1rem; margin-top: 0; float: none; background-color: #ccc; color: #222;">Cancel</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -231,6 +253,7 @@ function editEvent(id) {
                     location: document.getElementById('editLocation').value,
                     capacity: parseInt(document.getElementById('editCapacity').value) || null,
                     price: parseFloat(document.getElementById('editPrice').value) || 0,
+                    status: document.getElementById('editStatus').value,
                     description: document.getElementById('editDescription').value
                 };
 
@@ -314,29 +337,61 @@ async function checkOrgApprovalStatus(user) {
     }
 }
 
-// Show approval pending dialog
+// Show approval pending or denied dialog
 function showApprovalDialog(org) {
     const modal = document.createElement('div');
     modal.classList.add('approval-modal-overlay');
+    
+    let title, icon, message, info, isDenied = false;
+    
+    if (org.status === 'denied') {
+        title = 'Account Denied';
+        icon = '❌';
+        message = 'Your account was denied. Contact customer support for assistance.';
+        info = '';
+        isDenied = true;
+    } else {
+        title = 'Account Pending Approval';
+        icon = '⏳';
+        message = `Your account has been created, but your organization <strong>"${org.title}"</strong> is pending approval by an administrator.`;
+        info = 'In the meantime, you can view events, but you won\'t be able to create or edit events until your organization is approved.';
+    }
+    
     modal.innerHTML = `
         <div class="approval-modal-content">
-            <div class="approval-modal-icon">⏳</div>
-            <h2>Account Pending Approval</h2>
+            <div class="approval-modal-icon">${icon}</div>
+            <h2>${title}</h2>
             <p class="approval-message">
-                Your account has been created, but your organization <strong>"${org.title}"</strong> is pending approval by an administrator.
+                ${message}
             </p>
-            <p class="approval-info">
-                In the meantime, you can view events, but you won't be able to create or edit events until your organization is approved.
-            </p>
-            <button class="approval-btn-ok">OK</button>
+            ${info ? `<p class="approval-info">${info}</p>` : ''}
+            ${isDenied ? '<button class="approval-btn-ok" onclick="logoutDeniedUser()">OK</button>' : '<button class="approval-btn-ok">OK</button>'}
         </div>
     `;
     
     document.body.appendChild(modal);
     
-    modal.querySelector('.approval-btn-ok').addEventListener('click', () => {
-        modal.remove();
-    });
+    // If denied, disable all page content and make modal non-dismissible
+    if (isDenied) {
+        const pageContent = document.querySelector('main') || document.querySelector('.dashboard-container');
+        if (pageContent) {
+            pageContent.style.display = 'none';
+        }
+        modal.style.pointerEvents = 'auto';
+        modal.querySelector('.approval-btn-ok').addEventListener('click', logoutDeniedUser);
+    } else {
+        modal.querySelector('.approval-btn-ok').addEventListener('click', () => {
+            modal.remove();
+        });
+    }
+}
+
+// Logout denied user
+function logoutDeniedUser() {
+    localStorage.removeItem('userData');
+    localStorage.removeItem('authToken');
+    alert('Your account access has been denied. Please contact customer support.');
+    window.location.href = 'organizer-login.html';
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -1081,7 +1081,40 @@ button {
     width: 100%;
   }
 }
-/* Menu styles are defined in organizerMenu.css - do not duplicate here */
+/* === NAVBAR DROPDOWN FIX (CampusConnect Style) === */
+#menu {
+  background: #f4f4f4;
+  overflow: hidden;
+  max-height: 0; /* Hidden by default */
+  transition: max-height 0.4s ease;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+#menu.open {
+  max-height: 400px; /* Expands when .open class is added */
+}
+
+#menu nav {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+}
+
+#menu nav a {
+  color: #912338;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 12px 20px;
+  border-radius: 6px;
+  margin: 2px 16px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+#menu nav a:hover,
+#menu nav a.active {
+  background: #e9d3d7;
+  color: #5a1b2b;
+}
 
 /* =========================================================
    12. ORGANIZER LOGIN & SIGNUP FORMS
