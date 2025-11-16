@@ -85,7 +85,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         userId: localStorage.getItem('userId'),
         loggedInUser: localStorage.getItem('loggedInUser')
       });
-    } catch (e) {}
+    } catch (e) {
+      // ignore
+    }
 
     const displayName = (override('first_name') || student.first_name || student.username || `${student.first_name || ''} ${student.last_name || ''}`.trim() || 'N/A');
     const email = student.email || 'N/A';
@@ -110,7 +112,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const firstEl = document.getElementById('first-name');
   const lastEl = document.getElementById('last-name');
 
-    const usedOverrides = {};
+    // const usedOverrides = {}; // ununsed variable 
     const ofn = override('first_name');
     const oln = override('last_name');
     const opr = override('program');
@@ -135,7 +137,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           note.style.opacity = '0';
           setTimeout(() => note.remove(), 600);
         }, 3000);
-      } catch (e) {}
+      } catch (e) {
+        // ignore
+      }
     }
 
   } catch (error) {

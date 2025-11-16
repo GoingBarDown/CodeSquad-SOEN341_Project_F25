@@ -51,13 +51,21 @@ document.addEventListener("DOMContentLoaded", () => {
     btn?.addEventListener("click", (e) => {
       e.preventDefault();
       // remove client-side stored login info
-      try { localStorage.removeItem("role"); } catch(e){}
-      try { localStorage.removeItem("loggedInUser"); } catch(e){}
-      try { localStorage.removeItem("userId"); } catch(e){}
+      try { localStorage.removeItem("role"); } catch(e){
+        // comment
+      }
+      try { localStorage.removeItem("loggedInUser"); } catch(e){
+        // comment
+      }
+      try { localStorage.removeItem("userId"); } catch(e){
+        // comment
+      }
       // expire cookie
       document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
       // optionally set a logout message then redirect to index
-      try { localStorage.setItem("logoutMessage", "\u2705 Successfully logged out!"); } catch(e){}
+      try { localStorage.setItem("logoutMessage", "\u2705 Successfully logged out!"); } catch(e){
+        // comment
+      }
       window.location.href = "index.html";
     });
   });
@@ -112,9 +120,13 @@ function changeBackground() {
 try {
   changeBackground();
   setInterval(() => {
-    try { changeBackground(); } catch(e) {}
+    try { changeBackground(); } catch(e) {
+      // comment
+    }
   }, 10000);
-} catch(e) {}
+} catch(e) {
+  // comment
+}
 
 // ===== EVENTS FETCH + RENDER =====
 let allEvents = [];
