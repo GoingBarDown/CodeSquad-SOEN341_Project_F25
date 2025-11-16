@@ -1,0 +1,6 @@
+/* Shim to unify stylesheet paths
+   This file simply imports the actual student-frontend stylesheet so
+   pages that reference `style.css` at the top-level will still load
+   the shared styles.
+*/
+@import url('student-frontend/style.css');

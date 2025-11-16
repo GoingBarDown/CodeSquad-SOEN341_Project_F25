@@ -1,151 +1,172 @@
-/* ===========================================================
-   STUDENT PROFILE PAGE — FULL ISOLATION LAYER
-   Ensures nothing from style.css interferes
-=========================================================== */
-
-body.student-profile-page {
-  background: #f2f2f2 !important;
-  font-family: 'Inter', sans-serif;
-  color: #2c2c2c;
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #f4f6f8;
+  overflow-x: hidden;
 }
 
-/* -------------------------
-   Fix container
--------------------------- */
-.student-profile-page main.centered {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: flex-start !important;
-  min-height: calc(100vh - 60px) !important;
-  padding: 40px 16px !important;
+/* remove global background application so cards and text stay readable */
+
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: rgb(151, 9, 21);
+  font-family: "Poller One", sans-serif;
+  font-weight: 100;
+  font-size: 20px;
+  color: white;
 }
 
-/* -------------------------
-   Clean white profile card
--------------------------- */
-.student-profile-page .card {
-  background: #ffffff !important;
-  border-radius: 16px !important;
-  width: 100% !important;
-  max-width: 520px !important;
-  padding: 30px 40px !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
-  text-align: left !important;
+#logo {
+  text-decoration: none;
+  color: white;
+  font-family: "Poller One", sans-serif;
+  transition: color 0.2s ease;
 }
 
-/* -------------------------
-   Title
--------------------------- */
-.student-profile-page h2 {
-  text-align: center !important;
-  font-size: 1.6rem !important;
-  margin-bottom: 1rem !important;
-  font-weight: 700 !important;
-  color: #222 !important;
+#logo:hover {
+  color: rgb(255, 220, 220);
 }
 
-/* -------------------------
-   Form Labels
--------------------------- */
-.student-profile-page label {
-  display: block !important;
-  font-weight: 600 !important;
-  font-size: 0.95rem !important;
-  margin-top: 18px !important;
-  margin-bottom: 4px !important;
-  color: #333 !important;
+#dot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  border-width: 0;
+  color: rgb(151, 9, 21);
 }
 
-/* -------------------------
-   Input fields
--------------------------- */
-.student-profile-page input,
-.student-profile-page textarea,
-.student-profile-page select {
-  width: 100% !important;
-  padding: 12px !important;
-  border: 1px solid #ccc !important;
-  border-radius: 8px !important;
-  margin-bottom: 14px !important;
-  font-size: 0.95rem !important;
-  font-family: 'Inter', sans-serif !important;
-  background: #fff !important;
+/* Mobile Dropdown Menu */
+#menu {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease;
 }
 
-/* Read-only fields */
-.student-profile-page input[readonly] {
-  background: #f5f5f5 !important;
-  color: #666 !important;
+#menu.open {
+  max-height: 220px;
 }
 
-/* -------------------------
-   Two-column form row
--------------------------- */
-.student-profile-page .form-row {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 16px !important;
+#menu nav a {
+  display: block;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: #871a1a;
+  background-color: bisque;
+  text-align: center;
+  font-weight: bolder;
 }
 
-@media (max-width: 600px) {
-  .student-profile-page .form-row {
-    grid-template-columns: 1fr !important;
-  }
+#menu nav a:hover {
+  background-color: #510c0c;
+  color: white;
 }
 
-/* -------------------------
-   Hint text
--------------------------- */
-.student-profile-page .form-hint {
-  font-size: 0.85rem !important;
-  color: #666 !important;
-  margin-top: -10px !important;
-  margin-bottom: 10px !important;
+/* === Profile Section === */
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 85vh;
 }
 
-/* -------------------------
-   Primary button
--------------------------- */
-.student-profile-page .btn-primary {
-  background: #912338 !important;
-  color: #fff !important;
-  border: none !important;
-  padding: 12px !important;
-  width: 100% !important;
-  border-radius: 8px !important;
-  font-weight: 700 !important;
-  cursor: pointer !important;
-  transition: 0.2s !important;
+.profile-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-.student-profile-page .btn-primary:hover {
-  background: #db0272 !important;
+.profile-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  padding: 40px;
+  width: 450px;
+  color: #333;
 }
 
-/* -------------------------
-   Calendar link styled as button
--------------------------- */
-/* Fancy calendar button */
-.student-profile-page .calendar-button {
-  display: block !important;
-  text-align: center !important;
-  background: #ffffff !important;
-  color: #000 !important;
-  border: 2px solid #000 !important;
-  padding: 12px !important;
-  border-radius: 30px !important;
-  margin-top: 15px !important;
-  margin-bottom: 20px !important;  /* <-- ADD THIS */
-  font-weight: 600 !important;
-  font-size: 1rem !important;
-  text-decoration: none !important;
-  transition: 0.2s ease !important;
+.profile-header h2 {
+  font-size: 1.8rem;
+  color: rgb(151, 9, 21);
+  text-align: center;
+  margin-bottom: 20px;
+  background-color: white;
 }
 
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background-color: white;
+}
 
-.student-profile-page .calendar-button:hover {
-  background: #000 !important;
-  color: #fff !important;
-  border-color: #000 !important;
-  transform: translateY(-2px) !important;
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 6px;
+  background-color: white;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #444;
+  background-color: white;
+}
+
+.info-value {
+  color: #111;
+  font-size: 16px;
+  background: transparent;
+  padding-left: 8px;
+}
+
+.calendar-button-container {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.calendar-button {
+  display: inline-block;
+  background-color: rgb(151, 9, 21);
+  color: white;
+  text-decoration: none;
+  font-family: "Poller One", sans-serif;
+  padding: 10px 18px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.calendar-button:hover {
+  background-color: rgb(180, 20, 30);
+}
+
+.my-tickets-button-container {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.my-tickets-button {
+  display: inline-block;
+  background-color: rgb(151, 9, 21);
+  color: white;
+  text-decoration: none;
+  font-family: "Poller One", sans-serif;
+  padding: 10px 18px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.my-tickets-button:hover {
+  background-color: rgb(180, 20, 30);
 }

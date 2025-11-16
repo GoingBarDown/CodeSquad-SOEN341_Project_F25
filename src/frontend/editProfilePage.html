@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Profile | CampusConnect</title>
+
+    <script>
+      (function () {
+        // helper to read a cookie value
+        function getCookie(name) {
+          const value = `; ${document.cookie}`;
+          const parts = value.split(`; ${name}=`);
+          if (parts.length === 2) return parts.pop().split(";").shift();
+          return null;
+        }
+
+        // Accept any of these as proof-of-login: explicit userData, cookie userId, or localStorage keys
+        const userData = localStorage.getItem("userData");
+        const cookieUserId = getCookie("userId");
+        const lsUserId = localStorage.getItem("userId");
+        const loggedInUser = localStorage.getItem("loggedInUser");
+
+        if (!userData && !cookieUserId && !lsUserId && !loggedInUser) {
+          alert("❌ Please login first");
+          window.location.href = "login.html";
+          return;
+        }
+
+        if (userData) {
+          try {
+            const user = JSON.parse(userData);
+            if (user.role && user.role !== "student") {
+              alert("❌ You do not have permission to access this page.");
+              window.location.href = "index.html";
+              return;
+            }
+          } catch (e) {
+            console.error("Error parsing userData on profile page:", e);
+            // fall through — if other keys exist we still allow
+          }
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="editProfilePage.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="student-profile-page">
+    <!-- Header -->
+    <header>
+      <div id="logo">CODESQUAD EVENTS</div>
+      <button id="dot">&#8801;</button>
+    </header>
+
+    <!-- Menu -->
+    <div id="menu">
+      <nav id="student-menu">
+        <a href="index.html">Home</a>
+        <a href="profilePage.html">Profile</a>
+        <a href="my_tickets.html">My Tickets</a>
+        <a href="student_calender.html">Calendar</a>
+        <a href="#" id="logout-btn-student">Log Out</a>
+      </nav>
+    </div>
+
+    <!-- Profile Card -->
+    <main class="centered">
+      <div class="card">
+        <h2>Profile</h2>
+
+        <form id="studentProfileForm">
+          <label for="firstName">First Name</label>
+          <input
+            type="text"
+            id="firstName"
+            name="first_name"
+            minlength="2"
+            maxlength="80"
+          />
+
+          <label for="lastName">Last Name</label>
+          <input
+            type="text"
+            id="lastName"
+            name="last_name"
+            minlength="2"
+            maxlength="80"
+          />
+
+          <label for="email">Email</label>
+          <input type="email" id="email" readonly />
+          <small class="form-hint">Email cannot be changed.</small>
+
+          <label for="studentId">Student ID</label>
+          <input type="text" id="studentId" readonly />
+          <small class="form-hint">Student ID cannot be changed.</small>
+
+          <label for="program">Program</label>
+          <input type="text" id="program" name="program" />
+
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" pattern="[0-9+()\\s-]*" />
+
+          <label for="bio">Short Bio</label>
+          <textarea id="bio" name="bio" maxlength="500" rows="4"></textarea>
+          <small class="form-hint">Maximum 500 characters</small>
+
+          <a href="student_calender.html" class="calendar-button">
+            View My Event Calendar
+          </a>
+
+          <button type="submit" class="btn-primary" style="margin-top: 15px">
+            Save Changes
+          </button>
+        </form>
+      </div>
+    </main>
+
+    <!-- JS -->
+    <script src="js/api.js"></script>
+    <script src="js/profilePage.js"></script>
+
+    <script>
+      // Menu toggle
+      document.getElementById("dot").addEventListener("click", () => {
+        document.getElementById("menu").classList.toggle("open");
+      });
+
+      // Logout logic
+      document.addEventListener("DOMContentLoaded", () => {
+        const logoutBtn = document.getElementById("logout-btn-student");
+        if (logoutBtn) {
+          logoutBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            localStorage.removeItem("studentData");
+            localStorage.removeItem("loggedInUser");
+            window.location.href = "index.html";
+          });
+        }
+
+        // Form submit handling: attempt backend PATCH, fall back to localStorage
+        const form = document.getElementById("studentProfileForm");
+        if (!form) return;
+
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const data = {
+            first_name: document.getElementById("firstName").value.trim(),
+            last_name: document.getElementById("lastName").value.trim(),
+            program: document.getElementById("program").value.trim(),
+            phone: document.getElementById("phone").value.trim(),
+            bio: document.getElementById("bio").value.trim(),
+          };
+
+          // Basic validation
+          if (!data.first_name || !data.last_name) {
+            alert("Please provide both first and last name.");
+            return;
+          }
+
+          // Try to PATCH to backend if API available
+          const API_BASE = "http://127.0.0.1:5000";
+          const cookieUserId = (function () {
+            const v = `; ${document.cookie}`;
+            const p = v.split("; userId=");
+            if (p.length === 2) return p.pop().split(";").shift();
+            return localStorage.getItem("userId");
+          })();
+
+          let saved = false;
+          if (cookieUserId) {
+            try {
+              const res = await fetch(
+                `${API_BASE}/users/${encodeURIComponent(cookieUserId)}`,
+                {
+                  method: "PATCH",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(data),
+                }
+              );
+              if (res.ok) saved = true;
+            } catch (err) {
+              console.warn(
+                "Backend PATCH failed, falling back to localStorage:",
+                err
+              );
+            }
+          }
+
+          // Always persist client-side overrides so profile shows changes even without backend
+          try {
+            localStorage.setItem("profile_first_name", data.first_name);
+            localStorage.setItem("profile_last_name", data.last_name);
+            localStorage.setItem("profile_program", data.program);
+            localStorage.setItem("profile_phone", data.phone);
+            localStorage.setItem("profile_bio", data.bio);
+          } catch (e) {
+            console.warn(
+              "Failed to write profile overrides to localStorage",
+              e
+            );
+          }
+
+          // Give user feedback and redirect back to profile
+          alert("Profile saved. Redirecting to profile page.");
+          window.location.href = "profilePage.html";
+        });
+      });
+    </script>
+  </body>
+</html>

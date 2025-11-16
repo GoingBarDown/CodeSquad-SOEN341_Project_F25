@@ -1,5 +1,6 @@
-// Profile Page – fully merged & correct version
-// ---------------------------------------------
+// Menu handling is centralized in index.js; avoid duplicate handlers here to
+// prevent conflicts on profilePage.html. index.js attaches the toggle and
+// outside-click behavior at DOMContentLoaded.
 
 const API_BASE = 'http://127.0.0.1:5000';
 
@@ -11,62 +12,137 @@ function getCookie(name) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-
-  // 🔒 LOGIN PROTECTION
-  const userId = getCookie('userId') || localStorage.getItem('userId');
-  if (!userId) {
-    window.location.href = 'login.html';
-    return;
-  }
-
-  // Make sure homepage displays correct menu
-  localStorage.setItem("role", "student");
-  localStorage.setItem("loggedInUser", "student");
-
   try {
-    // helper to parse json safely
+    // helper to parse JSON safely
     async function safeJson(res) {
-      try { return await res.json(); }
-      catch { return null; }
+      try {
+        return await res.json();
+      } catch (e) {
+        const text = await res.text().catch(() => '<unreadable>');
+        console.warn('Response not JSON:', text);
+        return null;
+      }
     }
 
-    // primary fetch
-    let res = await fetch(`${API_BASE}/users/${encodeURIComponent(userId)}`);
-
-    if (res.status === 401) {
+    // Primary approach: use the userId cookie that the login page sets.
+    // The backend exposes GET /users/<id> which returns the user object.
+    const userId = getCookie('userId') || localStorage.getItem('userId');
+    if (!userId) {
+      console.warn('No userId found in cookie/localStorage; cannot load profile. Redirecting to login.');
       window.location.href = 'login.html';
       return;
     }
 
-    // fallback
+  // NOTE: removed credentials: 'include' to avoid requiring backend CORS credential support.
+  // If your server requires cookies for auth, either serve the frontend from same origin
+  // or ask backend team to enable Access-Control-Allow-Credentials.
+  let res = await fetch(`${API_BASE}/users/${encodeURIComponent(userId)}`);
+    console.debug(`/users/${userId}`, res.status);
+
+    // If unauthorized -> redirect to login
+    if (res.status === 401) {
+      console.warn('Not authenticated (401). Redirecting to login.');
+      window.location.href = 'login.html';
+      return;
+    }
+
+    // If not OK, try legacy endpoint /api/student/me as a fallback
     if (!res.ok) {
-      res = await fetch(`${API_BASE}/api/student/me`);
-      if (!res.ok) throw new Error("Unable to fetch student profile.");
+      console.warn(`/users/${userId} returned ${res.status} — trying /api/student/me fallback`);
+  // Try fallback endpoint without credentials
+  res = await fetch(`${API_BASE}/api/student/me`);
+      console.debug('/api/student/me', res.status);
+      if (!res.ok) {
+        throw new Error(`Failed to fetch profile (tried /users/${userId} and /api/student/me): ${res.status}`);
+      }
     }
 
     const student = await safeJson(res);
-    if (!student) return;
+    if (!student) {
+      console.error('No student data received from server');
+      return;
+    }
 
-    // backend normalization
-    const first = student.first_name || "";
-    const last = student.last_name || "";
-    const email = student.email || "";
-    const studentId = student.student_id || student.id || "";
-    const program = student.program || "";
-    const phone = student.phone || "";
-    const bio = student.bio || "";
+    // Normalize fields from backend user model
+  // Backend user.data fields (from db/models.User.data):
+  // id, username, email, role, first_name, last_name, student_id, program
+    // Allow client-side overrides saved by the edit form when backend update is not available.
+    const override = (key) => {
+      try {
+        // try several possible localStorage keys for resilience
+        return localStorage.getItem(`profile_${key}`) || localStorage.getItem(key) || null;
+      } catch (e) { return null; }
+    };
 
-    // fill input fields
-    document.getElementById("firstName").value = first;
-    document.getElementById("lastName").value = last;
-    document.getElementById("email").value = email;
-    document.getElementById("studentId").value = studentId;
-    document.getElementById("program").value = program;
-    document.getElementById("phone").value = phone;
-    document.getElementById("bio").value = bio;
+    // Debug: dump relevant localStorage keys so we can see what was saved
+    try {
+      console.debug('profilePage: localStorage snapshot', {
+        profile_first_name: localStorage.getItem('profile_first_name'),
+        profile_last_name: localStorage.getItem('profile_last_name'),
+        profile_program: localStorage.getItem('profile_program'),
+        profile_phone: localStorage.getItem('profile_phone'),
+        profile_bio: localStorage.getItem('profile_bio'),
+        userId: localStorage.getItem('userId'),
+        loggedInUser: localStorage.getItem('loggedInUser')
+      });
+    } catch (e) {
+      // ignore
+    }
+
+    const displayName = (override('first_name') || student.first_name || student.username || `${student.first_name || ''} ${student.last_name || ''}`.trim() || 'N/A');
+    const email = student.email || 'N/A';
+    const studentId = (student.student_id != null && student.student_id !== '') ? student.student_id : (student.id || 'N/A');
+    const program = override('program') || student.program || 'N/A';
+
+    const nameEl = document.getElementById('student-name');
+    const emailEl = document.getElementById('student-email');
+    const pwdEl = document.getElementById('student-password');
+    const idEl = document.getElementById('student-id');
+    const programEl = document.getElementById('student-program');
+
+  if (nameEl) nameEl.textContent = displayName;
+  if (emailEl) emailEl.textContent = email;
+  if (pwdEl) pwdEl.textContent = '********'; // never show raw password
+  if (idEl) idEl.textContent = studentId;
+  if (programEl) programEl.textContent = program;
+
+  // Additional fields that may be shown on the page: phone and bio
+  const phoneEl = document.getElementById('student-phone');
+  const bioEl = document.getElementById('bio');
+  const firstEl = document.getElementById('first-name');
+  const lastEl = document.getElementById('last-name');
+
+    // const usedOverrides = {}; // ununsed variable 
+    const ofn = override('first_name');
+    const oln = override('last_name');
+    const opr = override('program');
+    const oph = override('phone');
+    const obi = override('bio');
+
+    if (firstEl) firstEl.textContent = (ofn || student.first_name || '—');
+    if (lastEl) lastEl.textContent = (oln || student.last_name || '—');
+    if (phoneEl) phoneEl.textContent = (oph || student.phone || '—');
+    if (bioEl) bioEl.textContent = (obi || student.bio || '—');
+
+    if (ofn || oln || opr || oph || obi) {
+      console.debug('profilePage: using local overrides', { ofn, oln, opr, oph, obi });
+      try {
+        const note = document.createElement('div');
+        note.textContent = 'Showing local (unsaved) profile overrides';
+        Object.assign(note.style, { background: '#fff7cc', padding: '8px', border: '1px solid #ffd24d', margin: '8px 0', borderRadius: '6px', transition: 'opacity 500ms' });
+        const container = document.querySelector('.profile-card');
+        container?.insertBefore(note, container.firstChild);
+        // auto-fade and remove after 3s
+        setTimeout(() => {
+          note.style.opacity = '0';
+          setTimeout(() => note.remove(), 600);
+        }, 3000);
+      } catch (e) {
+        // ignore
+      }
+    }
 
   } catch (error) {
-    console.error("Error loading student profile:", error);
+    console.error('Error loading student profile:', error);
   }
 });
-
