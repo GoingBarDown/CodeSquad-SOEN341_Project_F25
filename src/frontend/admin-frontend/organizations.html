@@ -18,7 +18,7 @@
           alert('❌ Please login before trying to access this page.');
           window.location.href = 'admin-login.html';
       } else {
-          try {\n              const user = JSON.parse(userData);
+          try {const user = JSON.parse(userData);
               console.log('Parsed user:', user);
               if (user.role !== 'admin') {
                   alert('❌ Only admins can access this page.');
