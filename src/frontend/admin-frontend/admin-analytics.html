@@ -23,9 +23,14 @@
         } else {
             try {
                 const user = JSON.parse(userData);
-                document.addEventListener("DOMContentLoaded", () => {
-                    document.body.classList.add("authenticated");
-                });
+                if (user.role !== 'admin') {
+                    alert("❌ Only admins can access this page.");
+                    window.location.href = "../student-frontend/index.html";
+                } else {
+                    document.addEventListener("DOMContentLoaded", () => {
+                        document.body.classList.add("authenticated");
+                    });
+                }
             } catch (e) {
                 localStorage.removeItem("userData");
                 localStorage.removeItem("authToken");

@@ -20,14 +20,18 @@
             try {
                 const user = JSON.parse(userData);
                 console.log('Parsed user:', user);
-                // Allow access if user exists (temporarily removing strict admin check for debugging)
-                // Wait for body to exist before adding class
-                if (document.body) {
-                    document.body.classList.add('authenticated');
+                if (user.role !== 'admin') {
+                    alert('❌ Only admins can access this page.');
+                    window.location.href = '../student-frontend/index.html';
                 } else {
-                    document.addEventListener('DOMContentLoaded', () => {
+                    // Wait for body to exist before adding class
+                    if (document.body) {
                         document.body.classList.add('authenticated');
-                    });
+                    } else {
+                        document.addEventListener('DOMContentLoaded', () => {
+                            document.body.classList.add('authenticated');
+                        });
+                    }
                 }
             } catch (e) {
                 console.error('Error parsing userData:', e);
