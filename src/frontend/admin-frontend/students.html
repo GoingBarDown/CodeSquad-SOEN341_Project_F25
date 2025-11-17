@@ -40,6 +40,18 @@
   </script>
   <script src="js/api-admin.js" defer></script>
   <script>
+    // Mark current page tab as active
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentPage = window.location.pathname.split('/').pop() || 'students.html';
+      document.querySelectorAll('#subbar .nav-tab').forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.getAttribute('href') === currentPage) {
+          tab.classList.add('active');
+        }
+      });
+    });
+  </script>
+  <script>
       // Check authentication before loading page
       document.addEventListener('DOMContentLoaded', () => {
           const userData = localStorage.getItem('userData');
