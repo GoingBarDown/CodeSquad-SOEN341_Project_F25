@@ -19,7 +19,7 @@ Notes:
 
 * The work for final report was split up.
   * The majority of work should also be done my thursday
-  * Tasks can e found on shared google docs
+  * Tasks can be found on shared google docs
 
   
 Goals for next meeting:
