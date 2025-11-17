@@ -84,6 +84,13 @@ async function loadAnalytics() {
             });
             console.log("Total sales:", totalSales);
             document.getElementById("stat-total-sales").textContent = `$${totalSales.toFixed(2)}`;
+
+            // Count checked-in attendees (tickets with status 'checked-in')
+            const checkedInAttendees = tickets.filter(ticket => 
+                ticket.status && ticket.status.toLowerCase() === 'checked-in'
+            ).length;
+            console.log("Checked-in attendees:", checkedInAttendees);
+            document.getElementById("stat-total-attendees").textContent = checkedInAttendees;
         } else {
             console.warn("Could not fetch tickets:", ticketsResponse.status);
         }
