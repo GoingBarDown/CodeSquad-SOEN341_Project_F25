@@ -196,8 +196,23 @@ if (signupForm) {
                     console.error('❌ No finalOrgId set. Cannot add user to organization!');
                 }
                 
-                alert('✅ Signup successful! Please login with your credentials.');
-                window.location.href = 'organizer-login.html';
+                // Auto-login the newly created organizer
+                localStorage.setItem('userId', String(userId));
+                localStorage.setItem('userData', JSON.stringify({
+                    id: userId,
+                    username: username,
+                    email: email,
+                    role: role,
+                    first_name: firstName,
+                    last_name: lastName
+                }));
+                document.cookie = `userId=${userId}; path=/; max-age=86400`;
+                
+                alert('✅ Signup successful! Redirecting to your dashboard...');
+                // Use replace instead of href to prevent back button issues
+                setTimeout(() => {
+                    window.location.replace('organizer-dashboard.html');
+                }, 300);
             } else {
                 throw new Error(response.error || response.message || 'Signup failed');
             }
