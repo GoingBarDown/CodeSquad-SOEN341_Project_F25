@@ -242,6 +242,7 @@ textarea {
   font-size: 0.95rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
 }
 
 /* Small form field (for status) */
@@ -271,8 +272,8 @@ textarea {
 
 input:focus, textarea:focus, select:focus {
   border-color: #8b1c33;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(139, 28, 51, 0.1);
+  outline: 1px solid #8b1c33;
+  outline-offset: -1px;
 }
 
 /* Dropdown Select Styling */
@@ -625,8 +626,8 @@ select:disabled {
 .modal-content form select:focus,
 .modal-content form textarea:focus {
   border-color: #8b1c33;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(139, 28, 51, 0.1);
+  outline: 1px solid #8b1c33;
+  outline-offset: -1px;
 }
 
 .eventCard h3 {
@@ -1001,10 +1002,6 @@ main h2 {
   transition: transform 0.2s ease;
 }
 
-.card:hover {
-  transform: translateY(-3px);
-}
-
 .card h3 {
   color: var(--primary);
   margin-bottom: 8px;
@@ -1183,7 +1180,6 @@ button {
 .form-input:focus {
   outline: none;
   border-color: #912338;
-  box-shadow: 0 0 0 3px rgba(145, 35, 56, 0.1);
 }
 
 /* Form helper text */
@@ -1510,7 +1506,6 @@ button {
 .form-group textarea:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(145, 35, 56, 0.1);
 }
 
 .form-group input:readonly,
