@@ -13,22 +13,18 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  background-color: rgb(151, 9, 21);
+  background-color: #912338; /* match site primary */
   font-family: "Poller One", sans-serif;
-  font-weight: 100;
+  font-weight: bolder;
   font-size: 20px;
   color: white;
+  position: relative;
 }
 
 #logo {
   text-decoration: none;
   color: white;
   font-family: "Poller One", sans-serif;
-  transition: color 0.2s ease;
-}
-
-#logo:hover {
-  color: rgb(255, 220, 220);
 }
 
 #dot {
@@ -42,34 +38,58 @@ header {
   align-items: center;
   justify-content: center;
   line-height: 1;
-  border-width: 0;
-  color: rgb(151, 9, 21);
+  border: none;
+  color: #912338;
+  position: absolute;
+  right: 20px;
 }
 
-/* Mobile Dropdown Menu */
+/* Vertical dropdown menu (shared style used across pages) */
 #menu {
+  position: absolute;
+  top: 65px;
+  right: 20px;
+  width: 180px;
+  background-color: #f9f6f1;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
   overflow: hidden;
   max-height: 0;
-  transition: max-height 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
 }
 
 #menu.open {
-  max-height: 220px;
+  max-height: 500px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#menu nav {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 #menu nav a {
   display: block;
-  padding: 12px 16px;
+  width: 100%;
   text-decoration: none;
-  color: #871a1a;
-  background-color: bisque;
-  text-align: center;
-  font-weight: bolder;
+  color: #2c2c2c;
+  font-family: "Arial", sans-serif;
+  font-size: 15px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #ececec;
+  transition: background 0.2s ease;
 }
 
 #menu nav a:hover {
-  background-color: #510c0c;
-  color: white;
+  background-color: #912338;
+  color: #ffffff;
 }
 
 /* === Profile Section === */
@@ -93,6 +113,21 @@ main {
   padding: 40px;
   width: 450px;
   color: #333;
+}
+
+/* Hide real content until JS populates it to avoid flash of placeholders */
+.profile-card.loading { 
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+}
+
+.profile-card.loading::after {
+  content: 'Loading profile...';
+  display: block;
+  text-align: center;
+  padding: 40px 0;
+  color: #666;
 }
 
 .profile-header h2 {

@@ -124,23 +124,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (phoneEl) phoneEl.textContent = (oph || student.phone || '—');
     if (bioEl) bioEl.textContent = (obi || student.bio || '—');
 
-    if (ofn || oln || opr || oph || obi) {
-      console.debug('profilePage: using local overrides', { ofn, oln, opr, oph, obi });
-      try {
-        const note = document.createElement('div');
-        note.textContent = 'Showing local (unsaved) profile overrides';
-        Object.assign(note.style, { background: '#fff7cc', padding: '8px', border: '1px solid #ffd24d', margin: '8px 0', borderRadius: '6px', transition: 'opacity 500ms' });
-        const container = document.querySelector('.profile-card');
-        container?.insertBefore(note, container.firstChild);
-        // auto-fade and remove after 3s
-        setTimeout(() => {
-          note.style.opacity = '0';
-          setTimeout(() => note.remove(), 600);
-        }, 3000);
-      } catch (e) {
-        // ignore
+    // Remove the loading mask once we've populated the fields
+    try {
+      const card = document.querySelector('.profile-card');
+      if (card) {
+        card.classList.remove('loading');
       }
+    } catch (e) { /* ignore */ }
+
+    if (ofn || oln || opr || oph || obi) {
+      // Keep a console debug for local overrides (helps during development),
+      // but do NOT show a transient banner in the UI on page load.
+      console.debug('profilePage: using local overrides (suppressed banner)', { ofn, oln, opr, oph, obi });
     }
+
+    // Safety fallback: if for some reason the fetch never resolves, remove
+    // the loading state after a short timeout so the page isn't permanently hidden.
+    setTimeout(() => {
+      try { document.querySelector('.profile-card')?.classList.remove('loading'); } catch(e){}
+    }, 3500);
 
   } catch (error) {
     console.error('Error loading student profile:', error);

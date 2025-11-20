@@ -22,13 +22,37 @@
     </header> 
 
     <div id="menu">
-        <nav>
-        <a href="index.html">Home</a>
-        <a href="events.html">Events</a>
-        <a href="profilePage.html">Profile</a>
-        <a href="my_tickets.html">My Tickets</a>
-        <a href="student_calender.html">Calendar</a>
-        <a href="#" id="logout-btn-student">Log Out</a>
+        <!-- GUEST MENU -->
+        <nav id="guest-menu">
+            <a href="index.html">Home</a>
+            <a href="events.html">Events</a>
+            <a href="login.html" id="loginLogoutLink">Log In</a>
+            <a href="signup.html">Sign Up</a>
+        </nav>
+
+        <!-- STUDENT MENU -->
+        <nav id="student-menu" style="display: none">
+            <a href="index.html">Home</a>
+            <a href="events.html">Events</a>
+            <a href="profilePage.html">Profile</a>
+            <a href="my_tickets.html">My Tickets</a>
+            <a href="student_calender.html">Calendar</a>
+            <a href="#" id="logout-btn-student">Log Out</a>
+        </nav>
+
+        <!-- ORGANIZER MENU -->
+        <nav id="organizer-menu" style="display: none">
+            <a href="index.html">Home</a>
+            <a href="profilePage.html">Profile</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="analytics.html">Analytics</a>
+            <a href="#" id="logout-btn-organizer">Log Out</a>
+        </nav>
+
+        <!-- ADMIN MENU -->
+        <nav id="admin-menu" style="display: none">
+            <a href="index.html">Home</a>
+            <a href="#" id="logout-btn-admin">Log Out</a>
         </nav>
     </div>
     
@@ -36,9 +60,46 @@
         <div id='calendar'></div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
-    
-    <script src="calender_script.js"></script>
+        <script src="index.js" defer></script>
+            <!-- Ensure menu shows correct role-based nav even if index.js didn't run correctly -->
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    function getCookie(name) {
+                        const value = `; ${document.cookie}`;
+                        const parts = value.split(`; ${name}=`);
+                        if (parts.length === 2) return parts.pop().split(';').shift();
+                        return null;
+                    }
+                    try {
+                        const cookieUser = getCookie('userId');
+                        const lsUser = localStorage.getItem('userId');
+                        const loggedInUser = localStorage.getItem('loggedInUser');
+                        if (cookieUser || lsUser || loggedInUser) {
+                            // prefer to hide guest and show student menu when logged in
+                            const guest = document.getElementById('guest-menu');
+                            const student = document.getElementById('student-menu');
+                            if (guest) guest.style.display = 'none';
+                            if (student) student.style.display = 'block';
+                        }
+                    } catch (e) { /* ignore */ }
+
+                    // Fallback hamburger toggle if index.js didn't attach one
+                    const dot = document.getElementById('dot');
+                    const menu = document.getElementById('menu');
+                    if (dot && menu && !dot.dataset.hasFallback) {
+                        dot.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            menu.classList.toggle('open');
+                        });
+                        dot.dataset.hasFallback = '1';
+                    }
+                });
+            </script>
+
+        <!-- debug panel removed -->
+
+        <script src="calender_script.js"></script>
 </body>
 </html>
