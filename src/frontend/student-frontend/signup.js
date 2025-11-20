@@ -1,8 +1,10 @@
 document.getElementById('signupForm').addEventListener('submit', function(e) {
   e.preventDefault();
 
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
+  const firstName = (document.getElementById('first_name')?.value || document.getElementById('name')?.value || '').trim();
+  const lastName = (document.getElementById('last_name')?.value || '').trim();
+  const usernameInput = document.getElementById('username') ? document.getElementById('username').value.trim() : '';
+  const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
   const confirmPassword = document.getElementById('confirmPassword').value;
 
@@ -16,15 +18,42 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
     return;
   }
 
+  if (!usernameInput) {
+    alert('Please choose a username.');
+    return;
+  }
+
+  if (!firstName) {
+    alert('Please enter your first name.');
+    return;
+  }
+
+   if (!lastName) {
+    alert('Please enter your last name.');
+    return;
+  }
+
+  if (!/^[a-zA-Z0-9_.-]{3,30}$/.test(usernameInput)) {
+    alert('Username invalid. Use 3-30 letters, numbers, ".", "_" or "-"');
+    return;
+  }
+
   // You can use name as username, or add a username field if needed
+  // Generate a username from the email local-part plus a short random suffix
+  const localPart = (email.split('@')[0] || 'user').replace(/[^a-zA-Z0-9_.-]/g, '').toLowerCase();
+  const rand = Math.random().toString(36).slice(2,8);
+  const generatedUsername = `${localPart}_${rand}`;
+
   fetch('/users', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      username: email, // or use name if you want
+      username: usernameInput || generatedUsername,
       password: password,
       email: email,
-      role: 'student'
+      role: 'student',
+      first_name: firstName,
+      last_name: lastName
     })
   })
   .then(response => response.json())

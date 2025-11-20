@@ -31,8 +31,29 @@
         <h2>Create a Student Account</h2>
 
         <form id="signupForm">
-          <label for="name">Full Name</label>
-          <input type="text" id="name" placeholder="Your full name" required />
+          <label for="first_name">First Name</label>
+          <input
+            type="text"
+            id="first_name"
+            placeholder="Given name"
+            required
+          />
+
+          <label for="last_name">Last Name</label>
+          <input
+            type="text"
+            id="last_name"
+            placeholder="Family name"
+            required
+          />
+
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            placeholder="Choose a username"
+            required
+          />
 
           <label for="email">Student Email</label>
           <input
@@ -110,13 +131,14 @@
       const form = document.getElementById("signupForm");
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const name = document.getElementById("name").value.trim();
+        const firstName = document.getElementById("first_name").value.trim();
+        const lastName = document.getElementById("last_name").value.trim();
+        const usernameInput = document.getElementById("username").value.trim();
         const email = document.getElementById("email").value.trim();
         const pw = document.getElementById("password").value.trim();
         const c = document.getElementById("confirmPassword").value.trim();
         const studID = document.getElementById("Studentid").value.trim();
-
-        if (!name || !email || !pw || !c)
+        if (!firstName || !lastName || !email || !pw || !c || !usernameInput)
           return showToast("⚠️ Fill all fields", "#f44336");
         if (pw !== c) return showToast("❌ Passwords don't match", "#f44336");
         if (pw.length < 8)
@@ -125,16 +147,31 @@
             "#f44336"
           );
 
+        // username validation: allow letters, numbers, underscores, dots and hyphens, length 3-30
+        if (usernameInput && !/^[a-zA-Z0-9_.-]{3,30}$/.test(usernameInput)) {
+          return showToast(
+            "❌ Username invalid. Use 3-30 letters, numbers, '.', '_' or '-'",
+            "#f44336"
+          );
+        }
+
         // Attempt to POST signup data to backend /users endpoint
         try {
           const API_BASE = "http://127.0.0.1:5000";
+          // Create a username from the email local-part + short random suffix
+          const localPart = (email.split("@")[0] || "user")
+            .replace(/[^a-zA-Z0-9_.-]/g, "")
+            .toLowerCase();
+          const rand = Math.random().toString(36).slice(2, 8);
+          const generatedUsername = `${localPart}_${rand}`;
+
           const payload = {
-            username: email, // backend expects 'username' and 'email' and 'password'
+            username: usernameInput || generatedUsername,
             email: email,
             password: pw,
             role: "student",
-            // Optionally split name into first/last if you want to store them
-            first_name: name,
+            first_name: firstName,
+            last_name: lastName,
             student_id: studID,
           };
 
