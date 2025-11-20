@@ -275,8 +275,9 @@ if (signupForm) {
     e.preventDefault();
     const name = document.getElementById('name')?.value.trim();
     const email = document.getElementById('signupEmail')?.value.trim();
-    const password = document.getElementById('signupPassword')?.value.trim();
-    if (!name || !email || !password) { alert("Please fill in all fields."); return; }
+  const password = document.getElementById('signupPassword')?.value.trim();
+  if (!name || !email || !password) { alert("Please fill in all fields."); return; }
+  if (password.length < 8) { alert("Password must be at least 8 characters long."); return; }
     alert(`Signing up as: ${name} (${email})`);
   });
 }

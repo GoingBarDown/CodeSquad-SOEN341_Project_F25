@@ -11,6 +11,11 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
     return;
   }
 
+  if (password.length < 8) {
+    alert('Password must be at least 8 characters long!');
+    return;
+  }
+
   // You can use name as username, or add a username field if needed
   fetch('/users', {
     method: 'POST',
@@ -23,18 +28,20 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
     })
   })
   .then(response => response.json())
-  .then(data => {
-    if (data.id) {
+    .then(data => {
+    console.debug('signup.js: create user response', data);
+    if (data && data.id) {
       // Optionally fetch user data
       fetch(`/users/${data.id}`)
         .then(res => res.json())
         .then(userData => {
           document.cookie = `userId=${userData.id}; path=/;`;
           document.cookie = `username=${userData.username}; path=/;`;
-          window.location.href = 'index.html';
+          try { window.location.replace('index.html'); } catch(e) { window.location.href = 'index.html'; }
+          setTimeout(() => { try { window.location.replace('index.html'); } catch(e){ window.location.href='index.html'; } }, 1200);
         });
     } else {
-      alert(data.error || 'Sign up failed');
+      alert((data && (data.error || data.message)) || 'Sign up failed');
     }
   })
   .catch(() => {

@@ -5,21 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Student Sign Up</title>
     <link rel="stylesheet" href="login-signup.css" />
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <header>
-      <h1>CODESQUAD EVENTS</h1>
+      <h1>CODESQUAD SIGNUP</h1>
       <button id="dot">☰</button>
     </header>
 
     <div id="menu">
       <nav>
-        <a href="index.html">HOME</a>
-        <a href="events.html">EVENTS</a>
-        <a href="login.html">LOGIN</a>
+        <a href="index.html">Home</a>
+        <a href="events.html">Events</a>
+        <a href="login.html">Login</a>
       </nav>
     </div>
 
@@ -47,11 +50,21 @@
             required
           />
 
-        <label for="confirmPassword">Confirm Password</label>
-        <input type="password" id="confirmPassword" placeholder="Confirm password" required />
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            placeholder="Confirm password"
+            required
+          />
 
-        <label for="confirmPassword">Student ID</label>
-        <input type="password" id="Studentid" placeholder="Student ID" required />
+          <label for="confirmPassword">Student ID</label>
+          <input
+            type="password"
+            id="Studentid"
+            placeholder="Student ID"
+            required
+          />
 
           <button type="submit" class="btn-auth">Sign Up</button>
 
@@ -106,6 +119,11 @@
         if (!name || !email || !pw || !c)
           return showToast("⚠️ Fill all fields", "#f44336");
         if (pw !== c) return showToast("❌ Passwords don't match", "#f44336");
+        if (pw.length < 8)
+          return showToast(
+            "❌ Password must be at least 8 characters long",
+            "#f44336"
+          );
 
         // Attempt to POST signup data to backend /users endpoint
         try {
@@ -117,7 +135,7 @@
             role: "student",
             // Optionally split name into first/last if you want to store them
             first_name: name,
-            student_id: studID
+            student_id: studID,
           };
 
           const res = await fetch(`${API_BASE}/users`, {
@@ -142,7 +160,22 @@
           localStorage.setItem("registeredName", name);
           localStorage.setItem("registeredEmail", email);
 
-          setTimeout(() => (window.location.href = "login.html"), 1500);
+          // Robust redirect: prefer replace(), but always attempt a final href change
+          try {
+            console.debug("signup: redirecting to index.html (primary)");
+            window.location.replace("index.html");
+          } catch (e) {
+            console.debug("signup: replace failed, setting href");
+            window.location.href = "index.html";
+          }
+          // Final fallback: ensure redirect happens even if replace didn't work
+          setTimeout(() => {
+            try {
+              window.location.replace("index.html");
+            } catch (e) {
+              window.location.href = "index.html";
+            }
+          }, 1200);
         } catch (err) {
           console.error("Signup error", err);
           showToast("❌ Network error. Try again later.", "#f44336");
