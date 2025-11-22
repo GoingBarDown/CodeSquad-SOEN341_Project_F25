@@ -67,7 +67,7 @@
           <input
             type="password"
             id="password"
-            placeholder="Create password"
+            placeholder="Create password (Must be atleast 8 characters long)"
             required
           />
 
@@ -79,11 +79,11 @@
             required
           />
 
-          <label for="confirmPassword">Student ID</label>
+          <label for="Studentid">Student ID</label>
           <input
-            type="password"
+            type="text"
             id="Studentid"
-            placeholder="Student ID"
+            placeholder="Student ID (e.g., S1234567)"
             required
           />
 
@@ -194,7 +194,7 @@
           // Success
           showToast("✅ Account created! Redirecting...", "#4CAF50");
           // Optionally store limited info, do NOT store password
-          localStorage.setItem("registeredName", name);
+          localStorage.setItem("registeredName", firstName);
           localStorage.setItem("registeredEmail", email);
 
           // Robust redirect: prefer replace(), but always attempt a final href change

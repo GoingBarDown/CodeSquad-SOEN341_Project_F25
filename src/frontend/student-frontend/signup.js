@@ -1,5 +1,10 @@
-document.getElementById('signupForm').addEventListener('submit', function(e) {
-  e.preventDefault();
+const signupFormElem = document.getElementById('signupForm');
+if (!signupFormElem) {
+  // Not on signup page — nothing to do
+  // This prevents errors when signup.js is included on other pages
+} else {
+  signupFormElem.addEventListener('submit', function(e) {
+    e.preventDefault();
 
   const firstName = (document.getElementById('first_name')?.value || document.getElementById('name')?.value || '').trim();
   const lastName = (document.getElementById('last_name')?.value || '').trim();
@@ -76,4 +81,5 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
   .catch(() => {
     alert('Network error. Please try again.');
   });
-});
+  });
+}
