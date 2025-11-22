@@ -141,7 +141,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Safety fallback: if for some reason the fetch never resolves, remove
     // the loading state after a short timeout so the page isn't permanently hidden.
     setTimeout(() => {
-      try { document.querySelector('.profile-card')?.classList.remove('loading'); } catch(e){}
+      try {
+        document.querySelector('.profile-card')?.classList.remove('loading');
+      } catch (e) {
+        // Log at debug level to aid development without alarming users.
+        console.debug('profilePage: failed to remove loading class', e);
+      }
     }, 3500);
 
   } catch (error) {
