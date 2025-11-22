@@ -262,7 +262,6 @@ if (createEventForm) {
                 location: document.getElementById('location').value.trim() || null,
                 capacity: document.getElementById('capacity').value ? parseInt(document.getElementById('capacity').value, 10) : null,
                 price: document.getElementById('price').value ? parseFloat(document.getElementById('price').value) : 0,
-                link: document.getElementById('link').value.trim() || null,
                 seating: document.getElementById('seating').value.trim() || null,
                 status: document.getElementById('status').value || 'draft',
                 organizer_id: organizerId
