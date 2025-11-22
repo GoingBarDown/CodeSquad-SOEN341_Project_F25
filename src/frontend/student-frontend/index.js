@@ -273,11 +273,15 @@ const signupForm = document.getElementById('signupForm');
 if (signupForm) {
   signupForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const name = document.getElementById('name')?.value.trim();
+    const firstName = document.getElementById('first_name')?.value.trim() || document.getElementById('name')?.value.trim();
+    const lastName = document.getElementById('last_name')?.value.trim() || '';
+    const usernameInput = (document.getElementById('username')?.value || document.getElementById('signupUsername')?.value || '').trim();
     const email = document.getElementById('signupEmail')?.value.trim();
-    const password = document.getElementById('signupPassword')?.value.trim();
-    if (!name || !email || !password) { alert("Please fill in all fields."); return; }
-    alert(`Signing up as: ${name} (${email})`);
+  const password = document.getElementById('signupPassword')?.value.trim();
+  if (!firstName || !lastName || !email || !password || !usernameInput) { alert("Please fill in all fields."); return; }
+  if (password.length < 8) { alert("Password must be at least 8 characters long."); return; }
+  if (!/^[a-zA-Z0-9_.-]{3,30}$/.test(usernameInput)) { alert('Username invalid. Use 3-30 letters, numbers, . _ or -'); return; }
+    alert(`Signing up as: ${firstName} ${lastName} (${email}) — username: ${usernameInput}`);
   });
 }
 

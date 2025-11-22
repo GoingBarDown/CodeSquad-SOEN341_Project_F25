@@ -15,7 +15,7 @@
 
 <body>
   <header>
-    <div id="logo">CODESQUAD EVENTS</div>
+    <div id="logo">CODESQUAD PROFILE PAGE</div>
     <button id="dot">&#8801</button>
   </header> 
 
@@ -31,27 +31,11 @@
     </nav>
   </div>
 
-  <script>
-    // Defensive logout handler in case index.js hasn't attached yet.
-    document.addEventListener('DOMContentLoaded', () => {
-      const logoutBtn = document.getElementById('logout-btn-student');
-      if (!logoutBtn) return;
-      logoutBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        try { localStorage.removeItem('role'); } catch(e) {}
-        try { localStorage.removeItem('loggedInUser'); } catch(e) {}
-        try { localStorage.removeItem('userId'); } catch(e) {}
-        // expire cookie
-        document.cookie = 'userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-        try { localStorage.setItem('logoutMessage', '\u2705 Successfully logged out!'); } catch(e) {}
-        window.location.href = 'index.html';
-      });
-    });
-  </script>
+  <!-- logout is handled centrally by index.js -->
 
   <main>
     <section class="profile-container">
-      <div class="profile-card">
+  <div class="profile-card loading">
         <div class="profile-header">
           <h2 id="student-name" class="placeholder">Student Name</h2>
         </div>

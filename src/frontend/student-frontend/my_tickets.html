@@ -18,18 +18,42 @@
 
 <body>
   <header>
-    <div id="logo">CODESQUAD EVENTS</div>
+    <div id="logo">CODESQUAD TICKETS</div>
     <button id="dot">&#8801</button>
   </header> 
 
   <div id="menu">
-    <nav>
+    <!-- GUEST MENU -->
+    <nav id="guest-menu">
+      <a href="index.html">Home</a>
+      <a href="events.html">Events</a>
+      <a href="login.html" id="loginLogoutLink">Log In</a>
+      <a href="signup.html">Sign Up</a>
+    </nav>
+
+    <!-- STUDENT MENU -->
+    <nav id="student-menu" style="display: none">
       <a href="index.html">Home</a>
       <a href="events.html">Events</a>
       <a href="profilePage.html">Profile</a>
       <a href="my_tickets.html">My Tickets</a>
       <a href="student_calender.html">Calendar</a>
       <a href="#" id="logout-btn-student">Log Out</a>
+    </nav>
+
+    <!-- ORGANIZER MENU -->
+    <nav id="organizer-menu" style="display: none">
+      <a href="index.html">Home</a>
+      <a href="profilePage.html">Profile</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="analytics.html">Analytics</a>
+      <a href="#" id="logout-btn-organizer">Log Out</a>
+    </nav>
+
+    <!-- ADMIN MENU -->
+    <nav id="admin-menu" style="display: none">
+      <a href="index.html">Home</a>
+      <a href="#" id="logout-btn-admin">Log Out</a>
     </nav>
   </div>
 

@@ -56,7 +56,7 @@
   <body class="student-profile-page">
     <!-- Header -->
     <header>
-      <div id="logo">CODESQUAD EVENTS</div>
+      <div id="logo">CODESQUAD EDIT PROFILE</div>
       <button id="dot">&#8801;</button>
     </header>
 
@@ -144,25 +144,88 @@
         }
       });
     
-      // Populate form from localStorage overrides (if any) and handle submit
+      // Populate form from backend or localStorage overrides, and handle submit
       document.addEventListener('DOMContentLoaded', () => {
+        const API_BASE = 'http://127.0.0.1:5000';
+        const getCookie = (name) => {
+          const v = `; ${document.cookie}`;
+          const p = v.split(`; ${name}=`);
+          if (p.length === 2) return p.pop().split(';').shift();
+          return null;
+        };
+
         const getLS = (k) => { try { return localStorage.getItem(k); } catch(e){return null;} };
         const setLS = (k,v) => { try { localStorage.setItem(k,v); } catch(e){} };
 
-        // populate inputs
-        const mappings = {
-          firstName: 'profile_first_name',
-          lastName: 'profile_last_name',
-          program: 'profile_program',
-          phone: 'profile_phone',
-          bio: 'profile_bio'
-        };
-        Object.keys(mappings).forEach(id => {
-          const el = document.getElementById(id);
-          const val = getLS(mappings[id]);
-          if (el && val) el.value = val;
-        });
+        async function fetchUser() {
+          const userId = getCookie('userId') || localStorage.getItem('userId');
+          // try to use server data first
+          if (userId) {
+            try {
+              let res = await fetch(`${API_BASE}/users/${encodeURIComponent(userId)}`);
+              if (!res.ok) {
+                // fallback to older endpoint
+                res = await fetch(`${API_BASE}/api/student/me`);
+              }
+              if (res.ok) {
+                return await res.json();
+              }
+            } catch (err) {
+              console.warn('Could not fetch user from server:', err);
+            }
+          }
 
+          // last-resort: try localStorage 'userData' or fields saved as overrides
+          try {
+            const raw = localStorage.getItem('userData');
+            if (raw) return JSON.parse(raw);
+          } catch(e) { /* ignore */ }
+
+          // nothing found
+          return null;
+        }
+
+        (async () => {
+          const user = await fetchUser();
+
+          // element references
+          const elFirst = document.getElementById('firstName');
+          const elLast = document.getElementById('lastName');
+          const elEmail = document.getElementById('email');
+          const elStudentId = document.getElementById('studentId');
+          const elProgram = document.getElementById('program');
+          const elPhone = document.getElementById('phone');
+          const elBio = document.getElementById('bio');
+
+          // Prefer server values; fall back to localStorage overrides when server value missing
+          if (user) {
+            try {
+              if (elFirst) elFirst.value = user.first_name ?? getLS('profile_first_name') ?? '';
+              if (elLast) elLast.value = user.last_name ?? getLS('profile_last_name') ?? '';
+              if (elEmail) elEmail.value = user.email ?? getLS('profile_email') ?? '';
+              if (elStudentId) elStudentId.value = user.student_id ?? user.id ?? getLS('profile_student_id') ?? '';
+              if (elProgram) elProgram.value = user.program ?? getLS('profile_program') ?? '';
+              if (elPhone) elPhone.value = user.phone ?? getLS('profile_phone') ?? '';
+              if (elBio) elBio.value = user.bio ?? getLS('profile_bio') ?? '';
+            } catch (e) { console.warn('Error populating form from user object', e); }
+          } else {
+            // No server user — populate from saved overrides if present
+            const mappings = {
+              firstName: 'profile_first_name',
+              lastName: 'profile_last_name',
+              program: 'profile_program',
+              phone: 'profile_phone',
+              bio: 'profile_bio'
+            };
+            Object.keys(mappings).forEach(id => {
+              const el = document.getElementById(id);
+              const val = getLS(mappings[id]);
+              if (el && val) el.value = val;
+            });
+          }
+        })();
+
+        // now the submit handler (unchanged behavior)
         const form = document.getElementById('studentProfileForm');
         if (!form) return;
         form.addEventListener('submit', async (e) => {
@@ -193,13 +256,7 @@
             phone: localStorage.getItem('profile_phone'),
             bio: localStorage.getItem('profile_bio')
           });
-          // attempt backend PATCH if userId exists
-          const getCookie = (name) => {
-            const v = `; ${document.cookie}`;
-            const p = v.split(`; ${name}=`);
-            if (p.length===2) return p.pop().split(';').shift();
-            return null;
-          };
+
           const userId = getCookie('userId') || localStorage.getItem('userId');
           if (userId) {
             try {

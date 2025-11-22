@@ -39,7 +39,12 @@ def authenticate_user(username, password):
     Returns: dict or None: Serialized user data if authentication succeeds; otherwise None.
     """
     try:
+        # Support login by either username or email. The frontend commonly sends
+        # the email value as 'username' (especially for students). Try username
+        # first, then fall back to email lookup.
         user = db.session.query(User).filter_by(username=username).first()
+        if not user:
+            user = db.session.query(User).filter_by(email=username).first()
         if not user:
             return None
         if user.password != password:
