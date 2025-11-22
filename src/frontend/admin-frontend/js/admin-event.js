@@ -1,4 +1,8 @@
 // --- 0. Global Data Store and Configuration ---
+// For what: In-Memory Cache.
+// We store the fetched events in a global array `allEvents`. This allows us to perform
+// filtering, searching, and sorting instantly on the client side without making repeated
+// API calls to the backend, significantly improving the user experience for admins.
 let allEvents = [];
 
 // Display welcome message with admin name
@@ -27,6 +31,10 @@ if (welcomeMessage) {
 // --- 1. Event Fetching (API Integration Point - GET) ---
 async function fetchAllEvents() {
     try {
+        // for what: Separation of Concerns (API Abstraction).
+        // We use a dedicated `ADMIN_API` object (in api-admin.js) to handle the
+        // HTTP details (fetch, headers, error parsing). This keeps the view logic here clean
+        // and decoupled from the network layer.
         allEvents = await ADMIN_API.getEvents();
         populateFilterOptions();
         applyFilters();
@@ -41,6 +49,11 @@ async function fetchAllEvents() {
 
 // --- 1b. Populate Dynamic Filter Options ---
 function populateFilterOptions() {
+    // FOr what:  Data-Driven UI.
+    // Instead of hardcoding filter options (like specific locations or categories),
+    // we dynamically extract unique values from the fetched data using Set operations.
+    // This ensures the filters are always in sync with the actual data available in the system.
+
     // Get unique locations
     const locations = [...new Set(allEvents
         .map(e => e.location)
@@ -148,12 +161,17 @@ function renderEventList(eventsToDisplay) {
     eventsToDisplay.forEach((event, index) => {
         const item = document.createElement('div');
         item.classList.add('event-list-item');
+        // why: Data Attributes.
+        // We store the ID in the DOM element itself (`data-event-id`). This allows us to easily
+        // retrieve the correct data object from our `allEvents` array when the user clicks
+        // this specific item, without needing complex closures.
         item.setAttribute('data-event-id', event.id);
         item.innerHTML = `<strong>${event.title}</strong><br><small>Status: ${event.status} | ${event.start_date || 'No date'}</small>`;
 
         item.addEventListener('click', loadEventDetails);
         container.appendChild(item);
 
+        // Automatically select the first item for better UX
         if (index === 0) {
             item.classList.add('active');
             loadEventDetails({ currentTarget: item });
@@ -170,6 +188,11 @@ function loadEventDetails(event) {
     const contentView = document.querySelector('.content-view');
 
     if (eventData && contentView) {
+        /* why: Lazy Loading of Related Data.
+         The initial event list fetch is lightweight. We only fetch deeper details (like
+         specific Organizer Names or Attendance Stats) when the user explicitly selects
+         an event. This reduces initial load time and bandwidth usage*/
+        
         // Fetch organizer name if organizer_id exists
         let organizerDisplay = '—';
         if (eventData.organizer_id) {
@@ -200,6 +223,7 @@ function loadEventDetails(event) {
             }
         });
 
+        // Conditional Rendering for Moderation Actions
         let moderationButtons = '';
         if (eventData.status.toLowerCase() === 'pending') {
             moderationButtons = `
@@ -208,6 +232,7 @@ function loadEventDetails(event) {
             `;
         }
 
+        // Template Literal for UI Construction
         contentView.innerHTML = `
             <div class="info-card">
                 <div class="info-header">
@@ -259,6 +284,11 @@ async function changeEventStatus(eventId, newStatus) {
     try {
         await ADMIN_API.updateEventStatus(eventId, newStatus);
         
+        // for what: Optimistic UI Update.
+        // Instead of re-fetching the entire list of events from the server (which is slow),
+        // we manually update the local `allEvents` array and re-render the specific component.
+        // This provides instant feedback to the admin.
+        
         // Update frontend state
         const eventIndex = allEvents.findIndex(e => e.id === eventId);
         if (eventIndex > -1) {
@@ -285,6 +315,7 @@ async function deleteEvent(eventId) {
     try {
         console.log('Attempting to delete event with ID:', eventId);
         await ADMIN_API.deleteEvent(eventId);
+        // Local state update: Remove the deleted item from the array
         allEvents = allEvents.filter(event => event.id !== eventId);
         applyFilters(); 
         alert("Event successfully deleted.");
@@ -299,6 +330,9 @@ function openEditEventModal(eventId) {
     const eventData = allEvents.find(e => e.id === eventId);
     if (!eventData) return;
 
+    // Dynamic Modal Creation
+    // We create the modal DOM elements on-the-fly rather than keeping hidden HTML in the page.
+    // This ensures the form state is always fresh and clean when opened.
     const modal = document.createElement('div');
     modal.classList.add('modal-overlay');
     modal.innerHTML = `
@@ -343,7 +377,8 @@ function openEditEventModal(eventId) {
     // Handle form submission
     modal.querySelector('#editEventForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
+        // Input collection & Validation logi
         const title = document.getElementById('editTitle').value.trim();
         
         // Validation
@@ -392,7 +427,7 @@ function openEditEventModal(eventId) {
 }
 
 
-// --- 5. Filtering Logic ---
+//  5. Filtering Logic 
 function applyFilters() {
     const searchTerm = document.getElementById('main-search')?.value.toLowerCase() || '';
     const location = document.getElementById('filter-location')?.value || '';
@@ -405,6 +440,9 @@ function applyFilters() {
       return;
     }
 
+    // Client-Side Filtering.
+    // Filtering allows the admin to narrow down the list based on multiple criteria.
+    // Since `allEvents` is in memory, this filter operation is instantaneous.
     const filtered = allEvents.filter(event => {
         const matchSearch = !searchTerm || 
           event.title.toLowerCase().includes(searchTerm) || 
@@ -423,12 +461,12 @@ function applyFilters() {
 }
 
 
-// --- 6. Event Listener Setup ---
+// 6. Event Listener Setup
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize the event data
     fetchAllEvents();
 
-    // Filters event listeners
+    // Attach "live" listeners to inputs for real-time filtering
     document.getElementById('main-search')?.addEventListener('input', applyFilters);
     document.getElementById('filter-location')?.addEventListener('change', applyFilters);
     document.getElementById('filter-category')?.addEventListener('change', applyFilters);
