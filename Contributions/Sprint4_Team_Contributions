@@ -23,3 +23,11 @@ Patricia Dsouza (40284086):
 -Made payment.html, payment.js, and payment.css (2 hours)
 -joined all the meetings that were conducted. 
 Rim Echahbi (40227779):
+- Implemented QR Code infrastructure (Backend generation routes, database updates, qrcode library integration) (4 hours)
+- Developed the "My Tickets" page (Frontend UI, API integration, QR Code modal) (5hours)
+- Implimented the "Event Countdown" timer extra feature to my tickets page (3 hours)
+- Refactored Student Calendar logic (2 hours)
+- Connected Organizer Ticket Validator to backend APIs for real-time check-ins and analytics updates (1.5 hours)
+- Added Some frontend code documentation(Added architectural comments) (1.5 hour)
+- Worked on the final report (30min)
+- Joined all team meeting
