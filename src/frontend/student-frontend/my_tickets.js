@@ -1,3 +1,11 @@
+/**
+ * my_tickets.js
+ * * Manages the "My Tickets" page logic.
+ * ARCHITECTURE DECISION:
+ * separate this logic from index.js to keep the codebase modular. 
+ * This script handles fetching specific ticket data, rendering the ticket grid, and managing the QR code modal interactions.
+ */
+
 document.addEventListener("DOMContentLoaded", () => {
   // Get references to all the modal parts
   const gridContainer = document.getElementById("ticket-grid-container");
@@ -11,7 +19,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalTicketId = document.getElementById("modal-ticket-id");
   const modalTicketStatus = document.getElementById("modal-ticket-status");
 
-  // Define the backend base URL once
+  // ARCHITECTURE DECISION: 
+  // We define the backend base URL explicitly here.
+  // Why: In our local development environment, the frontend is served on Port 3002 
+  // while the Flask backend runs on Port 5000. Relative paths (ex: '/api/...') would fail because the browser would look on Port 3002. 
+  // This const bridges that gap.
   const BACKEND_BASE = 'http://127.0.0.1:5000';
 
   /**
@@ -20,6 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
   async function loadTickets() {
     try {
       // Get student ID from localStorage or cookies
+      // For Robustness, we check localStorage first, but fall back to parsing cookies 
+      //in case the auth system changes how it stores the session ID.
       const studentId = localStorage.getItem('userId') || (function() {
         const m = document.cookie.match(new RegExp('(^| )userId=([^;]+)'));
         return m ? decodeURIComponent(m[2]) : null;
@@ -31,7 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // Use the studentId and base URL
+      //We use the absolute URL with the studentId to fetch the joined data
+      // (Tickets + Events) in a single request, reducing network overhead.
       const response = await fetch(`${BACKEND_BASE}/api/student/${encodeURIComponent(studentId)}/tickets-with-details`);
 
       if (response.status === 401) {
@@ -51,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      gridContainer.innerHTML = ''; // Clear "Loading..."
+      gridContainer.innerHTML = ''; // Clear "Loading..." message
 
       // Loop through each ticket and create a card
       tickets.forEach(ticket => {
@@ -59,6 +74,9 @@ document.addEventListener("DOMContentLoaded", () => {
         card.className = 'ticket-card';
         
         // Normalize date field and format it
+        // For Data Normalization.
+        // The backend might return keys in snake_case (Python standard) or camelCase.
+        // We check multiple possibilities to prevent the UI from breaking if the API schema changes slightly.
         const rawEventDate = ticket.event_date || ticket.eventDate;
         const eventDate = rawEventDate ? new Date(rawEventDate).toLocaleDateString(undefined, {
           year: 'numeric',
@@ -70,6 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const ticketId = ticket.ticket_id || ticket.ticketId || ticket.id;
 
         // Use data-attributes to store all ticket info on the button
+        // Render the card HTML
         card.innerHTML = `
           <div>
             <h3>${ticket.event_title || 'Event Title'}</h3>
@@ -90,6 +109,8 @@ document.addEventListener("DOMContentLoaded", () => {
         gridContainer.appendChild(card);
         
         //Find the new element and start its timer
+        // Why: Start the countdown immediately after appending to the DOM.
+        // This provides real-time urgency feedback to the student.
         const countdownElement = document.getElementById(`countdown-${ticketId}`);
         if (countdownElement && rawEventDate) {
             startCountdown(countdownElement, rawEventDate);
@@ -104,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
         button.addEventListener('click', openTicketModal);
       });
 
-      // Auto-open highlighted ticket if query param exists
+      // Auto-open highlighted ticket if query param exists (Deep Linking feature)
       try {
         const params = new URLSearchParams(window.location.search);
         const highlight = params.get('highlightTicket');
@@ -147,9 +168,14 @@ document.addEventListener("DOMContentLoaded", () => {
     modalTicketStatus.textContent = data.status;
     
     // 2. Set the QR code image source
+    // why: we point the image source directly to the backend endpoint.
+    // This allows the backend to generate the image in-memory on demand, keeping the server stateless.
     modalQrImg.src = `${BACKEND_BASE}/tickets/${ticketId}/qr`;
 
-    // 3. Set the onerror fallback
+    // 3. Fallback Mechanism
+    // Why: If the backend fails to generate the image (example: 'Pillow' library missing, or server error),
+    // we catch the error and draw a fallback Canvas on the client side.
+    // This ensures the user can still see their Ticket ID even if the QR system is down.
     modalQrImg.onerror = () => {
       console.warn('QR image failed to load from server, showing fallback ticket id.');
       // Create canvas fallback
@@ -167,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ctx.textBaseline = 'middle';
       ctx.fillText(String(ticketId), canvas.width / 2, canvas.height / 2);
 
-      // Replace the image with the canvas in the modal
+      // Replace the broken <img> with the <canvas>
       if (modalQrImg.parentNode) {
         // Give new canvas the same ID
         canvas.id = 'modal-qr-img'; 
@@ -182,12 +208,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /**
-   * Closes the modal.
+   * Closes the modal and resets the QR image state.
    */
   function closeTicketModal() {
     modalOverlay.classList.remove('visible');
     
-    // Check if modalQrImg is a canvas (our fallback)
+    // Cleanup Logic.
+    // why: If the previous modal showed the fallback Canvas, we must swap it back 
+    // to a standard <img> tag so the next ticket tries to load the real QR code again.
     if (modalQrImg.tagName === 'CANVAS') {
       // Re-create the original <img> element so it tries again next time
       const newImg = document.createElement('img');
@@ -202,6 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  //Extra feature:
   /**
    * Starts a countdown timer for a specific element.
    * @param {HTMLElement} element - The div to update.
