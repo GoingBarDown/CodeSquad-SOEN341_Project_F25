@@ -30,7 +30,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       const event = JSON.parse(selectedEventRaw);
       const title = document.createElement('h3');
       title.textContent = event.title || 'Event';
-      title.style.fontFamily = "'Poller One', sans-serif";
+      title.style.fontFamily = "Arial, sans-serif";
+      title.style.textAlign = "center";
       const amount = document.getElementById('amount');
       // show price even if 0
       if (amount && event.price !== undefined) amount.value = `$${Number(event.price).toFixed(2)}`;
@@ -41,9 +42,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         summary.id = 'paymentEventSummary';
         summary.style.marginBottom = '12px';
         summary.appendChild(title);
-        const p = document.createElement('p');
-        p.textContent = `Event ID: ${event.id}`;
-        summary.appendChild(p);
         card.insertBefore(summary, card.firstChild);
       }
     }

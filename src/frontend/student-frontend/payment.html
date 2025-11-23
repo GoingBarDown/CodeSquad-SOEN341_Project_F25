@@ -14,34 +14,34 @@
 </head>
 <body>
   <header>
-    <h1>CODESQUAD EVENTS</h1>
-    <button id="dot">☰</button>
+    <div id="logo">CODESQUAD EVENTS</div>
+    <button id="dot">&#8801;</button>
   </header>
 
   <div id="menu">
     <nav>
-      <a href="index.html">Home</a>
-      <a href="events.html">Events</a>
-      <a href="profilePage.html">My Profile</a>
-      <a href="login.html">Logout</a>
+      <a href="index.html">HOME</a>
+      <a href="events.html">EVENTS</a>
+      <a href="profilePage.html">MY PROFILE</a>
+      <a href="login.html">LOGIN</a>
     </nav>
   </div>
 
   <main id="auth-page">
     <div class="auth-card">
-      <h2 style="color:#7c0c0c;font-family:'Poller One',sans-serif;">Payment Verification</h2>
+      <h2 style="color:#7c0c0c; font-family: Arial, sans-serif;">Payment Verification</h2>
 
       <form id="paymentForm">
-        <label for="studentId">Enter Student ID</label>
+        <label for="studentId" style="font-family: Arial, sans-serif;">Enter Student ID</label>
         <input type="text" id="studentId" placeholder="e.g., S1234567" required />
 
-        <label for="amount">Amount</label>
+        <label for="amount" style="font-family: Arial, sans-serif;">Amount</label>
         <input type="text" id="amount" value="$25" readonly />
 
-        <button type="submit" id="payBtn" class="btn-auth">Verify &amp; Pay</button>
+        <button type="submit" id="payBtn" class="btn-auth" style="font-family: Arial, sans-serif;">Verify &amp; Pay</button>
       </form>
 
-      <p id="paymentStatus" class="status-text"></p>
+      <p id="paymentStatus" class="status-text" style="font-family: Arial, sans-serif;"></p>
     </div>
   </main>
 
