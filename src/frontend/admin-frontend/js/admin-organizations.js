@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Hide welcome message after 5 minutes or if user has visited before
   const welcomeMessage = document.getElementById('welcome-message');
 if (welcomeMessage) {
     welcomeMessage.style.display = 'block';
@@ -232,8 +231,6 @@ async function deleteCurrentOrganization() {
   }
 
   try {
-    // Note: Backend may not have a delete endpoint for organizations
-    // This is a placeholder - check if the backend supports deletion
     await fetch(`${ADMIN_API.baseUrl}/organizations/${currentOrganization.id}`, {
       method: 'DELETE',
       headers: ADMIN_API.getHeaders()
