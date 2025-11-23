@@ -7,6 +7,8 @@ Noorjahan Kazi (40311131):
   -User flow diagram (1 hour)
   -Class diagram (2 hours)
   -System block diagram (2 hours)
+
+
 Griffin Bonomo-Clough (40316007):
 - Add missing routing tests (1.5 hours)
 - Various backend bug fixes (2 hours)
@@ -16,12 +18,16 @@ Griffin Bonomo-Clough (40316007):
 - Update README (20 minutes)
 - Write testing report (2 hours)
 - Work on final report (1.5 hours)
+
+
 Patricia Dsouza (40284086):
 -Worked on the analytics page for the admin section (admin-analytics.js, admin-analytics.html) (2 hours)
 -Made the menu bar for the admin page sync with other pages. (changed the admin-Style.css) (1 hour)
 -Made changes to some of the front-end on the admin page (2 hours)
 -Made payment.html, payment.js, and payment.css (2 hours)
 -joined all the meetings that were conducted. 
+
+
 Rim Echahbi (40227779):
 - Implemented QR Code infrastructure (Backend generation routes, database updates, qrcode library integration) (4 hours)
 - Developed the "My Tickets" page (Frontend UI, API integration, QR Code modal) (5hours)
@@ -31,3 +37,13 @@ Rim Echahbi (40227779):
 - Added Some frontend code documentation(Added architectural comments) (1.5 hour)
 - Worked on the final report (30min)
 - Joined all team meeting
+
+Reema Aboudraz (40253549)
+- Worked on the menu option bar for all students & organizer pages (4h)
+- Refactored adminStyle.css for logic & cohesion purposes (1h)
+- Modified the frontend code for the profile page of students (3h)
+- Updated documentation files according to my changes and contributions for communication and clarity (2h)
+- Updated some files I've worked on previously with some extra documentation for readability (2h)
+- Wrote some parts of the final report document (including, but not limited to, project summary, acceptance tests, user stories, etc) (1h)
+- Attended all meetings set by my team as well as private calls with some teammates (3h)
+
