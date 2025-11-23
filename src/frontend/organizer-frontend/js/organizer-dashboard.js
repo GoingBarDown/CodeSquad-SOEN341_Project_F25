@@ -1,3 +1,4 @@
+/* global API */
 // === AUTHENTICATION CHECK ===
 function checkOrganizerAccess() {
     const userData = localStorage.getItem('userData');
