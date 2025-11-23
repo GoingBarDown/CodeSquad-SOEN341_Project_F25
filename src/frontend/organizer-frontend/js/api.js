@@ -29,6 +29,20 @@ const API = {
         }
     },
 
+    // Logout function - clears localStorage and redirects
+    logout(options = {}) {
+        const { showMessage = true, customItems = [] } = options;
+        localStorage.removeItem('userData');
+        localStorage.removeItem('authToken');
+        // Remove any custom items passed in
+        customItems.forEach(item => localStorage.removeItem(item));
+        
+        if (showMessage) {
+            alert('✅ You have been logged out successfully.');
+        }
+        window.location.href = 'organizer-login.html';
+    },
+
     // Auth endpoints
     async login(loginData) {
         try {
@@ -362,10 +376,14 @@ function showDeniedAccessDialog(org) {
     }
 }
 
-// Logout denied user
-function logoutDeniedUser() {
-    localStorage.removeItem('userData');
-    localStorage.removeItem('authToken');
-    alert('Your account access has been denied. Please contact customer support.');
-    window.location.href = 'organizer-login.html';
-}
+// Automatically setup logout link on all pages
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutLink = document.getElementById('loginLogoutLink');
+    if (logoutLink) {
+        logoutLink.href = '#';
+        logoutLink.onclick = (e) => {
+            e.preventDefault();
+            API.logout();
+        };
+    }
+});

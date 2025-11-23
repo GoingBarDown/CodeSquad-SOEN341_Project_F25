@@ -1,3 +1,4 @@
+/* global API */
 // === AUTHENTICATION CHECK ===
 function checkOrganizerAccess() {
     const userData = localStorage.getItem('userData');
@@ -408,10 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('userData');
-            localStorage.removeItem('authToken');
-            alert('✅ You have been logged out successfully.');
-            window.location.href = 'organizer-login.html';
+            API.logout();
         });
     }
 
