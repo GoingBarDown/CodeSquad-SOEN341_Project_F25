@@ -57,6 +57,44 @@ async function loadAnalytics() {
         console.log("Organizers count:", organizers.length);
         document.getElementById("stat-total-organizers").textContent = organizers.length;
 
+        // ============================
+        // Fetch Tickets for sales data
+        // ============================
+        console.log("Fetching tickets...");
+        const ticketsResponse = await fetch(`${BACKEND_URL}/tickets`);
+        console.log("Tickets response status:", ticketsResponse.status);
+        
+        if (ticketsResponse.ok) {
+            const tickets = await ticketsResponse.json();
+            console.log("Tickets data received:", tickets);
+
+            // Count total tickets purchased
+            const totalTickets = tickets.length;
+            console.log("Total tickets purchased:", totalTickets);
+            document.getElementById("stat-tickets-purchased").textContent = totalTickets;
+
+            // Calculate total sales from event prices
+            // We already have events data, so match tickets to events and sum prices
+            let totalSales = 0;
+            tickets.forEach(ticket => {
+                const event = events.find(e => e.id === ticket.event_id);
+                if (event && event.price) {
+                    totalSales += parseFloat(event.price);
+                }
+            });
+            console.log("Total sales:", totalSales);
+            document.getElementById("stat-total-sales").textContent = `$${totalSales.toFixed(2)}`;
+
+            // Count checked-in attendees (tickets with status 'checked-in')
+            const checkedInAttendees = tickets.filter(ticket => 
+                ticket.status && ticket.status.toLowerCase() === 'checked-in'
+            ).length;
+            console.log("Checked-in attendees:", checkedInAttendees);
+            document.getElementById("stat-total-attendees").textContent = checkedInAttendees;
+        } else {
+            console.warn("Could not fetch tickets:", ticketsResponse.status);
+        }
+
     } catch (error) {
         console.error("Error loading analytics:", error);
         console.error("Stack:", error.stack);

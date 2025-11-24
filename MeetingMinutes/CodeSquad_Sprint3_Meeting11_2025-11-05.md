@@ -5,8 +5,7 @@ Agenda:
 * Discuss site uniformity
 * Discuss changes and potential conflicts
 
-Notes:
-* 
+Notes:-
           
 Goals for next meeting:
 * Wrap up sprint 3

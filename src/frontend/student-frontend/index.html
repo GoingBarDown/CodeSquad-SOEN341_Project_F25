@@ -39,7 +39,7 @@
 
     <!-- SIDE MENU -->
     <div id="menu">
-      <!-- GUEST MENU -->
+      <!-- GUEST MENU: only default settings for guest-->
       <nav id="guest-menu">
         <a href="index.html">Home</a>
         <a href="events.html">Events</a>
@@ -47,7 +47,7 @@
         <a href="signup.html">Sign Up</a>
       </nav>
 
-      <!-- STUDENT MENU -->
+      <!-- STUDENT MENU: accounts for additional features that logged in students get. Hiddent unless logged in-->
       <nav id="student-menu" style="display: none">
         <a href="index.html">Home</a>
         <a href="events.html">Events</a>
@@ -57,7 +57,7 @@
         <a href="#" id="logout-btn-student">Log Out</a>
       </nav>
 
-      <!-- ORGANIZER MENU -->
+      <!-- ORGANIZER MENU: organizer features added-->
       <nav id="organizer-menu" style="display: none">
         <a href="index.html">Home</a>
         <a href="profilePage.html">Profile</a>
@@ -66,18 +66,20 @@
         <a href="#" id="logout-btn-organizer">Log Out</a>
       </nav>
 
-      <!-- ADMIN MENU -->
+      <!-- ADMIN MENU: only gets home and logout-->
       <nav id="admin-menu" style="display: none">
         <a href="index.html">Home</a>
         <a href="#" id="logout-btn-admin">Log Out</a>
       </nav>
     </div>
 
+          <!-- SLIDESOW: display past concordia events-->
     <div class="highlights-section">
       <div id="slideshow"></div>
       <div id="info"><p>HELLO</p></div>
     </div>
 
+              <!-- RECENT: display lastest events-->
     <div class="recomended">
       <p style="font-size: xx-large">Latest Events</p>
 

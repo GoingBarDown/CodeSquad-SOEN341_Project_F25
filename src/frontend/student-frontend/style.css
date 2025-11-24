@@ -1,8 +1,10 @@
 /* -------------------------------------------------
    GLOBAL STYLES & COLOR VARIABLES
+   - Using variables for consistent theme + easy updates
 ------------------------------------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Poller+One&family=DM+Serif+Text&display=swap');
 
+/* Root color system for reusable theme */
 :root {
      --primary-color: #912338;
     --primary-hover: #db0272; 
@@ -12,6 +14,7 @@
     --cream-bg: #E9D3D7;
 }
 
+/* Base page setup + prevent horizontal scroll */
 body {
   margin: 0;
   font-family: sans-serif;
@@ -21,7 +24,10 @@ body {
 
 /* -------------------------------------------------
    HEADER & MENU
+   - Header uses flex to align title + menu button cleanly
 ------------------------------------------------- */
+
+/* Top bar layout */
 header {
   display: flex;
   justify-content: space-between;
@@ -35,6 +41,7 @@ header {
   position: relative;
 }
 
+/* Menu toggle button positioned inside header */
 #dot {
   width: 36px;
   height: 36px;
@@ -54,40 +61,45 @@ header {
 
 /* ---------------------------
    VERTICAL DROPDOWN MENU
+   - Menu hidden w/ max-height + opacity for animation
 --------------------------- */
+
+/* Dropdown container */
 #menu {
   position: absolute;
   top: 65px;
   right: 20px;
-  width: 180px;                 /* menu width */
+  width: 180px;
   background-color: #f9f6f1;
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.15);
   overflow: hidden;
-  max-height: 0;                 /* hidden by default */
+  max-height: 0;
   opacity: 0;
   transform: translateY(-10px);
   transition: all 0.3s ease;
   z-index: 1000;
-
-  display: flex;                 /* stack navs vertically */
+  display: flex;
   flex-direction: column;
 }
 
+/* Expanded dropdown state */
 #menu.open {
-  max-height: 500px;             /* large enough for all links */
+  max-height: 500px;
   opacity: 1;
   transform: translateY(0);
 }
 
+/* Container for stacked links */
 #menu nav {
-  display: flex;                 /* stack links vertically */
+  display: flex;
   flex-direction: column;
   width: 100%;
 }
 
+/* Individual menu links */
 #menu nav a {
-  display: block;                /* full width links */
+  display: block;
   width: 100%;
   text-decoration: none;
   color: var(--text-dark);
@@ -98,11 +110,13 @@ header {
   transition: background 0.2s ease;
 }
 
+/* Hover effect for clarity */
 #menu nav a:hover {
   background-color: var(--primary);
   color: var(--text-light);
 }
 
+/* Accessibility focus outline */
 #menu nav a:focus {
   outline: 2px solid #ffb300;
   outline-offset: 2px;
@@ -111,7 +125,10 @@ header {
 
 /* -------------------------------------------------
    HIGHLIGHTS & SLIDESHOW
+   - Slideshow uses background-image for smooth transitions
 ------------------------------------------------- */
+
+/* Container for slideshow + overlay */
 .highlights-section {
   width: 100%;
   color: var(--text-light);
@@ -125,6 +142,7 @@ header {
   width: fit-content;
 }
 
+/* Slideshow image panel */
 #slideshow {
   position: relative;
   width: 100vw;
@@ -138,12 +156,14 @@ header {
   padding: 0;
 }
 
+/* Standalone image inside slideshow */
 #slideshow img {
   width: 400px;
   height: auto;
   display: block;
 }
 
+/* Info bar overlaying slideshow */
 #info {
   position: absolute;
   top: 94.5%;
@@ -155,6 +175,7 @@ header {
   font-weight: bold;
 }
 
+/* Mobile adjustments */
 @media (max-width: 768px) {
   .highlights-section {
     flex-direction: column;
@@ -164,7 +185,10 @@ header {
 
 /* -------------------------------------------------
    MODAL
+   - Fullscreen overlay for event details
 ------------------------------------------------- */
+
+/* Dim background layer */
 .modal {
   position: fixed;
   z-index: 1000;
@@ -178,6 +202,7 @@ header {
   justify-content: center;
 }
 
+/* Modal content box */
 .modal-content {
   background: #fff;
   padding: 32px 24px;
@@ -191,17 +216,20 @@ header {
   color: var(--accent);
 }
 
+/* Modal title style */
 #modal-details h2 {
   margin-top: 0;
   color: var(--accent);
   font-size: 1.5em;
 }
 
+/* Paragraph styling */
 #modal-details p {
   color: #333;
   margin: 10px 0;
 }
 
+/* Close button alignment */
 #close-modal {
   color: var(--accent);
   font-size: 1.5em;
@@ -214,6 +242,7 @@ header {
   cursor: pointer;
 }
 
+/* Ticket button styling */
 #get-ticket-btn {
   display: block;
   margin: 24px auto 0 auto;
@@ -228,6 +257,7 @@ header {
   transition: all 0.3s ease;
 }
 
+/* Hover state */
 #get-ticket-btn:hover {
   background-color: #f0f0f0;
   border-color: #912338;
@@ -239,6 +269,7 @@ header {
   transform: translateY(0);
 }
 
+/* Focus outline for accessibility */
 #get-ticket-btn:focus {
   outline: 2px solid #ffb300;
   outline-offset: 2px;
@@ -246,7 +277,10 @@ header {
 
 /* -------------------------------------------------
    RECOMMENDED & EVENT SECTIONS
+   - Reusable layout style for event display blocks
 ------------------------------------------------- */
+
+/* Wrapper for event/recommended sections */
 .recomended,
 .event1 {
   margin: 60px auto;
@@ -258,6 +292,7 @@ header {
   box-sizing: border-box;
 }
 
+/* Text style for these sections */
 .recomended p,
 .event1 p {
   font-weight: bold;
@@ -266,22 +301,28 @@ header {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Register button variant */
 .btn-register {
   background-color: rgb(70, 4, 4);
 }
 
+/* Background for detail containers */
 #event-details-container,
 .claim-section {
   background-color: var(--light-bg);
 }
 
+/* Recommended section unique color */
 .recomended{
   background-color: #d9e0cc;
 }
 
 /* -------------------------------------------------
    SORT & CARD SECTIONS
+   - Cards arranged in responsive grid
 ------------------------------------------------- */
+
+/* Sort dropdown row */
 .sort-controls {
   display: flex;
   align-items: center;
@@ -290,11 +331,13 @@ header {
   margin-bottom: 30px;
 }
 
+/* Label style */
 .sort-controls label {
   color: var(--text-light);
   font-size: 1.1em;
 }
 
+/* Dropdown appearance */
 .sort-controls select {
   padding: 8px 16px;
   border-radius: 6px;
@@ -306,11 +349,13 @@ header {
   transition: border 0.2s;
 }
 
+/* Keyboard focus look */
 .sort-controls select:focus {
   outline: none;
   border: 2px solid #510c0c;
 }
 
+/* Container for event cards */
 .card-container {
   display: flex;
   justify-content: center;
@@ -318,6 +363,7 @@ header {
   flex-wrap: wrap;
 }
 
+/* Individual card layout + branding */
 .card {
   position: relative;
   flex: 1 1 280px;
@@ -333,6 +379,7 @@ header {
   color: rgb(255, 255, 255);
 }
 
+/* Card text + links override */
 .card p,
 .card p strong,
 .card a {
@@ -340,6 +387,7 @@ header {
   color: var(--primary);
 }
 
+/* Card link styling */
 .card a {
   border-radius: 10px;
   border-style: solid;
@@ -347,32 +395,10 @@ header {
   font-size: medium;
 }
 
-.details-btn {
-  background-color: white;
-  color: #000;
-  padding: 12px 25px;
-  font-size: 1.05rem;
-  font-weight: 600;
-  border: 2px solid transparent;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 12px;
-}
-
-.details-btn:hover {
-  background-color: #f0f0f0;
-  border-color: #912338;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.details-btn:active {
-  transform: translateY(0);
-}
-
+/* Hover lift + color change */
 .card:hover {
   transform: translateY(-5px);
   color: rgb(184, 187, 177);
   background-color: rgb(70, 78, 63);
 }
+

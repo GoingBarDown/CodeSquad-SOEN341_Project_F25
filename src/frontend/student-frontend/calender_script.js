@@ -1,3 +1,11 @@
+/**
+ * calender_script.js
+ * Manages the Student Calendar view using the FullCalendar library.
+ * * ARCHITECTURE DECISION:
+ * We selected FullCalendar because it handles complex date mathematics, 
+ * recurring events, and responsive view switching (Month/Week/Day) natively.
+ * This allows us to focus on data integration rather than building a calendar UI from scratch.
+ */
 
 const dot=document.getElementById('dot');
 const menu=document.getElementById('menu');
@@ -41,6 +49,13 @@ function setCachedEvents(data) {
   console.debug('Events cached, TTL:', eventCache.TTL);
 }
 
+/**
+ * Formats a date object into the specific string format required by iCalendar files.
+ * * Why: RFC 5545 Compliance.
+ * The iCalendar standard requires dates in UTC 'YYYYMMDDTHHMMSSZ' format.
+ * JavaScript's default date.toISOString() is close but includes hyphens and colons 
+ * which must be stripped to be compatible with Outlook, Apple Calendar, and Google Calendar.
+ */
 function formatIcsDate(date) {
     if (!date) return '';
     // Adjust for local timezone offset before formatting to UTC.
@@ -50,7 +65,13 @@ function formatIcsDate(date) {
     return d.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z';
 }
 
-// Function to generate the ICS file content for a single event
+/**
+ * Generates the raw text content for an .ics calendar file.
+ * for what: Client-Side Generation.
+ * We generate this text on the client side rather than the server to reduce backend load.
+ * Since the browser already possesses all the necessary event details (title, date, location),
+ * constructing the file string in JavaScript is instant, offline-capable, and saves an API call.
+ */
 function generateIcsContent(event) {
     const startDate = formatIcsDate(event.start);
     // Ensure end date exists, otherwise use start date
@@ -79,7 +100,13 @@ function generateIcsContent(event) {
     return content;
 }
 
-// Helper to trigger the file download
+/**
+ * Triggers the browser to download the generated .ics file.
+ * For what: In-Memory Blob.
+ * We use a Blob object to create a virtual file in the browser's memory.
+ * This allows us to trigger a native download prompt without creating a temporary
+ * file on the server or navigating the user away from the page.
+ */
 function downloadIcs(event) {
     const icsContent = generateIcsContent(event);
     const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
@@ -175,6 +202,9 @@ function loadCalendarForStudent(calendarEl, studentId) {
                 return;
             }
 
+            // ARCHITECTURE DECISION: Absolute URL.
+            // FOr what: to bridge the Cross-Origin gap between the frontend (Port 3002) 
+            // and the Flask backend (Port 5000) during local development.
             const apiPath = `http://127.0.0.1:5000/student/${studentId}/events`;
             $.ajax({
                 url: apiPath, 
@@ -211,7 +241,11 @@ function loadCalendarForStudent(calendarEl, studentId) {
             info.jsEvent.preventDefault(); 
         },
         
-        // Customize event rendering to show colors based on status
+        /* Customize event rendering
+         Why : Visual Feedback (User Experience).
+         We inspect the 'claimStatus' property attached to the event object to dynamically
+         color-code the event on the calendar. This allows users to instantly distinguish 
+         between events they have tickets for (Red) vs events they just saved (Yellow).*/
         eventDidMount: function(info) {
             // Match status strings from backend
             if (info.event.extendedProps.claimStatus === 'claimed') {

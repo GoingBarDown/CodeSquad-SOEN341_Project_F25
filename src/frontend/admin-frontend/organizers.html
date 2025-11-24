@@ -21,14 +21,18 @@
           try {
               const user = JSON.parse(userData);
               console.log('Parsed user:', user);
-              // Allow access if user exists (temporarily removing strict admin check for debugging)
-              // Wait for body to exist before adding class
-              if (document.body) {
-                  document.body.classList.add('authenticated');
+              if (user.role !== 'admin') {
+                  alert('❌ Only admins can access this page.');
+                  window.location.href = '../student-frontend/index.html';
               } else {
-                  document.addEventListener('DOMContentLoaded', () => {
+                  // Wait for body to exist before adding class
+                  if (document.body) {
                       document.body.classList.add('authenticated');
-                  });
+                  } else {
+                      document.addEventListener('DOMContentLoaded', () => {
+                          document.body.classList.add('authenticated');
+                      });
+                  }
               }
           } catch (e) {
               console.error('Error parsing userData:', e);
@@ -39,6 +43,18 @@
       }
   </script>
   <script src="js/api-admin.js" defer></script>
+  <script>
+    // Mark current page tab as active
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentPage = window.location.pathname.split('/').pop() || 'organizers.html';
+      document.querySelectorAll('#subbar .nav-tab').forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.getAttribute('href') === currentPage) {
+          tab.classList.add('active');
+        }
+      });
+    });
+  </script>
   <script>
       // Check authentication before loading page
       document.addEventListener('DOMContentLoaded', () => {
@@ -81,7 +97,6 @@
         <nav>
             <a href="../student-frontend/index.html">HOME</a>
             <a href="../student-frontend/events.html">EVENTS</a>
-            <a href="../student-frontend/profilePage.html">MY PROFILE</a>
             <a href="admin-login.html" id="loginLogoutLink">LOGIN</a>
         </nav>
     </div>

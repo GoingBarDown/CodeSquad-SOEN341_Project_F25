@@ -45,9 +45,11 @@
   <div id="menu">
     <nav>
       <a href="organizer-dashboard.html">Dashboard</a>
-      <a href="organizer-manage-events.html">Analytics</a>
+      <a href="organizer-create-event.html">Create Event</a>
       <a href="organizer-profile.html">Profile</a>
-      <a href="organizer-login.html" id="loginLogoutLink">Login</a>
+      <a href="organizer-events-list.html">Events List</a>
+      <a href="organizer-manage-events.html" class="active">Analytics</a>
+      <a href="organizer-login.html" id="loginLogoutLink">Logout</a>
     </nav>
   </div>
 
@@ -69,24 +71,21 @@
           </div>
         </div>
 
-        <label for="category">Category</label>
-        <select id="category" required>
-          <option value="">Select category</option>
-          <option value="Workshop">Workshop</option>
-          <option value="Lecture">Lecture</option>
-          <option value="Social">Social</option>
-          <option value="Competition">Competition</option>
-          <option value="Conference">Conference</option>
-        </select>
-
-        <div class="form-fields-row">
+      <div class="form-fields-row">
+        <div class="form-field">
+          <label for="category">Category</label>
+          <select id="category" required>
+            <option value="">Select category</option>
+            <option value="Workshop">Workshop</option>
+            <option value="Lecture">Lecture</option>
+            <option value="Social">Social</option>
+            <option value="Competition">Competition</option>
+            <option value="Conference">Conference</option>
+          </select>
+          </div>
           <div class="form-field">
             <label for="location">Location</label>
             <input type="text" id="location" placeholder="Enter event location" required />
-          </div>
-          <div class="form-field">
-            <label for="capacity">Capacity</label>
-            <input type="number" id="capacity" placeholder="Maximum number of attendees" min="1" />
           </div>
         </div>
 
@@ -96,9 +95,13 @@
             <input type="number" id="price" placeholder="Event price" min="0" step="0.01" />
           </div>
           <div class="form-field">
+            <label for="capacity">Capacity</label>
+            <input type="number" id="capacity" placeholder="Maximum number of attendees" min="1" />
+          </div>
+          <!-- <div class="form-field">
             <label for="link">Event Link</label>
             <input type="url" id="link" placeholder="Virtual event link (optional)" />
-          </div>
+          </div> -->
         </div>
 
         <label for="description">Description</label>

@@ -127,29 +127,35 @@ header h1 {
     color: #ffffff;
     text-decoration: none;
     font-weight: bold;
+    padding-bottom: 10px;
+    border-bottom: 3px solid transparent;
+    transition: border-color 0.2s ease;
 }
 
 #subbar .nav-tab.active {
-    color: #fff;
-    border-bottom: 4px solid #ffd700;
-    padding-bottom: 6px;
+    color: #ffffff;
+    border-bottom: 3px solid #ffd700;
+    padding-bottom: 10px;
 }
 
 /* === MAIN LAYOUT === */
 main {
     display: flex;
+    flex-direction: column;
     gap: 30px;
     padding: 20px;
-    align-items: flex-start;
+    align-items: stretch;
 }
 
 .main-container {
   display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 /* === LEFT SIDEBAR (FILTERS & LIST) === */
 .side-panel {
-    flex: 0 0 600px;
+    flex: 1;
     display: flex;
     flex-direction: column;
     background-color: #d9e0cc;
@@ -157,6 +163,7 @@ main {
     border-radius: 12px;
     height: fit-content;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
 .search-box {
@@ -313,7 +320,7 @@ main {
 /* === RIGHT PANEL (INFO CARD) === */
 .content-view {
     flex: 1;
-    min-width: 400px;
+    min-width: 100%;
 }
 
 .info-card {
@@ -618,9 +625,12 @@ main {
     background: #fce2e2;                     /* Softer light red */
     padding: 25px;
     border-radius: 12px;
-    margin-bottom: 25px;
     text-align: center;
     box-shadow: 0 1px 5px rgba(0,0,0,0.05);   /* Same subtle shadow as other cards */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 180px;
 }
 
 /* Headings inside small boxes */
@@ -629,6 +639,7 @@ main {
     margin-bottom: 10px;
     color: rgb(151, 9, 21);                  /* Matching red */
     font-weight: 700;
+    margin-top: 0;
 }
 
 /* Number inside small boxes */
@@ -637,11 +648,15 @@ main {
     font-weight: bold;
     margin: 0;
     color: #333;
+    text-align: center;
 }
 
-.analytics-box:hover {
-    background-color: #a8ad9f;
-    transform: translateY(-2px);
+/* Row container for analytics cards */
+.analytics-cards-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    width: 100%;
 }
 
 
