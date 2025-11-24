@@ -197,15 +197,18 @@ if (signupForm) {
                 }
                 
                 // Auto-login the newly created organizer
-                localStorage.setItem('userId', String(userId));
-                localStorage.setItem('userData', JSON.stringify({
+                const userDataObj = {
                     id: userId,
                     username: username,
                     email: email,
                     role: role,
                     first_name: firstName,
-                    last_name: lastName
-                }));
+                    last_name: lastName,
+                    organization_id: finalOrgId
+                };
+                
+                localStorage.setItem('userId', String(userId));
+                localStorage.setItem('userData', JSON.stringify(userDataObj));
                 document.cookie = `userId=${userId}; path=/; max-age=86400`;
                 
                 alert('✅ Signup successful! Redirecting to your dashboard...');
