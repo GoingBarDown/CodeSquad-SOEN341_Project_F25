@@ -49,7 +49,7 @@ if (!signupFormElem) {
   const rand = Math.random().toString(36).slice(2,8);
   const generatedUsername = `${localPart}_${rand}`;
 
-  fetch('/users', {
+  fetch('http://127.0.0.1:5000/users', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -65,15 +65,9 @@ if (!signupFormElem) {
     .then(data => {
     console.debug('signup.js: create user response', data);
     if (data && data.id) {
-      // Optionally fetch user data
-      fetch(`/users/${data.id}`)
-        .then(res => res.json())
-        .then(userData => {
-          document.cookie = `userId=${userData.id}; path=/;`;
-          document.cookie = `username=${userData.username}; path=/;`;
-          try { window.location.replace('index.html'); } catch(e) { window.location.href = 'index.html'; }
-          setTimeout(() => { try { window.location.replace('index.html'); } catch(e){ window.location.href='index.html'; } }, 1200);
-        });
+      // Redirect to login page after successful signup
+      alert('Sign up successful! Please log in with your credentials.');
+      window.location.href = 'login.html';
     } else {
       alert((data && (data.error || data.message)) || 'Sign up failed');
     }
