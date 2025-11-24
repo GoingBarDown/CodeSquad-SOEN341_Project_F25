@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Hide welcome message after 5 minutes or if user has visited before
   const welcomeMessage = document.getElementById('welcome-message');
 if (welcomeMessage) {
     welcomeMessage.style.display = 'block';
