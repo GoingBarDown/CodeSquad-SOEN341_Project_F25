@@ -256,6 +256,31 @@ header {
   transition: background 0.2s;
 }
 
+/* Details button styling (View Details, Get Ticket buttons) */
+.details-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: white;
+  color: #000;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.details-btn:hover {
+  border-color: #912338;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.details-btn:active {
+  transform: translateY(0);
+}
+
 /* Hover state */
 #get-ticket-btn:hover {
   background: #510c0c;
