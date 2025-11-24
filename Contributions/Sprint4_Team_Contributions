@@ -51,3 +51,14 @@ Reema Aboudraz (40253549)
 - Wrote some parts of the final report document (including, but not limited to, project summary, acceptance tests, user stories, etc) (1h)
 - Attended all meetings set by my team as well as private calls with some teammates (3h)
 
+Sunidhi Sharma (40190615):
+
+- Worked on admin frontend and added missing features (ability to assign roles, manage organizations, approve/deny organizer accounts) (4h)
+- Worked on admin and organizer frontend integration with backend to ensure all features work and data is reflected accurately (3h)
+- Created admin tab for organizations so admins can manage organizations and their members (1h)
+- Worked on QR scanner functionality with other team members and backend integration (2h)
+- Refined frontend UI/UX (styling, fonts, button designs) (3h)
+- Fixed student/organizer/admin authentication and added role-based access control (2h)
+- Resolved merge conflicts, several bugs, and debugging (3h)
+- Worked on documentation, user stories and the final report (1h)
+- Attended all team meetings/calls with team specific members (3h) 

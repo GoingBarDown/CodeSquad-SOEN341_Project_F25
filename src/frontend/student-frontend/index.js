@@ -184,7 +184,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   } catch (e) { /* ignore */ }
   try {
     const response = await fetch('http://127.0.0.1:5000/events');
-    allEvents = await response.json();
+    const allEventsData = await response.json();
+    // Filter to only show published events (exclude draft and cancelled)
+    allEvents = allEventsData.filter(event => event.status === 'published');
     renderEvents(allEvents);
 
     document.getElementById('sortBy')?.addEventListener('change', function() {
