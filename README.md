@@ -101,3 +101,114 @@ You'll get something like:
     * Debugger is active!
     
 The app is now running at the http address listed in the message.
+
+# Instructions for Running Frontend
+## Prerequisites
+- A modern web browser (Chrome, Firefox, Safari, or Edge)
+- The Flask backend must be running on http://127.0.0.1:5000
+
+## Setup
+The frontend is built using vanilla HTML, CSS, and JavaScript. There is no build process or dependencies to install.
+
+To navigate to the frontend directory:
+   ```
+   cd src/frontend
+   ```
+The frontend is organized into three separate user roles:
+   - **student-frontend/** - Student-facing pages and features
+   - **organizer-frontend/** - Organizer event management pages
+   - **admin-frontend/** - Administrator dashboard and controls
+
+## User Roles and Features
+
+### Student Features
+- Browse published events by category, date, and organization
+- Create an account and login
+- Claim tickets for events with automatic QR code generation
+- View personal calendar with claimed events
+- Download event details as .ics files for calendar integration
+- View ticket countdown timers
+- Access personal ticket collection
+
+### Organizer Features
+- Create and manage events
+- Set ticket prices and capacities
+- View event analytics and attendance rates
+- Scan QR codes to verify ticket holders
+- Export attendee lists
+- Manage organization profile
+
+### Administrator Features
+- Approve/deny organizer account requests
+- Manage organizations and their members
+- Assign roles to users
+- Monitor global platform analytics
+- Remove events that violate policies
+
+## Important Notes
+- The backend API is expected to run on `http://127.0.0.1:5000`
+- All API endpoints use CORS-enabled requests
+- User authentication is managed via localStorage and cookies
+- The application is designed as a single-page application with client-side routing
+
+## Running the Frontend
+You can serve the frontend files using a simple HTTP server. If using VS Code, install the "Live Server" extension and right-click on `index.html` to open it.
+
+## Accessing the Application
+
+### Student
+1. Open your browser and navigate to `src/frontend/student-frontend/login.html`
+2. **New User**: Click "Sign Up" to create a new account
+   - Enter your name, email, student ID (format: letter + digits, e.g., S123456)
+   - Create a password
+   - Click "Sign Up" to create your account
+   - You'll be redirected to login page
+3. **Existing User**: Enter your email and password, then click "Login"
+4. After login, you'll access the student dashboard where you can:
+   - Browse events by category and date
+   - Claim tickets for events
+   - View your personal calendar
+   - Manage your ticket collection
+
+### Organizer
+1. Open your browser and navigate to `src/frontend/organizer-frontend/organizer-login.html`
+2. **New User**: Click "Sign Up" to create a new organizer account
+   - Enter your name, email, and password
+   - Choose to either join an existing organization or create a new one
+   - If creating a new organization: enter the organization name and select a category
+   - Click "Sign Up" to complete registration
+   - You'll be redirected to login page
+3. **Existing User**: Enter your email and password, then click "Login"
+4. After login, you'll access the organizer dashboard where you can:
+   - Create and manage events
+   - Set ticket prices and capacities
+   - View event analytics
+   - Scan QR codes for ticket verification
+
+### Administrator
+1. **Account Creation**: Admin accounts cannot be created through the UI. Instead, use Postman to create an admin user via the backend API:
+   - Start the Flask backend (it should be running on http://127.0.0.1:5000)
+   - In Postman, create a POST request to `http://127.0.0.1:5000/users`
+   - Set the Body to raw JSON:
+     ```json
+     {
+       "username": "admin",
+       "email": "admin@admin.com",
+       "password": "yourpassword",
+       "role": "admin"
+     }
+     ```
+   - Click "Send" to create the admin account
+2. **Login**: Navigate to `src/frontend/admin-frontend/admin-login.html` in your browser
+   - Enter your admin email and password, then click "Login"
+3. After login, you'll access the admin dashboard where you can:
+   - Approve/deny organizer account requests
+   - Manage organizations and members
+   - View and remove events that violate policies
+   - Monitor global platform analytics
+
+## Testing with Sample Data
+If you ran `setup_db.py`, the database includes sample Concordia organizations. You can:
+- Create test student accounts with any student ID format (e.g., A123456, S7891011)
+- Create organizer accounts and choose existing organizations for testing
+- Use the admin account to manage organizations and review organizer requests
