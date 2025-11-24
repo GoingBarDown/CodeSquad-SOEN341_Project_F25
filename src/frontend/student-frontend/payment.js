@@ -115,7 +115,12 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  if (String(serverStudentId) !== String(studentId)) {
+  console.debug('Server student ID:', serverStudentId, 'Entered student ID:', studentId);
+  // Normalize both for comparison: convert to string, trim whitespace, lowercase
+  const normalizedServer = String(serverStudentId).trim().toLowerCase();
+  const normalizedEntered = String(studentId).trim().toLowerCase();
+  
+  if (normalizedServer !== normalizedEntered) {
     setStatus("❌ The Student ID you entered does not match your account. Ticket creation blocked.", 'red');
     return;
   }
