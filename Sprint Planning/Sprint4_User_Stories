@@ -1,1 +1,408 @@
-SPRINT 4 PLANNING HERE
+SPRINT 4 PLANNING HERE:
+User stories:
+As a student/developer, I want: The app to remain stable when updated, without introducing regressions.
+As a student, I want to be able to sign up/log in through the website to create my account (8 US) (Chandler)
+As a student, I want to be able to view my profile details (including my tickets, calendar) (Reema & Chandler)
+As a student, I want to be able to scroll through events to eventually purchase a ticket for one (5 US) (Chandler)
+
+As a student, I want to be able to log out to protect my private information (Reema)
+As a student, I want to be able to view the events I’m attending on a calendar view and to add them to my personal calendar.  (Chandler, Rim)
+As a student, I want to view a dedicated 'My Tickets' page with unique QR codes for each event, so that I can easily present my ticket for check-in. (13 US) (Rim)
+​​As a student, I want to export event details to my personal calendar application (like Google Calendar or Outlook), so that I do not miss events I am attending. (3 US) (Rim)
+As a student, I want to see a live countdown timer on my ticket cards, so that I have a visual reminder of how much time remains until the event starts. (3 US) (Rim)
+
+******
+As an organizer, I want to be able to create and login to my organizer account [Sunidhi]
+As an organizer, I want to be able to create and edit events visible to the public (through home page) [Sunidhi]
+As an organizer, I want to be able to view my analytics for every event [Sunidhi]
+As an organizer, I want filters in my dashboard, so that I can quickly access relevant events. (3 US) [Sunidhi]
+As an organizer, I want to see an approval status dialog when my organization is pending or denied, so that I understand why I can't create events. [Sunidhi]
+As an organizer, I want to scan student QR codes or enter IDs manually to validate tickets in real-time, so that I can track attendance accurately. (5 US) [Rim, Sunidhi]
+As an organizer, I want to be able to view and edit my profile. [Sunidhi, Patricia]
+
+
+********
+As an administrator, I want to be able to log in as an administrator [Sunidhi]
+As an administrator, I want to be able to view current accounts of students (Reema, Sunidhi)
+As an administrator, I want to be able to view current accounts of organizers (Reema, Sunidhi)
+As an administrator, I want to be able to accept/refuse new organizers account [Sunidhi]
+As an administrator, I want to view comprehensive platform analytics showing user counts, ticket sales, and attendee check-ins, so that I can monitor overall system health. [Sunidhi, Patricia]
+As an admin, I want role-based page access control so that only authenticated users with the correct role can view protected pages. [Sunidhi]
+
+
+******
+As a user, I want to see different menu options based on my login status, so that the interface reflects my access level. [Chandler] (5 US)
+As a user, I want my login to redirect me to the correct dashboard (student/organizer/admin), so that I only see features relevant to my role. (5 US) 
+
+*********
+As a developer, I want to be able to want complete system diagrams (architecture, flow, class, block), so that the whole team understands the system structure and future work is easier. (3  US)
+
+TASK BREAKDOWN FOR EACH STORY:
+
+User Story 1 (Backend Route Testing) (Assignee: Griffin)
+Implement integration tests for testing backend routes.
+Ensure positive and negative tests exist.
+Ensure tests run automatically using GitHub actions.
+
+User Story 2 (Static Analysis) (Assignee: Griffin)
+Implement automatic code linting for JavaScript.
+Must automatically generate a linting report.
+The static analysis tool must run automatically.
+
+User Story 03 (Student Profile Page) (Assignee: Reema) [US 3] [Status: Done]
+Analyze the Concordia Website to align the user interface of the official website to the event website (color palette, character style, etc)
+Code the FRONT END (HTML, CSS & JS) to obtain the user interface agreed upon in the planning 
+Implemented all of the agreed upon functionalities (such as View My Calendar button, Edit button, etc) 
+Acceptance Tests: 
+Students can view their profile page.
+Students can edit their information in profile and save the new info
+Students can access their calendar and tickets through the profile page 
+Invalid edits produce error messages.
+
+User Story 05 (Student Log Out & Menu) (Assignee: Reema) [US 3] [Status: Done]
+Analyze the Concordia Website to align the user interface of the official website to the event website (color palette, character style, etc)
+Code the FRONT END (HTML, CSS & JS) to obtain the user interface agreed upon in the planning (which corresponds to the proper menu for this user story)
+
+Acceptance Tests: 
+Student can view appropriate menu when logged in
+Every button in menu leads to correct page
+Log out button leads to home page with appropriate (logged out) menu
+Invalid edits produce error messages.
+
+User Story 18 (Admin- Student Dashboard) (Assignee: Reema) [US 3] [Status: Done]
+Analyze the Concordia Website to align the user interface of the official website to the event website (color palette, character style, etc)
+Code the FRONT END (HTML, CSS & JS) to obtain the user interface agreed upon in the planning 
+Implemented filtering options for the admin to view student accounts according to selected filter
+
+Acceptance Tests: 
+Admin can view all student accounts.
+Admin can edit any student’s information and see updated values.
+Invalid edits produce error messages.
+
+
+User Story 19 (Admin- Organizer Dashboard) (Assignee: Reema) [US 3] [Status: Done]
+
+Analyze the Concordia Website to align the user interface of the official website to the event website (color palette, character style, etc)
+Code the FRONT END (HTML, CSS & JS) to obtain the user interface agreed upon in the planning 
+Implemented filtering options for the admin to view organizer accounts according to selected filter
+
+Acceptance Tests: 
+Admin can view all organizer accounts.
+Admin can edit any organizer’s information and see updated values.
+Invalid edits produce error messages.
+User Story #20: Organizer account creation & Login (Assignee: Sunidhi) [US 3] [Status: Done]
+
+Tasks:
+Implement frontend pages (signup, login).
+Connect forms to backend endpoints for organizer registration + login.
+Display backend validation errors.
+Acceptance Tests: 
+Organizer can create an account successfully and appears in admin pending list.
+Organizer can log in using either their username or email, and their password.
+Invalid credentials show an appropriate error message.
+
+User Story #21: Organizer - Create and Edit events (Assignee: Sunidhi) [US 3] [Status: Done]
+
+Tasks:
+Build event creation & edit forms (frontend UI).
+Connect forms to backend routes for event creation/update.
+Add date/time, ticket capacity, description, etc fields.
+Push changes to the home page event listing.
+Acceptance Tests: 
+Organizer can successfully create a new event visible on the public homepage.
+Organizer can edit an existing event and changes update immediately.
+Validation errors appear (empty fields, invalid dates, etc.).
+
+User Story #22: Organizer - View Analytics for each event (Assignee: Sunidhi, Patricia) [US 3] [Status: Done]
+
+Tasks:
+Build analytics UI for ticket sales, attendees, views.
+Call backend analytics endpoint.
+Display attendance numbers, download CSV files with participant details
+Acceptance Tests: 
+Organizer dashboard displays correct analytics pulled from backend.
+Page loads without errors even if event has zero attendees.
+Refreshing page keeps analytics consistent.
+
+User Story #23: Organizer - Dashboard Filters for quick access (Assignee: Sunidhi) [US 2] [Status: Done]
+
+Tasks:
+Add filter buttons/search bar (by status, category, date).
+Add a “clear filters” button
+Update event list dynamically.
+Show publishing status: Published/cancelled/draft
+
+Acceptance Tests: 
+Selecting any filter updates the list without reloading the page.
+Clearing filters restores the full event list.
+No crashes when filters return empty results.
+
+User Story #24: Organizer - Approval status dialog (Assignee: Sunidhi) [US 3] [Status: Done]
+
+Tasks:
+Detect organizer “status” from backend (approved / pending / denied).
+Show modal dialog explaining their status.
+Block event creation if not approved.
+Auto-approval for organizers with an auto-approved organization
+
+Acceptance Tests: 
+Pending organizers see the pending dialog.
+Denied organizers see denial message in dialog.
+Approved organizers can proceed normally without the dialog.
+User Story #25: Organizer - Scan QR codes or manually validate tickets (Assignee: Rim, Sunidhi) [US 5] [Status: Done]
+
+Tasks:
+Build QR scanner UI.
+Add manual ticket ID entry input.
+Connect to backend ticket validation API.
+Display success/failure messages.
+
+Acceptance Tests: 
+Valid QR code - ticket is marked “checked in.”
+Ticket that’s been scanned already - shows a corresponding message
+Invalid QR or invalid ID - error message displayed.
+Manual entry validates identically to QR scanning.
+User Story #26: Organizer - View & Edit organizer profile (Assignee: Sunidhi) [US 2] [Status: Done]
+
+Tasks:
+Build profile page UI (name, org name, email, logo, etc.).
+Connect update form to backend “edit organizer” route.
+
+Acceptance Tests: 
+Organizer info loads correctly each time.
+Editable fields save successfully.
+Backend returns updated profile and UI refreshes.
+User Story #27: Admin login system (Assignee: Sunidhi) [US 2] [Status: Done]
+
+Tasks:
+Build admin login page UI.
+Connect credentials to backend admin login route.
+
+Acceptance Tests: 
+Valid admin credentials → dashboard loads.
+Invalid admin credentials → error message.
+Admin stays logged in across pages until logout/session expiry.
+User Story #28: Admin - view and edit user accounts (Assignee: Sunidhi) [US 3] [Status: Done]
+
+Tasks:
+Build UI to display all student accounts.
+Add edit modal/page to update student details.
+Connect edits to backend update route.
+Refresh table after editing.
+
+Acceptance Tests: 
+Admin can view all student accounts.
+Admin can edit any student’s information and see updated values.
+Invalid edits produce error messages.
+User Story #29: Admin - view and edit events (Assignee: Sunidhi) [US 3] [Status: Done]
+
+Tasks:
+Build admin event list (title, date, organizer, status).
+Add interface to edit event details (name, location, capacity, times, description).
+Connect event edit requests to backend.
+
+Acceptance Tests: 
+Admin can view all platform events.
+Admin can edit any event and changes appear on the public site.
+Validation prevents invalid date/time/capacity.
+User Story #30: Admin - assign roles to users & role-based access control (Assignee: Sunidhi) [US 3] [Status: Done]
+
+Tasks:
+Add role selector radio buttons to student + organizer account management pages.
+Connect role-update action to backend route for updating user roles.
+Update access control after changes (redirect if needed).
+Display confirmation or error messages.
+
+Acceptance Tests: 
+Admin can change a student’s role to organizer or admin.
+Admin can change an organizer’s role to student or admin.
+Updated roles take effect immediately (menu changes, dashboard redirect, access changes).
+Unauthorized users cannot modify roles.
+User Story #31: Admin - accept or deny organizer accounts (Assignee: Sunidhi) [US 3] [Status: Done]
+
+Tasks:
+Build approval buttons (Accept, Deny, Pending).
+Connect actions to backend.
+Update organizer status in UI.
+
+Acceptance Tests: 
+Clicking accept updates organizer's status to “approved.”
+Clicking deny updates to “denied.”
+Denied organizer accounts are not able to create events or access any other pages.
+List refreshes instantly.
+User Story #32: Admin - global platform analytics (Assignee: Sunidhi, Patricia) [US 3] [Status: Done]
+
+Tasks:
+Build overall analytics page (charts, KPIs).
+Connect to backend analytics endpoints.
+Display user counts, ticket counts, check-in data.
+
+Acceptance Tests: 
+All analytics metrics load correctly from backend.
+Numbers reflect real backend data.
+Page handles datasets without crashing.
+
+User Story #33: Initial Public Mockup Creation (Assignee: Noorjahan) [US 3] [Status: Done]
+
+Tasks: 
+Open Canva mockup. 
+Verify homepage, navigation, and main layout exist. 
+Confirm mockup shared with team for review.
+
+Acceptance Tests: 
+Homepage, navigation, and layout are visible. 
+Mockup opens correctly. 
+Team received shared mockup link. 
+
+Result: PASS
+
+User Story #34: Admin Dashboard Mockup (Assignee: Noorjahan) [US 3] [Status: Done]
+
+Tasks: 
+Open Canva mockup.
+Verify admin sidebar + content layout. 
+Confirm design matches discussed requirements.
+
+Acceptance Tests: 
+Admin layout displays correctly. 
+Sidebar and content structure match requirements.
+
+Result: PASS
+
+User Story #35: Edit Profile & API error UX (Assignee: Chandler) [US 3] [Status: DONE]
+Tasks:
+Prefill Edit Profile form immediately from server-side user data on page load.
+Apply and preserve local overrides (localStorage) if server is unreachable.
+Handle PATCH errors (405, 4xx, 5xx) with friendly user-facing messages; do not display raw server dumps.
+Add a small inline error/notification area on profile and edit pages for friendly messages.
+Ensure Profile page displays a visible, working “Log Out” link when signed-in (clears cookies/localStorage and updates UI).
+Acceptance Tests:
+Opening Edit Profile shows server values in each field within 200ms (or immediately after fetch) — local overrides appear if present.
+Submitting profile updates shows “Profile updated” on success; on failure shows “Couldn’t update profile — please try again.”
+A 405 response from PATCH surfaces a clear message like “Update not allowed — contact support.”
+Clicking “Log Out” clears authentication cookies/localStorage and returns the UI to the logged-out state; the nav updates and protected links hide.
+
+Result: PASS
+
+
+
+User Story #36: Signup/Login/Profile fixes (Assignee: Chandler) [US 8] [Status: DONE]
+Tasks:
+Make Student ID visible on signup and save it on account creation.
+Ensure signup sends separate first_name and last_name (no blank last name).
+Ensure email is stored only in email; username is a distinct field.
+Make login handler respect the credential the UI requests (email or username) and show consistent UX.
+Replace raw error dumps with friendly messages for duplicate-account and other signup/login failures.
+Add basic client-side validation (required fields, email format, student ID pattern)
+
+Acceptance Tests:
+Filling Student ID on signup results in the Student ID appearing on the Profile page after account creation.
+Signing up populates first_name and last_name fields on the server 
+Email is present only in the email field; username is a separate, distinct value.
+Login succeeds username and password; Error messages display when there is a failure.
+Attempting to create a duplicate account shows a short message: “An account with this email already exists.”.
+
+Result: PASS 
+
+
+User Story #38: Base Admin HTML Template (Assignee: Noorjahan) [US 5] [Status: Done]
+
+Tasks: 
+Launch Live Server. 
+Visit any admin page. 
+Confirm header/menu load consistently.
+Confirm layout identical across all admin pages.
+
+Acceptance Tests: 
+Header and menu appear on all admin pages. 
+Layout is consistent across pages. 
+Result: PASS
+
+User Story #39: Admin CSS Framework (Assignee: Noorjahan) [US 5] [Status: Done]
+
+Tasks: 
+Load admin pages. 
+Inspect typography, spacing, and color consistency. 
+Confirm CSS applies globally without conflict.
+
+Acceptance Tests: 
+Typography, spacing, and colors appear consistent. 
+No CSS conflicts detected. 
+Result: PASS
+
+User Story #40: Global Frontend Style Consistency (Assignee: Noorjahan) [US 8] [Status: Done]
+
+Tasks: 
+Open every page in the system. 
+Verify consistent font, colors, spacing. 
+Confirm no conflicting CSS. 
+Confirm responsiveness.
+
+Acceptance Tests: 
+All pages display consistent styling. 
+No conflicting CSS detected. 
+Site is responsive.
+Result: PASS
+
+User Story #41: System Architecture Diagram (Assignee: Noorjahan) [US 5] [Status: Done]
+
+Tasks: 
+Open diagram file. 
+Verify frontend, backend, and database components are included. 
+Confirm team reviewed the diagram.
+
+Acceptance Tests: 
+All major system components appear in the diagram. 
+Team has reviewed the diagram. 
+Result: PASS
+
+User Story #42: UML Class Diagram (Assignee: Noorjahan) [US 3] [Status: Done]
+
+Tasks: 
+Open class diagram. 
+Verify all entities and relationships are shown. 
+Confirm no missing classes.
+
+Acceptance Tests: 
+All entities are present. 
+Relationships are accurate.
+No missing classes. 
+Result: PASS
+
+User Story #43: Flow Diagram (User Flow) (Assignee: Noorjahan) [US 2] [Status: Done]
+
+Tasks: 
+Inspect diagram. 
+Confirm login → role → dashboard flow is correct. 
+Validate with frontend behavior.
+
+Acceptance Tests: 
+User flow matches actual system behavior. 
+Result: PASS
+
+User Story #44: System Block Diagram (Assignee: Noorjahan) [US 3] [Status: Done]
+
+Tasks:
+Verify major system components are represented.
+Confirm alignment with architecture diagram.
+
+Acceptance Tests: 
+The diagram includes all major components. 
+Matches the system architecture
+Result: PASS
+
+User Story #45: Manual UI Testing (Assignee: Noorjahan) [US 5] [Status: Done]
+
+Tasks: 
+Use Live Server. 
+Test every navigation link. 
+Test all interactive elements. 
+Verify there are no broken pages.
+
+Acceptance Tests: 
+All pages load successfully. 
+No broken links or UI issues
+ Result: PASS
+
+
+
