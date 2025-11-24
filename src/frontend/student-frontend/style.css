@@ -246,19 +246,27 @@ header {
 #get-ticket-btn {
   display: block;
   margin: 24px auto 0 auto;
-  padding: 10px 28px;
-  background: var(--accent);
-  color: var(--text-light);
-  border: none;
+  padding: 14px 36px;
+  background-color: white;
+  color: #000;
+  border: 2px solid transparent;
   border-radius: 8px;
-  font-size: 1em;
+  font-size: 1.05rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.3s ease;
 }
 
 /* Hover state */
 #get-ticket-btn:hover {
-  background: #510c0c;
+  background-color: #f0f0f0;
+  border-color: #912338;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+#get-ticket-btn:active {
+  transform: translateY(0);
 }
 
 /* Focus outline for accessibility */

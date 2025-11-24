@@ -35,8 +35,30 @@ async function fetchFirstEvent() {
   }
 }
 
+// Fetch organization name by organizer_id
+async function getOrganizerOrganization(organizerId) {
+  try {
+    // Fetch all organization members
+    const membersResp = await fetch('http://127.0.0.1:5000/organization_members');
+    if (!membersResp.ok) return null;
+    const members = await membersResp.json();
+    
+    // Find the organization membership for this organizer
+    const membership = members.find(m => m.user_id === organizerId);
+    if (!membership) return null;
+    
+    // Fetch the organization details
+    const orgResp = await fetch(`http://127.0.0.1:5000/organizations/${membership.organization_id}`);
+    if (!orgResp.ok) return null;
+    const org = await orgResp.json();
+    return org.title || null;
+  } catch (e) {
+    console.warn('Failed to fetch organization for organizer', e);
+    return null;
+  }
+}
 
-function renderEventInto(container, event) {
+function renderEventInto(container, event, organizationName) {
   if (!container || !event) return;
 
   // Price formatting: treat 0 or 0.0 as FREE
@@ -55,20 +77,21 @@ function renderEventInto(container, event) {
   const rating = (event.rating !== undefined && event.rating !== null) ? String(event.rating) : 'N/A';
 
   const linkHtml = event.link ? `<a href="${event.link}" target="_blank" rel="noopener noreferrer">${event.link}</a>` : '';
+  const orgDisplay = organizationName || 'N/A';
 
   container.innerHTML = `
-    <h1 style="font-family: 'Poller One', sans-serif;">${event.title || 'Event'}</h1>
-    <p style="font-size: 1.1rem; font-weight: bold;">Price: ${priceText}</p>
-    <p><strong>Category:</strong> ${category}</p>
-    <p><strong>Capacity:</strong> ${capacity}</p>
-    <p><strong>Seating:</strong> ${seating}</p>
-    <p><strong>Rating:</strong> ${rating}</p>
-    <p style="margin-top:8px;"><strong>Description:</strong><br>${event.description || ''}</p>
-    <p style="margin-top:8px;"><strong>Start:</strong> ${startText}</p>
-    <p><strong>End:</strong> ${endText}</p>
-    <p><strong>Location:</strong> ${event.location || 'TBA'}</p>
-    ${linkHtml ? `<p><strong>Link:</strong> ${linkHtml}</p>` : ''}
-    <p style="margin-top:12px; font-size:0.9rem; color:#666;"><strong>Status:</strong> ${event.status || 'N/A'} &nbsp; <strong>Organizer:</strong> ${event.organizer_id ?? 'N/A'} &nbsp; <strong>Event ID:</strong> ${event.id}</p>
+    <h1 style="font-family: Arial, sans-serif; font-size: 2rem; margin-bottom: 10px;">${event.title || 'Event'}</h1>
+    <p style="font-size: 1.1rem; font-weight: bold; font-family: Arial, sans-serif;">Price: ${priceText}</p>
+    <p style="font-family: Arial, sans-serif;"><strong>Category:</strong> ${category}</p>
+    <p style="font-family: Arial, sans-serif;"><strong>Capacity:</strong> ${capacity}</p>
+    <p style="font-family: Arial, sans-serif;"><strong>Seating:</strong> ${seating}</p>
+    <p style="font-family: Arial, sans-serif;"><strong>Rating:</strong> ${rating}</p>
+    <p style="margin-top:8px; font-family: Arial, sans-serif;"><strong>Description:</strong><br>${event.description || ''}</p>
+    <p style="margin-top:8px; font-family: Arial, sans-serif;"><strong>Start:</strong> ${startText}</p>
+    <p style="font-family: Arial, sans-serif;"><strong>End:</strong> ${endText}</p>
+    <p style="font-family: Arial, sans-serif;"><strong>Location:</strong> ${event.location || 'TBA'}</p>
+    ${linkHtml ? `<p style="font-family: Arial, sans-serif;"><strong>Link:</strong> ${linkHtml}</p>` : ''}
+    <p style="margin-top:12px; font-family: Arial, sans-serif;"><strong>Organization:</strong> ${orgDisplay}</p>
   `;
 }
 
@@ -111,9 +134,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     event = await fetchFirstEvent();
   }
 
+  // Fetch organization name if we have an organizer_id
+  let organizationName = null;
+  if (event && event.organizer_id) {
+    organizationName = await getOrganizerOrganization(event.organizer_id);
+  }
+
   // Render what we have (or a friendly message)
   if (event) {
-    renderEventInto(container, event);
+    renderEventInto(container, event, organizationName);
   } else if (container) {
     container.innerHTML = '<p>Could not load event details. Please try again later.</p>';
   }

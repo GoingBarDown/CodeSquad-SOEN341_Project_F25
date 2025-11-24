@@ -22,6 +22,33 @@ function getCookie(name) {
   return null;
 }
 
+// Cache for calendar events to avoid excessive API calls
+const eventCache = {
+  data: null,
+  timestamp: null,
+  TTL: 5 * 60 * 1000 // 5 minutes cache duration
+};
+
+function isCacheValid() {
+  return eventCache.data !== null && 
+         eventCache.timestamp !== null && 
+         (Date.now() - eventCache.timestamp) < eventCache.TTL;
+}
+
+function getCachedEvents() {
+  if (isCacheValid()) {
+    console.debug('Using cached events');
+    return eventCache.data;
+  }
+  return null;
+}
+
+function setCachedEvents(data) {
+  eventCache.data = data;
+  eventCache.timestamp = Date.now();
+  console.debug('Events cached, TTL:', eventCache.TTL);
+}
+
 /**
  * Formats a date object into the specific string format required by iCalendar files.
  * * Why: RFC 5545 Compliance.
@@ -168,6 +195,13 @@ function loadCalendarForStudent(calendarEl, studentId) {
         
         //DATA FEED CONFIGURATION
         events: function(fetchInfo, successCallback, failureCallback) {
+            // Check if we have cached events first
+            const cachedEvents = getCachedEvents();
+            if (cachedEvents) {
+                successCallback(cachedEvents);
+                return;
+            }
+
             // ARCHITECTURE DECISION: Absolute URL.
             // FOr what: to bridge the Cross-Origin gap between the frontend (Port 3002) 
             // and the Flask backend (Port 5000) during local development.
@@ -178,6 +212,8 @@ function loadCalendarForStudent(calendarEl, studentId) {
                 dataType: 'json',
                 
                 success: function(response) {
+                    // Cache the events
+                    setCachedEvents(response);
                     // Show all events that the student has tickets for
                     successCallback(response); 
                 },

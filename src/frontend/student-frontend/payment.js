@@ -30,7 +30,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       const event = JSON.parse(selectedEventRaw);
       const title = document.createElement('h3');
       title.textContent = event.title || 'Event';
-      title.style.fontFamily = "'Poller One', sans-serif";
+      title.style.fontFamily = "Arial, sans-serif";
+      title.style.textAlign = "center";
       const amount = document.getElementById('amount');
       // show price even if 0
       if (amount && event.price !== undefined) amount.value = `$${Number(event.price).toFixed(2)}`;
@@ -41,9 +42,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         summary.id = 'paymentEventSummary';
         summary.style.marginBottom = '12px';
         summary.appendChild(title);
-        const p = document.createElement('p');
-        p.textContent = `Event ID: ${event.id}`;
-        summary.appendChild(p);
         card.insertBefore(summary, card.firstChild);
       }
     }
@@ -80,12 +78,14 @@ form.addEventListener("submit", async (e) => {
   const studentId = (document.getElementById("studentId")?.value || '').trim();
   // Normalize and validate the entered ID. Accept formats like "S1234567" or just digits.
   let numericStudentId = null;
-  if (/^[Ss]\d+$/.test(studentId)) {
+  if (/^[A-Za-z]\d+$/.test(studentId)) {
+    // Format: Letter followed by digits (e.g., A123456, S1234567)
     numericStudentId = studentId.slice(1);
   } else if (/^\d+$/.test(studentId)) {
+    // Format: Just digits (e.g., 1234567)
     numericStudentId = studentId;
   } else {
-    status.textContent = "❌ Invalid Student ID format. Use S1234567 or 1234567.";
+    status.textContent = "❌ Invalid Student ID format. Use A123456, S1234567, or 1234567.";
     status.style.color = "red";
     return;
   }
@@ -115,7 +115,7 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  if (String(serverStudentId) !== String(numericStudentId)) {
+  if (String(serverStudentId) !== String(studentId)) {
     setStatus("❌ The Student ID you entered does not match your account. Ticket creation blocked.", 'red');
     return;
   }
