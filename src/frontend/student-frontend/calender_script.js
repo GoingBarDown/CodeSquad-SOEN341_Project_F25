@@ -169,8 +169,8 @@ function showEventDetailsModal(info) {
 function initializeCalendar() {
     var calendarEl = document.getElementById('calendar');
     
-    // Get user ID from cookies (set by login page)
-    const studentId = getCookie('userId');
+    // Get user ID from localStorage first, fallback to cookies (set by login page)
+    const studentId = localStorage.getItem('userId') || getCookie('userId');
 
     if (!studentId) {
         console.error("User ID not found. Cannot load personalized calendar.");
