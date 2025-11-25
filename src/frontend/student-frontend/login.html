@@ -148,6 +148,10 @@
                   document.cookie = `username=${encodeURIComponent(
                     data.user.username || ""
                   )}; path=/;`;
+                  // Store user info in localStorage for menu display
+                  localStorage.setItem("userId", data.user.id);
+                  localStorage.setItem("loggedInUser", data.user.username || "Student");
+                  localStorage.setItem("role", "student");
                 }
                 showToast(data.message || "✅ Login successful!");
                 setTimeout(() => (window.location.href = "index.html"), 900);
