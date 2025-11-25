@@ -43,6 +43,17 @@ Rim Echahbi (40227779):
 - Worked on the final report (30min)
 - Attended all meetings set by my team as well as private calls with some teammates (3h)
 
+Chandler Higgins (40156534):
+- Fixed Student Frontend, reverting it back to its original state and adjusting the code so it was correct (4 hours)
+- Integrated Ticket page with backend while creating a My Ticket page and accurately associating tickets with the user (3 hours)
+- Integrated Profile Page with backend (1 hour)
+- Changed Profile Page and Edit Profile Page to be accurate with backend and to be functioning properly (2 hours)
+- Edited navbar/menu in each html and js related page to be visually consistent and logically accurate whether user was logged in or not (3 hours)
+- Fixed odds and ends related to Student Frontend in order to have smooth and accurate functionality (the final touches) (4 hours)
+- Attended Team Meetings (2 hours)
+- Worked on the final report (1 hour)
+
+
 Reema Aboudraz (40253549)
 - Worked on the menu option bar for all students & organizer pages (4h)
 - Refactored adminStyle.css for logic & cohesion purposes (1h)
